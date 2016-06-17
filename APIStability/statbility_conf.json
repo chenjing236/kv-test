@@ -1,0 +1,19 @@
+`{
+  "host": "192.168.177.88",
+  "port": 80,
+  "pin": "dafd9d707849abe585a5db3a920d3af8",
+  "auth_token": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
+  "db_host": "192.168.177.87",
+  "db_port": 3306,
+  "db_user": "jimdb",
+  "db_passwd": "jimdbtest",
+  "db_db": "jimdb",
+  "ap_host": "192.168.177.89",
+  "ap_port":5360,
+  "process_num": 3,
+  "max_count": 10,
+  "min_cap": 1,
+  "max_cap": 10,
+  "max_sleep_time": 5,
+
+}
