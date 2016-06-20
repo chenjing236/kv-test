@@ -1,0 +1,84 @@
+#!/bin/bash
+###########################################################
+### DESC:根据space_id查看缓存云实例信息
+### INTERFACE: http://ip:port/v1.0/{pin}/clusters/{space_id}
+### METHOD: GET
+### AUTHER: guoli
+### DATE: 06/09/2016
+### VERSION: 1.0
+###########################################################
+
+### 依赖：系统中安装jq ###
+
+### 输入参数个数小于1，不执行本脚本 ###
+if [ $# -lt 1 ];then
+        echo "[WARNING] 请输入space id"
+        exit 0
+fi
+
+### 环境 ###
+env_test="192.168.177.88"
+
+auth_tocken="K1AwANjwaBmIWZBBHadr6oLC3AEIAkAtqhAJofH+ZZw="
+auth_tocken_pin="64c8ddb08ad83c7b04fba541c3b085fd"
+
+space_id="$1"
+
+wait_time_long="5"
+wait_time_short="3"
+
+### 根据space_id查找对应的缓存云实例 ###
+echo "根据space_id查找对应的缓存云实例"
+test_cases="curl -s -H\"auth-Token:${auth_tocken}\" -XGET http://${env_test}/v1.0/${auth_tocken_pin}/clusters/${space_id}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+### 查询是否成功 ###
+code=`echo ${result} | jq .code`
+#echo "code=${code}"
+#echo ""
+
+if [ ${code} -ne 1 ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR]【根据space_id查询缓存云实例错误】: ${msg}"
+        exit 0
+fi
+
+sleep ${wait_time_short}
+
+### 根据space_id查询缓存云实例的创建状态：status=100创建成功，status=500创建失败 ###
+result=`eval ${test_cases}`
+status=`echo ${result} | jq .attach.status`
+#echo "status=${status}"
+#echo ""
+
+if [ ${status} == "null" ];then
+	echo "[INFO] space_id=${space_id}已经被删除"
+	echo ""
+	exit 0
+fi
+
+while [[ 1 -eq 1 ]];do
+        result=`eval ${test_cases}`
+        status=`echo ${result} | jq .attach.status`
+        #echo "${status}"
+        if [ ${status} == "0" ];then
+		echo "[INFO] 创建中..."
+        fi
+        if [ ${status} == "100" ];then
+		echo ""
+                echo "[INFO] 创建成功"
+                echo ""
+                break
+        fi
+	if [ ${status} == "500" ];then
+		echo ""
+		echo "[INFO] 创建失败"
+		echo ""
+		break
+	fi
+        sleep ${wait_time_long}
+done
+

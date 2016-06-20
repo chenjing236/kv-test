@@ -1,0 +1,175 @@
+#!/bin/bash
+
+### 依赖：系统中安装jq ###
+
+### 环境 ###
+env_test="192.168.177.88"
+
+auth_token="K1AwANjwaBmIWZBBHadr6oLC3AEIAkAtqhAJofH+ZZw="
+auth_token_pin="64c8ddb08ad83c7b04fba541c3b085fd"
+
+### 等待时间 ###
+wait_time_long="5"
+wait_time_short="3"
+
+space_type="1"
+quantity="1"
+
+for ((i=0;i<10;i++))
+do
+### 创建缓存云实例 ###
+echo "创建缓存云实例"
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -H\"Content-Type:application/json\" -XPOST --data '{\"spaceName\":\"\",\"spaceType\":${space_type},\"zoneId\":1,\"capacity\":2097152,\"quantity\":${quantity},\"remarks\":\"\"}' http://${env_test}/v1.0/${auth_token_pin}/clusters"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+### 根据code判断缓存云是否创建成功: code=1创建成功,code=0创建失败 ###
+code=`echo ${result} | jq .code`
+#echo "code=${code}"
+#echo ""
+
+if [ ${code} -ne 1 ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR]【缓存云实例创建失败】: ${msg}"
+        echo ""
+        exit 0
+fi
+
+### 缓存云创建成功后，attach为创建的对应的space_id ###
+space_id=`echo ${result} | jq .attach`
+echo "[INFO] 实例space_id=${space_id}被创建."
+echo ""
+
+### 根据space_id查找对应的缓存云实例 ###
+echo "根据space_id查找对应的缓存云实例"
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -XGET http://${env_test}/v1.0/${auth_token_pin}/clusters/${space_id}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+### 查询是否成功 ###
+code=`echo ${result} | jq .code`
+#echo "code=${code}"
+#echo ""
+
+if [ ${code} -ne 1 ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR]【根据space_id查询缓存云实例错误】: ${msg}"
+        exit 0
+fi
+
+sleep ${wait_time_short}
+
+### 根据space_id查询缓存云实例的创建状态：status=100创建成功，status=500创建失败 ###
+result=`eval ${test_cases}`
+status=`echo ${result} | jq .attach.status`
+#echo "status=${status}"
+#echo ""
+
+while [[ 1 -eq 1 ]];do
+        result=`eval ${test_cases}`
+        status=`echo ${result} | jq .attach.status`
+        #echo "${status}"
+        if [ ${status} == "null" ];then
+                echo ""
+                echo "[ERROR] 创建失败"
+                echo ""
+                break
+        fi
+        if [ ${status} -eq 100 ];then
+                echo ""
+                echo "[INFO] 创建成功"
+                echo ""
+                break
+        fi
+        if [ ${status} -eq 500 ];then
+                echo ""
+                echo "[ERROR] 创建失败"
+                echo ""
+                break
+        fi
+        if [ ${status} -eq 0 ];then
+                echo "[INFO] 创建中..."
+        fi
+
+        sleep ${wait_time_long}
+done
+
+echo ""
+
+sleep "${wait_time_short}"
+
+### 删除缓存云实例 ###
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -XDELETE http://${env_test}/v1.0/${auth_token_pin}/clusters/${space_id}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+code=`echo ${result} | jq .code`
+
+if [ ${code} != "1" ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR] ${msg}"
+        echo ""
+fi
+
+sleep ${wait_time_long}
+
+### 查询刚被删除的缓存云实例 ###
+echo "根据space_id查找对应的缓存云实例"
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -XGET http://${env_test}/v1.0/${auth_token_pin}/clusters/${space_id}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+### 查询是否成功 ###
+code=`echo ${result} | jq .code`
+#echo "code=${code}"
+#echo ""
+
+if [ ${code} != "1" ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR]【根据space_id查询缓存云实例错误】: ${msg}"
+        echo ""
+        exit 0
+fi
+
+status=`echo ${result} | jq .attach.status`
+#echo "status=${status}"
+if [ ${status} == "null" ];then
+        echo "[INFO] space_id=${space_id}该实例已被删除"
+        echo ""
+        exit 0
+fi
+
+while [[ 1 -eq 1 ]];do
+        result=`eval ${test_cases}`
+        #attach=`echo ${result} | jq .attach`
+        #if [ ! -n ${attach} ];then
+        #       echo ""
+        #       echo "[INFO] 删除成功"
+        #       break
+        #fi
+        status=`echo ${result} | jq .attach.status`
+        if [ ${status} == "null" ];then
+                echo ""
+                echo "[INFO] 删除成功"
+                break
+        fi
+        if [ ${status} == "601" ];then
+                echo ""
+                echo "[INFO] 删除成功"
+                break
+        fi
+        if [ ${status} == "600" ];then
+                echo "[INFO] 删除中..."
+        fi
+        sleep ${wait_time_long}
+done
+echo ""
+done

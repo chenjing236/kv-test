@@ -1,0 +1,60 @@
+#!/usr/local/bin/expect
+
+set timeout 1
+
+### remote server info ###
+set remote_docker_server_ip "192.168.169.51"
+#set remote_docker_server_port "5000"
+set user_name "guoli109"
+#set container_port "6422"
+#set remote_docker_server_ip [lindex $argv 0]
+set remote_docker_server_port [lindex $argv 0]
+
+### 创建一个ssh登陆主机的进程 ###
+spawn ssh guoli109@$remote_docker_server_ip
+
+expect "*assword"
+
+send "P@ssw0rd\r"
+
+expect "*]$"
+
+send "sudo -s\r"
+
+expect "*]$"
+
+send "P@ssw0rd\r"
+
+expect "*assword"
+
+send "P@ssw0rd\r"
+
+expect "*]$"
+
+#send "docker ps -a | sed -e 's/\[ \]\*\$//g' | sed -e 's\/\[ \]\[ \]\*\/\~\/g' | awk -F \"\~\" '{print \$NF}'\r"
+
+send "docker ps -a | sed -e 's/\[ \]\*\$//g' | sed -e 's\/\[ \]\[ \]\*\/\~\/g' | grep $remote_docker_server_port | awk -F \"\~\" '{if(\$NF\~\/$remote_docker_server_port\/) print \$0}'| sed -e 's/\~/ /g' | awk '{print \$0}'\r"
+
+expect "*]$"
+
+send "docker ps -a | sed -e 's/\[ \]\*\$//g' | sed -e 's\/\[ \]\[ \]\*\/\~\/g' | grep $remote_docker_server_port | awk -F \"\~\" '{if(\$NF\~\/$remote_docker_server_port\/) print \$0}'| sed -e 's/\~/ /g' | awk '{print \$1}' | xargs docker stop \r"
+
+expect "*]$"
+
+send "docker ps -a | sed -e 's/\[ \]\*\$//g' | sed -e 's\/\[ \]\[ \]\*\/\~\/g' | grep $remote_docker_server_port | awk -F \"\~\" '{if(\$NF\~\/$remote_docker_server_port\/) print \$0}'| sed -e 's/\~/ /g' | awk '{print \$0}'\r"
+
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$"
+
+expect "*]$\r"
+
+#expect eof
+
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$\r"

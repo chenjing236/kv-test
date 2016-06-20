@@ -1,0 +1,8 @@
+#!/bin/bash
+
+concurrent_times="10"
+
+for((i=0;i<${concurrent_times};i++))
+do
+	./smoke_test_cases &
+done

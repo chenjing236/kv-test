@@ -1,0 +1,133 @@
+#!/bin/bash
+############################################################################
+### DESC:删除指定space_id的缓存云实例，并查看刚删除的缓存云实例的删除状态
+### INTERFACE: http://ip:port/v1.0/{pin}/clusters/{space_id}
+### METHOD: DELETE
+### AUTHER: guoli
+### DATE: 06/09/2016
+### VERSION: 1.0
+############################################################################
+
+### 依赖：系统中安装jq ###
+
+### 输入参数个数小于1，不执行本脚本 ###
+if [ $# -lt 1 ];then
+	echo "[WARNING] 请输入space id"
+	exit 0
+fi
+
+### 环境 ###
+env_test="192.168.177.88"
+
+auth_token="K1AwANjwaBmIWZBBHadr6oLC3AEIAkAtqhAJofH+ZZw="
+auth_token_pin="64c8ddb08ad83c7b04fba541c3b085fd"
+
+### 等待时间 ###
+wait_time_long="5"
+wait_time_short="3"
+
+space_id="$1"
+
+### 删除缓存云实例 ###
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -XDELETE http://${env_test}/v1.0/${auth_token_pin}/clusters/${space_id}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+code=`echo ${result} | jq .code`
+
+if [ ${code} != "1" ];then
+	msg=`echo ${result} | jq .msg`
+	echo "[ERROR] ${msg}"
+	echo ""
+fi
+
+sleep ${wait_time_long}
+
+### 查询刚被删除的缓存云实例 ###
+echo "[STEP] 根据space_id查找对应的缓存云实例"
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -XGET http://${env_test}/v1.0/${auth_token_pin}/clusters/${space_id}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+### 查询是否成功 ###
+code=`echo ${result} | jq .code`
+#echo "code=${code}"
+#echo ""
+
+if [ ${code} != "1" ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR]【根据space_id查询缓存云实例错误】: ${msg}"
+	echo ""
+        exit 0
+fi
+
+status=`echo ${result} | jq .attach.status`
+#echo "status=${status}"
+if [ ${status} == "null" ];then
+	echo "[INFO] space_id=${space_id}该实例已被删除"
+	echo ""
+	exit 0
+fi
+
+while [[ 1 -eq 1 ]];do
+	result=`eval ${test_cases}`
+	#attach=`echo ${result} | jq .attach`
+	#if [ ! -n ${attach} ];then
+	#	echo ""
+	#	echo "[INFO] 删除成功"
+	#	break
+	#fi
+	status=`echo ${result} | jq .attach.status`
+	if [ ${status} == "null" ];then
+		echo ""
+		echo "[INFO] 删除成功"
+		break
+	fi
+	if [ ${status} == "601" ];then
+		echo ""
+		echo "[INFO] 删除成功"
+		break
+	fi
+	if [ ${status} == "600" ];then
+		echo "[INFO] 删除中..."
+	fi
+	sleep ${wait_time_long}
+done
+echo ""
+
+
+### Mysql数据库信息 ###
+MYSQL_HOSTNAME="192.168.177.87"
+MYSQL_PORT="3306"
+MYSQL_USERNAME="tester"
+MYSQL_PASSWORD="123456"
+MYSQL_DBNAME="jimdb"
+
+### 查询数据库中space表中缓存云实例的状态 ###
+echo "[STEP] 查询space表中space_id=${space_id}删除后的状态"
+sql_select_space=`mysql -h${MYSQL_HOSTNAME} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} << EOF
+        use ${MYSQL_DBNAME};
+        select status from space where id=${space_id};
+EOF`
+
+sql_select_space=`echo ${sql_select_space} | sed -e 's/status//g' | sed 's/^[ \t]*//g'`
+echo "[RESULT] ${sql_select_space}"
+echo ""
+
+if [ "601" = "${sql_select_space}" ];then
+	echo "[INFO] status=${sql_select_space}删除成功"
+fi
+
+if [ "602" = "${sql_select_space}" ];then
+	echo "[ERROR] status=${sql_select_space}删除失败"
+fi
+
+if [ "" = "${sql_select_space}" ];then
+	echo "[ERROR] space表中没有改实例的信息"
+fi
+
+echo ""
