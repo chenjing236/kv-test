@@ -1,0 +1,135 @@
+#!/bin/bash
+##########################################################
+### DESC: master被stop后，failover将创建新的master
+###	  资源，将原有的slave作为临时的master,并
+###	  将临时master的数据拷贝到新的master上,并
+###	  将临时master设置为slave，并分配给新的master 
+### DB: topology,instance,space
+### Docker container:实例对应的container
+### CFS：记录缓存云实例的信息
+### AP：实际可访问的资源代理
+##########################################################
+
+space_id="$1"
+
+### 依赖：系统中安装jq ###
+
+### 输入参数个数小于1，不执行本脚本 ###
+if [ $# -lt 1 ];then
+        echo "[WARNING] 请输入space id"
+        exit 0
+fi
+
+### 环境 ###
+env_test="192.168.177.88"
+
+### Docker Container ###
+docker_container_ip_1="192.168.177.89"
+docker_container_ip_2="192.168.169.51"
+
+### CFS ###
+cfs_ip="192.168.177.87"
+
+### AP ###
+ap_ip="192.168.177.89"
+
+auth_token="K1AwANjwaBmIWZBBHadr6oLC3AEIAkAtqhAJofH+ZZw="
+auth_token_pin="64c8ddb08ad83c7b04fba541c3b085fd"
+
+space_id="$1"
+
+wait_time_long="10"
+wait_time_short="2"
+
+failover_times="1"
+
+### Mysql数据库信息 ###
+MYSQL_HOSTNAME="192.168.177.87"
+MYSQL_PORT="3306"
+MYSQL_USERNAME="tester"
+MYSQL_PASSWORD="123456"
+MYSQL_DBNAME="jimdb"
+
+echo "[STEP] 查询数据库topology表中的拓扑信息"
+### 查询数据库中topology表 ###
+sql_select_topology=`mysql -h${MYSQL_HOSTNAME} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} << EOF
+        use ${MYSQL_DBNAME};
+        select current_topology from topology where space_id=${space_id};
+EOF`
+
+result=`echo ${sql_select_topology} | sed -e 's/current_topology//g' | sed 's/^[ \t]*//g'`
+echo "[RESULT] ${result}"
+echo ""
+
+### 缓存云实例的master的IP&Port ###
+container_master_ip=`echo ${result} | jq .shards[0].master.ip`
+container_master_ip=`echo ${container_master_ip=} | sed 's/^[\"\t]*//g' | sed 's/[\"\t]*$//g'`
+container_master_port=`echo ${result} | jq .shards[0].master.port`
+echo "[INFO] 缓存云实例space_id=${space_id}的master的IP:Port=${container_master_ip}:${container_master_port}"
+echo ""
+
+### 缓存云实例的slave的IP&Port ###
+container_slave_ip=`echo ${result} | jq .shards[0].master.slaves[0].ip`
+container_slave_ip=`echo ${container_slave_ip} | sed 's/^[\"\t]*//g' | sed 's/[\"\t]*$//g'`
+container_slave_port=`echo ${result} | jq .shards[0].master.slaves[0].port`
+echo "[INFO] 缓存云实例space_id=${space_id}的slave的IP:Port=${container_slave_ip}:${container_slave_port}"
+echo ""
+
+for ((i=0;i<${failover_times};i++))
+do
+
+echo "[STEP] stop缓存云实例${space_id}的master，ip:port=${container_master_ip}:${container_master_port}"
+eval ./remote_docker_container ${container_master_ip} ${container_master_port}
+
+sleep ${wait_time_long}
+echo ""
+
+### 查询数据库中topology表 ###
+echo "[STEP] 查询数据库表topology表中，缓存云实例space_id=${space_id}的master和slave信息"
+while [[ 1 -eq 1 ]];do
+sql_select_topology=`mysql -h${MYSQL_HOSTNAME} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} << EOF
+        use ${MYSQL_DBNAME};
+        select temp_topology from topology where space_id=${space_id};
+EOF`
+
+temp_topology=`echo ${sql_select_topology} | sed -e 's/temp_topology//g' | sed 's/^[ \t]*//g'`
+sleep ${wait_time_long}
+
+if [ "NULL" = ${temp_topology} ];then
+sql_select_topology=`mysql -h${MYSQL_HOSTNAME} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} << EOF
+        use ${MYSQL_DBNAME};
+        select current_topology from topology where space_id=${space_id};
+EOF`	
+	result=`echo ${sql_select_topology} | sed -e 's/current_topology//g' | sed 's/^[ \t]*//g'`
+	### 缓存云实例的master的IP&Port ###
+	container_master_ip_new=`echo ${result} | jq .shards[0].master.ip`
+	container_master_ip_new=`echo ${container_master_ip} | sed 's/^[\"\t]*//g' | sed 's/[\"\t]*$//g'`
+	container_master_port_new=`echo ${result} | jq .shards[0].master.port`
+	#echo "=== ${container_master_ip_new}:${container_master_port_new}"
+
+	### 缓存云实例的slave的IP&Port ###
+	container_slave_ip_new=`echo ${result} | jq .shards[0].master.slaves[0].ip`
+	container_slave_ip_new=`echo ${container_slave_ip} | sed 's/^[\"\t]*//g' | sed 's/[\"\t]*$//g'`
+	container_slave_port_new=`echo ${result} | jq .shards[0].master.slaves[0].port`
+
+	if [ "${container_master_port}" != "${container_master_port_new}" ];then
+		echo "[INFO] 新的master：${container_master_ip_new}:${container_master_port_new}被创建"
+		echo ""
+		container_master_port=${container_master_port_new}
+		sleep ${wait_time_long}
+		break
+	fi
+	echo "[INFO] failover正在为缓存云实例space_id=${space_id}创建新的master..."
+#	sleep ${wait_time_long}
+fi
+done
+
+echo ""
+
+echo "[INFO] failover为缓存云实例space_id=${space_id}创建新的master的IP:Port=${container_master_ip_new}:${container_master_port_new}"
+echo ""
+
+sleep ${wait_time_short}
+echo ""
+done
+echo ""
