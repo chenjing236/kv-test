@@ -2,7 +2,6 @@ from multiprocessing import Process, Lock
 from Queue import Queue
 import sys
 
-sys.path.append("../automation_test/")
 from utils.JCacheUtils import *
 from utils.WebClient import *
 from utils.SQLClient import SQLClient
@@ -13,16 +12,22 @@ import json
 
 
 class Counter():
-    def __init__(self, max_count):
+    def __init__(self, max_num, max_fail_num):
         self.locker = Lock()
         self.count = 0
-        self.max_count = max_count
+        self.fail_count = 0
+        self.max_num = max_num
+        self.max_fail_num = max_fail_num
 
-    def check(self):
+    def check(self, is_failed=False):
         res = True
         self.locker.acquire()
         self.count += 1
-        if self.count >= self.max_count:
+        if self.max_num != 0 and self.count >= self.max_num:
+            res = False
+        if is_failed:
+            self.fail_count += 1
+        if  self.max_fail_num != 0 and self.fail_count >= self.max_fail_num:
             res = False
         self.locker.release()
         return res
@@ -48,11 +53,12 @@ class JcacheAPIProcess(Process):
         sql_c = SQLClient(self.conf['db_host'], self.conf['db_port'], self.conf['db_user'], self.conf['db_password'],
                           self.conf['db_name'])
         idx = 0
+        is_failed = False
+
         while True:
-            if not self.counter.check():
+            if not self.counter.check(is_failed):
                 self.res_queue.put(None)
                 break
-
             pid = os.getpid()
             remarks = "remarks_{0}_{1}".format(pid, idx)
             name = "name_{0}_{1}".format(pid, idx)
@@ -63,6 +69,7 @@ class JcacheAPIProcess(Process):
                 if space_id is not None:
                     DeleteCluster(wc, space_id, sql_c)
                 self.res_queue.put((False, None, None))
+                is_failed = True
                 continue
 
             # check acl
@@ -75,12 +82,14 @@ class JcacheAPIProcess(Process):
             time.sleep(sleep_time * 60)
 
             # check delete
-            status, space_id = DeleteCluster(wc, space_id, sql_c)
+            status = DeleteCluster(wc, space_id, sql_c)
             if status != 0:
                 DeleteCluster(wc, space_id, sql_c)
                 self.res_queue.put((True, acl_check, False))
+                is_failed = False
                 continue
             self.res_queue.put(True, acl_check, True)
+            is_failed = True
 
 
 class Stat(object):
@@ -146,7 +155,7 @@ def main(argv):
     process_num = conf_t['process_num']
     process_list = []
     result_queue = Queue()
-    counter = Counter(conf_t['max_count'])
+    counter = Counter(conf_t['max_num'], conf_t['max_fail_num'])
     for i in range(0, process_num):
         p_t = JcacheAPIProcess(conf_t, result_queue, counter)
         p_t.start()
