@@ -74,9 +74,9 @@ class TestBaseFunc:
         status, capacity, password, flag, tenant_id, name, remarks = self.space_info
         instances = self.sql_c.get_instances(self.space_id)
         # test acl
-        # local_ip = get_local_ip()
-        # ips = [local_ip]
-        ips = ["192.168.162.16", "192.168.162.17"]
+        local_ip = get_local_ip()
+        ips = [local_ip]
+        # ips = ["192.168.162.16", "192.168.162.17"]
         status, headers, res_data = self.wc.set_acl(self.space_id, ips)
         assert status == 200
         assert res_data['code'] == 1

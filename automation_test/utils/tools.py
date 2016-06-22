@@ -2,11 +2,14 @@ import socket
 import array
 import struct
 import fcntl
+
+
 def format_ip(addr):
     return str(ord(addr[0])) + '.' + \
            str(ord(addr[1])) + '.' + \
            str(ord(addr[2])) + '.' + \
            str(ord(addr[3]))
+
 
 def all_interfaces():
     max_possible = 128  # arbitrary. raise if needed.
