@@ -54,6 +54,7 @@ class TestBaseFunc:
         self.compare_instance(jinstance[0], instances[0], space_id)
         self.compare_instance(jinstance[1], instances[1], space_id)
 
+    @pytest.mark.smoke
     def test_get_cluster(self):
         # wc = WebClient(conf_obj["host"], conf_obj["pin"], conf_obj["auth_token"])
 
@@ -70,6 +71,7 @@ class TestBaseFunc:
         self.check_cluster_info(res_data['attach'], self.space_info, instances, self.space_id, domain)
         print "test get cluster success"
 
+    @pytest.mark.smoke
     def test_acl(self):
         status, capacity, password, flag, tenant_id, name, remarks = self.space_info
         instances = self.sql_c.get_instances(self.space_id)
