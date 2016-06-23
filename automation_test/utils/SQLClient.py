@@ -86,16 +86,3 @@ class SQLClient(object):
         res = self.cursor.fetchall()[0][0]
         self.close_cursor()
         return res
-
-
-
-sql_client = SQLClient("192.168.177.87", 3306, "jimdb", "jimdbtest", "jimdb")
-
-res = sql_client.get_space_status(146)
-print res
-res = sql_client.get_instances(104)
-print res
-res = sql_client.get_acl(1041)
-print res
-res = sql_client.get_domain(1041)
-print res
