@@ -1,5 +1,6 @@
 import time
 
+
 def CreateCluster(wc, ca, space_list, sql_c):
     status, headers, res_data = wc.create_cluster(ca)
     assert status == 200
@@ -30,6 +31,7 @@ def CreateCluster(wc, ca, space_list, sql_c):
     assert ins_status == 100
     print "create cluster success!"
     return space_id, space
+
 
 def DeleteCluster(wc, space_id, sql_c):
     status, headers, res_data = wc.delete_cluster(space_id)
