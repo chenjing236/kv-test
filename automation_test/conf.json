@@ -9,5 +9,7 @@
   "mysql_passwd": "jimdbtest",
   "mysql_db": "jimdb",
   "ap_host": "192.168.177.89",
-  "ap_port":5360
+  "ap_port":5360,
+  "docker_daemon":"2375",
+  "docker_version":"1.19"
 }
