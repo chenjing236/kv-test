@@ -1,15 +1,15 @@
+#coding:utf-8
 import socket
 import array
 import struct
 import fcntl
-
+import sys,os
 
 def format_ip(addr):
     return str(ord(addr[0])) + '.' + \
            str(ord(addr[1])) + '.' + \
            str(ord(addr[2])) + '.' + \
            str(ord(addr[3]))
-
 
 def all_interfaces():
     max_possible = 128  # arbitrary. raise if needed.
@@ -29,7 +29,7 @@ def all_interfaces():
         ni_dict[name] = format_ip(ip)
     return ni_dict
 
-
+#获取本地IP
 def get_local_ip():
     nw_dict = all_interfaces()
     local_ip = None
@@ -49,3 +49,12 @@ def get_local_ip():
     elif ip_192 is not None:
         local_ip = ip_192
     return local_ip
+
+#获取当前文件的绝对路径
+def cur_file_dir():
+    path = sys.path[0]
+    if os.path.isdir(path):
+        return path
+    elif os.path.isfile(path):
+        return os.path.dirname(path)
+
