@@ -12,6 +12,10 @@ conf_obj = json.load(open(conf_path, 'r'))
 container_daemon = conf_obj['docker_daemon']
 docker_version = conf_obj['docker_version']
 
+def init(ip,container_daemon):
+    docker_server = "tcp://{0}:{1}".format(ip,container_daemon)
+    return Client(base_url=docker_server,version=docker_version)
+
 #停止缓存云实例的slave
 #参数
 #   slef
