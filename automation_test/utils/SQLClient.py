@@ -1,5 +1,6 @@
+#!/usr/bin/python
+#coding:utf-8
 import MySQLdb
-
 
 class SQLClient(object):
     def __init__(self, host, port, user, passwd, db):
@@ -16,6 +17,7 @@ class SQLClient(object):
         self.cursor.close()
         self.conn.close()
     def run(self, sql):
+        self.init_cursor()
         return self.cursor.execute(sql)
 
     def get_space_status(self, space_id):
@@ -86,3 +88,50 @@ class SQLClient(object):
         res = self.cursor.fetchall()[0][0]
         self.close_cursor()
         return res
+
+    #根据space id查看instance表中slave的IP和Port
+    def get_slave_ip_port(self,space_id):
+        '''
+        :param space_id:
+        :return: [slave(ip,port)]
+        '''
+        self.sql_slave = "select ip,port from instance where space_id={0} and copy_id!='m'".format(space_id)
+        n = self.run(self.sql_slave)
+        slave_ip = 0
+        slave_port = 0
+        if n > 0:
+            slave_info = list(self.cursor.fetchall())
+            slave_ip = slave_info[0][0]
+            slave_port = slave_info[0][1]
+        self.close_cursor()
+
+        return slave_ip,slave_port
+
+    #根据space_id查看instance表中master的IP和Port
+    def get_master_ip_port(self,space_id):
+        '''
+        :param space_id:
+        :return: [master(ip,port)]
+        '''
+        self.sql_master = "select ip,port from instance where space_id={0} and copy_id='m'".format(space_id)
+        n = self.run(self.sql_master)
+        master_ip = 0
+        master_port = 0
+        if n > 0:
+            master_info = list(self.cursor.fetchall())
+            master_ip = master_info[0][0]
+            master_port = master_info[0][1]
+        self.close_cursor()
+
+        return master_ip,master_port
+
+sql_client = SQLClient("192.168.177.87", 3306, "jimdb", "jimdbtest", "jimdb")
+
+res = sql_client.get_space_status(146)
+print res
+res = sql_client.get_instances(104)
+print res
+res = sql_client.get_acl(1041)
+print res
+res = sql_client.get_domain(1041)
+print res
