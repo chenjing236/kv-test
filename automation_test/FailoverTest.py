@@ -61,7 +61,7 @@ class TestFailoverFunc:
 
         print "[STEP] Failover is going to recreate new slave for instance (space_id={0}).".format(self.space_id)
         #扫描数据库instance表中，对应缓存云实例的slave是否被更新了
-        slave_port_new = retry_get_new_slave(self.space_id,slave_port)
+        slave_port_new = retry_get_new_slave(self.space_id,slave_ip,slave_port)
 
         #验证点:faiover创建的新的slave的Port与最初的slave的Port不同
         assert slave_port_new != slave_port
@@ -75,14 +75,14 @@ class TestFailoverFunc:
         master_port = master_info[1]
         print "[STEP] Search master info of instance (space_id={0}). Master Info : IP:Port={1}:{2}".format(self.space_id,master_ip, master_port)
 
-        #链接docker服务器的守护进程，根据IP_PORT停止slave
+        #链接docker服务器的守护进程，根据IP_PORT停止master
         print "[STEP] Stop master of cache instance （space_id={0})".format(self.space_id)
         stop_master(self.space_id,master_ip,master_port,container_daemon)
         master_port_new = master_port
 
         print "[STEP] Failover is going to recreate new master for instance (space_id={0}).".format(self.space_id)
-        #扫描数据库instance表中，对应缓存云实例的slave是否被更新了
-        master_port_new = retry_get_new_master(self.space_id,master_port)
+        #扫描数据库instance表中，对应缓存云实例的master是否被更新了
+        master_port_new = retry_get_new_master(self.space_id,master_ip,master_port)
 
-        #验证点:faiover创建的新的slave的Port与最初的slave的Port不同
+        #验证点:faiover创建的新的master的Port与最初的master的Port不同
         assert master_port_new != master_port
