@@ -4,6 +4,7 @@ class CreateArgs():
     def __init__(self, capacity=2097152, zoneid=1, remarks="jcachetest", space_name="jcachetest", space_type=1, quantity=1):
         self.args_dict = {"spaceName": space_name, "spaceType": space_type, "zoneId": zoneid, "capacity": capacity, "quantity": quantity,
          "remarks": remarks}
+
     def to_json_string(self):
         return json.dumps(self.args_dict)
 
