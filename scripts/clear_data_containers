@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "[STEP] 删除数据库中的所有数据"
+mysql -N -s information_schema -e "SELECT CONCAT('TRUNCATE TABLE ',TABLE_NAME,';') FROM TABLES WHERE TABLE_SCHEMA='jimdb'" | mysql -f jimdb
+echo ""
+
+echo "[STEP] 登录数据库，导入基础数据"
+database_test="192.168.177.87"
+path_insert_sql=`echo $(pwd)`
+./insert_base_data ${database_test} ${path_insert_sql}
+echo ""
+
+echo "[STEP] Stop所有缓存云实例对应的containers"
+docker_instance_container_ip_1="192.168.177.89"
+docker_instance_container_ip_2="192.168.169.51"
+echo "[ACTION] Remove${docker_instance_container_ip_1}上所有containers..."
+./remove_instance_in_docker ${docker_instance_container_ip_1}
+echo ""
+
+echo "[ACTION] Remove${docker_instance_container_ip_2}上所有containers..."
+./remove_instance_in_docker ${docker_instance_container_ip_2}
+echo ""
+
+echo "[INFO] 清除数据完成"
+echo ""
