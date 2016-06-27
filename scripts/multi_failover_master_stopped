@@ -1,0 +1,127 @@
+#!/bin/bash
+###############################################################
+### SCENARIO: 并发创建5个缓存云实例
+###           并发stop每个缓存云实例的master对应的container
+###           sentinel检测到5个master被stop，然后通知给failover
+###           failover并发为每个缓存云实例创建新的master
+###############################################################
+### 依赖：系统中安装jq ###
+
+### 环境 ###
+env_test="192.168.177.88"
+
+### jimdbtest ###
+auth_token="K1AwANjwaBmIWZBBHadr6oLC3AEIAkAtqhAJofH+ZZw="
+auth_token_pin="64c8ddb08ad83c7b04fba541c3b085fd"
+
+### JaneCloud002/123456 ###
+#auth_token="FwTMH6WMOcYnG4CC9M0tb/6lQWYxnhaOGxqzG0j5T7Q="
+#auth_token_pin="fc62fd6aedacef996b28be508faa1f58"
+
+### 等待时间 ###
+wait_time_long="5"
+wait_time_short="3"
+
+concurrent_times="5"
+
+### 失败创建的实例数 ###
+failed_instance_created=0
+
+### 删除失败的实例数 ###
+failed_instance_deleted=0
+
+space_type="1"
+quantity="1"
+
+### Mysql数据库信息 ###
+MYSQL_HOSTNAME="192.168.177.87"
+MYSQL_PORT="3306"
+MYSQL_USERNAME="tester"
+MYSQL_PASSWORD="123456"
+MYSQL_DBNAME="jimdb"
+
+for ((i=0;i<${concurrent_times};i++))
+do
+### 创建缓存云实例 ###
+echo "[STEP] 创建缓存云实例"
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -H\"Content-Type:application/json\" -XPOST --data '{\"spaceName\":\"\",\"spaceType\":${space_type},\"zoneId\":1,\"capacity\":2097152,\"quantity\":${quantity},\"remarks\":\"\
+"}' http://${env_test}/v1.0/${auth_token_pin}/clusters"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+space_id_array[i]=`echo ${result} | jq .attach`
+echo "[INFO] 实例space_id=${space_id_array[i]}被创建."
+echo ""
+done
+
+### 查询缓存云实例是否创建成功 ###
+for ((i=0;i<${concurrent_times};i++))
+do
+echo "[STEP] 查询缓存云实例space_id=${space_id_array[i]}是否创建成功的状态"
+test_cases="curl -s -H\"auth-Token:${auth_token}\" -XGET http://${env_test}/v1.0/${auth_token_pin}/clusters/${space_id_array[i]}"
+echo "${test_cases}"
+result=`eval ${test_cases}`
+echo "[RESULT] ${result}"
+echo ""
+
+### 查询是否成功 ###
+code=`echo ${result} | jq .code`
+#echo "code=${code}"
+#echo ""
+
+if [ ${code} -ne 1 ];then
+        msg=`echo ${result} | jq .msg`
+        echo "[ERROR]【根据space_id查询缓存云实例错误】: ${msg}"
+        exit 0
+fi
+
+sleep ${wait_time_short}
+
+### 根据space_id查询缓存云实例的创建状态：status=100创建成功，status=500创建失败 ###
+result=`eval ${test_cases}`
+status=`echo ${result} | jq .attach.status`
+#echo "status=${status}"
+#echo ""
+
+if [ ${status} == "null" ];then
+        echo "[INFO] space_id=${space_id_array[i]}已经被删除"
+        echo ""
+        exit 0
+fi
+
+while [[ 1 -eq 1 ]];do
+        result=`eval ${test_cases}`
+        status=`echo ${result} | jq .attach.status`
+        #echo "${status}"
+        if [ ${status} == "0" ];then
+                echo "[INFO] ${space_id_array[i]}创建中..."
+
+        fi
+        if [ ${status} == "100" ];then
+                echo ""
+                echo "[INFO] ${space_id_array[i]}创建成功"
+                echo ""
+                break
+        fi
+        if [ ${status} == "500" ];then
+                failed_instance_created=${failed_instance_created+1}
+                echo ""
+                echo "[INFO] ${space_id_array[i]}创建失败"
+                eicho ""
+                break
+        fi
+        sleep ${wait_time_short}
+done
+echo ""
+done
+
+sleep ${wait_time_long}
+
+for ((i=0;i<${concurrent_times};i++))
+do
+        ./failover_master_stopped ${space_id_array[i]} &
+done
+
+echo ""
