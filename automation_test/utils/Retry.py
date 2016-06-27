@@ -23,9 +23,9 @@ def retry_get_new_slave(space_id,slave_ip,slave_port):
         slave_ip_new = slave_info[0]
         slave_port_new = slave_info[1]
         if (slave_port_new != 0) and (slave_ip_new != 0) and (not ((slave_ip == slave_ip_new) and (slave_port ==  slave_port_new))):
-            print "[INFO] {0}:{1} is created by failover. Failover can recreate new master for cache instance (space_id={2})".format(slave_ip_new,slave_port_new,space_id)
+            print "[INFO] {0}:{1} is created by failover. Failover can recreate new slave for cache instance (space_id={2})".format(slave_ip_new,slave_port_new,space_id)
             break
-        print "[INFO] Failover is recreating master for instance (space_id={0}) ...".format(space_id)
+        print "[INFO] Failover is recreating slave for instance (space_id={0}) ...".format(space_id)
         time.sleep(5)
 
     return slave_port_new
