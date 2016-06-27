@@ -1,0 +1,60 @@
+#!/usr/local/bin/expect
+
+set timeout 1
+
+### 数据库信息 ###
+set database_ip [lindex $argv 0]
+
+set path_insert_sql [lindex $argv 1]
+
+### insert base data ###
+spawn ssh guoli109@$database_ip
+
+expect "*assword"
+
+send "P@ssw0rd\r"
+
+expect "*]$"
+
+send "sudo -s\r"
+
+expect "*]$"
+
+send "P@ssw0rd\r"
+
+expect "*assword"
+
+send "P@ssw0rd\r"
+
+expect "*]$"
+
+send "mysql\r"
+
+expect "mysql>"
+
+send "use jimdb;\r"
+
+expect "mysql>"
+
+send "source $path_insert_sql/data/jimdb.sql\r"
+
+expect "mysql>"
+
+send "quit\r"
+
+### 退出 ###
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$"
+
+expect "*]$\r"
+
+#expect eof
+
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$\r"
