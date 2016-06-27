@@ -1,0 +1,157 @@
+#!/bin/bash
+
+wait_time_long="5"
+
+#############################
+### DESC:验证服务启动状态 ###
+### PRAMETERS:            ###
+###     ip,服务的IP       ###
+###     port,服务的port   ###
+###     name,服务的名称   ###
+#############################
+function access_server_port(){
+pro_web_ip="$1"
+pro_web_port="$2"
+pro_web_path=""
+pro_web_name="$3"
+
+if [ $# != 3 ];then
+        echo "[WARNING] 请输入服务IP,服务PORT,服务名称,3个参数..."
+fi
+
+echo "[STEP] 验证${pro_web_name}服务${pro_web_ip}:${pro_web_port}是否启动"
+
+host_status="nmap ${pro_web_ip} -p ${pro_web_port} | grep Host"
+result_host_status=`eval ${host_status}`
+server_status="nmap ${pro_web_ip} -p ${pro_web_port} | grep ${pro_web_port} | grep open"
+result=`eval ${server_status}`
+if [ "" = "${result}" ];then
+        echo "[ERROR] ${pro_web_name}服务${pro_web_ip}:${pro_web_port}没有启动"
+else
+        echo "[INFO] [${pro_web_ip} ${result_host_status} ${result}] ${pro_web_name}服务${pro_web_ip}:${pro_web_port}已经启动"
+fi
+
+echo ""
+
+sleep ${wait_time_long}
+}
+
+### web ###
+pro_web_ip="192.168.177.88"
+pro_web_port="1601"
+pro_web_path=""
+pro_web_name="jdicts.jcloud.com"
+
+eval access_server_port "${pro_web_ip}" "${pro_web_port}" "${pro_web_name}"
+
+### task ###
+pro_task_ip="192.168.177.88"
+pro_task_port="5106"
+pro_task_path=""
+pro_task_name="jdicts-task"
+
+eval access_server_port "${pro_task_ip}" "${pro_task_port}" "${pro_task_name}"
+
+### scaler ###
+pro_scaler_ip="192.168.177.87"
+pro_scaler_port="1818"
+pro_scaler_path=""
+pro_scaler_name="jdicts-scaler"
+
+eval access_server_port "${pro_scaler_ip}" "${pro_scaler_port}" "${pro_scaler_name}"
+
+### ipProvider ###
+pro_ipProvider_ip="192.168.177.87"
+pro_ipProvider_port="8078"
+pro_ipProvider_path=""
+pro_ipProvider_name="jdicts-ipProvider"
+
+eval access_server_port "${pro_ipProvider_ip}" "${pro_ipProvider_port}" "${pro_ipProvider_name}"
+
+### failover ###
+pro_failover_ip="192.168.177.87"
+pro_failover_port="1828"
+pro_failover_path=""
+pro_failover_name="jdicts-failover"
+
+eval access_server_port "${pro_failover_ip}" "${pro_failover_port}" "${pro_failover_name}"
+
+### sentinel ###
+pro_sentinel_ip="192.168.177.89"
+pro_sentinel_port="1999"
+pro_sentinel_path=""
+pro_sentinel_name="jdicts-sentinel"
+
+eval access_server_port "${pro_sentinel_ip}" "${pro_sentinel_port}" "${pro_sentinel_name}"
+
+### CFS ###
+pro_cfs_ip="92.168.177.87"
+pro_cfs_port="6060"
+pro_cfs_path=""
+pro_cfs_name="jdicts-cfs"
+
+eval access_server_port "${pro_cfs_ip}" "${pro_cfs_port}" "${pro_cfs_name}"
+
+### AP ###
+pro_ap_ip="92.168.177.89"
+pro_ap_port="5360"
+pro_ap_path=""
+pro_ap_name="jdicts-ap"
+
+eval access_server_port "${pro_ap_ip}" "${pro_ap_port}" "${pro_ap_name}"
+
+### acl ###
+pro_acl_ip="192.168.177.87"
+pro_acl_port="1819"
+pro_acl_path=""
+pro_acl_name="jdicts-acl"
+
+eval access_server_port "${pro_acl_ip}" "${pro_acl_port}" "${pro_acl_name}"
+
+### DNS ###
+pro_dns_ip="192.168.172.33"
+pro_dns_port="80"
+pro_dns_path=""
+pro_dns_name="DNS"
+
+eval access_server_port "${pro_dns_ip}" "${pro_dns_port}" "${pro_dns_name}"
+
+### pusher ###
+
+### docker registry ###
+pro_docker_registry_ip="192.168.166.65"
+pro_docker_registry_port="5000"
+pro_docker_registry_path=""
+pro_docker_registry_name="docker_registry"
+
+eval access_server_port "${pro_docker_registry_ip}" "${pro_docker_registry_port}" "${pro_docker_registry_name}"
+
+### redis containers ###
+pro_docker_instance_ip="192.168.169.51"
+pro_docker_instance_port="2375"
+pro_docker_instance_path=""
+pro_docker_instance_name="docker_instance"
+
+eval access_server_port "${pro_docker_instance_ip}" "${pro_docker_instance_port}" "${pro_docker_instance_name}"
+
+### DNS in test envrionment ###
+pro_dns_domain_ip="192.168.179.75"
+pro_dns_domain_port="80"
+pro_dns_domain_path=""
+pro_dns_domain_name="DNS"
+
+eval access_server_port "${pro_dns_domain_ip}" "${pro_dns_domain_port}" "${pro_dns_domain_name}"
+
+pro_dns_domain_ip="172.16.16.16"
+pro_dns_domain_port="80"
+pro_dns_domain_path=""
+pro_dns_domain_name="DNS"
+
+eval access_server_port "${pro_dns_domain_ip}" "${pro_dns_domain_port}" "${pro_dns_domain_name}"
+
+pro_dns_domain_ip="10.16.16.16"
+pro_dns_domain_port="80"
+pro_dns_domain_path=""
+pro_dns_domain_name="DNS"
+
+eval access_server_port "${pro_dns_domain_ip}" "${pro_dns_domain_port}" "${pro_dns_domain_name}"
