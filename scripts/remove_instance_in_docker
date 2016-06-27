@@ -1,0 +1,56 @@
+#!/usr/local/bin/expect
+
+set timeout 1
+
+### docker instance container ###
+set docker_instance_container_ip [lindex $argv 0]
+
+### remove instance in docker instance container ###
+spawn ssh guoli109@$docker_instance_container_ip
+
+expect "*assword"
+
+send "P@ssw0rd\r"
+
+expect "*]$"
+
+send "sudo -s\r"
+
+expect "*]$"
+
+send "P@ssw0rd\r"
+
+expect "*assword"
+
+send "P@ssw0rd\r"
+
+expect "*]$"
+
+send "docker kill \$\(docker ps \-q\)\r"
+
+exec sleep 10
+
+expect "*]$"
+
+send "docker rm \$\(docker ps \-a \-q\)\r"
+
+expect "*]$"
+
+exec sleep 10
+
+### ÍË³ö ###
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$"
+
+expect "*]$\r"
+
+#expect eof
+
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$\r"
