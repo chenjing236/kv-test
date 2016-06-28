@@ -10,7 +10,7 @@ from docker import Client
 import string
 import time
 from utils.Retry import *
-from utils.RedisOps import *
+from utils.redisOps import *
 
 #获取conf.json的绝对路径
 conf_path = cur_file_dir() + "\conf.json"
