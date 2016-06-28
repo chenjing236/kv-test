@@ -10,6 +10,7 @@ from docker import Client
 import string
 import time
 from utils.Retry import *
+from utils.RedisOps import *
 
 #获取conf.json的绝对路径
 conf_path = cur_file_dir() + "\conf.json"
@@ -49,9 +50,20 @@ class TestFailoverFunc:
     def test_failover_recreate_slave(self):
         print '[Scenario] Slave of cache instance (space_id={0}) is stopped'.format(self.space_id)
         #根据space id查询instance表中缓存云实例的slave信息
-        slave_info = self.sql_c.get_slave_ip_port(self.space_id)
+        instances = self.sql_c.get_instances(self.space_id)
+        slave_info = instances[1]
         slave_ip = slave_info[0]
         slave_port = slave_info[1]
+
+        #master信息
+        master_info = instances[0]
+        master_ip = master_info[0]
+        master_port = master_info[1]
+
+        #向master写入key-value
+        print "[STEP] 向master({0}:{1})写入key-value=（{2}-{3}）".format(master_ip,master_port,"cache_test_key","cache_test_value")
+        set_key_value(master_info,"cache_test_key","cache_test_value")
+
         print "[STEP] Search slave info of instance (space_id={0}). Slave Info : IP:Port={1}:{2}".format(self.space_id,slave_ip, slave_port)
 
         #链接docker服务器的守护进程，根据IP_PORT停止slave
@@ -66,13 +78,40 @@ class TestFailoverFunc:
         #验证点:faiover创建的新的slave的Port与最初的slave的Port不同
         assert slave_port_new != slave_port
 
+        #从新的slave中读取slave被stop前写入master的数据
+        instances = self.sql_c.get_instances(self.space_id)
+        slave_info = instances[1]
+        slave_ip = slave_info[0]
+        slave_port = slave_info[1]
+        value = get_value_from_slave(slave_info,"cache_test_key")
+        print "[STEP] 从slave({0}:{1})获取cache_test_key的value={2}".format(slave_ip,slave_port,value)
+        assert "cache_test_value" == value
+
+        #删除key-value
+        print "[STEP] 从slave({0}:{1})删除cache_test_key".format(slave_ip,slave_port)
+        delete_key_value(master_info,"cache_test_key")
+        value = get_value_from_slave(slave_info,"cache_test_key")
+        assert value is None
+
+
+
     #缓存云实例的master被stop,failover将创建新的master
     def test_failover_recreate_master(self):
         print "[Scenario] Master of cache instance (space_id={0}) is stopped".format(self.space_id)
         #根据space id查询instance表中缓存云实例的master信息
-        master_info = self.sql_c.get_master_ip_port(self.space_id)
+        instances = self.sql_c.get_instances(self.space_id)
+        master_info = instances[0]
         master_ip = master_info[0]
         master_port = master_info[1]
+
+        #slave信息
+        slave_info = instances[1]
+        slave_ip = slave_info[0]
+        slave_port = slave_info[1]
+
+        print "[STEP] 向master({0}:{1})写入key-value=（{2}-{3}）".format(master_ip,master_port,"cache_test_key","cache_test_value")
+        set_key_value(master_info,"cache_test_key","cache_test_value")
+
         print "[STEP] Search master info of instance (space_id={0}). Master Info : IP:Port={1}:{2}".format(self.space_id,master_ip, master_port)
 
         #链接docker服务器的守护进程，根据IP_PORT停止master
@@ -86,3 +125,28 @@ class TestFailoverFunc:
 
         #验证点:faiover创建的新的master的Port与最初的master的Port不同
         assert master_port_new != master_port
+        time.sleep(1)
+
+        #获取stop master前写入master的key-value
+        value = get_value_from_slave(slave_info,"cache_test_key")
+        print "[STEP] 从slave({0}:{1})获取cache_test_key的value={2}".format(slave_ip,slave_port,value)
+        assert "cache_test_value" == value
+
+        #向新的master写入数据
+        instances = self.sql_c.get_instances(self.space_id)
+        master_info = instances[0]
+        master_ip = master_info[0]
+        master_port = master_info[1]
+        print "[STEP] 向master({0}:{1})写入key-value=（{2}-{3}）".format(master_ip,master_port,"cache_test_key_1","cache_test_value_1")
+        set_key_value(master_info,"cache_test_key_1","cache_test_value_1")
+
+        print "[STEP] 从slave({0}:{1})删除cache_test_key".format(slave_ip,slave_port)
+        delete_key_value(master_info,"cache_test_key")
+        value = get_value_from_slave(slave_info,"cache_test_key")
+        assert value is None
+
+        print "[STEP] 从slave({0}:{1})删除cache_test_key_1".format(slave_ip,slave_port)
+        delete_key_value(master_info,"cache_test_key_1")
+        value = get_value_from_slave(slave_info,"cache_test_key_1")
+        assert value is None
+
