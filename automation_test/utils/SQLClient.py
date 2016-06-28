@@ -125,6 +125,7 @@ class SQLClient(object):
 
         return master_ip,master_port
 
+    #查询topology表中的is_locked字段，is_locked=0表示缓存云实例没有被锁住，is_locked=1表示缓存云实例被锁住，返回值为-1表示没有在topology表中找到对应的数据
     def is_locked(self,space_id):
         self.sql_is_locked = "select is_locked from topology where space_id={0}".format(space_id)
         n = self.run(self.sql_is_locked)
