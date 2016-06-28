@@ -1,7 +1,6 @@
 import redis
 import time
 
-
 def check_redis_instances(instances):
     master = instances[0]
     slave = instances[1]
@@ -15,6 +14,19 @@ def check_redis_instances(instances):
     cnt.delete('test')
     assert cnt_slave.get("test") is None
 
+def get_value_from_slave(slave,key):
+    cnt_slave = redis.StrictRedis(host=slave[0], port=slave[1])
+    return cnt_slave.get(key)
+
+def set_key_value(master,key,value):
+    cnt = redis.StrictRedis(host=master[0], port=master[1])
+    cnt.set(key, value)
+    time.sleep(1)
+
+def delete_key_value(master,key):
+    cnt = redis.StrictRedis(host=master[0], port=master[1])
+    cnt.delete(key)
+    time.sleep(1)
 
 def check_ap_access(ap_host, ap_port, passwd, jinstance):
     cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
