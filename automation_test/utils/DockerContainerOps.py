@@ -43,6 +43,7 @@ def stop_slave(space_id,slave_ip,slave_port,container_daemon):
             print "[ACTION] Stop slave of cache instance (space_id={0}). Slave Info : Container ID : Container Status={1}:{2}".format(space_id,container_id,container_status)
             #stop slave
             c.stop(container_id)
+            c.remove_container(container_id)
             time.sleep(2)
 
     c.close()
@@ -74,6 +75,7 @@ def stop_master(space_id,master_ip,master_port,container_daemon):
             print "[ACTION] Stop master of cache instance （space_id={0}）. Master Info : Container ID : Container Status={1}:{2}".format(space_id,container_id,container_status)
             #stop slave
             c.stop(container_id)
+            c.remove_container(container_id)
             time.sleep(2)
 
     c.close()
