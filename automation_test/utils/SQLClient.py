@@ -125,6 +125,16 @@ class SQLClient(object):
 
         return master_ip,master_port
 
+    def is_locked(self,space_id):
+        self.sql_is_locked = "select is_locked from topology where space_id={0}".format(space_id)
+        n = self.run(self.sql_is_locked)
+        if n > 0:
+            is_locked = self.cursor.fetchall()
+            self.close_cursor()
+            return is_locked
+        self.close_cursor()
+        return -1
+
 sql_client = SQLClient("192.168.177.87", 3306, "jimdb", "jimdbtest", "jimdb")
 
 res = sql_client.get_space_status(146)
