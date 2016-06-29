@@ -8,7 +8,6 @@ import json
 import time
 
 conf_path = cur_file_dir() + "\conf.json"
-#conf_path = "C:/Users/guoli5/git/JCacheTest/automation_test/conf.json"
 conf_obj = json.load(open(conf_path, 'r'))
 
 class TestBaseFunc:
