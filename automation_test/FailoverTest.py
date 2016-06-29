@@ -1,16 +1,16 @@
 #!/usr/bin/python
 #coding:utf-8
 from utils.tools import *
-from utils.DockerContainerOps import *
-import json
+from utils.DockerContainerOps import DockerClient
+from utils.Retry import Retry
 from utils.WebClient import *
 from utils.SQLClient import SQLClient
 from utils.JCacheUtils import *
+from utils.redisOps import *
+import json
 from docker import Client
 import string
 import time
-from utils.Retry import *
-from utils.redisOps import *
 
 #获取conf.json的绝对路径
 conf_path = cur_file_dir() + "\conf.json"
@@ -31,6 +31,8 @@ class TestFailoverFunc:
     #创建缓存云实例
     def setup_class(self):
         print "[STEP] Create instance for cache"
+        self.docker_c = DockerClient(conf_path)
+        self.retry = Retry(conf_path)
         self.teardown_space_list = []
         self.wc = WebClient(conf_obj["host"], conf_obj["pin"], conf_obj["auth_token"])
         self.sql_c = SQLClient(conf_obj['mysql_host'], conf_obj["mysql_port"], conf_obj["mysql_user"],
@@ -68,12 +70,12 @@ class TestFailoverFunc:
 
         #链接docker服务器的守护进程，根据IP_PORT停止slave
         print "[STEP] Stop slave of cache instance （space_id={0})".format(self.space_id)
-        stop_slave(self.space_id,slave_ip,slave_port,container_daemon)
+        self.docker_c.stop_slave(self.space_id,slave_ip,slave_port,container_daemon)
         slave_port_new = slave_port
 
         print "[STEP] Failover is going to recreate new slave for instance (space_id={0}).".format(self.space_id)
         #扫描数据库instance表中，对应缓存云实例的slave是否被更新了
-        slave_port_new = retry_get_new_slave(self.space_id,slave_ip,slave_port)
+        slave_port_new = self.retry.retry_get_new_slave(self.space_id,slave_ip,slave_port)
 
         #验证点:faiover创建的新的slave的Port与最初的slave的Port不同
         assert slave_port_new != slave_port
@@ -116,12 +118,12 @@ class TestFailoverFunc:
 
         #链接docker服务器的守护进程，根据IP_PORT停止master
         print "[STEP] Stop master of cache instance （space_id={0})".format(self.space_id)
-        stop_master(self.space_id,master_ip,master_port,container_daemon)
+        self.docker_c.stop_master(self.space_id,master_ip,master_port,container_daemon)
         master_port_new = master_port
 
         print "[STEP] Failover is going to recreate new master for instance (space_id={0}).".format(self.space_id)
         #扫描数据库instance表中，对应缓存云实例的master是否被更新了
-        master_port_new = retry_get_new_master(self.space_id,master_ip,master_port)
+        master_port_new = self.retry.retry_get_new_master(self.space_id,master_ip,master_port)
 
         #验证点:faiover创建的新的master的Port与最初的master的Port不同
         assert master_port_new != master_port
