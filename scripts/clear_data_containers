@@ -1,4 +1,7 @@
 #!/bin/bash
+#######################################################
+### 清除数据库的数据，清除缓存云实例对应的containers
+#######################################################
 
 echo "[STEP] 删除数据库中的所有数据"
 mysql -N -s information_schema -e "SELECT CONCAT('TRUNCATE TABLE ',TABLE_NAME,';') FROM TABLES WHERE TABLE_SCHEMA='jimdb'" | mysql -f jimdb
