@@ -1,8 +1,8 @@
 #!/usr/bin/python
 #coding:utf-8
 from utils.tools import *
-import json
 from docker import Client
+import json
 import string
 import time
 
@@ -25,8 +25,8 @@ class DockerClient(object):
     #   container_daemon,slave所在Docker的守护进程的PORT
     def stop_slave(self,space_id,slave_ip,slave_port,container_daemon):
         '''
-        :param slave_ip,slave_port,container_daemon:
-        :return: []
+            :param slave_ip,slave_port,container_daemon:
+            :return: []
         '''
         slave_ip_port = "/{0}".format(slave_ip) + "_" + "{0}".format(slave_port)
         #链接docker服务器的守护进程，根据IP_PORT停止slave
@@ -57,8 +57,8 @@ class DockerClient(object):
     #   container_daemon,slave所在Docker的守护进程的PORT
     def stop_master(self,space_id,master_ip,master_port,container_daemon):
         '''
-        :param slave_ip,slave_port,container_daemon:
-        :return: []
+            :param slave_ip,slave_port,container_daemon:
+            :return: []
         '''
         master_ip_port = "/{0}".format(master_ip) + "_" + "{0}".format(master_port)
         #链接docker服务器的守护进程，根据IP_PORT停止slave
