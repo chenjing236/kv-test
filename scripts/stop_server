@@ -1,0 +1,80 @@
+#!/usr/local/bin/expect
+#############################################
+### 停止服务
+### 参数:
+###     1.远程服务器IP
+###     2.服务PORT
+###     3.远程服务名称
+###     4.远程服务部署的路径
+###     5.可登陆远程服务器的用户名
+###     6.可登陆远程服务器的用户密码
+#############################################
+
+### 依赖:系统安装expect ###
+
+set timeout 1
+
+### remote server info ###
+#set remote_server_ip "192.168.177.89"
+#set remote_server_port "1999"
+#set remote_server_name "sentinel"
+#set remote_server_path "/export/App/sentinel"
+#set username "XXX"
+#set password "XXX"
+
+set remote_server_ip [lindex $argv 0]
+set remote_server_port [lindex $argv 1]
+set remote_server_name [lindex $argv 2]
+set remote_server_path [lindex $argv 3]
+set username [lindex $argv 4]
+set password [lindex $argv 5]
+
+### connect to remote server & sudo root ###
+spawn ssh $username@$remote_server_ip
+
+expect "*assword"
+
+send "$password\r"
+
+expect "*]$"
+
+send "sudo -s\r"
+
+expect "*assword"
+
+send "$password\r"
+
+expect "*]$"
+
+### send ###
+
+send "cd $remote_server_path\r"
+
+expect "*]$"
+
+send "ps aux | grep $remote_server_name\r"
+
+expect "*]$"
+
+send "sh ./bin/stop.sh\r"
+
+expect "*]$"
+
+send "ps aux | grep $remote_server_name\r"
+
+expect "*]$"
+
+### exit ###
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$"
+
+expect "*]$\r"
+
+expect "*]$"
+
+send "exit\r"
+
+expect "*]$\r"
