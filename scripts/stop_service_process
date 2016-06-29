@@ -1,0 +1,62 @@
+#!/bin/bash
+####################################################################################################
+### DESC:停止服务 ./stop_server
+### PARAMETERS；
+###     1.IP:服务器IP
+###     2.PORT:服务器PORT
+###     3.SERVER NAME:服务名称，例如sentinel,failover,scaler
+###     4.PATH:服务安装的目录
+###     5.USER NAME:登录用户,建议不要用root用户,但登录用户可以sudo root权限，因为脚本中会sudo root
+###     6.PASSWORD:登录用户密码
+### DEPENDENCE:
+###     系统安装expect
+###     执行脚本的服务器可以ssh访问目标机器
+######################################################################################################
+
+### 停止启动 sentinel ###
+pro_sentinel_ip="192.168.177.89"
+pro_sentinel_port="1999"
+pro_sentinel_name="sentinel"
+pro_sentinel_path="/export/App/sentinel"
+pro_sentinel_username="guoli109"
+pro_sentinel_password="P@ssw0rd"
+
+echo "[STEP] 重新启动sentinel"
+./stop_server "${pro_sentinel_ip}" "${pro_sentinel_port}" "${pro_sentinel_name}" "${pro_sentinel_path}" "${pro_sentinel_username}" "${pro_sentinel_password}"
+echo ""
+
+### 停止启动 sentinel ###
+pro_sentinel_ip="192.168.177.88"
+pro_sentinel_port="1999"
+pro_sentinel_name="sentinel"
+pro_sentinel_path="/export/App/sentinel"
+pro_sentinel_username="guoli109"
+pro_sentinel_password="P@ssw0rd"
+
+echo "[STEP] 重新启动sentinel"
+./stop_server "${pro_sentinel_ip}" "${pro_sentinel_port}" "${pro_sentinel_name}" "${pro_sentinel_path}" "${pro_sentinel_username}" "${pro_sentinel_password}"
+echo ""
+
+### 停止启动 sentinel ###
+pro_sentinel_ip="192.168.177.87"
+pro_sentinel_port="1999"
+pro_sentinel_name="sentinel"
+pro_sentinel_path="/export/App/sentinel"
+pro_sentinel_username="guoli109"
+pro_sentinel_password="P@ssw0rd"
+
+echo "[STEP] 重新启动sentinel"
+./stop_server "${pro_sentinel_ip}" "${pro_sentinel_port}" "${pro_sentinel_name}" "${pro_sentinel_path}" "${pro_sentinel_username}" "${pro_sentinel_password}"
+echo ""
+
+### 停止启动 sentinel ###
+pro_sentinel_ip="192.168.169.51"
+pro_sentinel_port="1999"
+pro_sentinel_name="sentinel"
+pro_sentinel_path="/export/App/sentinel"
+pro_sentinel_username="guoli109"
+pro_sentinel_password="P@ssw0rd"
+
+echo "[STEP] 重新启动sentinel"
+./stop_server "${pro_sentinel_ip}" "${pro_sentinel_port}" "${pro_sentinel_name}" "${pro_sentinel_path}" "${pro_sentinel_username}" "${pro_sentinel_password}"
+echo ""
