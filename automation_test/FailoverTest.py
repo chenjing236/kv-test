@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #coding:utf-8
+import pytest
 from utils.tools import *
 from utils.DockerContainerOps import DockerClient
 from utils.Retry import Retry
@@ -49,6 +50,7 @@ class TestFailoverFunc:
              DeleteCluster(self.wc, space, self.sql_c)
 
     #缓存云实例的slave被stop,failover将创建新的slave
+    @pytest.mark.smoke
     def test_failover_recreate_slave(self):
         print '[Scenario] Slave of cache instance (space_id={0}) is stopped'.format(self.space_id)
         #根据space id查询instance表中缓存云实例的slave信息
@@ -96,6 +98,7 @@ class TestFailoverFunc:
         assert value is None
 
     #缓存云实例的master被stop,failover将创建新的master
+    @pytest.mark.smoke
     def test_failover_recreate_master(self):
         print "[Scenario] Master of cache instance (space_id={0}) is stopped".format(self.space_id)
         #根据space id查询instance表中缓存云实例的master信息
