@@ -95,8 +95,6 @@ class TestFailoverFunc:
         value = get_value_from_slave(slave_info,"cache_test_key")
         assert value is None
 
-
-
     #缓存云实例的master被stop,failover将创建新的master
     def test_failover_recreate_master(self):
         print "[Scenario] Master of cache instance (space_id={0}) is stopped".format(self.space_id)
