@@ -26,7 +26,7 @@ class SQLClient(object):
         :param space_id: space if
         :return: (status,capacity,password,flag,tenant_id,remarks)
         '''
-        print "begin to get space info, space_id[{0}]".format(space_id)
+        print ", space_id[{0}]".format(space_id)
         self.init_cursor()
         sql = "select status,capacity,password,flag,tenant_id,name,remarks from space where id={0}".format(space_id)
         n = self.cursor.execute(sql)
@@ -138,13 +138,13 @@ class SQLClient(object):
         self.close_cursor()
         return -1
 
-sql_client = SQLClient("", 3306, "jimdb", "jimdbtest", "jimdb")
+#sql_client = SQLClient("", 3306, "jimdb", "jimdbtest", "jimdb")
 
-res = sql_client.get_space_status(146)
-print res
-res = sql_client.get_instances(104)
-print res
-res = sql_client.get_acl(1041)
-print res
-res = sql_client.get_domain(1041)
-print res
+#res = sql_client.get_space_status(146)
+#print res
+#res = sql_client.get_instances(104)
+#print res
+#res = sql_client.get_acl(1041)
+#print res
+#res = sql_client.get_domain(1041)
+#print res
