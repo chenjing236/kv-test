@@ -23,8 +23,9 @@ container_daemon = conf_obj['docker_daemon']
 data_path = cur_file_dir() + "\instance_data.json"
 data_obj = json.load(open(data_path, 'r'))
 
-#获取本机IP
-local_id = ""
+retry_times = int(conf_obj['retry_times'])
+
+wait_time = float(conf_obj['wait_time'])
 
 #Failover&Sentinel模块的smoke test cases
 class TestFailoverFunc:
@@ -77,7 +78,7 @@ class TestFailoverFunc:
 
         print "[STEP] Failover is going to recreate new slave for instance (space_id={0}).".format(self.space_id)
         #扫描数据库instance表中，对应缓存云实例的slave是否被更新了
-        slave_port_new = self.retry.retry_get_new_slave(self.space_id,slave_ip,slave_port)
+        slave_port_new = self.retry.retry_get_new_slave(self.space_id,slave_ip,slave_port,retry_times)
 
         #验证点:faiover创建的新的slave的Port与最初的slave的Port不同
         assert slave_port_new != slave_port
@@ -124,11 +125,11 @@ class TestFailoverFunc:
 
         print "[STEP] Failover is going to recreate new master for instance (space_id={0}).".format(self.space_id)
         #扫描数据库instance表中，对应缓存云实例的master是否被更新了
-        master_port_new = self.retry.retry_get_new_master(self.space_id,master_ip,master_port)
+        master_port_new = self.retry.retry_get_new_master(self.space_id,master_ip,master_port,retry_times)
 
         #验证点:faiover创建的新的master的Port与最初的master的Port不同
         assert master_port_new != master_port
-        time.sleep(1)
+        time.sleep(wait_time)
 
         #获取stop master前写入master的key-value
         value = get_value_from_slave(slave_info,"cache_test_key")
@@ -152,4 +153,3 @@ class TestFailoverFunc:
         delete_key_value(master_info,"cache_test_key_1")
         value = get_value_from_slave(slave_info,"cache_test_key_1")
         assert value is None
-
