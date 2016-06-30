@@ -16,6 +16,7 @@ class SQLClient(object):
     def close_cursor(self):
         self.cursor.close()
         self.conn.close()
+
     def run(self, sql):
         self.init_cursor()
         return self.cursor.execute(sql)
@@ -130,9 +131,10 @@ class SQLClient(object):
         self.sql_is_locked = "select is_locked from topology where space_id={0}".format(space_id)
         n = self.run(self.sql_is_locked)
         if n > 0:
-            is_locked = self.cursor.fetchall()
+            #is_locked = self.cursor.fetchall()
+            is_locked = self.cursor.fetchone()
             self.close_cursor()
-            return is_locked
+            return is_locked[0]
         self.close_cursor()
         return -1
 
