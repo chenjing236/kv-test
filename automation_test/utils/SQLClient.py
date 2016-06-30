@@ -138,7 +138,7 @@ class SQLClient(object):
         self.close_cursor()
         return -1
 
-sql_client = SQLClient("192.168.177.87", 3306, "jimdb", "jimdbtest", "jimdb")
+sql_client = SQLClient("", 3306, "jimdb", "jimdbtest", "jimdb")
 
 res = sql_client.get_space_status(146)
 print res
