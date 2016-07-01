@@ -7,23 +7,7 @@ from utils.tools import *
 import json
 import time
 
-conf_path = cur_file_dir() + "\conf.json"
-conf_obj = json.load(open(conf_path, 'r'))
-
 class TestBaseFunc:
-    def setup_class(self):
-        self.conf_obj = json.load(open(conf_path, 'r'))
-        self.teardown_space_list = []
-        self.wc = WebClient(conf_obj["host"], conf_obj["pin"], conf_obj["auth_token"])
-        self.sql_c = SQLClient(conf_obj['mysql_host'], conf_obj["mysql_port"], conf_obj["mysql_user"],
-                               conf_obj["mysql_passwd"],
-                               conf_obj["mysql_db"])
-        self.ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
-        self.space_id, self.space_info = CreateCluster(self.wc, self.ca, self.teardown_space_list, self.sql_c)
-
-    def teardown_class(self):
-        for space in self.teardown_space_list:
-            DeleteCluster(self.wc, space, self.sql_c)
 
     def compare_instance(self, jinstance, jinstance_expect, space_id):
         ip, port, copy_id, flag = jinstance_expect
@@ -54,37 +38,38 @@ class TestBaseFunc:
         self.compare_instance(jinstance[1], instances[1], space_id)
 
     @pytest.mark.smoke
-    def test_get_cluster(self):
+    def test_get_cluster(self, sql_client, web_client, created_cluster):
         # wc = WebClient(conf_obj["host"], conf_obj["pin"], conf_obj["auth_token"])
-
-        instances = self.sql_c.get_instances(self.space_id)
+        space_id, space_info = created_cluster
+        instances = sql_client.get_instances(space_id)
         assert instances is not None
         check_redis_instances(instances)
         print "check cluster success"
 
         # test get cluster
-        status, headers, res_data = self.wc.get_cluster(self.space_id)
+        status, headers, res_data = web_client.get_cluster(space_id)
         assert status == 200
         assert res_data['code'] == 1
-        domain = self.sql_c.get_domain(self.space_id)
-        self.check_cluster_info(res_data['attach'], self.space_info, instances, self.space_id, domain)
+        domain = sql_client.get_domain(space_id)
+        self.check_cluster_info(res_data['attach'], space_info, instances, space_id, domain)
         print "test get cluster success"
 
     @pytest.mark.smoke
-    def test_acl(self):
-        status, capacity, password, flag, tenant_id, name, remarks = self.space_info
-        instances = self.sql_c.get_instances(self.space_id)
+    def test_acl(self, sql_client, web_client, created_cluster, config):
+        space_id, space_info = created_cluster
+        status, capacity, password, flag, tenant_id, name, remarks = space_info
+        instances = sql_client.get_instances(space_id)
         # test acl
-        local_ip = get_local_ip()
-        ips = [local_ip]
-        # ips = ["192.168.162.16", "192.168.162.17"]
-        status, headers, res_data = self.wc.set_acl(self.space_id, ips)
+        #local_ip = get_local_ip()
+        #ips = [local_ip]
+        ips = ["192.168.162.16", "192.168.162.17"]
+        status, headers, res_data = web_client.set_acl(space_id, ips)
         assert status == 200
         assert res_data['code'] == 1
-        act_ips = self.sql_c.get_acl(self.space_id)
+        act_ips = sql_client.get_acl(space_id)
         assert ips == act_ips
         print "set acl success"
         time.sleep(1)
         # check ap access
-        check_ap_access(conf_obj['ap_host'], conf_obj['ap_port'], password + str(self.space_id), instances[0])
+        check_ap_access(config['ap_host'], config['ap_port'], password + str(space_id), instances[0])
         print "test ap acl success"
