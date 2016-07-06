@@ -10,7 +10,7 @@
   "mysql_db": "jcache",
   "ap_host": "192.168.177.89",
   "ap_port":5360,
-  "docker_daemon":"2375",
+  "docker_daemon_port":"2375",
   "docker_version":"1.19",
   "retry_times":"30",
   "wait_time": "5"

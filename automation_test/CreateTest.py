@@ -1,14 +1,11 @@
-import pytest
-from utils.SQLClient import SQLClient
-from utils.WebClient import *
-from utils.redisOps import *
-from utils.JCacheUtils import *
-from utils.tools import *
-import json
 import time
 
-class TestBaseFunc:
+import pytest
+from utils.redisOps import *
+from utils.tools import *
 
+
+class TestBaseFunc:
     def compare_instance(self, jinstance, jinstance_expect, space_id):
         ip, port, copy_id, flag = jinstance_expect
         assert jinstance['ip'] == ip
@@ -60,9 +57,9 @@ class TestBaseFunc:
         status, capacity, password, flag, tenant_id, name, remarks = space_info
         instances = sql_client.get_instances(space_id)
         # test acl
-        #local_ip = get_local_ip()
-        #ips = [local_ip]
-        ips = ["192.168.162.16", "192.168.162.17"]
+        local_ip = get_local_ip()
+        ips = [local_ip]
+        # ips = ["192.168.162.16", "192.168.162.17"]
         status, headers, res_data = web_client.set_acl(space_id, ips)
         assert status == 200
         assert res_data['code'] == 1

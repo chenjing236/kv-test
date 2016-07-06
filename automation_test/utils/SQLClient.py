@@ -1,6 +1,7 @@
 #!/usr/bin/python
-#coding:utf-8
+# coding:utf-8
 import MySQLdb
+
 
 class SQLClient(object):
     def __init__(self, host, port, user, passwd, db):
@@ -9,6 +10,7 @@ class SQLClient(object):
         self.user = user
         self.passwd = passwd
         self.db = db
+
     def init_cursor(self):
         self.conn = MySQLdb.connect(host=self.host, user=self.user, passwd=self.passwd, db=self.db, charset="utf8")
         self.cursor = self.conn.cursor()
@@ -68,7 +70,7 @@ class SQLClient(object):
         ips = self.cursor.fetchall()
         acl_ip = []
         t_id = None
-        for ip,tenant in ips:
+        for ip, tenant in ips:
             if t_id is not None:
                 if t_id != tenant:
                     raise Exception("tenant_id of one cluster is different in acl table![{0},{1}]".format(t_id, tenant))
@@ -90,8 +92,8 @@ class SQLClient(object):
         self.close_cursor()
         return res
 
-    #根据space id查看instance表中slave的IP和Port
-    def get_slave_ip_port(self,space_id):
+    # 根据space id查看instance表中slave的IP和Port
+    def get_slave_ip_port(self, space_id):
         '''
         :param space_id:
         :return: [slave(ip,port)]
@@ -106,10 +108,10 @@ class SQLClient(object):
             slave_port = slave_info[0][1]
         self.close_cursor()
 
-        return slave_ip,slave_port
+        return slave_ip, slave_port
 
-    #根据space_id查看instance表中master的IP和Port
-    def get_master_ip_port(self,space_id):
+    # 根据space_id查看instance表中master的IP和Port
+    def get_master_ip_port(self, space_id):
         '''
         :param space_id:
         :return: [master(ip,port)]
@@ -124,27 +126,27 @@ class SQLClient(object):
             master_port = master_info[0][1]
         self.close_cursor()
 
-        return master_ip,master_port
+        return master_ip, master_port
 
-    #查询topology表中的is_locked字段，is_locked=0表示缓存云实例没有被锁住，is_locked=1表示缓存云实例被锁住，返回值为-1表示没有在topology表中找到对应的数据
-    def is_locked(self,space_id):
+    # 查询topology表中的is_locked字段，is_locked=0表示缓存云实例没有被锁住，is_locked=1表示缓存云实例被锁住，返回值为-1表示没有在topology表中找到对应的数据
+    def is_locked(self, space_id):
         self.sql_is_locked = "select is_locked from topology where space_id={0}".format(space_id)
         n = self.run(self.sql_is_locked)
         if n > 0:
-            #is_locked = self.cursor.fetchall()
+            # is_locked = self.cursor.fetchall()
             is_locked = self.cursor.fetchone()
             self.close_cursor()
             return is_locked[0]
         self.close_cursor()
         return -1
 
-#sql_client = SQLClient("", 3306, "jimdb", "jimdbtest", "jimdb")
+# sql_client = SQLClient("", 3306, "jimdb", "jimdbtest", "jimdb")
 
-#res = sql_client.get_space_status(146)
-#print res
-#res = sql_client.get_instances(104)
-#print res
-#res = sql_client.get_acl(1041)
-#print res
-#res = sql_client.get_domain(1041)
-#print res
+# res = sql_client.get_space_status(146)
+# print res
+# res = sql_client.get_instances(104)
+# print res
+# res = sql_client.get_acl(1041)
+# print res
+# res = sql_client.get_domain(1041)
+# print res

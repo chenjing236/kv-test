@@ -3,6 +3,7 @@ import pytest
 from utils.SQLClient import SQLClient
 from utils.WebClient import *
 from utils.JCacheUtils import *
+from utils.DockerClient import *
 
 
 def pytest_addoption(parser):
@@ -41,3 +42,7 @@ def created_cluster(sql_client, web_client, request):
 
     request.addfinalizer(teardown)
     return space_id, space_info
+
+@pytest.fixture(scope="session")
+def docker_client(config):
+    return DockerClient(config['docker_daemon_port'], config['docker_version'])
