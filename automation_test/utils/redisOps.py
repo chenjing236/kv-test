@@ -14,9 +14,9 @@ def check_redis_instances(instances):
     cnt.delete('test')
     assert cnt_slave.get("test") is None
 
-def get_value_from_slave(slave,key):
-    cnt_slave = redis.StrictRedis(host=slave[0], port=slave[1])
-    return cnt_slave.get(key)
+def get_value(redisInfo,key):
+    cnt_redis = redis.StrictRedis(host=redisInfo[0], port=redisInfo[1])
+    return cnt_redis.get(key)
 
 def set_key_value(master,key,value):
     cnt = redis.StrictRedis(host=master[0], port=master[1])
