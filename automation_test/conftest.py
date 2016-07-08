@@ -13,14 +13,13 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="session")
 def config(request):
-    #file_path = request.config.getoption("C:\Users\guoli5\git\JCacheTest\automation_test")
-    file_path = "C:/Users/guoli5/git/JCacheTest/automation_test/conf.json"
+    file_path = request.config.getoption("./conf.json")
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
 @pytest.fixture(scope="session")
 def instance_data(request):
-    file_path = "C:/Users/guoli5/git/JCacheTest/automation_test/instance_data.json"
+    file_path = request.config.getoption("./instance_data.json")
     data = json.load(open(file_path, 'r'))
     return data
 
