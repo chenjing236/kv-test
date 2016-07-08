@@ -2,7 +2,6 @@
 # coding:utf-8
 from docker import Client
 import json
-import time
 
 class DockerClient(object):
     def __init__(self, conf_obj):
