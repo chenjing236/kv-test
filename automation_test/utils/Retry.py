@@ -23,17 +23,6 @@ class Retry(object):
 
         epoch_origin = sql_c.get_epoch(space_id)
 
-        #master info
-        instances = sql_c.get_instances(space_id)
-        master_info = instances[0]
-        master_ip = master_info[0]
-        master_port = master_info[1]
-
-        # slave info
-        slave_info = instances[1]
-        slave_ip = slave_info[0]
-        slave_port = slave_info[1]
-
         while cur_retry_times < retry_times:
             cur_retry_times = cur_retry_times + 1
             instances = sql_c.get_instances(space_id)
