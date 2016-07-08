@@ -22,6 +22,7 @@ class Retry(object):
         retry_times = self.conf_obj["retry_times"]
 
         epoch_origin = sql_c.get_epoch(space_id)
+        epoch = epoch_origin
 
         while cur_retry_times < retry_times:
             cur_retry_times = cur_retry_times + 1
@@ -49,4 +50,4 @@ class Retry(object):
             container_ip_new = 0
             container_port_new = 0
 
-        return container_ip_new,container_port_new
+        return container_ip_new,container_port_new,epoch
