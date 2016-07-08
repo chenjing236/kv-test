@@ -21,9 +21,10 @@ class DockerClient(object):
             return False
         print "[INFO] Containers info={0}".format(json.dumps(ret_containers[0]))
         container_status = ret_containers[0]["Status"]
+        container_id =  ret_containers[0]["Id"]
         if container_status.startswith("Up "):
             c.stop(container_name)
-            c.remove_container(container_name)
+            c.remove_container(container_id)
         else:
             print "[INFO] Status of container:{0} isn't up: [{1}]".format(container_name, container_status)
             return False
@@ -41,8 +42,10 @@ class DockerClient(object):
             return False
         print ret_containers[0]
         container_status = ret_containers[0]["Status"]
+        container_id =  ret_containers[0]["Id"]
         if container_status.startswith("Up "):
             c.stop(container_name)
+            c.remove_container(container_id)
         c.remove_container(container_name)
         print "[INFO] Remove container:{0} success".format(container_name)
         return True
