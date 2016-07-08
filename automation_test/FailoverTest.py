@@ -48,7 +48,7 @@ class TestFailoverFunc:
             DeleteCluster(self.wc, space, self.sql_c)
 
     # 缓存云实例的slave被stop,failover将创建新的slave
-    @pytest.mark.smoke
+    #@pytest.mark.smoke
     def test_failover_recreate_slave(self):
         print '[Scenario] Slave of cache instance (space_id={0}) is stopped'.format(self.space_id)
         # 根据space id查询instance表中缓存云实例的slave信息
@@ -78,7 +78,7 @@ class TestFailoverFunc:
 
         print "[STEP] Failover is going to recreate new slave for instance (space_id={0}).".format(self.space_id)
         # 扫描数据库instance表中，对应缓存云实例的slave是否被更新了
-        slave_info_new = self.retry.retry_get_new_container(self.space_id,"master")
+        slave_info_new = self.retry.retry_get_new_container(self.space_id,"slave")
         slave_ip_new = slave_info_new[0]
         slave_port_new = slave_info_new[1]
 
@@ -101,7 +101,7 @@ class TestFailoverFunc:
         assert value is None
 
     # 缓存云实例的master被stop,failover将创建新的master
-    @pytest.mark.smoke
+    #@pytest.mark.smoke
     def test_failover_recreate_master(self):
         print "[Scenario] Master of cache instance (space_id={0}) is stopped".format(self.space_id)
         # 根据space id查询instance表中缓存云实例的master信息
