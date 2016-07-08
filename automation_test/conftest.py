@@ -4,7 +4,7 @@ from utils.SQLClient import SQLClient
 from utils.WebClient import *
 from utils.JCacheUtils import *
 from utils.DockerClient import *
-
+from utils.Retry import *
 
 def pytest_addoption(parser):
     parser.addoption("--config_file", action="store", default="conf.json",
@@ -13,8 +13,9 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="session")
 def config(request):
-    file_path = request.config.getoption("--config_file")
-    conf_obj = json.load(open(file_path))
+    #file_path = request.config.getoption("C:\Users\guoli5\git\JCacheTest\automation_test")
+    file_path = "C:/Users/guoli5/git/JCacheTest/automation_test/conf.json"
+    conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
 
@@ -25,12 +26,20 @@ def sql_client(config):
                       config["mysql_db"])
     return sql_c
 
-
 @pytest.fixture(scope="class")
 def web_client(config):
     wc = WebClient(config["host"], config["pin"], config["auth_token"])
     return wc
 
+@pytest.fixture(scope="class")
+def docker_client(config):
+    docker_c = DockerClient(config)
+    return docker_c
+
+@pytest.fixture(scope="class")
+def retry(config):
+    retry_method = Retry(config)
+    return retry_method
 
 @pytest.fixture(scope="class")
 def created_cluster(sql_client, web_client, request):
@@ -42,7 +51,3 @@ def created_cluster(sql_client, web_client, request):
 
     request.addfinalizer(teardown)
     return space_id, space_info
-
-@pytest.fixture(scope="session")
-def docker_client(config):
-    return DockerClient(config['docker_daemon_port'], config['docker_version'])
