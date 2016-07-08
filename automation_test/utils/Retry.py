@@ -21,6 +21,8 @@ class Retry(object):
         wait_time = self.conf_obj["wait_time"]
         retry_times = self.conf_obj["retry_times"]
 
+        epoch_origin = sql_c.get_epoch(space_id)
+
         #master info
         instances = sql_c.get_instances(space_id)
         master_info = instances[0]
@@ -35,27 +37,27 @@ class Retry(object):
         while cur_retry_times < retry_times:
             cur_retry_times = cur_retry_times + 1
             instances = sql_c.get_instances(space_id)
+            epoch = sql_c.get_epoch(space_id)
             if container_type == "master":
                 container_info = instances[0]
                 container_ip_new = container_info[0]
                 container_port_new = container_info[1]
-                if (container_ip_new != 0) and (container_port_new != 0) and (not ((master_ip == container_ip_new) and (master_port ==  container_port_new))):
-                    print "[INFO] {0}:{1} is created by failover. Failover can recreate new master for cache instance (space_id={2})".format(container_ip_new,container_port_new,space_id)
-                    break
 
             if container_type == "slave":
                 container_info = instances[1]
                 container_ip_new = container_info[0]
                 container_port_new = container_info[1]
-                if (container_ip_new != 0) and (container_port_new != 0) and (not ((slave_ip == container_ip_new) and (slave_port ==  container_port_new))):
-                    print "[INFO] {0}:{1} is created by failover. Failover can recreate new slave for cache instance (space_id={2})".format(container_ip_new,container_port_new,space_id)
-                    break
+
+            if epoch > epoch_origin:
+                print "[INFO] {0}:{1} is created by failover. Failover can recreate new {2} for cache instance (space_id={3})".format(container_ip_new,container_port_new,container_type,space_id)
+                break
 
             is_locked = sql_c.is_locked(space_id)
-            print "[INFO] Retry {0}... Failover is recreating master for instance (space_id={1},is_locked={2}) ...".format(cur_retry_times,space_id,is_locked)
+            print "[INFO] Retry {0}... Failover is recreating {1} for instance (space_id={2},is_locked={3}) ...".format(cur_retry_times,container_type,space_id,is_locked)
             time.sleep(float(wait_time))
 
-        if cur_retry_times == retry_times:
-            master_port_new = 0
+        if cur_retry_times > retry_times:
+            container_ip_new = 0
+            container_port_new = 0
 
         return container_ip_new,container_port_new
