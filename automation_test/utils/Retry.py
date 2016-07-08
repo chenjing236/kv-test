@@ -1,12 +1,10 @@
 #!/usr/bin/python
 #coding:utf-8
-from utils.tools import *
 from utils.SQLClient import SQLClient
 import time
-import json
 
 class Retry(object):
-    def __init__(self,conf_obj):
+    def __init__(self, conf_obj):
         self.conf_obj = conf_obj
 
     def init_sql_client(self):
