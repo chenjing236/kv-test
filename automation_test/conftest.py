@@ -18,6 +18,11 @@ def config(request):
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
+@pytest.fixture(scope="session")
+def instance_data(request):
+    file_path = "C:/Users/guoli5/git/JCacheTest/automation_test/instance_data.json"
+    data = json.load(open(file_path, 'r'))
+    return data
 
 @pytest.fixture(scope="class")
 def sql_client(config):
@@ -44,6 +49,17 @@ def retry(config):
 @pytest.fixture(scope="class")
 def created_cluster(sql_client, web_client, request):
     ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
+    space_id, space_info = CreateCluster(web_client, ca, sql_client)
+
+    def teardown():
+        DeleteCluster(web_client, space_id, sql_client)
+
+    request.addfinalizer(teardown)
+    return space_id, space_info
+
+@pytest.fixture(scope="class")
+def created_instance(instance_data, sql_client, web_client, request):
+    ca = CreateArgs(instance_data['capacity'], instance_data['zoneId'], instance_data['remarks'], instance_data['spaceName'],instance_data['spaceType'] , instance_data['quantity'])
     space_id, space_info = CreateCluster(web_client, ca, sql_client)
 
     def teardown():
