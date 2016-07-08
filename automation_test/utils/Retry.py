@@ -13,12 +13,13 @@ class Retry(object):
         return SQLClient(self.conf_obj['mysql_host'], self.conf_obj["mysql_port"], self.conf_obj["mysql_user"],self.conf_obj["mysql_passwd"],self.conf_obj["mysql_db"])
 
     #重试，根据space_id获取instance表中的master和sslave的记录
-    def retry_get_new_container(self, space_id, container_type, retry_times):
+    def retry_get_new_container(self, space_id, container_type):
         container_ip_new = 0
         container_port_new = 0
         cur_retry_times = 0
         sql_c = self.init_sql_client()
         wait_time = self.conf_obj["wait_time"]
+        retry_times = self.conf_obj["retry_times"]
 
         #master info
         instances = sql_c.get_instances(space_id)
