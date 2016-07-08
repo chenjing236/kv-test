@@ -45,7 +45,7 @@ class TestFailoverFunc:
     def teardown_class(self):
         print "[STEP] Delete instance of cache\r"
         for space in self.teardown_space_list:
-            DeleteCluster(self.wc, space, self.sql_c)
+            DeleteCluster(self.wc, self.space_id, self.sql_c)
 
     # 缓存云实例的slave被stop,failover将创建新的slave
     #@pytest.mark.smoke
