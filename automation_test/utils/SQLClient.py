@@ -38,7 +38,7 @@ class SQLClient(object):
             raise Exception("get more than one record in space table, space_id:{0}".format(space_id))
         res = self.cursor.fetchall()[0]
         self.close_cursor()
-        print "get space info success![{0}]".format(res)
+        print "get space info success![{0}]".format(json.dumps(res))
         return res
 
     def get_instances(self, space_id):
