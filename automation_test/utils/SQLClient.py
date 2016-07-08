@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding:utf-8
 import MySQLdb
-
+import json
 
 class SQLClient(object):
     def __init__(self, host, port, user, passwd, db):
@@ -62,7 +62,7 @@ class SQLClient(object):
             ins[0] = ins[1]
             ins[1] = tmp
         self.close_cursor()
-        print "get instances success: [{0}]".format(ins)
+        print "get instances success: [{0}]".format(json.dumps(ins))
         return ins
 
     def get_acl(self, space_id):
