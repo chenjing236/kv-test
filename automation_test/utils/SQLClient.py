@@ -53,7 +53,9 @@ class SQLClient(object):
         if n < 1:
             return None
         if n < 2:
-            raise Exception("get instance num:{0} != 2".format(n))
+            #raise Exception("get instance num:{0} != 2".format(n))
+            print "[WARING] There is only one result"
+            return list(self.cursor.fetchall())
         ins = list(self.cursor.fetchall())
         if ins[0][2] != 'm':
             tmp = ins[0]
@@ -133,20 +135,18 @@ class SQLClient(object):
         self.sql_is_locked = "select is_locked from topology where space_id={0}".format(space_id)
         n = self.run(self.sql_is_locked)
         if n > 0:
-            # is_locked = self.cursor.fetchall()
             is_locked = self.cursor.fetchone()
             self.close_cursor()
             return is_locked[0]
         self.close_cursor()
         return -1
 
-# sql_client = SQLClient("", 3306, "jimdb", "jimdbtest", "jimdb")
-
-# res = sql_client.get_space_status(146)
-# print res
-# res = sql_client.get_instances(104)
-# print res
-# res = sql_client.get_acl(1041)
-# print res
-# res = sql_client.get_domain(1041)
-# print res
+    def get_epoch(self,space_id):
+        self.sql_epoch = "select epoch from topology where space_id={0}".format(space_id)
+        n = self.run(self.sql_epoch)
+        if n > 0:
+            epoch = self.cursor.fetchone()
+            self.close_cursor()
+            return epoch[0]
+        self.close_cursor()
+        return -1
