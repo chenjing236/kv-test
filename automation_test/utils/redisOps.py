@@ -35,3 +35,10 @@ def check_ap_access(ap_host, ap_port, passwd, jinstance):
 
     cnt_ins = redis.StrictRedis(host=jinstance[0], port=jinstance[1])
     assert cnt_ins.get("test_ap") == "test_ap_value"
+
+def get_redis_info(redis_host, redis_port):
+    cnt = redis.StrictRedis(host=redis_host, port=redis_port)
+    info = cnt.info()
+    if len(info) < 1:
+        raise Exception("[ERROR] Cannot get information for redis({0}:{1})").format(redis_host,redis_port)
+    return info
