@@ -25,8 +25,10 @@ class TestFailoverFunc:
 
         epoch_origin = int(sql_client.get_epoch(space_id))
 
+        time.sleep(wait_time)
+
         # 向master写入key-value
-        print "[STEP] 向master({0}:{1})写入key-value=（{2}-{3}）".format(master_ip, master_port, "cache_test_key","cache_test_value")
+        print "[STEP] 向master({0}:{1})写入(key:value)=（{2} : {3}）".format(master_ip, master_port, "cache_test_key","cache_test_value")
         set_key_value(master_info, "cache_test_key", "cache_test_value")
 
         print "[STEP] Search slave info of instance (space_id={0}). Slave Info : IP:Port={1}:{2}".format(space_id, slave_ip, slave_port)
@@ -62,6 +64,13 @@ class TestFailoverFunc:
         value = get_value(slave_info, "cache_test_key")
         assert value is None
 
+        #获取instance主从信息
+        master_redis_info = get_redis_info(master_ip, master_port)
+        slave_redis_host = master_redis_info["slave0"]["ip"]
+        slave_redis_port = master_redis_info["slave0"]["port"]
+        print "[INFO] Redis information of slave for instance({0}) is {1}:{2}. Information of slave is {3}:{4}".format(space_id,slave_redis_host,slave_redis_port,slave_ip,slave_port)
+        assert slave_redis_host == slave_ip and  slave_redis_port == slave_port
+
     # 缓存云实例的master被stop,failover将创建新的master
     @pytest.mark.smoke
     def test_failover_recreate_master(self, config, docker_client, retry, sql_client, created_cluster):
@@ -80,6 +89,8 @@ class TestFailoverFunc:
         slave_port = slave_info[1]
 
         epoch_origin = int(sql_client.get_epoch(space_id))
+
+        time.sleep(wait_time)
 
         print "[STEP] 向master({0}:{1})写入key-value=（{2}-{3}）".format(master_ip, master_port, "cache_test_key", "cache_test_value")
         set_key_value(master_info, "cache_test_key", "cache_test_value")
@@ -113,7 +124,7 @@ class TestFailoverFunc:
         master_info = instances[0]
         master_ip = master_info[0]
         master_port = master_info[1]
-        print "[STEP] 向master({0}:{1})写入key-value=（{2}-{3}）".format(master_ip, master_port, "cache_test_key_1", "cache_test_value_1")
+        print "[STEP] 向master({0}:{1})写入(key:value)=（{2} : {3}）".format(master_ip, master_port, "cache_test_key_1", "cache_test_value_1")
         set_key_value(master_info, "cache_test_key_1", "cache_test_value_1")
 
         print "[STEP] 从slave({0}:{1})删除cache_test_key".format(slave_ip, slave_port)
@@ -125,3 +136,10 @@ class TestFailoverFunc:
         delete_key_value(master_info, "cache_test_key_1")
         value = get_value(slave_info, "cache_test_key_1")
         assert value is None
+
+        #获取instance主从信息
+        slave_redis_info = get_redis_info(slave_ip, slave_port)
+        master_redis_host = slave_redis_info["master_host"]
+        master_redis_port = slave_redis_info["master_port"]
+        print "[INFO] Master information of master for instance({0}) is {1}:{2}. Information of slave is {3}:{4}".format(space_id,master_redis_host,master_redis_port,master_ip,master_port)
+        assert master_redis_host == master_ip and master_redis_port == master_port
