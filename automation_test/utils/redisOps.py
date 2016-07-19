@@ -1,5 +1,6 @@
 import redis
 import time
+import json
 
 def check_redis_instances(instances):
     master = instances[0]
@@ -16,6 +17,7 @@ def check_redis_instances(instances):
 
 def get_value(redisInfo,key):
     cnt_redis = redis.StrictRedis(host=redisInfo[0], port=redisInfo[1])
+    time.sleep(1)
     return cnt_redis.get(key)
 
 def set_key_value(master,key,value):
@@ -41,4 +43,6 @@ def get_redis_info(redis_host, redis_port):
     info = cnt.info()
     if len(info) < 1:
         raise Exception("[ERROR] Cannot get information for redis({0}:{1})").format(redis_host,redis_port)
-    return info
+
+    redis_info = json.loads(json.dumps(info).replace("'","\""))
+    return redis_info
