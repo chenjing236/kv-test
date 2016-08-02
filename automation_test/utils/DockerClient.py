@@ -48,4 +48,3 @@ class DockerClient(object):
         c.remove_container(container_name)
         print "[INFO] Remove container:{0} success".format(container_name)
         return True
-

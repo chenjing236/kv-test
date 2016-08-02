@@ -31,6 +31,7 @@ def delete_key_value(master,key):
     time.sleep(1)
 
 def check_ap_access(ap_host, ap_port, passwd, jinstance):
+
     cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
     cnt.set("test_ap", "test_ap_value")
     assert cnt.get("test_ap") == "test_ap_value"

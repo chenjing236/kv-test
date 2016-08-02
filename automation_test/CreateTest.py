@@ -19,11 +19,11 @@ class TestBaseFunc:
         assert cluster['status'] == status
         assert cluster['flag'] == flag
         assert cluster['capacity'] == capacity
-        assert cluster['password'] == password + str(space_id)
+        assert cluster['password'] == password
         assert cluster['tenantId'] == tenant_id
         assert cluster['name'] == name
         assert cluster['remarks'] == remarks
-        assert cluster['id'] == space_id
+        assert cluster['spaceId'] == space_id
         assert cluster['domain'] == domian
         jinstance = cluster['instances']
         assert len(jinstance) == 2
@@ -53,6 +53,7 @@ class TestBaseFunc:
 
     @pytest.mark.smoke
     def test_acl(self, sql_client, web_client, created_cluster, config):
+        print "begin to test acl"
         space_id, space_info = created_cluster
         status, capacity, password, flag, tenant_id, name, remarks = space_info
         instances = sql_client.get_instances(space_id)

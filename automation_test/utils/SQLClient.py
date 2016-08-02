@@ -30,7 +30,7 @@ class SQLClient(object):
         '''
         print ", space_id[{0}]".format(space_id)
         self.init_cursor()
-        sql = "select status,capacity,password,flag,tenant_id,name,remarks from space where space_id='{0}'".format(space_id)
+        sql = "select status,capacity,token,flag,tenant_id,name,remarks from space where space_id='{0}'".format(space_id)
         n = self.cursor.execute(sql)
         if n < 1:
             return None

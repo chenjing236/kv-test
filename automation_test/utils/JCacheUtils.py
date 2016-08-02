@@ -11,7 +11,7 @@ def CreateCluster(wc, ca, sql_c):
 
     space = sql_c.get_space_status(space_id)
     assert space is not None
-    ins_status, capacity, password, flag, tenant_id, name, remarks = space
+    ins_status, capacity, token, flag, tenant_id, name, remarks = space
     assert ins_status == 0 or ins_status == 100
     max_retry_time = 30
     retry_time = 0
@@ -19,7 +19,7 @@ def CreateCluster(wc, ca, sql_c):
         time.sleep(5)
         space = sql_c.get_space_status(space_id)
         assert space is not None
-        ins_status, capacity, password, flag, tenant_id, name, remarks = space
+        ins_status, capacity, token, flag, tenant_id, name, remarks = space
         print "retry_time:{0}, space:{1}".format(retry_time, space)
         retry_time += 1
 
@@ -39,7 +39,7 @@ def DeleteCluster(wc, space_id, sql_c):
     while ins_status == 600 and retry_time <= max_retry_time:
         space = sql_c.get_space_status(space_id)
         assert space is not None
-        ins_status, capacity, password, flag, tenant_id, name, remarks = space
+        ins_status, capacity, token, flag, tenant_id, name, remarks = space
         print "retry_time:{0}, space:{1}".format(retry_time, space)
         retry_time += 1
         time.sleep(5)

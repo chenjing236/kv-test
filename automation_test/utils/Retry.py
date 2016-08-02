@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #coding:utf-8
-from utils.SQLClient import SQLClient
+from SQLClient import SQLClient
 import time
 
 class Retry(object):
