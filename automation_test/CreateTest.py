@@ -68,5 +68,5 @@ class TestBaseFunc:
         print "set acl success"
         time.sleep(1)
         # check ap access
-        check_ap_access(config['ap_host'], config['ap_port'], password + str(space_id), instances[0])
+        check_ap_access(config['ap_host'], config['ap_port'], password, instances[0])
         print "test ap acl success"
