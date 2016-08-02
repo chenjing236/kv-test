@@ -4,6 +4,7 @@ import array
 import struct
 import fcntl
 import sys,os
+import platform
 
 def format_ip(addr):
     return str(ord(addr[0])) + '.' + \
@@ -31,6 +32,8 @@ def all_interfaces():
 
 #获取本地IP
 def get_local_ip():
+    if platform.system() == 'Darwin':
+        return "192.168.162.16"
     nw_dict = all_interfaces()
     local_ip = None
     ip_192 = None
