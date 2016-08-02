@@ -1,5 +1,5 @@
-FROM jimage.jd.com:5000/centos7-jd-minimal:latest
+FROM jimage.jd.com:5000/centos7-pytest:latest
 MAINTAINER sunchunming1@jd.com
 
-RUN yum install mysql-devel
-RUN pip install redis MySQL-python polling
+RUN yum -y install mysql-devel
+RUN pip install redis MySQL-python polling docker-py

@@ -14,7 +14,7 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="session")
 def config(request):
-    file_path = request.config.getoption("./conf.json")
+    file_path = request.config.getoption("config_file")
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
