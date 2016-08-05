@@ -8,7 +8,7 @@ class CreateArgs():
     def to_json_string(self):
         return json.dumps(self.args_dict)
 
-    def set_capacity(self,capacity):
+    def set_capacity(self, capacity):
         self.args_dict["capacity"] = capacity
 
 
@@ -19,9 +19,9 @@ class WebClient(object):
         self.md5_pin = md5_pin
         self.auth_token = auth_token
 
-    def http_request(self, method, uri, data=None):
+    def http_request(self, method, uri, data=None, version="v1.0"):
         hc = httplib.HTTPConnection(self.host)
-        hc.request(method, "/v1.0/{0}/{1}".format(self.md5_pin,uri), data, {"auth-Token": self.auth_token})
+        hc.request(method, "/{0}/{1}/{2}".format(version, self.md5_pin, uri), data, {"auth-Token": self.auth_token})
         res = hc.getresponse()
         status = res.status
         res_data = json.loads(res.read())
