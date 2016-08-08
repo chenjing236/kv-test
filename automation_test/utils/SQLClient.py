@@ -141,6 +141,18 @@ class SQLClient(object):
         self.close_cursor()
         return -1
 
+    # 查询topology表中的current_topology字段
+    def get_current_topology(self, space_id):
+        self.sql_current_topology = "select current_topology from topology where space_id='{0}'".format(space_id)
+        n = self.run(self.sql_current_topology)
+        if n > 0:
+            get_current_topology = self.cursor.fetchone()
+            self.close_cursor()
+            print "get_current_topology: ", get_current_topology
+            return get_current_topology[0]
+        self.close_cursor()
+        return -1
+
     def get_epoch(self,space_id):
         self.sql_epoch = "select epoch from topology where space_id='{0}'".format(space_id)
         n = self.run(self.sql_epoch)

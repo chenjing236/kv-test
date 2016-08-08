@@ -7,37 +7,11 @@ from utils.WebClient import *
 
 
 class TestCreateClusterFunc:
-    def compare_instance(self, jinstance, jinstance_expect, space_id):
-        ip, port, copy_id, flag = jinstance_expect
-        assert jinstance['ip'] == ip
-        assert jinstance['port'] == port
-        assert jinstance['copyId'] == copy_id
-        assert jinstance['flag'] == flag
-        assert jinstance['spaceId'] == space_id
-
-    def check_cluster_info(self, cluster, space, instances, space_id, domian):
-        status, capacity, password, flag, tenant_id, name, remarks = space
-        assert cluster['status'] == status
-        assert cluster['flag'] == flag
-        assert cluster['capacity'] == capacity
-        assert cluster['password'] == password
-        assert cluster['tenantId'] == tenant_id
-        assert cluster['name'] == name
-        assert cluster['remarks'] == remarks
-        assert cluster['spaceId'] == space_id
-        assert cluster['domain'] == domian
-        jinstance = cluster['instances']
-        assert len(jinstance) == 2
-        if jinstance[0]['copyId'] != 'm':
-            tmp = jinstance[0]
-            jinstance[0] = jinstance[1]
-            jinstance[1] = tmp
-        self.compare_instance(jinstance[0], instances[0], space_id)
-        self.compare_instance(jinstance[1], instances[1], space_id)
 
     @pytest.mark.smoke
     def test_create_cluster(self, sql_client, web_client):
         print "[test] begin to test create cluster"
+        # space name less than 200 characters
         ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
         space_id, space_info = CreateCluster(web_client, ca, sql_client)
         instances = sql_client.get_instances(space_id)
@@ -49,7 +23,7 @@ class TestCreateClusterFunc:
         assert status == 200
         assert res_data['code'] == 1
         domain = sql_client.get_domain(space_id)
-        self.check_cluster_info(res_data['attach'], space_info, instances, space_id, domain)
+        CheckClusterInfo(res_data['attach'], space_info, instances, space_id, domain)
         print "test cluster info success"
         # del cluster
         DeleteCluster(web_client, space_id, sql_client)
@@ -67,23 +41,47 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster with a more than 200 characters English name success!"
 
+    # 超过100字符的中文名称可以创建成功
+    @pytest.mark.smoke
+    def test_more_than_100_ChnName(self, sql_client, web_client):
+        print "[test] begin to test create cluster with a more than 100 characters Chinese name"
+        longName = "测试创建超过一百个文字的中文名称的缓存实例" \
+                   "测试创建超过一百个文字的中文名称的缓存实例" \
+                   "测试创建超过一百个文字的中文名称的缓存实例" \
+                   "测试创建超过一百个文字的中文名称的缓存实例" \
+                   "测试创建超过一百个文字的中文名称的缓存实例"
+        ca = CreateArgs(2097152, 1, "create_test", longName, 1, 1)
+        data = ca.to_json_string()
+        status, headers, res_data = web_client.http_request("POST", "clusters", data)
+        print "res_data: ", res_data
+        assert status == 200
+        assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
+        print "test create cluster with a more than 100 characters Chinese name success!"
+
     # @pytest.mark.smoke
-    # def test_more_than_100_ChnName(self, sql_client, web_client):
+    # def test_less_than_100_ChnName(self, sql_client, web_client):
     #     print "[test] begin to test create cluster with a more than 100 characters Chinese name"
-    #     longName = "测试创建超过一百个文字的中文名称的缓存实例" \
-    #                "测试创建超过一百个文字的中文名称的缓存实例" \
-    #                "测试创建超过一百个文字的中文名称的缓存实例" \
-    #                "测试创建超过一百个文字的中文名称的缓存实例" \
-    #                "测试创建超过一百个文字的中文名称的缓存实例"
-    #     ca = CreateArgs(2097152, 1, "create_test", longName, 1, 1)
+    #     chnName = u"测试小于一百个文字的名称"
+    #     ca = CreateArgs(2097152, 1, "create_test", chnName, 1, 1)
     #     data = ca.to_json_string()
     #     status, headers, res_data = web_client.http_request("POST", "clusters", data)
+    #     space_id = res_data['attach']
     #     print "res_data: ", res_data
     #     assert status == 200
-    #     assert res_data['code'] == -10
-    #     print "test create cluster with a more than 100 characters Chinese name success!"
+    #     assert res_data['code'] == 1
+    #     # check space name
+    #     status, headers, res_data = web_client.get_cluster(space_id)
+    #     assert status == 200
+    #     assert res_data['code'] == 1
+    #     cluster = res_data["attach"]
+    #     assert cluster["name"] == chnName
+    #     print "space_name is right"
+    #     # del cluster
+    #     print "test create cluster with a less than 100 characters Chinese name success!"
 
     @pytest.mark.smoke
     def test_null_space_type(self, web_client):
@@ -94,6 +92,7 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster with null space type success!"
 
     @pytest.mark.smoke
@@ -105,6 +104,7 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster when space type = 2 success!"
 
     @pytest.mark.smoke
@@ -116,6 +116,7 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster when capacity = null success!"
 
     @pytest.mark.smoke
@@ -127,6 +128,7 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster when capacity = 0 success!"
 
     @pytest.mark.smoke
@@ -138,6 +140,7 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster when capacity = 524288(512k) success!"
 
     @pytest.mark.smoke
@@ -149,6 +152,7 @@ class TestCreateClusterFunc:
         print "res_data: ", res_data
         assert status == 200
         assert res_data['code'] == -10
+        assert res_data["msg"] == u"参数错误"
         print "test create cluster when capacity = 2097153(2G+1byte) success!"
 
     @pytest.mark.smoke
@@ -156,9 +160,22 @@ class TestCreateClusterFunc:
         print "[test] begin to test create cluster when version = null"
         ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
         data = ca.to_json_string()
+        status, headers, res_data = web_client.http_request("POST", "clusters", data, None)
+        print "res_data: ", res_data
+        assert status == 200
+        assert res_data['Code'] == "-20"
+        assert res_data["Msg"] == u"非法请求"
+        print "test create cluster when version = null success!"
+
+    @pytest.mark.smoke
+    def test_v2_version(self, web_client):
+        print "[test] begin to test create cluster when version = v2.0"
+        ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
+        data = ca.to_json_string()
         status, headers, res_data = web_client.http_request("POST", "clusters", data, "v2.0")
         print "res_data: ", res_data
         assert status == 200
         assert res_data['Code'] == "-20"
-        print "test create cluster when version = null success!"
+        assert res_data["Msg"] == u"非法请求"
+        print "test create cluster when version = v2.0 success!"
 

@@ -231,8 +231,6 @@ class TestSetACLFunc:
     def test_deny_acl(self, sql_client, web_client, created_cluster, config):
         print "begin to test deny acl"
         space_id, space_info = created_cluster
-        status, capacity, password, flag, tenant_id, name, remarks = space_info
-        instances = sql_client.get_instances(space_id)
         # test acl
         local_ip = get_local_ip()
         ips = [local_ip]
