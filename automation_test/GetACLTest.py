@@ -1,3 +1,4 @@
+# encoding = utf-8
 import pytest
 from utils.redisOps import *
 from utils.tools import *
@@ -63,7 +64,9 @@ class TestGetACLFunc:
         assert res_data1['code'] == 1
         act_ips = sql_client.get_acl(space_id)
         print "act_ips: ", act_ips
-        assert ips != act_ips
+        for ip in ips:
+            assert ip not in act_ips  # 验证ip已被删除
+        # assert ips != act_ips
         print "del acl success"
         print "test right_acl get acl success"
 
@@ -86,7 +89,9 @@ class TestGetACLFunc:
         assert res_data1['code'] == 1
         act_ips = sql_client.get_acl(space_id)
         print "act_ips: ", act_ips
-        assert ips != act_ips
+        for ip in ips:
+            assert ip not in act_ips  # 验证ip已被删除
+        # assert ips != act_ips
         print "del acl success"
         # get acl
         status, headers, res_data = web_client.get_acl(space_id)  # right spaceId

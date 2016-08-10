@@ -1,40 +1,17 @@
 # coding=utf-8
 import pytest
-from utils.redisOps import *
-from utils.tools import *
-from utils.JCacheUtils import *
 from utils.WebClient import *
 
 
 class TestCreateClusterFunc:
 
-    @pytest.mark.smoke
-    def test_create_cluster(self, sql_client, web_client):
-        print "[test] begin to test create cluster"
-        # space name less than 200 characters
-        ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
-        space_id, space_info = CreateCluster(web_client, ca, sql_client)
-        instances = sql_client.get_instances(space_id)
-        assert instances is not None
-        check_redis_instances(instances)
-        print "check cluster success"
-        # test cluster info
-        status, headers, res_data = web_client.get_cluster(space_id)
-        assert status == 200
-        assert res_data['code'] == 1
-        domain = sql_client.get_domain(space_id)
-        CheckClusterInfo(res_data['attach'], space_info, instances, space_id, domain)
-        print "test cluster info success"
-        # del cluster
-        DeleteCluster(web_client, space_id, sql_client)
-        print "test create cluster success"
-
+    # 超过200个英文字符，201个字符
     @pytest.mark.smoke
     def test_more_than_200_EngName(self, sql_client, web_client):
         print "[test] begin to test create cluster with a more than 200 characters English name"
         longName = "test_create_cluster_with_an_English_name_more_than_two_hundred_characters_" \
                    "test_create_cluster_with_an_English_name_more_than_two_hundred_characters_" \
-                   "test_create_cluster_with_an_English_name_more_than_two_hundred_characters"
+                   "test_create_cluster_with_an_English_name_more_than_tw"
         ca = CreateArgs(2097152, 1, "create_test", longName, 1, 1)
         data = ca.to_json_string()
         status, headers, res_data = web_client.http_request("POST", "clusters", data)
@@ -44,7 +21,7 @@ class TestCreateClusterFunc:
         assert res_data["msg"] == u"参数错误"
         print "test create cluster with a more than 200 characters English name success!"
 
-    # 超过100字符的中文名称可以创建成功
+    # 超过100字符的中文名称，101个文字
     @pytest.mark.smoke
     def test_more_than_100_ChnName(self, sql_client, web_client):
         print "[test] begin to test create cluster with a more than 100 characters Chinese name"
@@ -52,7 +29,7 @@ class TestCreateClusterFunc:
                    "测试创建超过一百个文字的中文名称的缓存实例" \
                    "测试创建超过一百个文字的中文名称的缓存实例" \
                    "测试创建超过一百个文字的中文名称的缓存实例" \
-                   "测试创建超过一百个文字的中文名称的缓存实例"
+                   "测试创建超过一百个文字的中文名称的"  # 101个文字
         ca = CreateArgs(2097152, 1, "create_test", longName, 1, 1)
         data = ca.to_json_string()
         status, headers, res_data = web_client.http_request("POST", "clusters", data)

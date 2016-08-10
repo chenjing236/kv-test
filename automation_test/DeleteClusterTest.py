@@ -40,9 +40,9 @@ class TestCreateClusterFunc:
         print "test delete cluster with others' spaceId success!"
 
     @pytest.mark.smoke
-    def test_acl_after_delete(self, sql_client, web_client, config):
-        ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
-        space_id, space_info = CreateCluster(web_client, ca, sql_client)
+    def test_topology_after_delete(self, sql_client, web_client, check_topology_after_delete):
+        print "[test] begin to test topology after delete"
+        space_id = check_topology_after_delete
         # test acl
         local_ip = get_local_ip()
         ips = [local_ip]
@@ -53,8 +53,7 @@ class TestCreateClusterFunc:
         act_ips = sql_client.get_acl(space_id)
         assert ips == act_ips
         print "set acl success"
-        # del cluster
-        DeleteCluster(web_client, space_id, sql_client)
+        # topology的shards字段检查 在fixture中
         # check ap access
         # cnt = redis.StrictRedis(host=config["ap_host"], port=config["ap_port"], password=passwd)
         # try:
@@ -62,8 +61,3 @@ class TestCreateClusterFunc:
         # except OSError:
         # # except requests.exceptions.ConnectionError:
         #     pass
-
-        # check ACL AP and topology records
-        # topology shards is null
-        current_topology = json.loads(sql_client.get_current_topology(space_id))
-        assert current_topology['shards'] is None  # shards == null
