@@ -45,3 +45,33 @@ def DeleteCluster(wc, space_id, sql_c):
         time.sleep(5)
     assert ins_status == 601
     print "test delete cluster:{0} success".format(space_id)
+
+
+def CompareInstance(jinstance, jinstance_expect, space_id):
+    ip, port, copy_id, flag = jinstance_expect
+    assert jinstance['ip'] == ip
+    assert jinstance['port'] == port
+    assert jinstance['copyId'] == copy_id
+    assert jinstance['flag'] == flag
+    assert jinstance['spaceId'] == space_id
+
+
+def CheckClusterInfo(self, cluster, space, instances, space_id, domian):
+    status, capacity, password, flag, tenant_id, name, remarks = space
+    assert cluster['status'] == status
+    assert cluster['flag'] == flag
+    assert cluster['capacity'] == capacity
+    assert cluster['password'] == password
+    assert cluster['tenantId'] == tenant_id
+    assert cluster['name'] == name
+    assert cluster['remarks'] == remarks
+    assert cluster['spaceId'] == space_id
+    assert cluster['domain'] == domian
+    jinstance = cluster['instances']
+    assert len(jinstance) == 2
+    if jinstance[0]['copyId'] != 'm':
+        tmp = jinstance[0]
+        jinstance[0] = jinstance[1]
+        jinstance[1] = tmp
+    self.CompareInstance(jinstance[0], instances[0], space_id)
+    self.CompareInstance(jinstance[1], instances[1], space_id)

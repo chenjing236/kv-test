@@ -32,7 +32,7 @@ def all_interfaces():
 
 #获取本地IP
 def get_local_ip():
-    if platform.system() == 'Darwin':
+    if platform.system() == 'Darwin' or platform.system() == 'Windows':
         return "192.168.162.16"
     nw_dict = all_interfaces()
     local_ip = None

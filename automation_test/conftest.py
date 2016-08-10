@@ -1,6 +1,5 @@
 import pytest
 # import json
-from utils.SQLClient import SQLClient
 from utils.WebClient import *
 from utils.JCacheUtils import *
 from utils.DockerClient import *
@@ -39,6 +38,11 @@ def web_client(config):
     wc = WebClient(config["host"], config["pin"], config["auth_token"])
     return wc
 
+@pytest.fixture(scope="class")
+def web_client_backup(config):
+    wc = WebClient(config["host"], config["pin_backup"], config["auth_token_backup"])
+    return wc
+
 
 @pytest.fixture(scope="class")
 def docker_client(config):
@@ -63,6 +67,18 @@ def created_cluster(sql_client, web_client, request):
     request.addfinalizer(teardown)
     return space_id, space_info
 
+@pytest.fixture(scope="class")
+def created_second_cluster(sql_client, web_client_backup, request):
+    # create the second cluster
+    ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
+    space_id, space_info = CreateCluster(web_client_backup, ca, sql_client)
+
+    def teardown():
+        DeleteCluster(web_client_backup, space_id, sql_client)
+
+    request.addfinalizer(teardown)
+    return space_id, space_info
+
 
 @pytest.fixture(scope="class")
 def created_instance(instance_data, sql_client, web_client, request):
@@ -75,3 +91,17 @@ def created_instance(instance_data, sql_client, web_client, request):
 
     request.addfinalizer(teardown)
     return space_id, space_info
+
+@pytest.fixture(scope="class")
+def check_topology_after_delete(web_client, sql_client, request):
+    ca = CreateArgs(2097152, 1, "create_test", "create_cluster", 1, 1)
+    space_id, space_info = CreateCluster(web_client, ca, sql_client)
+
+    def teardown():
+        DeleteCluster(web_client, space_id, sql_client)
+        print "start check shards in topology"
+        current_topology = json.loads(sql_client.get_current_topology(space_id))
+        assert current_topology['shards'] is None  # shards == null
+        print "test topology after delete success!"
+    request.addfinalizer(teardown)
+    return space_id
