@@ -15,12 +15,24 @@ stat_logger = logging.getLogger('stat.test_jcache_api')
 
 def CreateCluster(wc, ca):
     info_logger.info("create cluster: start create cluster")
+    # 创建缓存云实例
     status, headers, res_data = wc.create_cluster(ca)
     if status != 200:
         info_logger.error("create cluster: send create request failed! status:[{0}]".format(status))
         return 1, None
+    # 创建请求返回的requestId，用于支付订单和查询clusterId
     request_id = res_data['requestId']
     info_logger.info("create cluster: send create request success! request_id={0}".format(request_id))
+
+    # 支付订单
+    status, headers, res_data = wc.pay_for_the_cluster(request_id)
+    if status != 200:
+        info_logger.error("create cluster: send payment request failed! status:[{0}]".format(status))
+        info_logger.error("create cluster: send payment request failed! res_data:[{0}]".format(res_data))
+        return 1, None
+    order_request_id = res_data['requestId']
+    info_logger.info("create cluster: send payment request success! order_request_id={0}".format(order_request_id))
+
     # time.sleep(3)
     # status, headers, res_data = wc.get_cluster_id(request_id)
     # if status != 200:
@@ -35,6 +47,7 @@ def CreateCluster(wc, ca):
     max_retry_time = 30
     retry_time = 0
     while retry_time <= max_retry_time:
+        # 这里查询请求使用创建请求返回的requestId
         status, headers, res_data = wc.get_cluster_id(request_id)
         if status != 200:
             info_logger.error("create cluster: send query cluster id request failed! status:[{0}]".format(status))
@@ -71,7 +84,7 @@ def CheckGetCluster(web_client, space_id):
         return 1, None, None
     info_logger.info("get cluster: get cluster request success!")
     ins_status = res_data['cluster']['status']
-    instances = res_data['cluster']['instances']
+    instances = res_data['cluster']['shards'][0]['instances']
     if ins_status != 100:
         info_logger.error("get cluster: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id, None
@@ -108,6 +121,9 @@ def DeleteCluster(wc, space_id):
     retry_time = 0
     while (ins_status == 600 or ins_status == 100) and retry_time <= max_retry_time:
         status, headers, res_data = wc.get_cluster(space_id)
+        if res_data.has_key('cluster') is False:
+            if res_data.has_key('code') and res_data['code'] == "NotFound":
+                break
         cluster = res_data['cluster']
         if cluster is None:
             break
@@ -116,7 +132,7 @@ def DeleteCluster(wc, space_id):
         info_logger.debug("delete cluster: retry_time:{0}, space:(status:{1}, capacity:{2}, name:{3}, remarks:{4})".format(retry_time, cluster['status'], cluster['capacity'], cluster['name'], cluster['remarks']))
         retry_time += 1
         time.sleep(5)
-    if ins_status != 601 and cluster is not None:
+    if res_data.has_key('cluster') is True:
         info_logger.error("delete cluster: check cluster [{0}] status failed!".format(space_id))
         return 1
     info_logger.info("delete cluster: test delete cluster:{0} success".format(space_id))

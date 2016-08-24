@@ -25,8 +25,8 @@ class Counter():
         self.locker.acquire()
         self.count += 1
         # 暂时去掉最大数量限制，每跑20次输出一次结果
-        # if self.max_num != 0 and self.count >= self.max_num:
-        #     res = False
+        if self.max_num != 0 and self.count >= self.max_num:
+            res = False
         if is_failed:
             self.fail_count += 1
         if self.max_fail_num != 0 and self.fail_count >= self.max_fail_num:
@@ -97,7 +97,7 @@ class JcacheAPIProcess(Process):
             acl_check = CheckAcl(wc, space_id)
 
             sleep_time = random.randint(0, self.max_sleep_time)
-            time.sleep(sleep_time * 60)
+            time.sleep(sleep_time * 10)
 
             # check delete
             time.sleep(5)
@@ -199,11 +199,11 @@ def main(argv):
     counter = Counter(conf_t['max_num'], conf_t['max_fail_num'])
     for i in range(0, process_num):
         p_t = JcacheAPIProcess(conf_t, result_queue, counter)
-        p_t.start()
+        p_t.run()
         process_list.append(p_t)
 
     stat_process = statProcess(result_queue, process_num)
-    stat_process.start()
+    stat_process.run()
 
     for p in process_list:
         # if p._popen is None:
