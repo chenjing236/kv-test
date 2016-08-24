@@ -1,0 +1,22 @@
+{
+  "host": "biz.jcloud.com",
+  "port": 80,
+  "user": "JaneCloud002",
+  "account": "JaneCloud002",
+  "coupon_id": 1015,
+  "pin": "dafd9d707849abe585a5db3a920d3af8",
+  "auth_token": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
+  "mysql_host": "192.168.177.89",
+  "mysql_port": 3306,
+  "mysql_user": "jimdb",
+  "mysql_passwd": "jimdbtest",
+  "mysql_db": "jcache",
+  "ap_host": "192.168.177.89",
+  "ap_port":5360,
+  "process_num": 1,
+  "max_num": 2,
+  "max_fail_num": 1,
+  "min_cap": 1,
+  "max_cap": 10,
+  "max_sleep_time": 5
+}
