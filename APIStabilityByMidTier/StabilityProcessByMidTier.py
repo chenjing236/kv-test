@@ -189,8 +189,13 @@ def main(argv):
     stat_process.run()
 
     for p in process_list:
+        if p._popen is None:
+            break
         p.join()
 
+    if stat_process._popen is None:
+        print "The process is stopped or the test is over successfully"
+        return
     stat_process.join()
 
 if __name__ == "__main__":
