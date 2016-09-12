@@ -100,7 +100,7 @@ class JcacheAPIProcess(Process):
             acl_check = CheckAcl(wc, space_id)
 
             sleep_time = random.randint(0, self.max_sleep_time)
-            time.sleep(sleep_time)
+            time.sleep(sleep_time * 60)
 
             # check delete
             time.sleep(5)
@@ -200,11 +200,11 @@ def main(argv):
     counter = Counter(conf_t['max_num'], conf_t['max_fail_num'])
     for i in range(0, process_num):
         p_t = JcacheAPIProcess(conf_t, result_queue, counter)
-        p_t.run()
+        p_t.start()
         process_list.append(p_t)
 
     stat_process = statProcess(result_queue, process_num)
-    stat_process.run()
+    stat_process.start()
 
     for p in process_list:
         # if p._popen is None:

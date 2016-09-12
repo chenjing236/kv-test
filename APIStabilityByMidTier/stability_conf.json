@@ -14,7 +14,7 @@
   "ap_host": "192.168.177.89",
   "ap_port":5360,
   "process_num": 1,
-  "max_num": 2,
+  "max_num": 7,
   "max_fail_num": 1,
   "min_cap": 1,
   "max_cap": 10,
