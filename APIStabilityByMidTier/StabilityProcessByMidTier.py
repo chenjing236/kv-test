@@ -97,7 +97,7 @@ class JcacheAPIProcess(Process):
             acl_check = CheckAcl(wc, space_id)
 
             sleep_time = random.randint(0, self.max_sleep_time)
-            time.sleep(sleep_time * 10)
+            time.sleep(sleep_time * 60)
 
             # check delete
             time.sleep(5)
