@@ -25,8 +25,8 @@ class Counter():
         self.locker.acquire()
         self.count += 1
         # 暂时去掉最大数量限制，每跑20次输出一次结果
-        if self.max_num != 0 and self.count >= self.max_num:
-            res = False
+        # if self.max_num != 0 and self.count >= self.max_num:
+        #     res = False
         if is_failed:
             self.fail_count += 1
         if self.max_fail_num != 0 and self.fail_count >= self.max_fail_num:
