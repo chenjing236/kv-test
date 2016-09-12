@@ -1,0 +1,62 @@
+2016-09-12 19:21:25,131-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-12 19:21:25,131-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-12 19:21:25,240-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:25,259-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'61c219e5-f931-4334-9a04-9877ea9d75b7', u'fail': 0, u'total': 1}
+2016-09-12 19:21:25,259-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:30,276-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'53878300-d8a1-4e6d-8ef7-ffc1b4703c37', u'fail': 0, u'total': 1}
+2016-09-12 19:21:30,276-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:35,296-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5e38bfb5-811a-4823-89f5-55d270559095', u'fail': 0, u'total': 1}
+2016-09-12 19:21:35,298-utils.JCacheUtils-DEBUG-create cluster: retry_time:2, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:40,315-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'c181f50e-39ed-42e1-a6b0-68a1e8dccaad', u'fail': 0, u'total': 1}
+2016-09-12 19:21:40,315-utils.JCacheUtils-DEBUG-create cluster: retry_time:3, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:45,335-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'392fd435-2902-4d17-9c5a-f46ecfb4337d', u'fail': 0, u'total': 1}
+2016-09-12 19:21:45,335-utils.JCacheUtils-DEBUG-create cluster: retry_time:4, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:50,357-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a21af1a6-a452-436e-87e2-d441176fe5f2', u'fail': 0, u'total': 1}
+2016-09-12 19:21:50,357-utils.JCacheUtils-DEBUG-create cluster: retry_time:5, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:21:55,374-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd05b0a78-62e3-4ee1-b33a-439765f486c9', u'fail': 0, u'total': 1}
+2016-09-12 19:21:55,374-utils.JCacheUtils-DEBUG-create cluster: retry_time:6, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:00,398-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'deac657b-6589-4c02-8a92-17276fb02687', u'fail': 0, u'total': 1}
+2016-09-12 19:22:00,398-utils.JCacheUtils-DEBUG-create cluster: retry_time:7, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:05,448-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'bd1a0079-7e7f-4d9b-8707-87200c3c537c', u'fail': 0, u'total': 1}
+2016-09-12 19:22:05,448-utils.JCacheUtils-DEBUG-create cluster: retry_time:8, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:10,467-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'aaf26b10-b370-477f-9ce5-6ad9f234b0f6', u'fail': 0, u'total': 1}
+2016-09-12 19:22:10,467-utils.JCacheUtils-DEBUG-create cluster: retry_time:9, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:15,484-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'46fe0f86-c816-40c8-bf9d-5b6ed7ff7df3', u'fail': 0, u'total': 1}
+2016-09-12 19:22:15,484-utils.JCacheUtils-DEBUG-create cluster: retry_time:10, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:20,519-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'b48743cf-5055-4e1b-97d4-be4f0e2a297e', u'fail': 0, u'total': 1}
+2016-09-12 19:22:20,519-utils.JCacheUtils-DEBUG-create cluster: retry_time:11, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:25,536-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'ca3b6b94-91be-4ff7-ae57-6d92ff7bd1ff', u'fail': 0, u'total': 1}
+2016-09-12 19:22:25,536-utils.JCacheUtils-DEBUG-create cluster: retry_time:12, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:30,553-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'cef433a3-4ceb-4c33-8218-414bf394f2c4', u'fail': 0, u'total': 1}
+2016-09-12 19:22:30,553-utils.JCacheUtils-DEBUG-create cluster: retry_time:13, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:35,573-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a67e2ba1-bbd7-4316-8709-c6061c3f766c', u'fail': 0, u'total': 1}
+2016-09-12 19:22:35,573-utils.JCacheUtils-DEBUG-create cluster: retry_time:14, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:40,595-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'3f615c9a-92a1-4d5e-98ad-597a2d1ec381', u'fail': 0, u'total': 1}
+2016-09-12 19:22:40,595-utils.JCacheUtils-DEBUG-create cluster: retry_time:15, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:45,624-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5706db4a-fd3c-4d41-aa21-d178279cf804', u'fail': 0, u'total': 1}
+2016-09-12 19:22:45,624-utils.JCacheUtils-DEBUG-create cluster: retry_time:16, creating cluster, requestId=9ca711fb-9694-4cae-a16c-f6b44aaed771
+2016-09-12 19:22:50,641-utils.JCacheUtils-DEBUG-{u'success': 1, u'inProcess': 0, u'resourceIds': [u'43503f42-c662-4e87-a765-a88be97fd9d9'], u'requestId': u'6dc07ebf-510e-4825-a3a5-0ace9d4d44b1', u'fail': 0, u'total': 1}
+2016-09-12 19:22:50,641-utils.JCacheUtils-INFO-create cluster: send query cluster id request success! space_id=43503f42-c662-4e87-a765-a88be97fd9d9
+2016-09-12 19:22:50,694-utils.JCacheUtils-INFO-create cluster:[43503f42-c662-4e87-a765-a88be97fd9d9] success!
+2016-09-12 19:22:50,694-utils.JCacheUtils-INFO-get cluster: start check get cluster
+2016-09-12 19:22:50,744-utils.JCacheUtils-INFO-get cluster: get cluster request success!
+2016-09-12 19:22:50,746-utils.JCacheUtils-INFO-get cluster: [43503f42-c662-4e87-a765-a88be97fd9d9] success
+2016-09-12 19:22:50,746-utils.JCacheUtils-INFO-get clusters: start check get clusters
+2016-09-12 19:22:50,782-utils.JCacheUtils-INFO-get clusters: get clusters request success!
+2016-09-12 19:22:50,782-utils.JCacheUtils-INFO-get clusters success
+2016-09-12 19:22:50,782-utils.JCacheUtils-INFO-check acl: start check acl
+2016-09-12 19:22:50,832-utils.JCacheUtils-INFO-check acl: current ips in acl is [u'10.0.232.25', u'10.0.189.147', u'10.0.185.7', u'10.0.232.31']
+2016-09-12 19:22:50,832-utils.JCacheUtils-INFO-check acl: test check acl success
+2016-09-12 19:23:00,832-utils.JCacheUtils-INFO-delete cluster: start delete cluster
+2016-09-12 19:23:00,904-utils.JCacheUtils-DEBUG-delete cluster: retry_time:0, space:(status:100, capacity:1, name:name_9272_1, remarks:remarks_9272_1)
+2016-09-12 19:23:05,934-utils.JCacheUtils-DEBUG-delete cluster: retry_time:1, space:(status:600, capacity:1, name:name_9272_1, remarks:remarks_9272_1)
+2016-09-12 19:23:10,979-utils.JCacheUtils-DEBUG-delete cluster: retry_time:2, space:(status:600, capacity:1, name:name_9272_1, remarks:remarks_9272_1)
+2016-09-12 19:23:16,009-utils.JCacheUtils-INFO-delete cluster: test delete cluster:43503f42-c662-4e87-a765-a88be97fd9d9 success
+2016-09-12 19:23:16,131-utils.JCacheUtils-INFO-process stat exit
+2016-09-12 19:23:16,131-stat.test_jcache_api-INFO-create_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-12 19:23:16,131-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-12 19:23:16,131-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-12 19:23:16,131-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-12 19:23:16,131-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:1, error_rate:0.0
+
