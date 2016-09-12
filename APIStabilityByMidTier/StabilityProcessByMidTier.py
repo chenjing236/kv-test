@@ -1,5 +1,5 @@
-from multiprocessing import Process, Lock
-from Queue import Queue
+# coding=utf-8
+from multiprocessing import Process, Lock, Queue
 import sys
 
 from utils.JCacheUtils import *
@@ -19,10 +19,18 @@ class Counter():
         self.max_num = max_num
         self.max_fail_num = max_fail_num
 
+    # def setResultQueue(self, result_queue):
+    #     self.result_queue = result_queue
+
     def check(self, is_failed=False):
         res = True
         self.locker.acquire()
         self.count += 1
+        # if self.count % 2 == 0:
+        #     print self.result_queue
+        #     stat_process = statProcess(self.result_queue, self.process_num)
+        #     stat_process.run()
+        #     stat_process.join()
         if self.max_num != 0 and self.count >= self.max_num:
             res = False
         if is_failed:
@@ -55,6 +63,7 @@ class JcacheAPIProcess(Process):
         idx = 1
         is_failed = False
         while True:
+            # self.counter.setResultQueue(self.res_queue)
             if not self.counter.check(is_failed):
                 self.res_queue.put(None)
                 break
@@ -62,8 +71,10 @@ class JcacheAPIProcess(Process):
             remarks = "remarks_{0}_{1}".format(pid, idx)
             name = "name_{0}_{1}".format(pid, idx)
             ca = CreateArgs(capacity=1, remarks=remarks, space_name=name)
-            print "\n--Start the {0} times run -------------------------------------------------------------------" \
-                  "--------------------------------------".format(idx)
+            info_logger.info("\n--Start the {0} times run -----------------------------------------------------------"
+                             "-----------".format(idx))
+            # print "\n--Start the {0} times run -------------------------------------------------------------------" \
+            #       "--------------------------------------".format(idx)
             # capacity = self.get_cap()
             status, space_id = CreateCluster(wc, ca)
             if status != 0:
@@ -86,18 +97,14 @@ class JcacheAPIProcess(Process):
                 get_clusters_check = False
 
             # check acl
-            result = CheckAcl(wc, space_id)
-            acl_check = True
-            if result != 0:
-                acl_check = False
+            acl_check = CheckAcl(wc, space_id)
 
             sleep_time = random.randint(0, self.max_sleep_time)
-            time.sleep(sleep_time * 10)
+            time.sleep(sleep_time)
 
             # check delete
             time.sleep(5)
             status = DeleteCluster(wc, space_id)
-            print "test delete"
             if status != 0:
                 DeleteCluster(wc, space_id)
                 self.res_queue.put((True, get_cluster_check, get_clusters_check, acl_check, False))
@@ -142,7 +149,15 @@ class statProcess(Process):
         acl_stat = Stat()
         delete_stat = Stat()
         exit_producer_num = 0
+        idx = 0
         while True:
+            # print "statProcess run1"
+            if idx % 3 == 0 and idx > 0:  # 运行一段时间(指定个数)后输出一次结果
+                stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
+                stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
+                stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
+                stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
+                stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
             res = self.result_queue.get()
             if res is not None:
                 create_res, get_cluster_res, get_clusters_res, acl_res, delete_res = res
@@ -156,16 +171,19 @@ class statProcess(Process):
                     acl_stat.add(acl_res)
                 if delete_res is not None:
                     delete_stat.add(delete_res)
+                # print "statProcess run2"
+                idx += 1
             else:
+                # print "statProcess run3"
                 exit_producer_num += 1
                 if exit_producer_num >= self.producer_num:
-                    print "process stat exit"
+                    info_logger.info("process stat exit")
                     break
-        print "create_stat result:{0}".format(create_stat.to_string())
-        print "get_cluster_stat result:{0}".format(get_cluster_stat.to_string())
-        print "get_clusters_stat result:{0}".format(get_cluster_stat.to_string())
-        print "acl_stat result:{0}".format(acl_stat.to_string())
-        print "delete_stat result:{0}".format(delete_stat.to_string())
+        stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
+        stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
+        stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
+        stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
+        stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
 
 
 def main(argv):
@@ -189,13 +207,13 @@ def main(argv):
     stat_process.run()
 
     for p in process_list:
-        if p._popen is None:
-            break
+        # if p._popen is None:
+        #     break
         p.join()
 
-    if stat_process._popen is None:
-        print "The process is stopped or the test is over successfully"
-        return
+    # if stat_process._popen is None:
+    #     print "The process is stopped or the test is over successfully"
+    #     return
     stat_process.join()
 
 if __name__ == "__main__":

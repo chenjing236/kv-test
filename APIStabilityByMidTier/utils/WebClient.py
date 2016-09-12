@@ -1,3 +1,4 @@
+# coding=utf-8
 import httplib
 import json
 
@@ -24,7 +25,6 @@ class WebClient(object):
 
     def http_request(self, method, uri):
         hc = httplib.HTTPConnection(self.host, self.port)
-        # print uri
         hc.request(method, "/{0}&user={1}&account={2}&dataCenter={3}".format(uri, self.user, self.account, "hb"))
         res = hc.getresponse()
         # print res.status
@@ -35,8 +35,11 @@ class WebClient(object):
         return status, headers, res_data
 
     def create_cluster(self, create_args):
+        # 线上环境
         return self.http_request("GET", "cache?action=createCacheCluster&{0}&coupons[0]=1015"
                                             "&discountId=&discountValue=".format(create_args.get_args_string()))
+        # 测试环境
+        # return self.http_request("GET", "cache?action=createCacheCluster&{0}".format(create_args.get_args_string()))
 
     def get_cluster_id(self, request_id):
         return self.http_request("GET", "order?action=queryOrderStatus&orderRequest={0}".format(request_id))
