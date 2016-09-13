@@ -5,6 +5,7 @@ import json
 
 class TestHTTPHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     RESPONSE = None
+    RESPONSE_CODE = 200
     def do_GET(self):
         self.protocol_version = "HTTP/1.1"
         self.send_header("Content-Type", "text/html")
@@ -32,78 +33,73 @@ class TestHTTPHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         #设置response返回的josn内容
         if path == "/setJsonForResponse":
             print "[URI] /setJsonForResponse"
-            self.setJsonForResponse(data)
-            RESPONSE = None
-        #设置错误场景,curl -s -XPOST --data '{"response_code":501,"response":"can not find service"}' "http://127.0.0.1:8000/setResponseForError"
-        if path == "/setResponseForError":
-            print "[URI] /setResponseForError"
-            json_data = json.loads(data)
-            response_code = json_data["response_code"]
-            response_result = json_data["response"]
-            self.generateResponseForError(response_code, response_result)
+            response_data = json.loads(data)
+            self.RESPONSE_CODE = response_data["response_code"]
+            self.RESPONSE = response_data["response_result"]
+            TestHTTPHandler.RESPONSE_CODE = self.setJsonForResponse(self.RESPONSE_CODE,self.RESPONSE,"")
+            TestHTTPHandler.RESPONSE = self.RESPONSE
+
         #创建缓存云实例接口
         if path == "/action?op=create":
             print "[URI] /action?op=create"
             print ""
-            self.generateJsonForResponse("default response for create instance")
+            self.generateJsonForResponse(self.RESPONSE_CODE,"default response for create instance")
         #删除缓存云实例接口
         if path == "/action?op=delete":
             print "[URI] /action?op=delete"
             print ""
-            self.generateJsonForResponse("default response for delete instance")
+            self.generateJsonForResponse(self.RESPONSE_CODE,"default response for delete instance")
         #扩容
         if path  == "/action?op=scale":
             print "[URI] /action?op=scale"
             print ""
-            self.generateJsonForResponse("default response for scaler instance")
+            self.generateJsonForResponse(self.RESPONSE_CODE,"default response for scaler instance")
         #缩容
         if path  == "/action?op=merge":
             print "[URI] /action?op=merge"
             print ""
-            self.generateJsonForResponse("default response for merge instance")
+            self.generateJsonForResponse(self.RESPONSE_CODE,"default response for merge instance")
 
-    def setJsonForResponse(self,data):
-        TestHTTPHandler.RESPONSE = data
-        if data == "":
-            self.send_response(50001, "Set up json for response")
-            #self.wfile.write("\r\n Json for response is null.")
-            self.wfile.write("Json for response is null.")
+    def setJsonForResponse(self, response_code, response_result, message):
+        print "[INFO] {0},{1}".format(self.RESPONSE_CODE, self.RESPONSE)
+        self.RESPONSE = response_result
+        if self.RESPONSE == None:
+            if self.RESPONSE_CODE == 200:
+                self.returnResponse(200,response_result, message)
+            if self.RESPONSE_CODE == 500:
+                self.returnResponse(500, "", "SERVER EXCEPTION")
             return
 
-        self.send_response(200, "Set up json for response")
-        #self.wfile.write("\r\n")
-        self.wfile.write(data)
-        print "[RESPONSE] {0}".format(TestHTTPHandler.RESPONSE)
+        self.returnResponse(self.RESPONSE_CODE,self.RESPONSE, message)
+        print "[RESPONSE] {0}".format(self.RESPONSE)
+        return response_code
+
+    def returnResponse(self, response_code, response_data, message):
+        print "[INFO] The code of http response is {0}".format(response_code)
+        if response_code is None:
+            print "[ERROR] The code of http response is null"
+            return
+        if response_code == 200:
+            self.send_response(200, message)
+            self.wfile.write(response_data)
+        elif response_code == 500:
+            self.send_response(500, "SERVER CAN NOT RESPONSE")
+            self.wfile.write("")
+        elif response_code == 404:
+            self.send_response(404, "CAN NOT FIND TARGET PAGE")
+            self.wfile.write("")
+        else:
+            self.send_response(response_code, message)
+            self.wfile.write(response_data)
 
     #设置正确的HTTP请求的场景
-    def generateJsonForResponse(self,message):
-        if TestHTTPHandler.RESPONSE == None:
-            self.send_response(200,"DEFAULT RESPONSE")
-            #self.wfile.write("\r\n")
+    def generateJsonForResponse(self, response_code, message):
+        print "[INFO] Data for request is {0}".format(self.RESPONSE)
+        if self.RESPONSE == None:
             response_json = "{\"code\":0,\"msg\":\"success\",\"Data\":{\"" + message + "\"}"
-            self.wfile.write(response_json)
+            self.returnResponse(self.RESPONSE_CODE, response_json, "DEFAULT RESPONSE")
         else:
-            self.send_response(200,"RESPONSE SETTED UP")
-            #self.wfile.write("\r\n")
-            self.wfile.write(TestHTTPHandler.RESPONSE)
-
-    #设置错误的HTTP返回场景
-    def generateResponseForError(self,response_code,response_result):
-        if response_code is None or response_result is None:
-            print "[ERROR] Please set up response code and response result"
-            return
-        if response_code == 500:
-            self.send_response(500,"RESPONSE OF SERVER IS INCORRECT")
-            self.wfile.write(None)
-        if response_code == 404:
-            self.send_response(404,"CAN NOT FIND SERVICE")
-            self.wfile.write(None)
-        if response_code == 403:
-            self.send_response(403,"CAN NOT REDIRECT TO TARGET PAGE")
-            self.wfile.write(None)
-        if response_code is not 500 and response_code is not 404 and response_code is not 403:
-            self.send_response(response_code, response_result)
-            self.wfile.write(None)
+            self.returnResponse(self.RESPONSE_CODE, self.RESPONSE, "RESPONSE SETTED UP")
 
 if __name__ == '__main__':
     from BaseHTTPServer import HTTPServer
