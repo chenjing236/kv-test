@@ -1,0 +1,29 @@
+#!/bin/bash
+#############################
+### stop docker containers
+#############################
+
+if [ $# != 2 ];then
+	echo "Please input host ip and container id..."
+	exit 0
+fi
+
+container_host_ip="$1"
+container_id="$2"
+
+### 测试环境 ###
+env_test="${container_host_ip}:2375"
+
+### stop docker container ###
+test_case="curl -i -XPOST \"http://${env_test}/containers/${container_id}/stop?t=5\""
+echo "${test_case}"
+result=`eval ${test_case}`
+echo "${result}"
+echo ""
+
+### 查看container的状态 ###
+test_case="curl -s -XGET http://${env_test}/containers/${container_id}/json | jq .State.Running"
+echo "${test_case}"
+result=`eval ${test_case}`
+echo "[Running] ${result}"
+echo ""

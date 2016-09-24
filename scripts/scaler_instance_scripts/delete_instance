@@ -1,0 +1,24 @@
+#!/bin/bash
+
+[[ $# != 1 ]] && echo "Please input space id" && exit 0;
+
+### scaler 部署环境 ###
+test_env="192.168.177.89:1818"
+
+### scaler创建缓存云实例的参数 ###
+#requestId="6fc543b5-0f1d-44eb-ac47-757105a2781a"
+requestId="$1"
+#spaceId="6fc543b5-0f1d-44eb-ac47-757105a2781a"
+spaceId="$1"
+#operationId="6fc543b5-0f1d-44eb-ac47-757105a2781a"
+operationId="$1"
+
+echo "[INFO] Scaler删除缓存云实例"
+test_case="curl -s -XPOST --data '{\"operationId\":\"${operationId}\",\"requestId\":\"${requestId}\",\"spaceId\":\"${spaceId}\"}' \"http://${test_env}/delete\""
+
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+

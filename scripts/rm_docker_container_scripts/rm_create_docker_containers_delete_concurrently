@@ -1,0 +1,73 @@
+#!/bin/bash
+
+current_path=`echo $(pwd)`
+#echo "[current path] ${current_path}"
+#set -x
+delete_script_path=${current_path}"/rm_delete_docker_containers"
+#set +x
+test_env="192.168.177.89:8888"
+
+memory_size_1G="1073741824"
+memory_size_2G="2147483648"
+memory_size_3G="3221225472"
+memory_size_4G="4294967296"
+memory_size_10G="10737418240"
+zone_id="1"
+
+array_master=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
+array_slave=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
+
+concurrent_num=`echo ${#array_master[@]}`
+#echo "[concurrent num] ${concurrent_num}"
+#echo ""
+
+for((i=0;i<${concurrent_num};i++))
+do
+##set -x
+echo "[INFO] RM创建docker containers"
+test_case="curl -s -XPOST --data '[{\"name\":\"master1\",\"mem\":${memory_size_1G},\"load\":5,\"net\":100,\"zoneid\":${zone_id},\"exip\":[],\"exname\":[]},{\"name\":\"slave1\",\"mem\":${memory_size_1G},\"load\":5,\"net\":100,\"zoneid\":${zone_id},\"exip\":[],\"exname\":[\"master1\"]}]' \"http://${test_env}/redis/create\""
+
+echo "${test_case}"
+result=`eval ${test_case}`
+master_ip=`echo "${result}" | jq .Results[0].Ip`
+master_port=`echo "${result}" | jq .Results[0].Port`
+slave_ip=`echo "${result}" | jq .Results[1].Ip`
+slave_port=`echo "${result}" | jq .Results[1].Port`
+
+echo ""
+#echo "[master] ${master_ip}:${master_port}"
+#echo "[slave] ${slave_ip}:${slave_port}"
+#echo ""
+
+master_ip_port=`echo "${master_ip}\":\"${master_port}" | sed 's/\"//g'`
+slave_ip_port=`echo "${slave_ip}\":\"${slave_port}" | sed 's/\"//g'`
+
+#echo "[master] ${master_ip_port}"
+#echo "[slave] ${slave_ip_port}"
+#echo ""
+array_master[i]=${master_ip_port}
+array_slave[i]=${slave_ip_port}
+
+echo "[master] ${array_master[i]}"
+echo "[slave] ${array_slave[i]}"
+echo ""
+##set +x
+done
+
+for((i=0;i<${concurrent_num};i++))
+do
+
+echo "[INFO] RM删除docker containers"
+master_ip=`echo ${array_master[i]}| awk -F ":" '{print $1}'`
+master_port=`echo ${array_master[i]}| awk -F ":" '{print $2}'`
+
+slave_ip=`echo ${array_slave[i]}| awk -F ":" '{print $1}'`
+slave_port=`echo ${array_slave[i]}| awk -F ":" '{print $2}'`
+
+echo "[master] ${master_ip}:${master_port}"
+echo "[slave] ${slave_ip}:${slave_port}"
+echo ""
+
+eval ${delete_script_path} ${master_ip} ${master_port} ${slave_ip} ${slave_port}
+echo ""
+done

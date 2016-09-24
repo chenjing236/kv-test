@@ -1,0 +1,37 @@
+#!/bin/bash
+
+### scaler 部署环境 ###
+test_env="192.168.177.89:1818"
+
+function create_instance(){
+[[ $# != 1 ]] && echo "Please input index" && exit 0;
+### scaler创建缓存云实例的参数 ###
+requestId="0ac543b5-0f1d-44eb-ac47-757105a2781"$1
+spaceId="0ac543b5-0f1d-44eb-ac47-757105a2781"$1
+operationId="0ac543b5-0f1d-44eb-ac47-757105a2781"$1
+password="a7991892011fd761"
+domain="jcache-online0ac543b5-0f1d-44eb-ac47-757105a2781a.jdicts.jcloud.com"
+token="60BF0AAA25F3BEFD32A64676A1496ED8"
+spaceName="jmiss_test"
+zoneId="1"
+capacity="1073741824"
+remarks=""
+slaves="1"
+spaceType="1"
+tenantId="jimdbtest1"
+
+echo "[INFO] Scaler创建缓存云实例"
+test_case="curl -s -XPOST --data '{\"requestId\":\"${requestId}\",\"spaceId\":\"${spaceId}\",\"operationId\":\"${operationId}\",\"password\":\"${password}\",\"domain\":\"${domain}\",\"token\":\"${token}\",\"spaceName\":\"${spaceName}\",\"zoneId\":${zoneId},\"capacity\":${capacity},\"remarks\":\"${remarks}\",\"slaves\":${slaves},\"spaceType\":${spaceType},\"tenantId\":\"${tenantId}\"}' \"http://${test_env}/create\""
+
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+
+}
+
+for((i=10;i<31;i++))
+do
+	create_instance $i &
+done

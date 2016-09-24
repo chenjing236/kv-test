@@ -1,0 +1,23 @@
+#!/bin/bash
+
+current_path=`echo $(pwd)`
+stop_docker_container_script=${current_path}"/stop_docker_container"
+
+### array for container id ###
+container_id_array=("38d8d03b739a" "351dbb4bc8c4" "fe7d92a33353" "bc9b2dd6bed9" "080b2b5c4ca8")
+
+### 并发stop containers的数量 ###
+#concurrent_num="5"
+concurrent_num=`echo ${#container_id_array[@]}`
+
+### ip located by containers ###
+target_ip="192.168.177.88"
+
+### current path ###
+current_path="$(pwd)"
+
+for((i=0;i<${concurrent_num};i++))
+do
+	eval ${stop_docker_container_script} "${target_ip}" "${container_id_array[i]}"
+done
+echo ""

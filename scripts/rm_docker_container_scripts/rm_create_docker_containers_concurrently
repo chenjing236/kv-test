@@ -1,0 +1,29 @@
+#!/bin/bash
+
+[[ $# != 1 ]] && echo "Please input the number of creating docker container" && exit 0;
+
+test_env="192.168.177.89:8888"
+
+memory_size_1G="1073741824"
+memory_size_2G="2147483648"
+memory_size_2G="3221225472"
+memory_size_2G="4294967296"
+zone_id="1"
+
+concurrent_num=$1
+
+function create_docker_container(){
+echo "[INFO] RM创建docker containers"
+test_case="curl -s -XPOST --data '[{\"name\":\"master1\",\"mem\":${memory_size_1G},\"load\":5,\"net\":100,\"zoneid\":${zone_id},\"exip\":[],\"exname\":[]},{\"name\":\"slave1\",\"mem\":${memory_size_1G},\"load\":5,\"net\":100,\"zoneid\":${zone_id},\"exip\":[],\"exname\":[\"master1\"]}]' \"http://${test_env}/redis/create\""
+
+echo "${test_case}"
+result=`eval ${test_case}`
+echo "${result}"
+echo ""
+}
+
+for((i=0;i<${concurrent_num};i++))
+do
+echo ""
+create_docker_container
+done

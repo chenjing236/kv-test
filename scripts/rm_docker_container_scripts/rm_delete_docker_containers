@@ -1,0 +1,16 @@
+#!/bin/bash
+
+[[ $# != 4 ]] && echo "Please input master ip&port, slave ip&port" && exit 0;
+
+test_env="192.168.177.89:8888"
+master_ip="$1"
+master_port="$2"
+slave_ip="$3"
+slave_port="$4"
+
+echo "[INFO] RM删除docker containers"
+test_case="curl -s -XPOST --data '[{\"ip\":\"${master_ip}\",\"port\":${master_port}},{\"ip\":\"${slave_ip}\",\"port\":${slave_port}}]' \"http://${test_env}/redis/delete\""
+echo "${test_case}"
+result=`eval ${test_case}`
+echo "${result}"
+echo ""
