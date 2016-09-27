@@ -37,7 +37,7 @@ class WebClient(object):
     def create_cluster(self, create_args):
         # 线上环境
         return self.http_request("GET", "cache?action=createCacheCluster&{0}&coupons[0]=1015"
-                                            "&discountId=&discountValue=".format(create_args.get_args_string()))
+                                        "&discountId=&discountValue=".format(create_args.get_args_string()))
         # 测试环境
         # return self.http_request("GET", "cache?action=createCacheCluster&{0}".format(create_args.get_args_string()))
 

@@ -1,8 +1,6 @@
 # coding=utf-8
 import time
-import logging
 import logging.config
-from logging.handlers import TimedRotatingFileHandler
 
 logging.config.fileConfig('logging.conf')
 info_logger = logging.getLogger(__name__)
@@ -39,7 +37,7 @@ def CreateCluster(wc, ca):
     while retry_time <= max_retry_time:
         status, headers, res_data = wc.get_cluster_id(request_id)
         if status != 200:
-            info_logger.error("create cluster: send create request failed! status:[{0}]".format(status))
+            info_logger.error("create cluster: send query cluster id request failed! status:[{0}]".format(status))
             return 1, None
         info_logger.debug(res_data)
         resourceIds = res_data['resourceIds']
@@ -51,7 +49,7 @@ def CreateCluster(wc, ca):
         time.sleep(5)
 
     space_id = resourceIds[0]
-    info_logger.info("create cluster: send query cluster id request success! space_id={0}".format(space_id))
+    info_logger.info("create cluster: query cluster id success! space_id={0}".format(space_id))
     status, headers, res_data = wc.get_cluster(space_id)
     cluster = res_data['cluster']
     if cluster is None:
@@ -70,14 +68,15 @@ def CheckGetCluster(web_client, space_id):
     status, headers, res_data = web_client.get_cluster(space_id)
     if status != 200 or res_data['cluster'] is None:
         info_logger.error("get cluster: get cluster request failed! status:[{0}]".format(status))
-        return 1, None
+        return 1, None, None
     info_logger.info("get cluster: get cluster request success!")
     ins_status = res_data['cluster']['status']
+    instances = res_data['cluster']['instances']
     if ins_status != 100:
         info_logger.error("get cluster: check cluster [{0}] status failed!".format(space_id))
-        return 1, space_id
+        return 1, space_id, None
     info_logger.info("get cluster: [{0}] success".format(space_id))
-    return 0, space_id
+    return 0, space_id, instances
 
 
 def CheckGetClusters(web_client, space_id):

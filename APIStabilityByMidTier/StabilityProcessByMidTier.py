@@ -4,7 +4,7 @@ import sys
 
 from utils.JCacheUtils import *
 from utils.WebClient import *
-from utils.SQLClient import SQLClient
+from utils.DockerClient import *
 import random
 import time
 import os
@@ -19,20 +19,14 @@ class Counter():
         self.max_num = max_num
         self.max_fail_num = max_fail_num
 
-    # def setResultQueue(self, result_queue):
-    #     self.result_queue = result_queue
 
     def check(self, is_failed=False):
         res = True
         self.locker.acquire()
         self.count += 1
-        # if self.count % 2 == 0:
-        #     print self.result_queue
-        #     stat_process = statProcess(self.result_queue, self.process_num)
-        #     stat_process.run()
-        #     stat_process.join()
-        if self.max_num != 0 and self.count >= self.max_num:
-            res = False
+        # 暂时去掉最大数量限制，每跑20次输出一次结果
+        # if self.max_num != 0 and self.count >= self.max_num:
+        #     res = False
         if is_failed:
             self.fail_count += 1
         if self.max_fail_num != 0 and self.fail_count >= self.max_fail_num:
@@ -57,9 +51,8 @@ class JcacheAPIProcess(Process):
         return cap
 
     def run(self):
+        dc = DockerClient(self.conf)
         wc = WebClient(self.conf['host'], self.conf['port'], self.conf['user'], self.conf['account'], self.conf['coupon_id'])
-        # sql_c = SQLClient(self.conf['mysql_host'], self.conf['mysql_port'], self.conf['mysql_user'], self.conf['mysql_passwd'],
-        #                   self.conf['mysql_db'])
         idx = 1
         is_failed = False
         while True:
@@ -73,22 +66,26 @@ class JcacheAPIProcess(Process):
             ca = CreateArgs(capacity=1, remarks=remarks, space_name=name)
             info_logger.info("\n--Start the {0} times run -----------------------------------------------------------"
                              "-----------".format(idx))
-            # print "\n--Start the {0} times run -------------------------------------------------------------------" \
-            #       "--------------------------------------".format(idx)
-            # capacity = self.get_cap()
+            # check create
             status, space_id = CreateCluster(wc, ca)
             if status != 0:
                 if space_id is not None:
                     DeleteCluster(wc, space_id)
-                self.res_queue.put((False, None, None, None, None))
+                self.res_queue.put((False, None, None, None, None, None))
                 is_failed = True
                 continue
 
             # check get cluster
-            status, space_id = CheckGetCluster(wc, space_id)
+            status, space_id, instances = CheckGetCluster(wc, space_id)
             get_cluster_check = True
-            if status != 0:
+            if status != 0 or instances is None:
                 get_cluster_check = False
+
+            # check redis memsize
+            for instance in instances:
+                check_redis_memsize = dc.inspect_container(instance['ip'], instance['port'])
+            if instances is None:
+                check_redis_memsize = False
 
             # check get clusters
             status, space_id = CheckGetClusters(wc, space_id)
@@ -107,10 +104,10 @@ class JcacheAPIProcess(Process):
             status = DeleteCluster(wc, space_id)
             if status != 0:
                 DeleteCluster(wc, space_id)
-                self.res_queue.put((True, get_cluster_check, get_clusters_check, acl_check, False))
+                self.res_queue.put((True, get_cluster_check, check_redis_memsize, get_clusters_check, acl_check, False))
                 is_failed = True
                 continue
-            self.res_queue.put((True, get_cluster_check, get_clusters_check, acl_check, True))
+            self.res_queue.put((True, get_cluster_check, check_redis_memsize, get_clusters_check, acl_check, True))
             is_failed = False
             idx += 1
 
@@ -145,42 +142,44 @@ class statProcess(Process):
     def run(self):
         create_stat = Stat()
         get_cluster_stat = Stat()
+        redis_memsize_stat = Stat()
         get_clusters_stat = Stat()
         acl_stat = Stat()
         delete_stat = Stat()
         exit_producer_num = 0
         idx = 0
         while True:
-            # print "statProcess run1"
-            if idx % 3 == 0 and idx > 0:  # 运行一段时间(指定个数)后输出一次结果
+            if idx % 20 == 0 and idx > 0:  # 运行一段时间(指定个数)后输出一次结果
                 stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
                 stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
+                stat_logger.info("redis_memsize_stat result:{0}".format(redis_memsize_stat.to_string()))
                 stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
                 stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
                 stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
             res = self.result_queue.get()
             if res is not None:
-                create_res, get_cluster_res, get_clusters_res, acl_res, delete_res = res
+                create_res, get_cluster_res, redis_memsize_res, get_clusters_res, acl_res, delete_res = res
                 if create_res is not None:
                     create_stat.add(create_res)
                 if get_cluster_res is not None:
                     get_cluster_stat.add(get_cluster_res)
+                if redis_memsize_res is not None:
+                    redis_memsize_stat.add(redis_memsize_res)
                 if get_clusters_res is not None:
                     get_clusters_stat.add(get_clusters_res)
                 if acl_res is not None:
                     acl_stat.add(acl_res)
                 if delete_res is not None:
                     delete_stat.add(delete_res)
-                # print "statProcess run2"
                 idx += 1
             else:
-                # print "statProcess run3"
                 exit_producer_num += 1
                 if exit_producer_num >= self.producer_num:
                     info_logger.info("process stat exit")
                     break
         stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
         stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
+        stat_logger.info("redis_memsize_stat result:{0}".format(redis_memsize_stat.to_string()))
         stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
         stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
         stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
