@@ -59,7 +59,7 @@ def CreateCluster(wc, ca):
     if ins_status != 100:
         info_logger.error("create cluster: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id
-    info_logger.info("create cluster:[{0}] success!".format(space_id))
+    info_logger.info("create cluster: test create cluster [{0}] success!".format(space_id))
     return 0, space_id
 
 
@@ -75,7 +75,7 @@ def CheckGetCluster(web_client, space_id):
     if ins_status != 100:
         info_logger.error("get cluster: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id, None
-    info_logger.info("get cluster: [{0}] success".format(space_id))
+    info_logger.info("get cluster: test get cluster [{0}] success".format(space_id))
     return 0, space_id, instances
 
 
@@ -92,7 +92,7 @@ def CheckGetClusters(web_client, space_id):
     if cluster['spaceId'] != space_id or cluster['status'] != 100:
         info_logger.error("get clusters: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id
-    info_logger.info("get clusters success")
+    info_logger.info("get clusters: test get clusters success")
     return 0, space_id
 
 
