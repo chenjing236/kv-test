@@ -39,11 +39,7 @@ def CreateCluster(wc, ca, sql_c):
     if ins_status != 100:
         info_logger.error("create cluster: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id
-<<<<<<< HEAD
     info_logger.info("create cluster: test create cluster [{0}] success!".format(space_id))
-=======
-    info_logger.info("create cluster: [{0}] success!".format(space_id))
->>>>>>> update jmiss stability test case
     return 0, space_id
 
 
@@ -55,19 +51,11 @@ def CheckGetCluster(web_client, space_id):
         return 1, None, None
     info_logger.info("get cluster: get cluster request success!")
     ins_status = res_data['attach']['status']
-<<<<<<< HEAD
     instances = res_data['attach']['shards'][0]['instances']
     if ins_status != 100:
         info_logger.error("get cluster: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id, None
     info_logger.info("get cluster: test get cluster [{0}] success".format(space_id))
-=======
-    instances = res_data['attach']['instances']
-    if ins_status != 100:
-        info_logger.error("get cluster: check cluster [{0}] status failed!".format(space_id))
-        return 1, space_id, None
-    info_logger.info("get cluster: [{0}] success".format(space_id))
->>>>>>> update jmiss stability test case
     return 0, space_id, instances
 
 
@@ -84,11 +72,7 @@ def CheckGetClusters(web_client, space_id):
     if cluster['spaceId'] != space_id or cluster['status'] != 100:
         info_logger.error("get clusters: check cluster [{0}] status failed!".format(space_id))
         return 1, space_id
-<<<<<<< HEAD
     info_logger.info("get clusters: test get clusters success")
-=======
-    info_logger.info("get clusters success")
->>>>>>> update jmiss stability test case
     return 0, space_id
 
 

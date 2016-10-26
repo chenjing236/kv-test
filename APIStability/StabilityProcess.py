@@ -1,20 +1,12 @@
 # coding=utf-8
-<<<<<<< HEAD
 from multiprocessing import Process, Lock, Queue
-=======
-from multiprocessing import Process, Lock
-from Queue import Queue
->>>>>>> update jmiss stability test case
 import sys
 
 from utils.JCacheUtils import *
 from utils.WebClient import *
 from utils.SQLClient import SQLClient
 from utils.DockerClient import *
-<<<<<<< HEAD
 from utils.RedisClient import *
-=======
->>>>>>> update jmiss stability test case
 import random
 import time
 import os
@@ -61,10 +53,7 @@ class JcacheAPIProcess(Process):
 
     def run(self):
         dc = DockerClient(self.conf)
-<<<<<<< HEAD
         rc = RedisClient(self.conf)
-=======
->>>>>>> update jmiss stability test case
         wc = WebClient(self.conf['host'], self.conf['port'], self.conf['pin'], self.conf['auth_token'])
         sql_c = SQLClient(self.conf['mysql_host'], self.conf['mysql_port'], self.conf['mysql_user'], self.conf['mysql_passwd'],
                           self.conf['mysql_db'])
@@ -77,12 +66,8 @@ class JcacheAPIProcess(Process):
             pid = os.getpid()
             remarks = "remarks_{0}_{1}".format(pid, idx)
             name = "name_{0}_{1}".format(pid, idx)
-<<<<<<< HEAD
             random_capacity = self.get_cap()
             ca = CreateArgs(capacity=random_capacity, remarks=remarks, space_name=name)
-=======
-            ca = CreateArgs(capacity=self.get_cap(), remarks=remarks, space_name=name)
->>>>>>> update jmiss stability test case
             info_logger.info("\n--Start the {0} times run -----------------------------------------------------------"
                              "-----------".format(idx))
             # check create
@@ -90,36 +75,9 @@ class JcacheAPIProcess(Process):
             if status != 0:
                 if space_id is not None:
                     DeleteCluster(wc, space_id, sql_c)
-<<<<<<< HEAD
                 self.res_queue.put((False, None, None, None, None, None, None))
-=======
-                self.res_queue.put((False, None, None, None, None, None))
->>>>>>> update jmiss stability test case
                 is_failed = True
                 continue
-            # check get cluster
-            status, space_id, instances = CheckGetCluster(wc, space_id)
-            get_cluster_check = True
-            if status != 0:
-                info_logger.error("check get cluster: the status of cluster error, status={0}".format(status))
-                get_cluster_check = False
-            if instances is None:
-                info_logger.error("check get cluster: there is no instances in cluster:{0}".format(space_id))
-                get_cluster_check = False
-
-
-
-            # check redis memsize
-            for instance in instances:
-                check_redis_memsize = dc.inspect_container(instance['ip'], instance['port'])
-            if instances is None:
-                check_redis_memsize = False
-
-            # check get clusters
-            status, space_id = CheckGetClusters(wc, space_id)
-            get_clusters_check = True
-            if status != 0:
-                get_clusters_check = False
 
             # check get cluster
             status, space_id, instances = CheckGetCluster(wc, space_id)
@@ -162,19 +120,12 @@ class JcacheAPIProcess(Process):
             status = DeleteCluster(wc, space_id, sql_c)
             if status != 0:
                 DeleteCluster(wc, space_id, sql_c)
-<<<<<<< HEAD
                 self.res_queue.put((True, get_cluster_check, check_container_memsize, check_redis_memory,
                                     get_clusters_check, acl_check, False))
                 is_failed = False
                 continue
             self.res_queue.put((True, get_cluster_check, check_container_memsize, check_redis_memory,
                                 get_clusters_check, acl_check, True))
-=======
-                self.res_queue.put((True, get_cluster_check, check_redis_memsize, get_clusters_check, acl_check, False))
-                is_failed = False
-                continue
-            self.res_queue.put((True, get_cluster_check, check_redis_memsize, get_clusters_check, acl_check, True))
->>>>>>> update jmiss stability test case
             is_failed = False
             idx += 1
 
@@ -209,12 +160,8 @@ class statProcess(Process):
     def run(self):
         create_stat = Stat()
         get_cluster_stat = Stat()
-<<<<<<< HEAD
         container_memsize_stat = Stat()
         redis_memory_stat = Stat()
-=======
-        redis_memsize_stat = Stat()
->>>>>>> update jmiss stability test case
         get_clusters_stat = Stat()
         acl_stat = Stat()
         delete_stat = Stat()
@@ -224,36 +171,22 @@ class statProcess(Process):
             if idx % 10 == 0 and idx > 0:  # 运行一段时间(指定个数)后输出一次结果
                 stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
                 stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
-<<<<<<< HEAD
                 stat_logger.info("container_memsize_stat result:{0}".format(container_memsize_stat.to_string()))
                 stat_logger.info("redis_memory_stat result:{0}".format(redis_memory_stat.to_string()))
                 stat_logger.info("get_clusters_stat result:{0}".format(get_clusters_stat.to_string()))
-=======
-                stat_logger.info("redis_memsize_stat result:{0}".format(redis_memsize_stat.to_string()))
-                stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
->>>>>>> update jmiss stability test case
                 stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
                 stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
             res = self.result_queue.get()
             if res is not None:
-<<<<<<< HEAD
                 create_res, get_cluster_res, container_memsize_res, redis_memory_res, get_clusters_res, acl_res, delete_res = res
-=======
-                create_res, get_cluster_res, redis_memsize_res, get_clusters_res, acl_res, delete_res = res
->>>>>>> update jmiss stability test case
                 if create_res is not None:
                     create_stat.add(create_res)
                 if get_cluster_res is not None:
                     get_cluster_stat.add(get_cluster_res)
-<<<<<<< HEAD
                 if container_memsize_res is not None:
                     container_memsize_stat.add(container_memsize_res)
                 if redis_memory_res is not None:
                     redis_memory_stat.add(redis_memory_res)
-=======
-                if redis_memsize_res is not None:
-                    redis_memsize_stat.add(redis_memsize_res)
->>>>>>> update jmiss stability test case
                 if get_clusters_res is not None:
                     get_clusters_stat.add(get_clusters_res)
                 if acl_res is not None:
@@ -268,14 +201,9 @@ class statProcess(Process):
                     break
         stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
         stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
-<<<<<<< HEAD
         stat_logger.info("container_memsize_stat result:{0}".format(container_memsize_stat.to_string()))
         stat_logger.info("redis_memory_stat result:{0}".format(redis_memory_stat.to_string()))
         stat_logger.info("get_clusters_stat result:{0}".format(get_clusters_stat.to_string()))
-=======
-        stat_logger.info("redis_memsize_stat result:{0}".format(redis_memsize_stat.to_string()))
-        stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
->>>>>>> update jmiss stability test case
         stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
         stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
 
@@ -294,11 +222,11 @@ def main(argv):
     counter = Counter(conf_t['max_num'], conf_t['max_fail_num'])
     for i in range(0, process_num):
         p_t = JcacheAPIProcess(conf_t, result_queue, counter)
-        p_t.run()
+        p_t.start()
         process_list.append(p_t)
 
     stat_process = statProcess(result_queue, process_num)
-    stat_process.run()
+    stat_process.start()
 
     for p in process_list:
         p.join()
