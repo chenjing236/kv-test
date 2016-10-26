@@ -114,7 +114,7 @@ class JcacheAPIProcess(Process):
                 acl_check = False
 
             sleep_time = random.randint(0, self.max_sleep_time)
-            time.sleep(sleep_time)
+            time.sleep(sleep_time * 60)
 
             # check delete
             status = DeleteCluster(wc, space_id, sql_c)
