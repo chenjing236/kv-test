@@ -153,7 +153,7 @@ class statProcess(Process):
                 stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
                 stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
                 stat_logger.info("redis_memsize_stat result:{0}".format(redis_memsize_stat.to_string()))
-                stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
+                stat_logger.info("get_clusters_stat result:{0}".format(get_clusters_stat.to_string()))
                 stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
                 stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
             res = self.result_queue.get()
@@ -180,7 +180,7 @@ class statProcess(Process):
         stat_logger.info("create_stat result:{0}".format(create_stat.to_string()))
         stat_logger.info("get_cluster_stat result:{0}".format(get_cluster_stat.to_string()))
         stat_logger.info("redis_memsize_stat result:{0}".format(redis_memsize_stat.to_string()))
-        stat_logger.info("get_clusters_stat result:{0}".format(get_cluster_stat.to_string()))
+        stat_logger.info("get_clusters_stat result:{0}".format(get_clusters_stat.to_string()))
         stat_logger.info("acl_stat result:{0}".format(acl_stat.to_string()))
         stat_logger.info("delete_stat result:{0}\n".format(delete_stat.to_string()))
 
