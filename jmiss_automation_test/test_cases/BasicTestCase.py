@@ -5,10 +5,13 @@ import json
 import sys
 sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
 from HttpClient import *
+from RedisClient import *
 sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
 from Cluster import *
 from Container import *
 from CFS import *
+sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
+from ClusterOperation import *
 
 @pytest.fixture(scope="session")
 def config(request):
@@ -36,14 +39,15 @@ def docker_client(config):
 
 @pytest.fixture(scope="class")
 def created_instance(config, instance_data, http_client, request):
+    print "\n[SETUP] Create an instance with a master container and a slave container"
     instance = Cluster(config, instance_data, http_client)
-    res_data = instance.create_instance()
-    attach = res_data["attach"]
-    space_id = attach["spaceId"]
+    space_id = create_instance_step(instance)
+    status, capacity = get_status_of_instance_step(instance, space_id, int(config["retry_getting_info_times"]), int(config["wait_time"]))
+    assert status == 100
 
     def teardown():
-        print "[INFO] delete instance {0}".format(space_id)
+        print "\n[TEARDONW] delete the instance {0}".format(space_id)
         instance.delete_instance(space_id)
 
     request.addfinalizer(teardown)
-    return space_id, res_data
+    return space_id, instance

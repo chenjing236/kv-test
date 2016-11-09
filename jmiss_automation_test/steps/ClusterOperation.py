@@ -1,9 +1,13 @@
 #!/usr/bin/python
 # coding:utf-8
 import sys
+sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
+from RedisClient import *
 sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
 from Cluster import *
 from Container import *
+sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
+from util import *
 import json
 import time
 
@@ -19,7 +23,19 @@ def create_instance_step(instance):
     space_id = attach["spaceId"]
     return space_id
 
-def get_detail_info_of_instance_step(instance, space_id, retry_times, wait_time):
+#获取创建后的缓存云实例的信息
+def get_detail_info_of_instance_step(instance, space_id):
+    res_data = instance.get_instance_info(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg)
+    attach = res_data["attach"]
+    if attach == None or attach is "":
+        assert False, "[ERROR] Response of getting detail information for the instance {0} is incorrect".format(space_id)
+    return attach
+
+#获取创建后的缓存云实例的状态
+def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
     res_data = instance.get_instance_info(space_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
@@ -42,6 +58,7 @@ def get_detail_info_of_instance_step(instance, space_id, retry_times, wait_time)
         time.sleep(wait_time)
     return status, capacity
 
+#
 def get_topology_of_instance_step(instance, space_id):
     res_data = instance.get_instance_info(space_id)
     if res_data is None or res_data is "":
@@ -64,8 +81,30 @@ def get_container_memory_size(container, masterIp, masterPort, slaveIp, slavePor
     slave_memory_size = container.get_memory_size_of_container(slaveIp, slavePort)
     return master_memory_size, slave_memory_size
 
-def delete_instance(instance, space_id):
+def set_acl_step(instance, space_id, ips):
+    res_data = instance.set_acl(space_id, ips)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of setting acl is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to set acl, error message is {0}".format(msg)
+
+def get_acl_step(instance, space_id):
+    res_data = instance.get_acl(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to set acl, error message is {0}".format(msg)
+    attach = res_data["attach"]
+    if attach is None or attach is "":
+        assert False, "[ERROR] Cannot get acl for the instance {0}".format(space_id)
+    return attach["ips"]
+
+def delete_instance_step(instance, space_id):
     res_data = instance.delete_instance(space_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
     assert code == 0, "[ERROR] It is failed to delete the instance {0}, error message is {1}".format(space_id, msg)
+
+def access_ap_step(ap_host, ap_port, password):
+    redis_client = RedisClient(ap_host, ap_port, password)
+    return redis_client.check_ap_access(ap_host, ap_port, password)

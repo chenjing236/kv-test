@@ -10,9 +10,8 @@ import time
 
 #创建缓存云实例API接口参数
 class CreateArgs():
-    def __init__(self, capacity=2097152, zoneid=1, remarks="jmiss_test", space_name="jmiss_test", space_type=1, quantity=1):
-        self.args_dict = {"spaceName": space_name, "spaceType": space_type, "zoneId": zoneid, "capacity": capacity, "quantity": quantity,
-         "remarks": remarks}
+    def __init__(self, data):
+        self.args_dict = data
 
     def to_json_string(self):
         return json.dumps(self.args_dict)
@@ -22,6 +21,9 @@ class CreateArgs():
 
     def set_zoneId(self, zoneId):
         self.args_dict["zoneId"] = zoneId
+
+    def get_args_json(self):
+        return self.args_dict
 
 #缓存云实例类
 class Cluster(object):
@@ -34,7 +36,26 @@ class Cluster(object):
     #创建单实例缓存云实例
     def create_instance(self):
         data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":self.data_obj["zoneId"],"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
-        status, headers, res_data = self.httpClient.create_cluster(data)
+        create_args = CreateArgs(data)
+        args_json = create_args.get_args_json()
+        status, headers, res_data = self.httpClient.create_cluster(args_json)
+        retry_times = int(self.conf_obj["retry_creating_times"])
+        count = 1
+        while status != 200 and retry_times > 0:
+            print "[INFO] Retry {0} creating an instance".format(count)
+            status, headers, res_data = self.httpClient.create_cluster(data)
+            retry_times -= 1
+            count += 1
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    #创建单实例缓存云实例
+    def create_instance_with_capacity(self, capacity):
+        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":self.data_obj["zoneId"],"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
+        create_args = CreateArgs(data)
+        create_args.set_capacity(capacity)
+        args_json = create_args.get_args_json()
+        status, headers, res_data = self.httpClient.create_cluster(args_json)
         retry_times = int(self.conf_obj["retry_creating_times"])
         count = 1
         while status != 200 and retry_times > 0:
@@ -92,6 +113,7 @@ class Cluster(object):
             slavePort = instance_b["port"]
         return masterIp, masterPort, slaveIp, slavePort
 
+    #执行failover操作
     def run_failover_container(self, space_id, containerIp, containerPort, docker_client, cfs_client):
         #查询CFS的redis，查看epoch的值
         if cfs_client == None:
@@ -119,6 +141,18 @@ class Cluster(object):
         if count == retry_times:
             return False
         return True
+
+    def resize_instance(self, space_id, zoneId, capacity):
+        status, headers, res_data = self.httpClient.resize_cluster(space_id, zoneId, capacity)
+        retry_times = int(self.conf_obj["retry_times"])
+        count = 1
+        while status != 200 and retry_times > 0:
+            print "[INFO] Retry {0} resizing an instance".format(count)
+            status, headers, res_data = self.httpClient.set_acl(space_id, ips)
+            retry_times -= 1
+            count += 1
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
 
     def set_acl(self, space_id, ips):
         status, headers, res_data = self.httpClient.set_acl(space_id, ips)

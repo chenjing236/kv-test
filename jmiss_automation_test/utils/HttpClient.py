@@ -44,7 +44,7 @@ class HttpClient(object):
         return self.http_request("PUT", "acl", json.dumps(acl))
 
     #扩容/缩容操作
-    def resize_cluster(self, space_id, zoneId, capacity, version="v1.0"):
+    def resize_cluster(self, space_id, zoneId, capacity):
         data = {"zoneId":zoneId, "capacity":capacity}
         return self.http_request_by_url("PUT", "resize/{0}".format(space_id), data)
 
