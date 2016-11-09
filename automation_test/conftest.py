@@ -5,6 +5,7 @@ from utils.JCacheUtils import *
 from utils.DockerClient import *
 from utils.Retry import *
 
+
 def pytest_addoption(parser):
     parser.addoption("--config_file", action="store", default="conf.json",
                      help="test config file path")
@@ -15,6 +16,7 @@ def config(request):
     file_path = request.config.getoption("config_file")
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
+
 
 @pytest.fixture(scope="session")
 def instance_data(request):
@@ -46,6 +48,7 @@ def web_client_backup(config):
 def docker_client(config):
     docker_c = DockerClient(config)
     return docker_c
+
 
 @pytest.fixture(scope="class")
 def retry(config):

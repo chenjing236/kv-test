@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # coding:utf-8
 import sys
-sys.path.append("..")
-from utils.DockerClient import *
+sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
+from DockerClient import *
 import json
 import time
 

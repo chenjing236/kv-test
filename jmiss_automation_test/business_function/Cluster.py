@@ -2,9 +2,9 @@
 # coding:utf-8
 from Container import *
 from CFS import *
-import sys
-sys.path.append("..")
-from utils.HttpClient import *
+#import sys
+#sys.path.append("..")
+#from utils.HttpClient import *
 import json
 import time
 
@@ -28,8 +28,8 @@ class Cluster(object):
     def __init__(self, conf_obj, data_obj, httpClient):
         self.conf_obj = conf_obj
         self.data_obj = data_obj
-        #self.httpClient = httpClient
-        self.httpClient = HttpClient(self.conf_obj["host"], self.conf_obj["pin"], self.conf_obj["auth_token"])
+        self.httpClient = httpClient
+        #self.httpClient = HttpClient(self.conf_obj["host"], self.conf_obj["pin"], self.conf_obj["auth_token"])
 
     #创建单实例缓存云实例
     def create_instance(self):
@@ -72,8 +72,7 @@ class Cluster(object):
         return res_data
 
     #获取缓存云实例的拓扑结构
-    def get_topology_of_instance(self, spaceId):
-        res_data = cluster.get_instance_info(space_id)
+    def get_topology_of_instance(self, res_data, spaceId):
         msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
         attach = res_data["attach"]
         if attach == None or attach is "":

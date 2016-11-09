@@ -19,6 +19,7 @@
   "retry_creating_times":"3",
   "retry_deleting_times":"3",
   "retry_getting_topology_from_cfs":"200",
+  "retry_getting_info_times":"10",
   "retry_times":"3",
   "wait_time": "5"
 }
