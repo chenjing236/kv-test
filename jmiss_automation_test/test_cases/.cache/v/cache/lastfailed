@@ -1,1 +1,3 @@
-{}
+{
+  "SmokeTestCases.py::TestSmokeCases::()::test_access_ap": true
+}

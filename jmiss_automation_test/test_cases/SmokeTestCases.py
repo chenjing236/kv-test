@@ -77,7 +77,7 @@ class TestSmokeCases:
         print "[STEP5] Access AP"
         is_access_ap = access_ap_step(config["ap_host"], config["ap_port"], password)
         assert is_access_ap == True, "[ERROR] Cannot access to the ap of the instanche {0}".format(space_id)
-        print "[INFO] It is succesfull to get the value by key {0} from the instance {1}".format(space_id)
+        print "[INFO] It is succesfull to get the value by key {0} from the instance {1}".format(key, space_id)
 
     @pytest.mark.smoke
     def test_resize_instance(self, config, instance_data, http_client, created_instance):
