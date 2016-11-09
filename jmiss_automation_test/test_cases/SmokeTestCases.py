@@ -9,7 +9,7 @@ from ClusterOperation import *
 class TestSmokeCases:
 
     @pytest.mark.smoke
-    def P_test_create_an_instance(self, config, instance_data, http_client):
+    def test_create_an_instance(self, config, instance_data, http_client):
         print "\n[SCENARIO] Create an instance including a master container and a slave container"
         instance = Cluster(config, instance_data, http_client)
         #创建缓存云实例
@@ -49,7 +49,7 @@ class TestSmokeCases:
         delete_instance_step(instance, space_id)
 
     @pytest.mark.smoke
-    def P_test_access_ap(self, config, instance_data, http_client, created_instance):
+    def test_access_ap(self, config, instance_data, http_client, created_instance):
         print "\n[SCENARIO] It is successfull to access AP and to set/get key"
         #创建缓存云实例，创建成功
         print "[STEP1] Create an instance with a master container and a slave container"
@@ -80,7 +80,7 @@ class TestSmokeCases:
         print "[INFO] It is succesfull to get the value by key {0} from the instance {1}".format(space_id)
 
     @pytest.mark.smoke
-    def P_test_resize_instance(self, config, instance_data, http_client, created_instance):
+    def test_resize_instance(self, config, instance_data, http_client, created_instance):
         print "\n[SCENARIO] It is successfull to resize intance"
         #创建缓存云实例，创建成功
         print "[STEP1] Create an instance with a master container and a slave container"
