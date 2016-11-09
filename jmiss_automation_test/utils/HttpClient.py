@@ -46,7 +46,7 @@ class HttpClient(object):
     #扩容/缩容操作
     def resize_cluster(self, space_id, zoneId, capacity):
         data = {"zoneId":zoneId, "capacity":capacity}
-        return self.http_request_by_url("PUT", "resize/{0}".format(space_id), data)
+        return self.http_request("PUT", "resize/{0}".format(space_id), json.dumps(data))
 
     #获取当前用户创建的缓存云实例列表
     def get_clusters(self):

@@ -108,3 +108,54 @@ def delete_instance_step(instance, space_id):
 def access_ap_step(ap_host, ap_port, password):
     redis_client = RedisClient(ap_host, ap_port, password)
     return redis_client.check_ap_access(ap_host, ap_port, password)
+
+def access_container_step(masterIp, masterPort, slaveIp, slavePort):
+     redis_client = RedisClient(masterIp, masterPort, None)
+     key = "test_key_resize"
+     value = "test_key_before_resize"
+     redis_client.set_key_value_for_master(masterIp, masterPort, key, value)
+     value_slave = redis_client.get_value_from_slave(slaveIp, slavePort, key)
+     assert value_slave == value, "[ERROR] Cannot get the key just setted"
+     return True, key, value
+
+def resize_instance_step(instance, cfs_client , space_id, zoneId, capacity, retry_times, wait_time):
+    #获取原有epoch
+    res_data_cfs_origin = cfs_client.get_meta(space_id)
+    epoch_origin = res_data_cfs_origin["epoch"]
+    #执行resize扩容操作
+    res_data = instance.resize_instance(space_id, zoneId, capacity)
+    if res_data is None or res_data is "":
+        assert False,"[ERROR] Response of resizing the instanche {0} is incorrect".format(space_id)
+    #执行扩容后的CFS拓扑结构中的epoch
+    res_data_cfs = cfs_client.get_meta(space_id)
+    epoch = res_data_cfs["epoch"]
+    count = 1
+    while epoch == epoch_origin and count < retry_times:
+        res_data_cfs = cfs_client.get_meta(space_id)
+        epoch = res_data_cfs["epoch"]
+        count +=1
+        time.sleep(wait_time)
+    if count >= retry_times:
+        assert False, "[ERROR] It is failed to resize instance"
+    #获取capacity
+    info_new = instance.get_instance_info(space_id)
+    attach_new = info_new["attach"]
+    status = attach_new["status"]
+    capacity_new = attach_new["capacity"]
+    return status, capacity_new
+
+def get_key_from_ap_step(ap_host, ap_port, password, key):
+    redis_client = RedisClient(ap_host, ap_port, password)
+    value_from_ap = redis_client.get_value_from_ap_by_key(ap_host, ap_port, password, key)
+    return value_from_ap
+
+def run_failover_container(instance, cfs_client, container, space_id, masterIp, masterPort):
+    is_failover = instance.run_failover_container(space_id, masterIp, masterPort, container, cfs_client)
+    assert is_failover == True,"[ERROR] It is failed to run master failover"
+    print "[INFO] It is succesfull to run master failover"
+    res_data = cfs_client.get_meta(space_id)
+    if res_data == None:
+        assert False, "[ERROR] It is failed to get topology after running master failover."
+    currentTopology = res_data["currentTopology"]
+    master_ip_new, master_port_new, slaveIp_new, slavePort_new = cfs_client.get_topology_from_cfs(currentTopology)
+    return is_failover, master_ip_new, master_port_new, slaveIp_new, slavePort_new

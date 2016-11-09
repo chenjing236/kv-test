@@ -129,7 +129,7 @@ class Cluster(object):
         if res_data == None:
             assert False, "[ERROR] Cannot get topology information from cfs"
         epoch_new = res_data["epoch"]
-        retry_times = int(config["retry_getting_topology_from_cfs"])
+        retry_times = int(self.conf_obj["retry_getting_topology_from_cfs"])
         count = 0;
         while epoch_new == epoch_origin and count <  retry_times:
             res_data = cfs_client.get_meta(space_id)
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     #master failover
     print "\n[STEP6] Run master failover"
     cfs_client = CFS(config)
-    is_failover = cluster.run_failover_container(space_id, masterIp, masterPort,container, cfs_client)
+    is_failover = cluster.run_failover_container(space_id, masterIp, masterPort, container, cfs_client)
     assert is_failover == True,"[ERROR] It is failed to run master failover"
     print "[INFO] It is succesfull to run master failover"
     res_data = cfs_client.get_meta(space_id)

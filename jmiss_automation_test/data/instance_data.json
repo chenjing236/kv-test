@@ -4,5 +4,6 @@
   "zoneId":"1",
   "capacity":"1048576",
   "quantity":"1",
-  "remarks":"jmiss"
+  "remarks":"jmiss",
+  "capacity_resize":"2097152"
 }

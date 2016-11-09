@@ -24,7 +24,7 @@ class RedisClient(object):
         cnt.delete('test')
         assert cnt_slave.get("test") is None
 
-    def get_value(self, redisInfo,key):
+    def get_value(self, redisInfo, key):
         cnt_redis = redis.StrictRedis(host=redisInfo[0], port=redisInfo[1])
         time.sleep(1)
         return cnt_redis.get(key)
@@ -33,6 +33,16 @@ class RedisClient(object):
         cnt = redis.StrictRedis(host=master[0], port=master[1])
         cnt.set(key, value)
         time.sleep(1)
+
+    def set_key_value_for_master(self, masterIp, masterPort, key,value):
+        cnt = redis.StrictRedis(host=masterIp, port=masterPort)
+        cnt.set(key, value)
+        time.sleep(1)
+
+    def get_value_from_slave(self, slaveIp, slavePort, key):
+        cnt_redis = redis.StrictRedis(host=slaveIp, port=slavePort)
+        time.sleep(1)
+        return cnt_redis.get(key)
 
     def delete_key_value(self, master,key):
         cnt = redis.StrictRedis(host=master[0], port=master[1])
@@ -62,3 +72,8 @@ class RedisClient(object):
 
         redis_info = json.loads(json.dumps(info).replace("'","\""))
         return redis_info
+
+    def get_value_from_ap_by_key(self, ap_host, ap_port, passwd, key):
+        cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
+        return cnt.get(key)
+
