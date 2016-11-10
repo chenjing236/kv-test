@@ -1,4 +1,5 @@
 {
+  "SmokeTestCases.py::TestSmokeCases::()::test_access_ap": true, 
   "SmokeTestCases.py::TestSmokeCases::()::test_failover": true, 
   "SmokeTestCases.py::TestSmokeCases::()::test_resize_instance": true
 }
