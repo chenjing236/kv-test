@@ -58,10 +58,10 @@ class RedisClient(object):
 
     def check_ap_access(self, ap_host, ap_port, passwd):
         cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
-        print "[INFO] Set key:value is {test_ap:test_ap_value}"
+        print "[INFO] Set key:value {test_ap:test_ap_value}"
         cnt.set("test_ap", "test_ap_value")
         assert cnt.get("test_ap") == "test_ap_value"
-        print "[INFO] Get key:value is {test_ap:test_ap_value}"
+        print "[INFO] Get key:value {test_ap:test_ap_value}"
         return True
 
     def get_redis_info(self, redis_host, redis_port):
