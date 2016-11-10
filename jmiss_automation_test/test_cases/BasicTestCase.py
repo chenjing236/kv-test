@@ -4,14 +4,21 @@ import pytest
 import json
 #import sys
 #sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
-from HttpClient import *
-from RedisClient import *
+#from HttpClient import *
+#from RedisClient import *
 #sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
-from Cluster import *
-from Container import *
-from CFS import *
+#from Cluster import *
+#from Container import *
+#from CFS import *
 #sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
-from ClusterOperation import *
+#from ClusterOperation import *
+
+from utils.HttpClient import *
+from utils.RedisClient import *
+from business_function.Cluster import *
+from business_function.Container import *
+from business_function.CFS import *
+from test_cases.ClusterOperation import *
 
 def pytest_addoption(parser):
     parser.addoption("--config_file", action="store", default="conf.json", help="test config file path")

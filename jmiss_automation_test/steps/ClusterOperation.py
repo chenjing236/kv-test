@@ -2,12 +2,18 @@
 # coding:utf-8
 #import sys
 #sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
-from RedisClient import *
+#from DockerClient import *
 #sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
-from Cluster import *
-from Container import *
+#from Cluster import *
+#from Container import *
 #sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
-from util import *
+#from util import *
+
+from utils.DockerClient import *
+from utils.util import *
+from business_function.Cluster import *
+from business_function.Container import *
+
 import json
 import time
 
