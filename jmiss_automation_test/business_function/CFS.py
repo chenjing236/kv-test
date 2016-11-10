@@ -56,16 +56,3 @@ class CFS:
             slaveIp = slave['ip']
             slavePort = slave['port']
         return master_ip, master_port, slaveIp, slavePort
-
-if __name__ == "__main__":
-    config_file_path = "C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/config/conf.json"
-    config = json.load(open(config_file_path, 'r'))
-    cfs_client = CFS(config)
-    space_id = "d1e07a0f-7dc0-46d0-94f8-34ea471e2092"
-    res_data = cfs_client.get_meta("d1e07a0f-7dc0-46d0-94f8-34ea471e2092")
-    print "[INFO] Topology of CFS is {0}".format(res_data)
-    epoch = res_data["epoch"]
-    print "[INFO] Epoch is {0} before failover".format(epoch)
-    currentTopology = res_data["currentTopology"]
-    master_ip, master_port, slaveIp, slavePort = cfs_client.get_topology_from_cfs(currentTopology)
-    print "[INFO] Topology of the instance {0} is {1}:{2}, {3}:{4}".format(space_id,master_ip, master_port, slaveIp, slavePort)

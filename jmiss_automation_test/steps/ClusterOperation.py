@@ -149,8 +149,37 @@ def get_key_from_ap_step(ap_host, ap_port, password, key):
     value_from_ap = redis_client.get_value_from_ap_by_key(ap_host, ap_port, password, key)
     return value_from_ap
 
-def run_failover_container(instance, cfs_client, container, space_id, masterIp, masterPort):
-    is_failover = instance.run_failover_container(space_id, masterIp, masterPort, container, cfs_client)
+#执行failover操作
+def run_failover_container(space_id, containerIp, containerPort, docker_client, cfs_client, retry_times, wait_time):
+    #查询CFS的redis，查看epoch的值
+    if cfs_client == None:
+        assert False, "[ERROR] CFS client is not initialed"
+    res_data = cfs_client.get_meta(space_id)
+    if res_data == None:
+        assert False, "[ERROR] Cannot get topology information from cfs"
+    epoch_origin = res_data["epoch"]
+    #stop指定的container
+    docker_client.stop_container(containerIp, containerPort)
+    #查询CFS的redis，查看epoch的值是否有变化
+    res_data = cfs_client.get_meta(space_id)
+    if res_data == None:
+        assert False, "[ERROR] Cannot get topology information from cfs"
+    epoch_new = res_data["epoch"]
+
+    count = 0;
+    while epoch_new == epoch_origin and count <  retry_times:
+        res_data = cfs_client.get_meta(space_id)
+        if res_data == None:
+            assert False, "[ERROR] Cannot get topology information from cfs"
+        epoch_new = res_data["epoch"]
+        count += 1
+        time.sleep(wait_time)
+    if count == retry_times:
+        return False
+    return True
+
+def run_failover_container_step(instance, cfs_client, container, space_id, masterIp, masterPort, retry_times, wait_time):
+    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time)
     assert is_failover == True,"[ERROR] It is failed to run master failover"
     print "[INFO] It is succesfull to run master failover"
     res_data = cfs_client.get_meta(space_id)
@@ -159,3 +188,4 @@ def run_failover_container(instance, cfs_client, container, space_id, masterIp, 
     currentTopology = res_data["currentTopology"]
     master_ip_new, master_port_new, slaveIp_new, slavePort_new = cfs_client.get_topology_from_cfs(currentTopology)
     return is_failover, master_ip_new, master_port_new, slaveIp_new, slavePort_new
+

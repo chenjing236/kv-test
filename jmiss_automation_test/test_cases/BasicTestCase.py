@@ -13,17 +13,21 @@ from CFS import *
 sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
 from ClusterOperation import *
 
+def pytest_addoption(parser):
+    parser.addoption("--config_file", action="store", default="conf.json", help="test config file path")
+    parser.addoption("--instance_data", action="store", default="instance_data.json", help="data file path")
+
 @pytest.fixture(scope="session")
 def config(request):
-    #file_path = request.config.getoption("config_file")
-    file_path = "C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/config/conf.json"
+    file_path = request.config.getoption("config_file")
+    #file_path = "C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/config/conf.json"
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
 @pytest.fixture(scope="session")
 def instance_data(request):
-    #file_path = request.config.getoption("instance_data")
-    file_path="C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/data/instance_data.json"
+    file_path = request.config.getoption("instance_data")
+    #file_path="C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/data/instance_data.json"
     data = json.load(open(file_path, 'r'))
     return data
 
@@ -46,7 +50,7 @@ def created_instance(config, instance_data, http_client, request):
     assert status == 100
 
     def teardown():
-        print "\n[TEARDONW] delete the instance {0}".format(space_id)
+        print "\n[TEARDONW] Delete the instance {0}".format(space_id)
         instance.delete_instance(space_id)
 
     request.addfinalizer(teardown)

@@ -98,7 +98,7 @@ class TestSmokeCases:
         print "[INFO] Information of slave container is {0}:{1}".format(slaveIp, slavePort)
         #通过master，执行set/get key
         print "[STEP4] Set key to the master container of the instance {0}".format(space_id)
-        is_successfull, key,value = access_container_step(masterIp, masterPort, slaveIp, slavePort)
+        is_successfull, key, value = access_container_step(masterIp, masterPort, slaveIp, slavePort)
         assert is_successfull == True
         print "[INFO] It is successful to set key to the master of the instance {0}".format(space_id)
         #执行扩容操作
@@ -151,7 +151,9 @@ class TestSmokeCases:
         print "[STEP5] Run failover for master container"
         cfs_client = CFS(config)
         container = Container(config)
-        is_failover, master_ip_new, master_port_new, slaveIp_new, slavePort_new = run_failover_container(instance, cfs_client, container, space_id, masterIp, masterPort)
+        retry_times = int(config["retry_getting_topology_from_cfs"])
+        wait_time = int(config["wait_time"])
+        is_failover, master_ip_new, master_port_new, slaveIp_new, slavePort_new = run_failover_container_step(instance, cfs_client, container, space_id, masterIp, masterPort, retry_times, wait_time)
         assert is_failover == True, "[ERROR] Run master failover is failed"
         print "[INFO] Information of master container is {0}:{1}".format(master_ip_new, master_port_new)
         print "[INFO] Information of slave container is {0}:{1}".format(slaveIp_new, slavePort_new)
