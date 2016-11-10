@@ -2,8 +2,8 @@
 # coding:utf-8
 import pytest
 from BasicTestCase import *
-import sys
-sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
+#import sys
+#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
 from ClusterOperation import *
 
 class TestSmokeCases:

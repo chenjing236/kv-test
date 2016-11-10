@@ -2,15 +2,15 @@
 # coding:utf-8
 import pytest
 import json
-import sys
-sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
+#import sys
+#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
 from HttpClient import *
 from RedisClient import *
-sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
+#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
 from Cluster import *
 from Container import *
 from CFS import *
-sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
+#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
 from ClusterOperation import *
 
 def pytest_addoption(parser):
