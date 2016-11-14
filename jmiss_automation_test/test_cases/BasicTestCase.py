@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # coding:utf-8
 import pytest
 from utils.HttpClient import *
@@ -9,7 +8,6 @@ from business_function.Container import *
 from business_function.CFS import *
 from steps.ClusterOperation import *
 import logging
-from log.logger import *
 
 info_logger = logging.getLogger(__name__)
 

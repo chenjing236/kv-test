@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # coding:utf-8
 
 from utils.DockerClient import *
@@ -8,7 +7,8 @@ from business_function.Container import *
 
 import json
 import time
-from log.logger import *
+import logging
+#from log.logger import *
 
 logger_info = logging.getLogger(__name__)
 
