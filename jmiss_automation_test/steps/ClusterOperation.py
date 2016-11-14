@@ -1,22 +1,16 @@
 #!/usr/bin/python
 # coding:utf-8
-#import sys
-#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
-#from DockerClient import *
-#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
-#from Cluster import *
-#from Container import *
-#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
-#from util import *
 
 from utils.DockerClient import *
-from utils.util import *
 from utils.RedisClient import *
 from business_function.Cluster import *
 from business_function.Container import *
 
 import json
 import time
+from log.logger import *
+
+logger_info = logging.getLogger(__name__)
 
 #创建一个缓存云实例，返回缓存云实例的space_id
 def create_instance_step(instance):
@@ -26,6 +20,7 @@ def create_instance_step(instance):
     assert code == 0, "[ERROR] It is failed to create an instance, error message is {0}".format(msg)
     attach = res_data["attach"]
     if attach is None or attach is "":
+        info_logger.error("[ERROR] Response of creating an instance is incorrect")
         assert False, "[ERROR] Response of creating an instance is incorrect"
     space_id = attach["spaceId"]
     return space_id
@@ -38,6 +33,7 @@ def get_detail_info_of_instance_step(instance, space_id):
     assert code == 0, "[ERROR] It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg)
     attach = res_data["attach"]
     if attach == None or attach is "":
+        info_logger.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
         assert False, "[ERROR] Response of getting detail information for the instance {0} is incorrect".format(space_id)
     return attach
 
@@ -49,6 +45,7 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
     assert code == 0, "[ERROR] It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg)
     attach = res_data["attach"]
     if attach == None or attach is "":
+        info_logger.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
         assert False, "[ERROR] Response of getting detail information for the instance {0} is incorrect".format(space_id)
     status = attach["status"]
     capacity = int(attach["capacity"])
@@ -56,6 +53,7 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
     while status != 100 and count < retry_times:
         res_data = instance.get_instance_info(space_id)
         if res_data is None or res_data is "":
+            info_logger.error("[ERROR] It is failed to get topology from detail information of the instance %s.", space_id)
             assert False, "[ERROR] It is failed to get topology from detail information of the instance {0}.".format(space_id)
         attach = res_data["attach"]
         status = attach["status"]

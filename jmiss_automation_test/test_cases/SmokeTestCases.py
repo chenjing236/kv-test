@@ -3,33 +3,46 @@
 import pytest
 from BasicTestCase import *
 
+info_logger = logging.getLogger(__name__)
+
 class TestSmokeCases:
 
     @pytest.mark.smoke
-    def test_create_an_instance(self, config, instance_data, http_client):
+    def test_create_an_instance(self, config, instance_data, http_client, ):
         print "\n[SCENARIO] Create an instance including a master container and a slave container"
+        info_logger.info("[SCENARIO] Create an instance including a master container and a slave container")
         instance = Cluster(config, instance_data, http_client)
         #创建缓存云实例
         print "[STEP1] Create an instance including a master container and a slave container"
+        info_logger.info("[STEP1] Create an instance including a master container and a slave container")
         space_id = create_instance_step(instance)
         print "[INFO] The instance {0} is created".format(space_id)
+        info_logger.info("[INFO] The instance %s is created", space_id)
         #查看缓存云实例详细信息
         print "[STEP2] Get detailed information of the instance {0}".format(space_id)
+        info_logger.info("[STEP2] Get detailed information of the instance %s", space_id)
         status, capacity = get_status_of_instance_step(instance, space_id, int(config["retry_getting_info_times"]), int(config["wait_time"]))
         print "[INFO] Status of the instance {0} is {1}".format(space_id, status)
+        info_logger.info("[INFO] Status of the instance %s is %s", space_id, status)
         #验证缓存云实例状态，status=100创建成功
         assert status == 100
         #查看缓存云实例详情，获取拓扑结构
         print "[STEP3] Get topology information of instance"
+        info_logger.info("[STEP3] Get topology information of instance")
         masterIp, masterPort, slaveIp, slavePort = get_topology_of_instance_step(instance, space_id)
         print "[INFO] Information of master container is {0}:{1}".format(masterIp, masterPort)
+        info_logger.info("[INFO] Information of master container is %s:%s", masterIp, masterPort)
         print "[INFO] Information of slave container is {0}:{1}".format(slaveIp, slavePort)
+        info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp, slavePort)
         #获取CFS的拓扑结构
         print "[STEP4] Get topology information of instance from CFS"
+        info_logger.info("[STEP4] Get topology information of instance from CFS")
         cfs_client = CFS(config)
         masterIp_cfs, masterPort_cfs, slaveIp_cfs, slavePort_cfs = get_topology_of_instance_from_cfs_step(cfs_client, space_id)
         print "[INFO] Information of master container is {0}:{1}".format(masterIp_cfs, masterPort_cfs)
+        info_logger.info("[INFO] Information of master container is %s:%s", masterIp_cfs, masterPort_cfs)
         print "[INFO] Information of slave container is {0}:{1}".format(slaveIp_cfs, slavePort_cfs)
+        info_logger.info("[INFO] Information of slave container is {0}:{1}", slaveIp_cfs, slavePort_cfs)
         assert masterIp == masterIp_cfs, "[ERROR] Ip of master container is inconsistent"
         assert masterPort == masterPort_cfs, "[ERROR] Port of master container is inconsistent"
         assert slaveIp == slaveIp_cfs, "[ERROR] Ip of slave container is inconsistent"
@@ -38,12 +51,16 @@ class TestSmokeCases:
         container = Container(config)
         master_memory_size, slave_memory_size = get_container_memory_size(container, masterIp, masterPort, slaveIp, slavePort)
         print "[INFO] Memory size of master container is {0}".format(master_memory_size)
+        info_logger.info("[INFO] Memory size of master container is %s", master_memory_size)
         print "[INFO] Memory size of slave container is {0}".format(slave_memory_size)
         assert master_memory_size == capacity, "[ERROR] Memory size of master container is inconsistent with request"
         assert slave_memory_size == capacity, "[ERROR] Memory size of slave container is inconsistent with request"
         #删除缓存云实例
         print "[STEP5] Delete the instance {0}".format(space_id)
+        info_logger.info("[STEP5] Delete the instance %s", space_id)
         delete_instance_step(instance, space_id)
+        #assert False, "[ERROR] test error log"
+
 
     @pytest.mark.smoke
     def test_access_ap(self, config, instance_data, http_client, created_instance):

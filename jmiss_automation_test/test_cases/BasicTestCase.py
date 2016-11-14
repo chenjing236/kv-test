@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
 import pytest
-import json
-#import sys
-#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/utils")
-#from HttpClient import *
-#from RedisClient import *
-#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/business_function")
-#from Cluster import *
-#from Container import *
-#from CFS import *
-#sys.path.append("C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/steps")
-#from ClusterOperation import *
-
 from utils.HttpClient import *
 from utils.RedisClient import *
 from utils.util import *
@@ -20,6 +8,10 @@ from business_function.Cluster import *
 from business_function.Container import *
 from business_function.CFS import *
 from steps.ClusterOperation import *
+import logging
+from log.logger import *
+
+info_logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope="class")
 def http_client(config):
@@ -34,13 +26,15 @@ def docker_client(config):
 @pytest.fixture(scope="class")
 def created_instance(config, instance_data, http_client, request):
     print "\n[SETUP] Create an instance with a master container and a slave container"
+    info_logger.info("[SETUP] Create an instance with a master container and a slave container")
     instance = Cluster(config, instance_data, http_client)
     space_id = create_instance_step(instance)
     status, capacity = get_status_of_instance_step(instance, space_id, int(config["retry_getting_info_times"]), int(config["wait_time"]))
-    assert status == 100
+    assert status == 100, "[ERROR] Instance {0} is inavialble".format(space_id)
 
     def teardown():
         print "\n[TEARDONW] Delete the instance {0}".format(space_id)
+        info_logger.info("[TEARDONW] Delete the instance %s", space_id)
         instance.delete_instance(space_id)
 
     request.addfinalizer(teardown)
