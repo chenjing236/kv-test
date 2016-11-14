@@ -96,7 +96,7 @@ def DeleteCluster(wc, space_id, sql_c):
         info_logger.debug("delete cluster: retry_time:{0}, space:{1}".format(retry_time, space))
         retry_time += 1
         time.sleep(5)
-    if ins_status != 101:
+    if ins_status != 102:
         info_logger.error("delete cluster: check cluster [{0}] status failed! status={1}".format(space_id, ins_status))
         return 1
     info_logger.info("delete cluster: test delete cluster:{0} success".format(space_id))
