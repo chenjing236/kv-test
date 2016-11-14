@@ -11,6 +11,7 @@
 
 from utils.DockerClient import *
 from utils.util import *
+from utils.RedisClient import *
 from business_function.Cluster import *
 from business_function.Container import *
 
