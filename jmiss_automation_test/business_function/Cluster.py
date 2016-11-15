@@ -72,7 +72,7 @@ class Cluster(object):
         instances = shards["instances"]
         instance_a = instances[0]
         instance_b = instances[1]
-        print "[INFO] Info of instance is {0}".format(instances)
+        #print "[INFO] Info of instance is {0}".format(instances)
         masterIp_a = instance_a["masterIp"]
         masterPort_a = instance_a["masterPort"]
         masterIp = masterIp_a
