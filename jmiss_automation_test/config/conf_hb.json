@@ -1,5 +1,5 @@
 {
-  "host": "jmiss-redis-prod-gz.jcloud.com",
+  "host": "jmiss-redis-prod-hb.jcloud.com",
   "port": 80,
   "pin": "40bab0eb5fa8eed3c48a1c60b375f4ac",
   "auth_token": "NLiiiEtlWUiChOb2THKvCdOPJrM2U+JfmpzF0RwY8Xs=",
