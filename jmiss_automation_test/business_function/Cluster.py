@@ -73,12 +73,12 @@ class Cluster(object):
         instance_a = instances[0]
         instance_b = instances[1]
         print "[INFO] Info of instance is {0}".format(instances)
-        slaveIp = None
-        slavePort = None
         masterIp_a = instance_a["masterIp"]
         masterPort_a = instance_a["masterPort"]
         masterIp = masterIp_a
         masterPort = masterPort_a
+        slaveIp = instance_a["ip"]
+        slavePort = instance_a["port"]
         if masterIp_a == None:
             masterIp = instance_b["masterIp"]
             masterPort = instance_b["masterPort"]
