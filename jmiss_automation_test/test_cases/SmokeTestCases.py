@@ -41,7 +41,7 @@ class TestSmokeCases:
         print "[INFO] Information of master container is {0}:{1}".format(masterIp_cfs, masterPort_cfs)
         info_logger.info("[INFO] Information of master container is %s:%s", masterIp_cfs, masterPort_cfs)
         print "[INFO] Information of slave container is {0}:{1}".format(slaveIp_cfs, slavePort_cfs)
-        info_logger.info("[INFO] Information of slave container is {0}:{1}", slaveIp_cfs, slavePort_cfs)
+        info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp_cfs, slavePort_cfs)
         assert masterIp == masterIp_cfs, "[ERROR] Ip of master container is inconsistent"
         assert masterPort == masterPort_cfs, "[ERROR] Port of master container is inconsistent"
         assert slaveIp == slaveIp_cfs, "[ERROR] Ip of slave container is inconsistent"
