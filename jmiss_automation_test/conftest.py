@@ -1,8 +1,8 @@
 import pytest
 import json
 from utils.util import *
-from log.logger import *
 import logging
+from logging.handlers import TimedRotatingFileHandler
 
 logger_info = logging.getLogger(__name__)
 
