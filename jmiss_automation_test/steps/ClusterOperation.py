@@ -20,7 +20,7 @@ def create_instance_step(instance):
     assert code == 0, "[ERROR] It is failed to create an instance, error message is {0}".format(msg)
     attach = res_data["attach"]
     if attach is None or attach is "":
-        info_logger.error("[ERROR] Response of creating an instance is incorrect")
+        logger_info.error("[ERROR] Response of creating an instance is incorrect")
         assert False, "[ERROR] Response of creating an instance is incorrect"
     space_id = attach["spaceId"]
     return space_id
@@ -33,7 +33,7 @@ def get_detail_info_of_instance_step(instance, space_id):
     assert code == 0, "[ERROR] It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg)
     attach = res_data["attach"]
     if attach == None or attach is "":
-        info_logger.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
+        logger_info.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
         assert False, "[ERROR] Response of getting detail information for the instance {0} is incorrect".format(space_id)
     return attach
 
@@ -45,7 +45,7 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
     assert code == 0, "[ERROR] It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg)
     attach = res_data["attach"]
     if attach == None or attach is "":
-        info_logger.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
+        logger_info.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
         assert False, "[ERROR] Response of getting detail information for the instance {0} is incorrect".format(space_id)
     status = attach["status"]
     capacity = int(attach["capacity"])
@@ -53,7 +53,7 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
     while status != 100 and count < retry_times:
         res_data = instance.get_instance_info(space_id)
         if res_data is None or res_data is "":
-            info_logger.error("[ERROR] It is failed to get topology from detail information of the instance %s.", space_id)
+            logger_info.error("[ERROR] It is failed to get topology from detail information of the instance %s.", space_id)
             assert False, "[ERROR] It is failed to get topology from detail information of the instance {0}.".format(space_id)
         attach = res_data["attach"]
         status = attach["status"]
