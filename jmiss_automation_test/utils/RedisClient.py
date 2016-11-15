@@ -40,6 +40,7 @@ class RedisClient(object):
         time.sleep(1)
 
     def get_value_from_slave(self, slaveIp, slavePort, key):
+        print "[INFO] Redis_ip:Redis_port={0}:{1}",format(slaveIp, slavePort)
         cnt_redis = redis.StrictRedis(host=slaveIp, port=slavePort)
         time.sleep(1)
         return cnt_redis.get(key)
