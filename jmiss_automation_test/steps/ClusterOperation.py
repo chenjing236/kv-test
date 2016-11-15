@@ -8,7 +8,6 @@ from business_function.Container import *
 import json
 import time
 import logging
-#from log.logger import *
 
 logger_info = logging.getLogger(__name__)
 

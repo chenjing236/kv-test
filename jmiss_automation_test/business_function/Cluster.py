@@ -3,6 +3,9 @@ from Container import *
 from CFS import *
 import json
 import time
+import logging
+
+logger_info = logging.getLogger(__name__)
 
 #创建缓存云实例API接口参数
 class CreateArgs():
@@ -69,6 +72,7 @@ class Cluster(object):
         instances = shards["instances"]
         instance_a = instances[0]
         instance_b = instances[1]
+        print "[INFO] Info of instance is {0}".format(instances)
         slaveIp = None
         slavePort = None
         masterIp_a = instance_a["masterIp"]
@@ -80,6 +84,7 @@ class Cluster(object):
             masterPort = instance_b["masterPort"]
             slaveIp = instance_b["ip"]
             slavePort = instance_b["port"]
+        print "[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort)
         return masterIp, masterPort, slaveIp, slavePort
 
     #扩容/缩容缓存云实例
