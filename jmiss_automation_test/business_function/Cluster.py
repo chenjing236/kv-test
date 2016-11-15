@@ -72,7 +72,9 @@ class Cluster(object):
         slaveIp = None
         slavePort = None
         masterIp_a = instance_a["masterIp"]
+        masterPort_a = instance_a["masterPort"]
         masterIp = masterIp_a
+        masterPort = masterPort_a
         if masterIp_a == None:
             masterIp = instance_b["masterIp"]
             masterPort = instance_b["masterPort"]
