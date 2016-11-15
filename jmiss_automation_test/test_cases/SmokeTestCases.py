@@ -86,7 +86,7 @@ class TestSmokeCases:
         print "[INFO] Information of master container is {0}:{1}".format(masterIp, masterPort)
         info_logger.info("[INFO] Information of master container is %s:%s", masterIp, masterPort)
         print "[INFO] Information of slave container is {0}:{1}".format(slaveIp, slavePort)
-        info_logger("[INFO] Information of slave container is %s:%s", slaveIp, slavePort)
+        info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp, slavePort)
         #设置ACL访问规则
         print "[STEP4] Set ACL for the instance {0}".format(space_id)
         info_logger.info("[STEP4] Set ACL for the instance %s", space_id)
