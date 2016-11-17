@@ -4,6 +4,9 @@ import hashlib
 import httplib
 import json
 from datetime import datetime
+import logging
+
+logger_info = logging.getLogger(__name__)
 
 class CFS:
     def __init__(self, conf_obj):
@@ -36,6 +39,7 @@ class CFS:
         cur_time = self.get_timestr()
         time_str = cur_time.replace(":", "%3A").replace(" ", "+")
         uri = "/manage/topology/get?spaceId={0}&d={1}&s={2}".format(space_id, time_str, self.md5sign(space_id, cur_time))
+        logger_info.debug("[INFO] URI for cfs is %s", uri)
         status, headers, res_data = self.http_request("GET", uri)
         if status != 200 or res_data['code'] != 0:
             return None
