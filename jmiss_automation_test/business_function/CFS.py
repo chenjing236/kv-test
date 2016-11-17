@@ -9,9 +9,10 @@ import logging
 logger_info = logging.getLogger(__name__)
 
 class CFS:
-    def __init__(self, conf_obj):
+    def __init__(self, conf_obj, data_obj):
         self.cfs_host = conf_obj["cfs_host"]
         self.sign_key = conf_obj["cfs_sign_key"]
+        self.shard_count = conf_obj["cluster_cfg"][str(int(data_obj["capacity"]) / 1024 / 1024)]
 
     def http_request(self, method, uri, data=None, headers={}):
         hc = httplib.HTTPConnection(self.cfs_host)
@@ -60,3 +61,23 @@ class CFS:
             slaveIp = slave['ip']
             slavePort = slave['port']
         return master_ip, master_port, slaveIp, slavePort
+
+    def get_topology_of_cluster_from_cfs(self, tp):
+        shards = []
+        for i in range(0, self.shard_count):
+            if 'shards' not in tp or tp['shards'] is None or len(tp['shards']) == 0 or 'master' not in tp['shards'][i]:
+                return None, None, None, None
+            else:
+                master = tp['shards'][i]['master']
+                master_ip = master['ip']
+                master_port = master['port']
+            if 'slaves' not in master or master['slaves'] is None or len(master['slaves']) == 0:
+                slave_ip = None
+                slave_port = None
+            else:
+                slave = master['slaves'][0]
+                slave_ip = slave['ip']
+                slave_port = slave['port']
+            shard = {"masterIp": master_ip, "masterPort": master_port, "slaveIp": slave_ip, "slavePort": slave_port}
+            shards.append(shard)
+        return shards

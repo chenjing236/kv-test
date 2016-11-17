@@ -87,6 +87,37 @@ class Cluster(object):
         print "[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort)
         return masterIp, masterPort, slaveIp, slavePort
 
+    # 获取缓存云集群的拓扑结构
+    def get_topology_of_cluster(self, res_data, spaceId):
+        capa = int(self.data_obj["capacity"]) / 1024 / 1024
+        shardNum = self.conf_obj["cluster_cfg"][str(capa)]
+        print "[INFO] The count of shards of cluster is ", shardNum
+        msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("utf-8")
+        attach = res_data["attach"]
+        if attach is None or attach is "":
+            assert False, "{0}".format(msg)
+        shards = attach["shards"]
+        shards_list = []
+        for i in range(0, shardNum):
+            instances = shards[i]["instances"]
+            instance_a = instances[0]
+            instance_b = instances[1]
+            # print "[INFO] Info of instance is {0}".format(instances)
+            masterIp_a = instance_a["masterIp"]
+            masterPort_a = instance_a["masterPort"]
+            masterIp = masterIp_a
+            masterPort = masterPort_a
+            slaveIp = instance_a["ip"]
+            slavePort = instance_a["port"]
+            if masterIp_a == None:
+                masterIp = instance_b["masterIp"]
+                masterPort = instance_b["masterPort"]
+                slaveIp = instance_b["ip"]
+                slavePort = instance_b["port"]
+            shard = {"masterIp": masterIp, "masterPort": masterPort, "slaveIp": slaveIp, "slavePort": slavePort}
+            shards_list.append(shard)
+        return shards_list
+
     #扩容/缩容缓存云实例
     def resize_instance(self, space_id, zoneId, capacity):
         status, headers, res_data = self.httpClient.resize_cluster(space_id, zoneId, capacity)

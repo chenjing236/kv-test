@@ -70,6 +70,13 @@ def get_topology_of_instance_step(instance, space_id):
     masterIp, masterPort, slaveIp, slavePort = instance.get_topology_of_instance(res_data, space_id)
     return masterIp, masterPort, slaveIp, slavePort
 
+def get_topology_of_cluster_step(instance, space_id):
+    res_data = instance.get_instance_info(space_id)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Cannot get detail information of the instanceh {0}".format(space_id)
+    shards = instance.get_topology_of_cluster(res_data, space_id)
+    return shards
+
 def get_topology_of_instance_from_cfs_step(cfs_client, space_id):
     res_data = cfs_client.get_meta(space_id)
     if res_data is None or res_data is "":
@@ -79,6 +86,16 @@ def get_topology_of_instance_from_cfs_step(cfs_client, space_id):
         assert False, "[ERROR] The information of topology is incorrect from CFS."
     master_ip, master_port, slaveIp, slavePort = cfs_client.get_topology_from_cfs(currentTopology)
     return master_ip, master_port, slaveIp, slavePort
+
+def get_topology_of_cluster_from_cfs_step(cfs_client, space_id):
+    res_data = cfs_client.get_meta(space_id)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] It is failed to get topology from CFS."
+    currentTopology = res_data["currentTopology"]
+    if currentTopology is None or currentTopology is "":
+        assert False, "[ERROR] The information of topology is incorrect from CFS."
+    shards = cfs_client.get_topology_of_cluster_from_cfs(currentTopology)
+    return shards
 
 def get_container_memory_size(container, masterIp, masterPort, slaveIp, slavePort):
     master_memory_size = container.get_memory_size_of_container(masterIp, masterPort)
@@ -192,4 +209,16 @@ def run_failover_container_step(instance, cfs_client, container, space_id, maste
     currentTopology = res_data["currentTopology"]
     master_ip_new, master_port_new, slaveIp_new, slavePort_new = cfs_client.get_topology_from_cfs(currentTopology)
     return is_failover, master_ip_new, master_port_new, slaveIp_new, slavePort_new
+
+
+def run_failover_container_of_cluster_step(instance, cfs_client, container, space_id, masterIp, masterPort, retry_times, wait_time):
+    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time)
+    assert is_failover is True, "[ERROR] It is failed to run master failover"
+    print "[INFO] It is successful to run master failover"
+    res_data = cfs_client.get_meta(space_id)
+    if res_data is None:
+        assert False, "[ERROR] It is failed to get topology after running master failover."
+    currentTopology = res_data["currentTopology"]
+    master_ip_new, master_port_new, slave_ip_new, slave_port_new = cfs_client.get_topology_from_cfs(currentTopology)
+    return is_failover, master_ip_new, master_port_new, slave_ip_new, slave_port_new
 
