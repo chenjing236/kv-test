@@ -36,10 +36,16 @@ class WebClient(object):
 
     def create_cluster(self, create_args):
         # 线上环境
-        return self.http_request("GET", "cache?action=createCacheCluster&{0}&coupons[0]=1015"
-                                        "&discountId=&discountValue=".format(create_args.get_args_string()))
+        # return self.http_request("GET", "cache?action=createCacheCluster&{0}&coupons[0]=1015"
+        #                                 "&discountId=&discountValue=".format(create_args.get_args_string()))
         # 测试环境
-        # return self.http_request("GET", "cache?action=createCacheCluster&{0}".format(create_args.get_args_string()))
+        return self.http_request("GET", "cache?action=createCacheCluster&{0}".format(create_args.get_args_string()))
+
+    def pay_for_the_cluster(self, request_id):
+        # 线上环境
+        # return self.http_request("GET", "billing?action=pay&request_id={0}&coupons[0]=1015".format(request_id))
+        # 测试环境
+        return self.http_request("GET", "billing?action=pay&orderRequestId={0}".format(request_id))
 
     def get_cluster_id(self, request_id):
         return self.http_request("GET", "order?action=queryOrderStatus&orderRequest={0}".format(request_id))
