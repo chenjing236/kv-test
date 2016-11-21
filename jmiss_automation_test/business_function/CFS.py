@@ -8,10 +8,10 @@ import logging
 logger_info = logging.getLogger(__name__)
 
 class CFS:
-    def __init__(self, conf_obj, data_obj):
+    def __init__(self, conf_obj, capacity=16777216):
         self.cfs_host = conf_obj["cfs_host"]
         self.sign_key = conf_obj["cfs_sign_key"]
-        self.shard_count = conf_obj["cluster_cfg"][str(int(data_obj["capacity"]) / 1024 / 1024)]
+        self.shard_count = conf_obj["cluster_cfg"][str(int(capacity) / 1024 / 1024)]
 
     def http_request(self, method, uri, data=None, headers={}):
         hc = httplib.HTTPConnection(self.cfs_host)
