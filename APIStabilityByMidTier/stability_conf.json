@@ -1,0 +1,15 @@
+{
+  "host": "192.168.169.33",
+  "port": 1602,
+  "user": "jcloud_00",
+  "account": "jcloud_00",
+  "coupon_id": 1015,
+  "docker_daemon_port":"2375",
+  "docker_version":"1.19",
+  "process_num": 1,
+  "max_num": 2,
+  "max_fail_num": 5,
+  "min_cap": 1,
+  "max_cap": 10,
+  "max_sleep_time": 5
+}

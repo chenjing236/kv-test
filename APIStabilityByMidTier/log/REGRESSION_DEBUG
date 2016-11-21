@@ -1,0 +1,9 @@
+2016-11-18 14:48:36,519-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-11-18 14:48:36,519-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-11-18 14:48:36,783-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=300f68ee-033b-4181-ab7d-4635da383c24
+2016-11-18 14:48:36,957-utils.JCacheUtils-INFO-create cluster: send payment request success! order_request_id=414edc8a-cb06-41d0-8bd3-f683c3a50b27
+2016-11-18 14:48:37,009-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'fe692083-7b7a-4fe3-a386-b0fdb3f223cf', u'fail': 0, u'total': 1}
+2016-11-18 14:48:37,009-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=300f68ee-033b-4181-ab7d-4635da383c24
+2016-11-18 14:48:42,052-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'09670856-3f7b-4adc-ac94-543d7c1b1e14', u'fail': 0, u'total': 1}
+2016-11-18 14:48:42,053-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=300f68ee-033b-4181-ab7d-4635da383c24

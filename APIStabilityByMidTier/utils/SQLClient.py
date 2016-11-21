@@ -1,6 +1,5 @@
 import MySQLdb
 import json
-from JCacheUtils import *
 
 class SQLClient(object):
     def __init__(self, host, port, user, passwd, db):
@@ -24,9 +23,9 @@ class SQLClient(object):
         :param space_id: space if
         :return: (status,capacity,password,flag,tenant_id,remarks)
         '''
-        info_logger.debug("begin to get space info, space_id[{0}]".format(space_id))
+        print "begin to get space info, space_id[{0}]".format(space_id)
         self.init_cursor()
-        sql = "select status,capacity,password,cluster_type,tenant_id,name,remarks from space where space_id='{0}'".format(space_id)
+        sql = "select status,capacity,password,flag,tenant_id,name,remarks from space where space_id='{0}'".format(space_id)
         n = self.cursor.execute(sql)
         if n < 1:
             return None
@@ -34,7 +33,7 @@ class SQLClient(object):
             raise Exception("get more than one record in space table, space_id:{0}".format(space_id))
         res = self.cursor.fetchall()[0]
         self.close_cursor()
-        info_logger.debug("get space info success![{0}]".format(json.dumps(res)))
+        print "get space info success![{0}]".format(json.dumps(res))
         return res
 
     def get_instances(self, space_id):
@@ -42,9 +41,9 @@ class SQLClient(object):
         :param space_id:
         :return: [master,slave(ip,port,copy_id,flag)]
         '''
-        info_logger.debug("begin to get instances, space_id:[{0}]".format(space_id))
+        print "begin to get instances, space_id:[{0}]".format(space_id)
         self.init_cursor()
-        sql = "select ip,port,copy_id,shard_id from instance where space_id='{0}'".format(space_id)
+        sql = "select ip,port,copy_id,flag from instance where space_id='{0}'".format(space_id)
         n = self.cursor.execute(sql)
         if n < 1:
             return None
@@ -56,7 +55,7 @@ class SQLClient(object):
             ins[0] = ins[1]
             ins[1] = tmp
         self.close_cursor()
-        info_logger.debug("get instances success:{0}".format(json.dumps(ins)))
+        print "get instances success:{0}".format(json.dumps(ins))
         return ins
 
     def get_acl(self, space_id):
@@ -66,7 +65,7 @@ class SQLClient(object):
         ips = self.cursor.fetchall()
         acl_ip = []
         t_id = None
-        for ip, tenant in ips:
+        for ip,tenant in ips:
             if t_id is not None:
                 if t_id != tenant:
                     raise Exception("tenant_id of one cluster is different in acl table![{0},{1}]".format(t_id, tenant))
@@ -88,6 +87,6 @@ class SQLClient(object):
         self.close_cursor()
         return res
 
-    def get_token(self, space_id):
+    def get_token(self,space_id):
         self.init_cursor()
         sql = "select password from space where space_id='{0}'".format(space_id)
