@@ -1,5 +1,8 @@
 # coding:utf-8
 from utils.DockerClient import *
+import logging
+
+logger_info = logging.getLogger(__name__)
 
 class Container:
     def __init__(self, conf_obj):

@@ -7,7 +7,7 @@ info_logger = logging.getLogger(__name__)
 class TestSmokeCases:
 
     @pytest.mark.smoke
-    def test_create_an_instance(self, config, instance_data, http_client, ):
+    def test_create_an_instance(self, config, instance_data, http_client):
         print "\n[SCENARIO] Create an instance including a master container and a slave container"
         info_logger.info("[SCENARIO] Create an instance including a master container and a slave container")
         instance = Cluster(config, instance_data, http_client)
