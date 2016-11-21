@@ -34,7 +34,8 @@ class TestCreateCluster:
         # 获取CFS的拓扑结构
         print "[STEP4] Get topology information of cluster from CFS"
         info_logger.info("[STEP4] Get topology information of cluster from CFS")
-        cfs_client = CFS(config, instance_data)
+        capa = instance_data['capacity']
+        cfs_client = CFS(config, capa)
         shards_cfs = get_topology_of_cluster_from_cfs_step(cfs_client, space_id)
         for i in range(0, shard_count):
             print "[INFO] Information of shard_{0} container is {1}".format(i + 1, shards_cfs[i])
