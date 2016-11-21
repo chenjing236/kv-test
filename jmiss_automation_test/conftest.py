@@ -13,7 +13,6 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="session", autouse=True)
 def config(request):
     file_path = request.config.getoption("config")
-    #file_path = "C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/config/conf.json"
     #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "config/conf.json"
     #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "config/conf_stag.json"
     conf_obj = json.load(open(file_path, 'r'))
@@ -40,7 +39,7 @@ def logger():
 
     formatter = logging.Formatter("%(asctime)s-%(name)s-%(levelname)s-%(message)s")
 
-    info_log_name = './REGRESSION_CLUSTER_DEBUG'
+    info_log_name = './REGRESSION_CLUSTER_DEBUG.log'
     info_file_handler = TimedRotatingFileHandler(info_log_name, 'midnight', 1, 31)
     info_file_handler.suffix="%Y-%m-%d.log"
     info_file_handler.setLevel(logging.DEBUG)
