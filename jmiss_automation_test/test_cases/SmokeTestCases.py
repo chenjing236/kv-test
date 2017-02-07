@@ -48,7 +48,7 @@ class TestSmokeCases:
         assert slavePort == slavePort_cfs, "[ERROR] Port of slave container is inconsistent"
         #获取container的大小，验证container的大小
         container = Container(config)
-        master_memory_size, slave_memory_size = get_container_memory_size(container, masterIp, masterPort, slaveIp, slavePort)
+        master_memory_size, slave_memory_size = get_container_memory_size_step(container, masterIp, masterPort, slaveIp, slavePort)
         print "[INFO] Memory size of master container is {0}".format(master_memory_size)
         info_logger.info("[INFO] Memory size of master container is %s", master_memory_size)
         print "[INFO] Memory size of slave container is {0}".format(slave_memory_size)
