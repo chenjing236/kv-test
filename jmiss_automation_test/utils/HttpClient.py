@@ -59,3 +59,8 @@ class HttpClient(object):
     #获取ACL访问规则
     def get_acl(self,space_id):
         return self.http_request("GET", "acl/{0}".format(space_id))
+
+    # reset password
+    def reset_password(self, space_id, password):
+        data = {"password": password}
+        return self.http_request("PUT", "updatepassword/{0}".format(space_id), json.dumps(data))

@@ -1,0 +1,63 @@
+2016-11-17 12:01:38,753-stat.test_jcache_api-INFO-create_stat result:fail_num:5, total_num:5, error_rate:1.0
+2016-11-17 12:01:38,755-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:01:38,755-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:01:38,755-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:01:38,756-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:01:38,756-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 12:44:58,984-stat.test_jcache_api-INFO-create_stat result:fail_num:5, total_num:5, error_rate:1.0
+2016-11-17 12:44:58,984-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:44:58,984-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:44:58,984-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:44:58,984-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:44:58,986-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 12:47:26,687-stat.test_jcache_api-INFO-create_stat result:fail_num:5, total_num:5, error_rate:1.0
+2016-11-17 12:47:26,687-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:47:26,687-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:47:26,688-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:47:26,688-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:47:27,122-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 12:51:55,226-stat.test_jcache_api-INFO-create_stat result:fail_num:5, total_num:5, error_rate:1.0
+2016-11-17 12:51:55,226-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:51:55,226-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:51:55,226-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:51:55,226-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:51:55,226-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 12:52:50,596-stat.test_jcache_api-INFO-create_stat result:fail_num:2, total_num:2, error_rate:1.0
+2016-11-17 12:52:50,596-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:52:50,598-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:52:50,598-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:52:50,598-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 12:52:50,598-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 13:41:08,786-stat.test_jcache_api-INFO-create_stat result:fail_num:2, total_num:2, error_rate:1.0
+2016-11-17 13:41:08,786-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 13:41:08,786-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 13:41:08,786-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 13:41:08,786-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 13:41:08,786-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 14:31:36,845-stat.test_jcache_api-INFO-create_stat result:fail_num:2, total_num:2, error_rate:1.0
+2016-11-17 14:31:36,845-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 14:31:36,845-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 14:31:36,845-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 14:31:36,845-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-11-17 14:31:36,845-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-11-17 14:41:25,825-stat.test_jcache_api-INFO-create_stat result:fail_num:0, total_num:2, error_rate:0.0
+2016-11-17 14:41:25,825-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:2, error_rate:0.0
+2016-11-17 14:41:25,825-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:2, error_rate:0.0
+2016-11-17 14:41:25,825-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:2, error_rate:0.0
+2016-11-17 14:41:25,825-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:2, error_rate:0.0
+2016-11-17 14:41:25,825-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:2, error_rate:0.0
+
+2016-11-17 15:24:32,901-stat.test_jcache_api-INFO-create_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-11-17 15:24:32,903-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-11-17 15:24:32,903-stat.test_jcache_api-INFO-redis_memsize_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-11-17 15:24:32,903-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-11-17 15:24:32,903-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-11-17 15:24:32,903-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:1, error_rate:0.0
+

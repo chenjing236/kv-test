@@ -1,0 +1,345 @@
+2016-09-18 20:04:53,697-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 20:04:53,707-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 20:04:54,003-utils.JCacheUtils-ERROR-create cluster: send create request failed! status:[403]
+2016-09-18 20:04:54,016-utils.JCacheUtils-INFO-process stat exit
+2016-09-18 20:04:54,016-stat.test_jcache_api-INFO-create_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-09-18 20:04:54,017-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:04:54,017-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:04:54,017-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:04:54,019-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-09-18 20:05:05,746-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 20:05:05,746-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 20:05:05,789-utils.JCacheUtils-ERROR-create cluster: send create request failed! status:[403]
+2016-09-18 20:05:05,790-utils.JCacheUtils-INFO-process stat exit
+2016-09-18 20:05:05,790-stat.test_jcache_api-INFO-create_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-09-18 20:05:05,790-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:05:05,790-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:05:05,792-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:05:05,792-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-09-18 20:05:22,778-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 20:05:22,778-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 20:05:22,823-utils.JCacheUtils-ERROR-create cluster: send create request failed! status:[403]
+2016-09-18 20:05:22,823-utils.JCacheUtils-INFO-process stat exit
+2016-09-18 20:05:22,825-stat.test_jcache_api-INFO-create_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-09-18 20:05:22,825-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:05:22,825-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:05:22,825-stat.test_jcache_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-09-18 20:05:22,825-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-09-18 20:25:11,243-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 20:25:11,243-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 20:25:11,313-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:11,329-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e9f74bf6-ba13-4036-b8e8-603bd77d5761', u'fail': 0, u'total': 1}
+2016-09-18 20:25:11,329-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:16,351-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'041ef0dd-d391-48a2-8668-049fff119333', u'fail': 0, u'total': 1}
+2016-09-18 20:25:16,351-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:21,371-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'3eb00057-5bfb-4709-8183-346d76f9fe51', u'fail': 0, u'total': 1}
+2016-09-18 20:25:21,371-utils.JCacheUtils-DEBUG-create cluster: retry_time:2, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:26,390-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'3c9317a1-f072-4d15-9084-2dbadbf7accc', u'fail': 0, u'total': 1}
+2016-09-18 20:25:26,390-utils.JCacheUtils-DEBUG-create cluster: retry_time:3, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:31,411-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'0a21d1dd-3920-4833-8409-ee67be961203', u'fail': 0, u'total': 1}
+2016-09-18 20:25:31,411-utils.JCacheUtils-DEBUG-create cluster: retry_time:4, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:36,456-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd4a66df5-723b-4b03-8b8f-cc968a8760c8', u'fail': 0, u'total': 1}
+2016-09-18 20:25:36,456-utils.JCacheUtils-DEBUG-create cluster: retry_time:5, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:41,477-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'892f8181-62ed-4649-b13d-8801921f79ca', u'fail': 0, u'total': 1}
+2016-09-18 20:25:41,479-utils.JCacheUtils-DEBUG-create cluster: retry_time:6, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:46,496-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'ae7bc0f2-dd87-41f9-8429-f262163c3b45', u'fail': 0, u'total': 1}
+2016-09-18 20:25:46,496-utils.JCacheUtils-DEBUG-create cluster: retry_time:7, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:51,516-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'ca687a46-cd12-4b01-acdf-cfba82bed83d', u'fail': 0, u'total': 1}
+2016-09-18 20:25:51,516-utils.JCacheUtils-DEBUG-create cluster: retry_time:8, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:25:56,539-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'fe20c2f3-aed3-4b01-b70e-29659b0479a8', u'fail': 0, u'total': 1}
+2016-09-18 20:25:56,539-utils.JCacheUtils-DEBUG-create cluster: retry_time:9, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:01,558-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'61522cf0-a098-46d8-9344-8fee3af57cb5', u'fail': 0, u'total': 1}
+2016-09-18 20:26:01,559-utils.JCacheUtils-DEBUG-create cluster: retry_time:10, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:06,575-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'ca2cc268-6521-4f8a-b865-33308bb60620', u'fail': 0, u'total': 1}
+2016-09-18 20:26:06,576-utils.JCacheUtils-DEBUG-create cluster: retry_time:11, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:11,595-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'56600b19-d54f-4581-bcf9-5d2b7b63e18c', u'fail': 0, u'total': 1}
+2016-09-18 20:26:11,595-utils.JCacheUtils-DEBUG-create cluster: retry_time:12, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:16,614-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'930cb0bd-65a1-4f3d-ae61-7dcb380db281', u'fail': 0, u'total': 1}
+2016-09-18 20:26:16,614-utils.JCacheUtils-DEBUG-create cluster: retry_time:13, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:21,632-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'7d341dca-f80c-4350-8d35-d4ca472393bd', u'fail': 0, u'total': 1}
+2016-09-18 20:26:21,632-utils.JCacheUtils-DEBUG-create cluster: retry_time:14, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:26,660-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'34f8d47f-9866-41db-8ccc-525159d0be87', u'fail': 0, u'total': 1}
+2016-09-18 20:26:26,660-utils.JCacheUtils-DEBUG-create cluster: retry_time:15, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:31,711-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'4c130700-b859-45c0-b4a9-efa1c30999c6', u'fail': 0, u'total': 1}
+2016-09-18 20:26:31,713-utils.JCacheUtils-DEBUG-create cluster: retry_time:16, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:36,732-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'2ec3195f-3247-4354-848f-851ab7f75e34', u'fail': 0, u'total': 1}
+2016-09-18 20:26:36,732-utils.JCacheUtils-DEBUG-create cluster: retry_time:17, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:41,755-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'052f3a4d-7b5a-4c2b-9663-e4c9a578ac52', u'fail': 0, u'total': 1}
+2016-09-18 20:26:41,756-utils.JCacheUtils-DEBUG-create cluster: retry_time:18, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:46,776-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'f82ecb38-62f1-4e84-9384-3954827a8694', u'fail': 0, u'total': 1}
+2016-09-18 20:26:46,776-utils.JCacheUtils-DEBUG-create cluster: retry_time:19, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:51,795-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'b261251a-46a2-4d6a-94b5-fe0d3c7597e7', u'fail': 0, u'total': 1}
+2016-09-18 20:26:51,795-utils.JCacheUtils-DEBUG-create cluster: retry_time:20, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:26:56,813-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e7b30be5-75af-4998-8f18-d25312573a87', u'fail': 0, u'total': 1}
+2016-09-18 20:26:56,813-utils.JCacheUtils-DEBUG-create cluster: retry_time:21, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:01,842-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'9b1e1a08-a0a3-4825-ad5e-974129fd5eef', u'fail': 0, u'total': 1}
+2016-09-18 20:27:01,842-utils.JCacheUtils-DEBUG-create cluster: retry_time:22, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:06,865-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'4b307efc-7bde-40f5-8e09-db85b80a8bba', u'fail': 0, u'total': 1}
+2016-09-18 20:27:06,867-utils.JCacheUtils-DEBUG-create cluster: retry_time:23, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:11,933-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'52f0a136-9376-43b2-9ad6-ae6533f981eb', u'fail': 0, u'total': 1}
+2016-09-18 20:27:11,933-utils.JCacheUtils-DEBUG-create cluster: retry_time:24, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:16,950-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'9fd28b52-60b8-4e3e-abb0-150fb2124a15', u'fail': 0, u'total': 1}
+2016-09-18 20:27:16,950-utils.JCacheUtils-DEBUG-create cluster: retry_time:25, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:21,973-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'97b7f346-b02f-4d14-bf3a-57293e0ab493', u'fail': 0, u'total': 1}
+2016-09-18 20:27:21,973-utils.JCacheUtils-DEBUG-create cluster: retry_time:26, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:26,992-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'223053b1-ab01-4034-8e5a-19d6f3ce636c', u'fail': 0, u'total': 1}
+2016-09-18 20:27:26,992-utils.JCacheUtils-DEBUG-create cluster: retry_time:27, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:32,013-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'4f0c8bc1-35aa-47c5-8977-045adf9f6a7f', u'fail': 0, u'total': 1}
+2016-09-18 20:27:32,013-utils.JCacheUtils-DEBUG-create cluster: retry_time:28, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:37,032-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'4b94233f-784a-4c79-b97a-283c067c9448', u'fail': 0, u'total': 1}
+2016-09-18 20:27:37,032-utils.JCacheUtils-DEBUG-create cluster: retry_time:29, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:27:42,049-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'b3b22d7b-afc5-41e2-a736-9b7cb8e4b390', u'fail': 0, u'total': 1}
+2016-09-18 20:27:42,049-utils.JCacheUtils-DEBUG-create cluster: retry_time:30, creating cluster, requestId=6b6e0123-0fc8-463c-9adc-2e54c97bd52d
+2016-09-18 20:33:35,279-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 20:33:35,279-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 20:33:35,345-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:33:35,361-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd986de5b-a020-4918-8477-c5cedab80202', u'fail': 0, u'total': 1}
+2016-09-18 20:33:35,361-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:33:40,377-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'6668d7f0-dc0e-4a8a-8b14-7294a03e7433', u'fail': 0, u'total': 1}
+2016-09-18 20:33:40,377-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:33:45,436-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'2e4328d8-84c9-4639-991d-bd62bc0135dd', u'fail': 0, u'total': 1}
+2016-09-18 20:33:45,437-utils.JCacheUtils-DEBUG-create cluster: retry_time:2, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:33:53,575-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'13b6aefe-57eb-4a39-994a-45a36b40bf32', u'fail': 0, u'total': 1}
+2016-09-18 20:33:53,575-utils.JCacheUtils-DEBUG-create cluster: retry_time:3, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:33:58,592-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'742efab2-79fe-4da0-91f5-910dad74a403', u'fail': 0, u'total': 1}
+2016-09-18 20:33:58,592-utils.JCacheUtils-DEBUG-create cluster: retry_time:4, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:03,621-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'50940fc3-7412-4533-b78a-a575483eb364', u'fail': 0, u'total': 1}
+2016-09-18 20:34:03,621-utils.JCacheUtils-DEBUG-create cluster: retry_time:5, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:08,644-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'2c2b7b42-c91f-4ee7-bd61-9b16b1382b0f', u'fail': 0, u'total': 1}
+2016-09-18 20:34:08,644-utils.JCacheUtils-DEBUG-create cluster: retry_time:6, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:13,670-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a15bff9d-5dfe-4ed0-9f30-298687c20bb1', u'fail': 0, u'total': 1}
+2016-09-18 20:34:13,670-utils.JCacheUtils-DEBUG-create cluster: retry_time:7, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:18,687-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'0e7b91ba-73db-4dd4-8c64-bd09a87b2713', u'fail': 0, u'total': 1}
+2016-09-18 20:34:18,687-utils.JCacheUtils-DEBUG-create cluster: retry_time:8, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:23,701-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5de74d36-d796-48f9-819e-a9939b3854e6', u'fail': 0, u'total': 1}
+2016-09-18 20:34:23,701-utils.JCacheUtils-DEBUG-create cluster: retry_time:9, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:28,721-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'91ed7de2-bc99-4d98-b4e7-1e6d7f826d0d', u'fail': 0, u'total': 1}
+2016-09-18 20:34:28,723-utils.JCacheUtils-DEBUG-create cluster: retry_time:10, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:33,740-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'6a72121d-6390-4b54-b4d3-caf18c7e4da4', u'fail': 0, u'total': 1}
+2016-09-18 20:34:33,740-utils.JCacheUtils-DEBUG-create cluster: retry_time:11, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:38,759-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'58ecc7cb-ed1f-4a7d-81b1-04e09fbf85c3', u'fail': 0, u'total': 1}
+2016-09-18 20:34:38,759-utils.JCacheUtils-DEBUG-create cluster: retry_time:12, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:43,778-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'676e58c5-8750-4782-ac60-5d4fcce3b400', u'fail': 0, u'total': 1}
+2016-09-18 20:34:43,778-utils.JCacheUtils-DEBUG-create cluster: retry_time:13, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:48,809-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'f4f9e650-4f5a-4246-8b18-bd523cde4a76', u'fail': 0, u'total': 1}
+2016-09-18 20:34:48,809-utils.JCacheUtils-DEBUG-create cluster: retry_time:14, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:53,826-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'9278f1ca-6e08-46a1-b231-236ad8b31bc4', u'fail': 0, u'total': 1}
+2016-09-18 20:34:53,826-utils.JCacheUtils-DEBUG-create cluster: retry_time:15, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:34:58,844-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'bb19f451-7300-4728-8810-1e4c0c5fab79', u'fail': 0, u'total': 1}
+2016-09-18 20:34:58,844-utils.JCacheUtils-DEBUG-create cluster: retry_time:16, creating cluster, requestId=eb3ceeef-ea35-48fe-ad51-96321deed85e
+2016-09-18 20:35:03,868-utils.JCacheUtils-DEBUG-{u'success': 1, u'inProcess': 0, u'resourceIds': [u'7523d62c-4db7-4c36-b59b-bca0563960c1'], u'requestId': u'9c53b89a-76f6-432b-b852-532a5542bd11', u'fail': 0, u'total': 1}
+2016-09-18 20:35:03,868-utils.JCacheUtils-INFO-create cluster: send query cluster id request success! space_id=7523d62c-4db7-4c36-b59b-bca0563960c1
+2016-09-18 20:35:03,903-utils.JCacheUtils-INFO-create cluster:[7523d62c-4db7-4c36-b59b-bca0563960c1] success!
+2016-09-18 20:35:03,903-utils.JCacheUtils-INFO-get cluster: start check get cluster
+2016-09-18 20:35:03,931-utils.JCacheUtils-INFO-get cluster: get cluster request success!
+2016-09-18 20:35:03,931-utils.JCacheUtils-INFO-get cluster: [7523d62c-4db7-4c36-b59b-bca0563960c1] success
+2016-09-18 20:35:03,931-utils.JCacheUtils-INFO-get clusters: start check get clusters
+2016-09-18 20:35:03,980-utils.JCacheUtils-INFO-get clusters: get clusters request success!
+2016-09-18 20:35:03,982-utils.JCacheUtils-INFO-get clusters success
+2016-09-18 20:35:03,982-utils.JCacheUtils-INFO-check acl: start check acl
+2016-09-18 20:35:04,043-utils.JCacheUtils-ERROR-check acl: get acl failed, ips is null! space_id[7523d62c-4db7-4c36-b59b-bca0563960c1]
+2016-09-18 20:37:09,052-utils.JCacheUtils-INFO-delete cluster: start delete cluster
+2016-09-18 20:37:09,138-utils.JCacheUtils-DEBUG-delete cluster: retry_time:0, space:(status:100, capacity:1, name:name_9768_1, remarks:remarks_9768_1)
+2016-09-18 20:37:14,173-utils.JCacheUtils-DEBUG-delete cluster: retry_time:1, space:(status:600, capacity:1, name:name_9768_1, remarks:remarks_9768_1)
+2016-09-18 20:37:19,204-utils.JCacheUtils-DEBUG-delete cluster: retry_time:2, space:(status:600, capacity:1, name:name_9768_1, remarks:remarks_9768_1)
+2016-09-18 20:37:24,233-utils.JCacheUtils-INFO-delete cluster: test delete cluster:7523d62c-4db7-4c36-b59b-bca0563960c1 success
+2016-09-18 20:37:24,234-utils.JCacheUtils-INFO-process stat exit
+2016-09-18 20:37:24,234-stat.test_jcache_api-INFO-create_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-18 20:37:24,234-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-18 20:37:24,236-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-18 20:37:24,236-stat.test_jcache_api-INFO-acl_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-09-18 20:37:24,236-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:1, error_rate:0.0
+
+2016-09-18 21:00:58,904-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 21:00:58,905-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 21:00:59,112-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:00:59,331-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'489eb56e-840d-4dc4-890b-f4af22bb5707', u'fail': 0, u'total': 1}
+2016-09-18 21:00:59,331-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:05,582-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'b4c413f4-de9f-476d-b517-a5c967f614cf', u'fail': 0, u'total': 1}
+2016-09-18 21:01:05,582-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:10,608-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a278aac7-c8d7-4246-8168-a9fa311a1932', u'fail': 0, u'total': 1}
+2016-09-18 21:01:10,608-utils.JCacheUtils-DEBUG-create cluster: retry_time:2, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:15,642-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd6d20b92-8afe-4ce9-b818-d0aa318c5f60', u'fail': 0, u'total': 1}
+2016-09-18 21:01:15,642-utils.JCacheUtils-DEBUG-create cluster: retry_time:3, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:20,684-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'479b966a-ace3-47c9-96e2-c0dd8484551d', u'fail': 0, u'total': 1}
+2016-09-18 21:01:20,684-utils.JCacheUtils-DEBUG-create cluster: retry_time:4, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:25,720-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'cf23012a-0724-462a-8d68-1cfe9bb248fa', u'fail': 0, u'total': 1}
+2016-09-18 21:01:25,720-utils.JCacheUtils-DEBUG-create cluster: retry_time:5, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:33,744-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'357e5b9e-5fdf-43aa-8520-75f13915773c', u'fail': 0, u'total': 1}
+2016-09-18 21:01:33,744-utils.JCacheUtils-DEBUG-create cluster: retry_time:6, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:38,770-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'b5cdeb2e-0778-41f3-a45e-6c83f39f51b7', u'fail': 0, u'total': 1}
+2016-09-18 21:01:38,770-utils.JCacheUtils-DEBUG-create cluster: retry_time:7, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:43,838-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'65ddfc0b-5124-40ca-bd12-fd821928b4c7', u'fail': 0, u'total': 1}
+2016-09-18 21:01:43,838-utils.JCacheUtils-DEBUG-create cluster: retry_time:8, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:48,871-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'cb5cf7db-0395-4cc1-bedd-c8e88ccb3f80', u'fail': 0, u'total': 1}
+2016-09-18 21:01:48,871-utils.JCacheUtils-DEBUG-create cluster: retry_time:9, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:53,926-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'c3e74b2f-0e73-44fc-90ba-b91f04f5bb61', u'fail': 0, u'total': 1}
+2016-09-18 21:01:53,926-utils.JCacheUtils-DEBUG-create cluster: retry_time:10, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:01:58,960-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'1042df07-21c1-4aed-a4eb-877087e51e61', u'fail': 0, u'total': 1}
+2016-09-18 21:01:58,960-utils.JCacheUtils-DEBUG-create cluster: retry_time:11, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:03,990-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'0e9d5455-f82c-4ead-bdb8-fa79a4f09955', u'fail': 0, u'total': 1}
+2016-09-18 21:02:03,990-utils.JCacheUtils-DEBUG-create cluster: retry_time:12, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:09,019-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'1a518b6e-6cb8-46d4-a702-689aaa623fd1', u'fail': 0, u'total': 1}
+2016-09-18 21:02:09,019-utils.JCacheUtils-DEBUG-create cluster: retry_time:13, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:14,052-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'37a48633-e2f0-4b4d-9a2c-8291c863599c', u'fail': 0, u'total': 1}
+2016-09-18 21:02:14,052-utils.JCacheUtils-DEBUG-create cluster: retry_time:14, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:19,076-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a89418ac-d447-41c3-8610-6fe6258ede8b', u'fail': 0, u'total': 1}
+2016-09-18 21:02:19,076-utils.JCacheUtils-DEBUG-create cluster: retry_time:15, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:24,124-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'15eda4df-3cb8-4c44-8046-d4f078b97260', u'fail': 0, u'total': 1}
+2016-09-18 21:02:24,124-utils.JCacheUtils-DEBUG-create cluster: retry_time:16, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:29,158-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'63753b36-9fe4-401d-9af7-f2279186778f', u'fail': 0, u'total': 1}
+2016-09-18 21:02:29,158-utils.JCacheUtils-DEBUG-create cluster: retry_time:17, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:34,191-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e99ff5bb-b8e9-4b91-aaca-153aef163d3e', u'fail': 0, u'total': 1}
+2016-09-18 21:02:34,193-utils.JCacheUtils-DEBUG-create cluster: retry_time:18, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:39,223-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd1c49460-67a0-4ca8-95b2-56f2c09e6fa5', u'fail': 0, u'total': 1}
+2016-09-18 21:02:39,223-utils.JCacheUtils-DEBUG-create cluster: retry_time:19, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:44,250-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'018c1f3a-9b43-4535-8fea-190f8d866cf9', u'fail': 0, u'total': 1}
+2016-09-18 21:02:44,250-utils.JCacheUtils-DEBUG-create cluster: retry_time:20, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:49,279-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e8705e07-d076-4409-b6f6-f9fa51e319da', u'fail': 0, u'total': 1}
+2016-09-18 21:02:49,279-utils.JCacheUtils-DEBUG-create cluster: retry_time:21, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:54,313-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'513ed583-c4c5-4f0d-9233-0de6f7400434', u'fail': 0, u'total': 1}
+2016-09-18 21:02:54,315-utils.JCacheUtils-DEBUG-create cluster: retry_time:22, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:02:59,338-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'41a966e6-503a-4544-97d9-6ab661312b72', u'fail': 0, u'total': 1}
+2016-09-18 21:02:59,338-utils.JCacheUtils-DEBUG-create cluster: retry_time:23, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:04,368-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'df514760-7aaa-42ad-9660-20046b3f048e', u'fail': 0, u'total': 1}
+2016-09-18 21:03:04,368-utils.JCacheUtils-DEBUG-create cluster: retry_time:24, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:09,395-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'05243f27-5551-4278-b237-2301563de876', u'fail': 0, u'total': 1}
+2016-09-18 21:03:09,397-utils.JCacheUtils-DEBUG-create cluster: retry_time:25, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:14,424-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e46c8955-1d52-4867-af79-ff29c755720f', u'fail': 0, u'total': 1}
+2016-09-18 21:03:14,424-utils.JCacheUtils-DEBUG-create cluster: retry_time:26, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:19,474-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5caf360a-f795-4c39-90a6-4cf990bc3cb9', u'fail': 0, u'total': 1}
+2016-09-18 21:03:19,474-utils.JCacheUtils-DEBUG-create cluster: retry_time:27, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:24,499-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a100c36d-e4ee-463b-a45f-7ce2365a3cd3', u'fail': 0, u'total': 1}
+2016-09-18 21:03:24,499-utils.JCacheUtils-DEBUG-create cluster: retry_time:28, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:29,523-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'0889b40e-d8d5-4f88-83c5-790d9fc68590', u'fail': 0, u'total': 1}
+2016-09-18 21:03:29,523-utils.JCacheUtils-DEBUG-create cluster: retry_time:29, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:03:34,546-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'7510c4ab-9917-4079-b5d9-c9c564babf3d', u'fail': 0, u'total': 1}
+2016-09-18 21:03:34,546-utils.JCacheUtils-DEBUG-create cluster: retry_time:30, creating cluster, requestId=0d6ed2f8-5916-450a-bba8-fd2327a0efc3
+2016-09-18 21:05:17,976-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 21:05:17,976-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 21:05:18,055-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:18,073-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5e5aeac8-a01f-432e-8538-348d3dddcc23', u'fail': 0, u'total': 1}
+2016-09-18 21:05:18,073-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:23,101-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e06a95a7-ce7a-47c0-9cda-c5cac6e5dd9c', u'fail': 0, u'total': 1}
+2016-09-18 21:05:23,101-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:28,125-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd454ebb6-1b56-4ddb-8b4d-309079a79a87', u'fail': 0, u'total': 1}
+2016-09-18 21:05:28,125-utils.JCacheUtils-DEBUG-create cluster: retry_time:2, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:33,186-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd2cf9ed7-6ce1-4109-b5bb-b70b56fcba85', u'fail': 0, u'total': 1}
+2016-09-18 21:05:33,186-utils.JCacheUtils-DEBUG-create cluster: retry_time:3, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:38,229-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'7940f5af-b5fb-4422-8c9b-a998402943df', u'fail': 0, u'total': 1}
+2016-09-18 21:05:38,229-utils.JCacheUtils-DEBUG-create cluster: retry_time:4, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:43,280-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'42b9e18b-2dc1-4d05-93b6-cc512e37d75d', u'fail': 0, u'total': 1}
+2016-09-18 21:05:43,280-utils.JCacheUtils-DEBUG-create cluster: retry_time:5, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:48,305-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'fb669028-f60e-4944-8a2a-844eb9bb6ed4', u'fail': 0, u'total': 1}
+2016-09-18 21:05:48,305-utils.JCacheUtils-DEBUG-create cluster: retry_time:6, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:53,331-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'988434bd-66e2-460f-9f15-2abe2fec264e', u'fail': 0, u'total': 1}
+2016-09-18 21:05:53,331-utils.JCacheUtils-DEBUG-create cluster: retry_time:7, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:05:58,352-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5ca68e1b-45a9-43b2-814a-e2e678ed1545', u'fail': 0, u'total': 1}
+2016-09-18 21:05:58,352-utils.JCacheUtils-DEBUG-create cluster: retry_time:8, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:03,375-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e00ad79b-d613-4a87-a8c8-d3de71c2d7fd', u'fail': 0, u'total': 1}
+2016-09-18 21:06:03,375-utils.JCacheUtils-DEBUG-create cluster: retry_time:9, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:08,394-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'e1ea3d2a-ffc8-4caa-8620-4d7cb6b809e9', u'fail': 0, u'total': 1}
+2016-09-18 21:06:08,394-utils.JCacheUtils-DEBUG-create cluster: retry_time:10, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:13,447-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'7e11ff53-e804-4ed9-9c44-fa46b9c23d0d', u'fail': 0, u'total': 1}
+2016-09-18 21:06:13,447-utils.JCacheUtils-DEBUG-create cluster: retry_time:11, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:18,470-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'43b333d2-41da-445e-95f6-836dd1a05c3a', u'fail': 0, u'total': 1}
+2016-09-18 21:06:18,470-utils.JCacheUtils-DEBUG-create cluster: retry_time:12, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:23,492-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'491f3d18-d900-4abd-be6e-d666b73af439', u'fail': 0, u'total': 1}
+2016-09-18 21:06:23,492-utils.JCacheUtils-DEBUG-create cluster: retry_time:13, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:28,510-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'01c3343d-ce19-4ef1-b1fc-2973bd62a965', u'fail': 0, u'total': 1}
+2016-09-18 21:06:28,510-utils.JCacheUtils-DEBUG-create cluster: retry_time:14, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:33,575-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'ab9374ff-7499-4a24-ab14-1ffdeb4db488', u'fail': 0, u'total': 1}
+2016-09-18 21:06:33,575-utils.JCacheUtils-DEBUG-create cluster: retry_time:15, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:38,594-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'4e959efd-89f2-4ec2-b427-8c6899c95cb7', u'fail': 0, u'total': 1}
+2016-09-18 21:06:38,594-utils.JCacheUtils-DEBUG-create cluster: retry_time:16, creating cluster, requestId=91c2c9a3-fea8-49c0-ae28-711aef1b41a8
+2016-09-18 21:06:43,615-utils.JCacheUtils-DEBUG-{u'success': 1, u'inProcess': 0, u'resourceIds': [u'89d6fc00-7dcd-4304-a314-dcbfd2646d08'], u'requestId': u'5e602fed-b071-43b7-8bed-f7071007dcba', u'fail': 0, u'total': 1}
+2016-09-18 21:06:43,615-utils.JCacheUtils-INFO-create cluster: send query cluster id request success! space_id=89d6fc00-7dcd-4304-a314-dcbfd2646d08
+2016-09-18 21:06:43,703-utils.JCacheUtils-INFO-create cluster:[89d6fc00-7dcd-4304-a314-dcbfd2646d08] success!
+2016-09-18 21:06:43,703-utils.JCacheUtils-INFO-get cluster: start check get cluster
+2016-09-18 21:06:43,736-utils.JCacheUtils-INFO-get cluster: get cluster request success!
+2016-09-18 21:06:43,736-utils.JCacheUtils-INFO-get cluster: [89d6fc00-7dcd-4304-a314-dcbfd2646d08] success
+2016-09-18 21:06:43,736-utils.JCacheUtils-INFO-get clusters: start check get clusters
+2016-09-18 21:06:43,799-utils.JCacheUtils-INFO-get clusters: get clusters request success!
+2016-09-18 21:06:43,799-utils.JCacheUtils-INFO-get clusters success
+2016-09-18 21:06:43,799-utils.JCacheUtils-INFO-check acl: start check acl
+2016-09-18 21:06:43,857-utils.JCacheUtils-ERROR-check acl: get acl failed, ips is null! space_id[89d6fc00-7dcd-4304-a314-dcbfd2646d08]
+2016-09-18 21:09:48,865-utils.JCacheUtils-INFO-delete cluster: start delete cluster
+2016-09-18 21:18:39,808-utils.JCacheUtils-INFO-
+--Start the 1 times run ----------------------------------------------------------------------
+2016-09-18 21:18:39,808-utils.JCacheUtils-INFO-create cluster: start create cluster
+2016-09-18 21:18:40,002-utils.JCacheUtils-INFO-create cluster: send create request success! request_id=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:18:40,045-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'8f351422-a831-442c-9f13-ba38b201d4f3', u'fail': 0, u'total': 1}
+2016-09-18 21:18:40,046-utils.JCacheUtils-DEBUG-create cluster: retry_time:0, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:18:45,062-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'3d0a9377-93a7-4ab4-bacd-bb669b6fb17c', u'fail': 0, u'total': 1}
+2016-09-18 21:18:45,063-utils.JCacheUtils-DEBUG-create cluster: retry_time:1, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:18:50,082-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'1c3e04c3-e577-4c09-91cd-0fa650cb4a6f', u'fail': 0, u'total': 1}
+2016-09-18 21:18:50,082-utils.JCacheUtils-DEBUG-create cluster: retry_time:2, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:18:55,101-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'738a01af-9867-4df2-b75e-4beedefa190b', u'fail': 0, u'total': 1}
+2016-09-18 21:18:55,101-utils.JCacheUtils-DEBUG-create cluster: retry_time:3, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:00,119-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a45d3bbd-d7f5-4d23-b92c-d5c922e87a3a', u'fail': 0, u'total': 1}
+2016-09-18 21:19:00,119-utils.JCacheUtils-DEBUG-create cluster: retry_time:4, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:05,138-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'83b291ec-f257-47eb-93a2-de27624c1c2d', u'fail': 0, u'total': 1}
+2016-09-18 21:19:05,138-utils.JCacheUtils-DEBUG-create cluster: retry_time:5, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:10,164-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'083c5a89-49cb-46af-a144-c748b8c5eb36', u'fail': 0, u'total': 1}
+2016-09-18 21:19:10,164-utils.JCacheUtils-DEBUG-create cluster: retry_time:6, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:15,184-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'23bebec8-9337-4ab8-8850-3b1574a48677', u'fail': 0, u'total': 1}
+2016-09-18 21:19:15,184-utils.JCacheUtils-DEBUG-create cluster: retry_time:7, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:20,203-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'd9dcda82-5831-4224-bbf2-170afa969893', u'fail': 0, u'total': 1}
+2016-09-18 21:19:20,203-utils.JCacheUtils-DEBUG-create cluster: retry_time:8, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:25,223-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'28efe3b0-3d7a-41aa-913b-ff649cffa302', u'fail': 0, u'total': 1}
+2016-09-18 21:19:25,223-utils.JCacheUtils-DEBUG-create cluster: retry_time:9, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:30,244-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'a2da3354-fe27-47f5-93e4-6ee489aa22a7', u'fail': 0, u'total': 1}
+2016-09-18 21:19:30,244-utils.JCacheUtils-DEBUG-create cluster: retry_time:10, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:35,265-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'5f50df60-a9e9-407d-991c-0cd56bff9568', u'fail': 0, u'total': 1}
+2016-09-18 21:19:35,265-utils.JCacheUtils-DEBUG-create cluster: retry_time:11, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:40,285-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'bc1201cc-e489-4675-ac20-e89460a957e4', u'fail': 0, u'total': 1}
+2016-09-18 21:19:40,285-utils.JCacheUtils-DEBUG-create cluster: retry_time:12, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:45,309-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'c580b252-c87c-4958-b716-170eb84a129a', u'fail': 0, u'total': 1}
+2016-09-18 21:19:45,309-utils.JCacheUtils-DEBUG-create cluster: retry_time:13, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:50,348-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'1b7202bc-9fc6-41d5-adb5-1cb4274545a6', u'fail': 0, u'total': 1}
+2016-09-18 21:19:50,348-utils.JCacheUtils-DEBUG-create cluster: retry_time:14, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:19:55,368-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'13972504-76bf-46be-9116-164734a3c355', u'fail': 0, u'total': 1}
+2016-09-18 21:19:55,368-utils.JCacheUtils-DEBUG-create cluster: retry_time:15, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:20:00,391-utils.JCacheUtils-DEBUG-{u'success': 0, u'inProcess': 1, u'resourceIds': None, u'requestId': u'dc6cfbf4-fb22-4b7c-aea6-957ea17c6b9f', u'fail': 0, u'total': 1}
+2016-09-18 21:20:00,391-utils.JCacheUtils-DEBUG-create cluster: retry_time:16, creating cluster, requestId=b598cbec-4363-473c-a01f-f0869b93471e
+2016-09-18 21:20:05,411-utils.JCacheUtils-DEBUG-{u'success': 1, u'inProcess': 0, u'resourceIds': [u'195d649f-1997-4204-9518-6d5f458d329d'], u'requestId': u'ceefdb25-23c2-4f59-8dc6-5a0242fb6b4b', u'fail': 0, u'total': 1}
+2016-09-18 21:20:05,411-utils.JCacheUtils-INFO-create cluster: send query cluster id request success! space_id=195d649f-1997-4204-9518-6d5f458d329d
+2016-09-18 21:20:05,503-utils.JCacheUtils-INFO-create cluster:[195d649f-1997-4204-9518-6d5f458d329d] success!
+2016-09-18 21:20:05,505-utils.JCacheUtils-INFO-get cluster: start check get cluster
+2016-09-18 21:20:05,539-utils.JCacheUtils-INFO-get cluster: get cluster request success!
+2016-09-18 21:20:05,539-utils.JCacheUtils-INFO-get cluster: [195d649f-1997-4204-9518-6d5f458d329d] success
+2016-09-18 21:20:05,539-docker.auth.auth-DEBUG-File doesn't exist
+2016-09-18 21:20:05,651-requests.packages.urllib3.connectionpool-INFO-Starting new HTTP connection (1): 192.168.171.39
+2016-09-18 21:20:05,667-requests.packages.urllib3.connectionpool-DEBUG-"GET /v1.19/containers/json?all=1&limit=-1&filters=%7B%22name%22%3A+%5B%22192.168.171.39_6503%22%5D%7D&trunc_cmd=0&size=0 HTTP/1.1" 200 407
+2016-09-18 21:20:05,688-requests.packages.urllib3.connectionpool-DEBUG-"GET /v1.19/containers/192.168.171.39_6503/json HTTP/1.1" 200 None
+2016-09-18 21:20:05,691-docker.auth.auth-DEBUG-File doesn't exist
+2016-09-18 21:20:05,693-requests.packages.urllib3.connectionpool-INFO-Starting new HTTP connection (1): 192.168.172.68
+2016-09-18 21:20:05,710-requests.packages.urllib3.connectionpool-DEBUG-"GET /v1.19/containers/json?all=1&limit=-1&filters=%7B%22name%22%3A+%5B%22192.168.172.68_6503%22%5D%7D&trunc_cmd=0&size=0 HTTP/1.1" 200 412
+2016-09-18 21:20:05,717-requests.packages.urllib3.connectionpool-DEBUG-"GET /v1.19/containers/192.168.172.68_6503/json HTTP/1.1" 200 None
+2016-09-18 21:20:05,723-utils.JCacheUtils-INFO-get clusters: start check get clusters
+2016-09-18 21:20:05,811-utils.JCacheUtils-INFO-get clusters: get clusters request success!
+2016-09-18 21:20:05,811-utils.JCacheUtils-INFO-get clusters success
+2016-09-18 21:20:05,811-utils.JCacheUtils-INFO-check acl: start check acl
+2016-09-18 21:20:05,892-utils.JCacheUtils-ERROR-check acl: get acl failed, ips is null! space_id[195d649f-1997-4204-9518-6d5f458d329d]
+2016-09-18 21:23:10,887-utils.JCacheUtils-INFO-delete cluster: start delete cluster
+2016-09-18 21:23:11,053-utils.JCacheUtils-DEBUG-delete cluster: retry_time:0, space:(status:100, capacity:1, name:name_11320_1, remarks:remarks_11320_1)
+2016-09-18 21:23:16,086-utils.JCacheUtils-DEBUG-delete cluster: retry_time:1, space:(status:600, capacity:1, name:name_11320_1, remarks:remarks_11320_1)
+2016-09-18 21:23:21,119-utils.JCacheUtils-DEBUG-delete cluster: retry_time:2, space:(status:600, capacity:1, name:name_11320_1, remarks:remarks_11320_1)
+2016-09-18 21:23:27,380-utils.JCacheUtils-INFO-delete cluster: test delete cluster:195d649f-1997-4204-9518-6d5f458d329d success
+2016-09-18 21:23:27,381-utils.JCacheUtils-INFO-process stat exit
+2016-09-18 21:23:27,381-stat.test_jcache_api-INFO-create_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-18 21:23:27,381-stat.test_jcache_api-INFO-get_cluster_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-18 21:23:27,381-stat.test_jcache_api-INFO-get_clusters_stat result:fail_num:0, total_num:1, error_rate:0.0
+2016-09-18 21:23:27,381-stat.test_jcache_api-INFO-acl_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-09-18 21:23:27,381-stat.test_jcache_api-INFO-delete_stat result:fail_num:0, total_num:1, error_rate:0.0
+

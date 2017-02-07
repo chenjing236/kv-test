@@ -1,0 +1,14 @@
+2016-10-04 22:41:08,983-stat.test_jmiss_api-INFO-create_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-10-04 22:41:08,983-stat.test_jmiss_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:41:08,984-stat.test_jmiss_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:41:08,984-stat.test_jmiss_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:41:08,984-stat.test_jmiss_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:41:08,984-stat.test_jmiss_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
+2016-10-04 22:53:47,568-stat.test_jmiss_api-INFO-create_stat result:fail_num:1, total_num:1, error_rate:1.0
+2016-10-04 22:53:47,568-stat.test_jmiss_api-INFO-get_cluster_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:53:47,569-stat.test_jmiss_api-INFO-redis_memsize_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:53:47,569-stat.test_jmiss_api-INFO-get_clusters_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:53:47,569-stat.test_jmiss_api-INFO-acl_stat result:fail_num:0, total_num:0, error_rate:0.0
+2016-10-04 22:53:47,569-stat.test_jmiss_api-INFO-delete_stat result:fail_num:0, total_num:0, error_rate:0.0
+
