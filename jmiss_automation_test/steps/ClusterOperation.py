@@ -24,6 +24,20 @@ def create_instance_step(instance):
     space_id = attach["spaceId"]
     return space_id
 
+
+# 创建设置密码参数的缓存云实例，返回缓存云实例的space_id
+def create_instance_with_password_step(instance, password):
+    res_data = instance.create_instance_with_password(password)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to create an instance, error message is {0}".format(msg)
+    attach = res_data["attach"]
+    if attach is None or attach is "":
+        logger_info.error("[ERROR] Response of creating an instance is incorrect")
+        assert False, "[ERROR] Response of creating an instance is incorrect"
+    space_id = attach["spaceId"]
+    return space_id
+
 #获取创建后的缓存云实例的信息
 def get_detail_info_of_instance_step(instance, space_id):
     res_data = instance.get_instance_info(space_id)
@@ -171,7 +185,7 @@ def get_key_from_ap_step(ap_host, ap_port, password, key):
     return value_from_ap
 
 #执行failover操作
-def run_failover_container(space_id, containerIp, containerPort, docker_client, cfs_client, retry_times, wait_time):
+def run_failover_container(space_id, containerIp, containerPort, docker_client, cfs_client, retry_times, wait_time, failover_type=1):
     #查询CFS的redis，查看epoch的值
     if cfs_client == None:
         assert False, "[ERROR] CFS client is not initialed"
@@ -187,10 +201,11 @@ def run_failover_container(space_id, containerIp, containerPort, docker_client, 
         assert False, "[ERROR] Cannot get topology information from cfs"
     epoch_new = res_data["epoch"]
 
-    count = 0;
-    while epoch_new == epoch_origin and count <  retry_times:
+    count = 0
+    # failover_type=2:master failover;failover_type=1:slave failover
+    while epoch_new != epoch_origin + failover_type and count < retry_times:
         res_data = cfs_client.get_meta(space_id)
-        if res_data == None:
+        if res_data is None:
             assert False, "[ERROR] Cannot get topology information from cfs"
         epoch_new = res_data["epoch"]
         count += 1
@@ -211,8 +226,8 @@ def run_failover_container_step(instance, cfs_client, container, space_id, maste
     return is_failover, master_ip_new, master_port_new, slaveIp_new, slavePort_new
 
 
-def run_failover_container_of_cluster_step(instance, cfs_client, container, space_id, masterIp, masterPort, retry_times, wait_time):
-    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time)
+def run_failover_container_of_cluster_step(instance, cfs_client, container, space_id, failover_type, masterIp, masterPort, retry_times, wait_time):
+    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time, failover_type)
     assert is_failover is True, "[ERROR] It is failed to run master failover"
     print "[INFO] It is successful to run master failover"
     res_data = cfs_client.get_meta(space_id)
@@ -222,3 +237,32 @@ def run_failover_container_of_cluster_step(instance, cfs_client, container, spac
     master_ip_new, master_port_new, slave_ip_new, slave_port_new = cfs_client.get_topology_from_cfs(currentTopology)
     return is_failover, master_ip_new, master_port_new, slave_ip_new, slave_port_new
 
+
+def reset_password_step(instance, space_id, password):
+    res_data = instance.reset_password(space_id, password)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of reset_password is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to reset password, error message is {0}".format(msg)
+
+
+def change_topology_json_to_list(shard_count, topology):
+    shards = []
+    for i in range(0, shard_count):
+        if 'shards' not in topology or topology['shards'] is None or len(topology['shards']) == 0 or 'master' not in topology['shards'][i]:
+            return None
+        else:
+            master = topology['shards'][i]['master']
+            master_ip = master['ip']
+            master_port = master['port']
+        if 'slaves' not in master or master['slaves'] is None or len(master['slaves']) == 0:
+            slave_ip = None
+            slave_port = None
+        else:
+            slave = master['slaves'][0]
+            slave_ip = slave['ip']
+            slave_port = slave['port']
+        shard = {"masterIp": master_ip, "masterPort": master_port, "slaveIp": slave_ip, "slavePort": slave_port}
+        shards.append(shard)
+    return shards

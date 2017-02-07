@@ -65,7 +65,7 @@ class CFS:
         shards = []
         for i in range(0, self.shard_count):
             if 'shards' not in tp or tp['shards'] is None or len(tp['shards']) == 0 or 'master' not in tp['shards'][i]:
-                return None, None, None, None
+                return None
             else:
                 master = tp['shards'][i]['master']
                 master_ip = master['ip']

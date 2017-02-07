@@ -26,11 +26,11 @@ class SQLClient(object):
     def get_space_status(self, space_id):
         '''
         :param space_id: space if
-        :return: (status,capacity,password,flag,tenant_id,remarks)
+        :return: (status,capacity,password,cluster_type,tenant_id,remarks)
         '''
-        print ", space_id[{0}]".format(space_id)
+        print "get space info of space [{0}] from mysql".format(space_id)
         self.init_cursor()
-        sql = "select status,capacity,token,flag,tenant_id,name,remarks from space where space_id='{0}'".format(space_id)
+        sql = "select status,capacity,token,cluster_type,tenant_id,name,remarks from space where space_id='{0}'".format(space_id)
         n = self.cursor.execute(sql)
         if n < 1:
             return None
@@ -48,7 +48,7 @@ class SQLClient(object):
         '''
         print "begin to get instances, space_id:[{0}]".format(space_id)
         self.init_cursor()
-        sql = "select ip,port,copy_id,flag from instance where space_id='{0}'".format(space_id)
+        sql = "select ip,port,shard_id,copy_id from instance where space_id='{0}'".format(space_id)
         n = self.cursor.execute(sql)
         if n < 1:
             return None
@@ -64,6 +64,33 @@ class SQLClient(object):
         self.close_cursor()
         print "get instances success: [{0}]".format(json.dumps(ins))
         return ins
+
+    def get_instances_of_cluster(self, space_id, shard_count):
+        '''
+        :param space_id, shard_count:
+        :return: list[{masterIp, masterPort, slaveIp, slavePort}]
+        '''
+        print "begin to get instances of cluster, space_id:[{0}]".format(space_id)
+        self.init_cursor()
+        sql = "select ip,port,copy_id,shard_id from instance where space_id='{0}' order by shard_id asc".format(space_id)
+        n = self.cursor.execute(sql)
+        if n < 1:
+            return None
+        if n != shard_count * 2:
+            print "[ERROR] The count of instances ({0}) is wrong!".format(n)
+            return list(self.cursor.fetchall())
+        ins = list(self.cursor.fetchall())
+        instances = []
+        for i in range(0, shard_count):
+            if ins[2 * i][2] == 'm':
+                instances.append({"masterIp": ins[2 * i][0], "masterPort": ins[2 * i][1],
+                                  "slaveIp": ins[2 * i + 1][0], "slavePort": ins[2 * i + 1][1]})
+            else:
+                instances.append({"masterIp": ins[2 * i + 1][0], "masterPort": ins[2 * i + 1][1],
+                                  "slaveIp": ins[2 * i][0], "slavePort": ins[2 * i][1]})
+        self.close_cursor()
+        print "get instances success: [{0}]".format(instances)
+        return instances
 
     def get_acl(self, space_id):
         self.init_cursor()

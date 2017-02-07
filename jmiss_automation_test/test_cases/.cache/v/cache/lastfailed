@@ -1,0 +1,3 @@
+{
+  "cluster_cases/CreateClusterTestCases.py::TestSmokeCases::()::test_create_an_instance": true
+}

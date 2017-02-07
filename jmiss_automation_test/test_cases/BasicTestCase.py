@@ -1,6 +1,7 @@
 # coding:utf-8
 import pytest
 from utils.HttpClient import *
+from utils.SQLClient import *
 from utils.RedisClient import *
 from utils.util import *
 from business_function.Cluster import *
@@ -22,6 +23,13 @@ def docker_client(config):
     return docker_client
 
 @pytest.fixture(scope="class")
+def sql_client(config):
+    sql_client = SQLClient(config["mysql_host"], config["mysql_port"],
+                           config["mysql_user"], config["mysql_passwd"],
+                           config["mysql_db"])
+    return sql_client
+
+@pytest.fixture(scope="class")
 def created_instance(config, instance_data, http_client, request):
     print "\n[SETUP] Create an instance with a master container and a slave container"
     info_logger.info("[SETUP] Create an instance with a master container and a slave container")
@@ -31,8 +39,8 @@ def created_instance(config, instance_data, http_client, request):
     assert status == 100, "[ERROR] Instance {0} is inavialble".format(space_id)
 
     def teardown():
-        print "\n[TEARDONW] Delete the instance {0}".format(space_id)
-        info_logger.info("[TEARDONW] Delete the instance %s", space_id)
+        print "\n[TEARDOWN] Delete the instance {0}".format(space_id)
+        info_logger.info("[TEARDOWN] Delete the instance %s", space_id)
         instance.delete_instance(space_id)
 
     request.addfinalizer(teardown)

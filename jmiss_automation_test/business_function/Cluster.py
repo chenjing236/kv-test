@@ -50,6 +50,17 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 创建缓存云实例时设置密码
+    def create_instance_with_password(self, password):
+        data = {"spaceName": self.data_obj["spaceName"], "spaceType": self.data_obj["spaceType"],
+                "zoneId": self.data_obj["zoneId"], "capacity": self.data_obj["capacity"],
+                "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"], "password": password}
+        create_args = CreateArgs(data)
+        args_json = create_args.get_args_json()
+        status, headers, res_data = self.httpClient.create_cluster(args_json)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     #删除单实例缓存云实例
     def delete_instance(self, spaceId):
         status, headers, res_data = self.httpClient.delete_cluster(spaceId)
@@ -130,9 +141,14 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
-    #过去ACL访问规则
+    #获取ACL访问规则
     def get_acl(self, space_id):
         status, headers, res_data = self.httpClient.get_acl(space_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # reset password
+    def reset_password(self, space_id, password):
+        status, headers, res_data = self.httpClient.reset_password(space_id, password)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
