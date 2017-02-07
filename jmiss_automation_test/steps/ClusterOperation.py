@@ -111,7 +111,7 @@ def get_topology_of_cluster_from_cfs_step(cfs_client, space_id):
     shards = cfs_client.get_topology_of_cluster_from_cfs(currentTopology)
     return shards
 
-def get_container_memory_size(container, masterIp, masterPort, slaveIp, slavePort):
+def get_container_memory_size_step(container, masterIp, masterPort, slaveIp, slavePort):
     master_memory_size = container.get_memory_size_of_container(masterIp, masterPort)
     slave_memory_size = container.get_memory_size_of_container(slaveIp, slavePort)
     return master_memory_size, slave_memory_size

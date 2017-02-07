@@ -119,7 +119,7 @@ class TestCreateCluster:
         # 获取container的大小，验证container的大小
         container = Container(config)
         for i in range(0, shard_count):
-            master_memory_size, slave_memory_size = get_container_memory_size(container, shards[i]["masterIp"], shards[i]["masterPort"], shards[i]["slaveIp"], shards[i]["slavePort"])
+            master_memory_size, slave_memory_size = get_container_memory_size_step(container, shards[i]["masterIp"], shards[i]["masterPort"], shards[i]["slaveIp"], shards[i]["slavePort"])
             info_logger.info("Memory size of shard_{0} master container is {1}".format(i + 1, master_memory_size))
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, slave_memory_size))
             assert master_memory_size == capacity / shard_count, "[ERROR] Memory size of master container is inconsistent with request"
@@ -165,7 +165,7 @@ class TestCreateCluster:
         # 获取container的大小，验证container的大小
         container = Container(config)
         for i in range(0, shard_count):
-            master_memory_size, slave_memory_size = get_container_memory_size(container, shards[i]["masterIp"],
+            master_memory_size, slave_memory_size = get_container_memory_size_step(container, shards[i]["masterIp"],
                                                                               shards[i]["masterPort"],
                                                                               shards[i]["slaveIp"],
                                                                               shards[i]["slavePort"])
