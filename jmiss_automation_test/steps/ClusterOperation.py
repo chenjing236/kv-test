@@ -179,6 +179,11 @@ def resize_instance_step(instance, cfs_client , space_id, zoneId, capacity, retr
     capacity_new = attach_new["capacity"]
     return status, capacity_new
 
+def set_key_from_ap_step(ap_host, ap_port, password, key, value):
+    redis_client = RedisClient(ap_host, ap_port, password)
+    key_from_ap, value_from_ap = redis_client.set_value_from_ap_by_key(ap_host, ap_port, password, key, value)
+    return key_from_ap, value_from_ap
+
 def get_key_from_ap_step(ap_host, ap_port, password, key):
     redis_client = RedisClient(ap_host, ap_port, password)
     value_from_ap = redis_client.get_value_from_ap_by_key(ap_host, ap_port, password, key)
