@@ -84,6 +84,22 @@ class RedisClient(object):
         redis_info = json.loads(json.dumps(info).replace("'","\""))
         return redis_info
 
+    def set_value_from_ap_by_key(self, ap_host, ap_port, passwd, key, value):
+        try:
+            cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
+        except redis.ConnectionError:
+            assert False, "[ERROR] Cannot access to AP with the password {0}".format(passwd)
+        try:
+            cnt.set(key, value)
+        except redis.ConnectionError:
+            assert False, "[ERROR] Cannot get value by the key {0}".format(key)
+        try:
+            value_get = cnt.get(key)
+        except redis.ConnectionError:
+            assert False, "[ERROR] Cannot get value by the key {0}".format("test_ap")
+        assert value_get == value
+        return key, value
+
     def get_value_from_ap_by_key(self, ap_host, ap_port, passwd, key):
         try:
             cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)

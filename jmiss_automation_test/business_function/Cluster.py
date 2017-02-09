@@ -152,3 +152,9 @@ class Cluster(object):
         status, headers, res_data = self.httpClient.reset_password(space_id, password)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 获取操作结果
+    def get_operation_result(self, space_id, operation_id):
+        status, headers, res_data = self.httpClient.get_operation_result(space_id, operation_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

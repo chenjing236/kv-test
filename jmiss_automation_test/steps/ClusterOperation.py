@@ -159,25 +159,55 @@ def resize_instance_step(instance, cfs_client , space_id, zoneId, capacity, retr
     epoch_origin = res_data_cfs_origin["epoch"]
     #执行resize扩容操作
     res_data = instance.resize_instance(space_id, zoneId, capacity)
-    if res_data is None or res_data is "":
-        assert False,"[ERROR] Response of resizing the instanche {0} is incorrect".format(space_id)
-    #执行扩容后的CFS拓扑结构中的epoch
-    res_data_cfs = cfs_client.get_meta(space_id)
-    epoch = res_data_cfs["epoch"]
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to resize an instance, error message is {0}".format(msg)
+    attach = res_data["attach"]
+    if attach is None or attach is "":
+        logger_info.error("[ERROR] Response of resizing an instance is incorrect")
+        assert False, "[ERROR] Response of resizing an instance is incorrect"
+    operation_id = attach["operationId"]
+    # 获取操作结果，判断扩容是否成功
+    code_resize = 1
     count = 1
-    while epoch == epoch_origin and count < retry_times:
-        res_data_cfs = cfs_client.get_meta(space_id)
-        epoch = res_data_cfs["epoch"]
-        count +=1
+    while code_resize == 1 and count < retry_times:
+        res_data = instance.get_operation_result(space_id, operation_id)
+        code = res_data["code"]
+        msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+        assert code == 0, "[ERROR] It is failed to get operation result, error message is {0}".format(msg)
+        attach = res_data["attach"]
+        if attach is None or attach is "":
+            logger_info.error("[ERROR] Response of getting operation result is incorrect")
+            assert False, "[ERROR] Response of getting operation result is incorrect"
+        code_resize = attach["code"]
+        count += 1
         time.sleep(wait_time)
     if count >= retry_times:
         assert False, "[ERROR] It is failed to resize instance"
+    if code_resize != 0:
+        assert False, "[ERROR] It is failed to resize instance, error_code = {0}".format(code_resize)
+    #执行扩容后的CFS拓扑结构中的epoch
+    # res_data_cfs = cfs_client.get_meta(space_id)
+    # epoch = res_data_cfs["epoch"]
+    # count = 1
+    # while epoch == epoch_origin and count < retry_times:
+    #     res_data_cfs = cfs_client.get_meta(space_id)
+    #     epoch = res_data_cfs["epoch"]
+    #     count +=1
+    #     time.sleep(wait_time)
+    # if count >= retry_times:
+    #     assert False, "[ERROR] It is failed to resize instance"
     #获取capacity
     info_new = instance.get_instance_info(space_id)
     attach_new = info_new["attach"]
     status = attach_new["status"]
     capacity_new = attach_new["capacity"]
     return status, capacity_new
+
+def set_key_from_ap_step(ap_host, ap_port, password, key, value):
+    redis_client = RedisClient(ap_host, ap_port, password)
+    key_from_ap, value_from_ap = redis_client.set_value_from_ap_by_key(ap_host, ap_port, password, key, value)
+    return key_from_ap, value_from_ap
 
 def get_key_from_ap_step(ap_host, ap_port, password, key):
     redis_client = RedisClient(ap_host, ap_port, password)

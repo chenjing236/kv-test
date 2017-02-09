@@ -1,8 +1,8 @@
 {
   "host": "192.168.177.88",
   "port": 80,
-  "pin": "64c8ddb08ad83c7b04fba541c3b085fd",
-  "auth_token": "K1AwANjwaBmIWZBBHadr6oLC3AEIAkAtqhAJofH+ZZw=",
+  "pin": "fc5e038d38a57032085441e7fe7010b0",
+  "auth_token": "dW3pOIkf7m8KpPuheC0KsSelXAvi7bQaFZlRzqufc/CgUBhREYtZUt4cQD86xdq2",
   "pin_backup": "dafd9d707849abe585a5db3a920d3af8",
   "auth_token_backup": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
   "mysql_host": "192.168.177.87",
