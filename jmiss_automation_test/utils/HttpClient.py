@@ -64,3 +64,7 @@ class HttpClient(object):
     def reset_password(self, space_id, password):
         data = {"password": password}
         return self.http_request("PUT", "updatepassword/{0}".format(space_id), json.dumps(data))
+
+    # 获取操作结果
+    def get_operation_result(self, space_id, operation_id):
+        return self.http_request("GET", "operation?spaceId={0}&operationId={1}".format(space_id, operation_id))
