@@ -14,7 +14,7 @@ info_logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope="class")
 def http_client(config):
-    http_client = HttpClient(config["host"], config["pin"], config["auth_token"])
+    http_client = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"])
     return http_client
 
 @pytest.fixture(scope="class")

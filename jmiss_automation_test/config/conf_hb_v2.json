@@ -1,9 +1,9 @@
 {
-  "version": "v1.0",
-  "host": "jmiss-redis-stag-gz.jcloud.com",
+  "version": "v2.0",
+  "host": "jmiss-redis-prod-hb.jcloud.com",
   "port": 80,
-  "pin": "fc62fd6aedacef996b28be508faa1f58",
-  "auth_token": "EX67euK9+Knjp+wRG/tW8N35/uZ6qEGXkCQ126zOX0s=",
+  "pin": "64c8ddb08ad83c7b04fba541c3b085fd",
+  "auth_token": "9OIfLjjJTh9yIAvUgkVaZvHuShKcI0vd7OJoM4LdPYTsBdDpf9tavQILGR9AM2Wx",
   "pin_backup": "dafd9d707849abe585a5db3a920d3af8",
   "auth_token_backup": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
   "mysql_host": "192.168.177.89",
@@ -11,24 +11,16 @@
   "mysql_user": "jimdb",
   "mysql_passwd": "jimdbtest",
   "mysql_db": "jmiss_redis_test_master",
-  "cfs_host": "172.27.53.42:6060",
+  "cfs_host": "172.19.29.24:6060",
   "cfs_sign_key":"std-jim-cfs",
-  "ap_host": "172.27.53.40",
+  "ap_host": "172.19.29.34",
   "ap_port":6379,
   "docker_daemon_port":"2375",
   "docker_version":"1.19",
   "retry_creating_times":"3",
   "retry_deleting_times":"3",
   "retry_getting_topology_from_cfs":"200",
-  "retry_getting_info_times":"25",
+  "retry_getting_info_times":"10",
   "retry_times":"3",
-  "wait_time": "5",
-  "cluster_cfg": {
-    "4": 4,
-    "16": 8,
-    "32": 8,
-    "64": 8,
-    "128": 16,
-    "256": 16
-  }
+  "wait_time": "5"
 }

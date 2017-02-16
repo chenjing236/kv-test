@@ -1,8 +1,9 @@
 {
+  "version": "v1.0",
   "host": "jmiss-redis-prod-gz.jcloud.com",
   "port": 80,
-  "pin": "40bab0eb5fa8eed3c48a1c60b375f4ac",
-  "auth_token": "NLiiiEtlWUiChOb2THKvCdOPJrM2U+JfmpzF0RwY8Xs=",
+  "pin": "64c8ddb08ad83c7b04fba541c3b085fd",
+  "auth_token": "caBA8koejYnSBtWoYurmVxP6xrWhmp4YEOaX1qAGRio=",
   "pin_backup": "dafd9d707849abe585a5db3a920d3af8",
   "auth_token_backup": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
   "mysql_host": "192.168.177.89",

@@ -6,14 +6,15 @@ import json
 
 #缓存云HTTP API
 class HttpClient(object):
-    def __init__(self, host, md5_pin, auth_token):
+    def __init__(self, host, md5_pin, auth_token, version):
         self.host = host
         self.md5_pin = md5_pin
         self.auth_token = auth_token
+        self.version = version
 
-    def http_request(self, method, uri, data=None, version="v1.0"):
+    def http_request(self, method, uri, data=None):
         hc = httplib.HTTPConnection(self.host)
-        hc.request(method, "/{0}/{1}/{2}".format(version, self.md5_pin, uri), data, {"auth-Token": self.auth_token})
+        hc.request(method, "/{0}/{1}/{2}".format(self.version, self.md5_pin, uri), data, {"auth-Token": self.auth_token})
         res = hc.getresponse()
         status = res.status
         res_data = json.loads(res.read())

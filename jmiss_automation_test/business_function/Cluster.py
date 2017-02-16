@@ -33,7 +33,8 @@ class Cluster(object):
 
     #创建单实例缓存云实例
     def create_instance(self):
-        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":self.data_obj["zoneId"],"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
+        zoneId = (self.conf_obj["version"] == "v2.0") and "0" or self.data_obj["zoneId"]
+        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":zoneId,"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
         create_args = CreateArgs(data)
         args_json = create_args.get_args_json()
         status, headers, res_data = self.httpClient.create_cluster(args_json)
@@ -42,7 +43,8 @@ class Cluster(object):
 
     #创建单实例缓存云实例
     def create_instance_with_capacity(self, capacity):
-        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":self.data_obj["zoneId"],"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
+        zoneId = (self.conf_obj["version"] == "v2.0") and "0" or self.data_obj["zoneId"]
+        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":zoneId,"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
         create_args = CreateArgs(data)
         create_args.set_capacity(capacity)
         args_json = create_args.get_args_json()

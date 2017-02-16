@@ -1,9 +1,9 @@
 {
-  "version": "v1.0",
+  "version": "v2.0",
   "host": "jmiss-redis-stag-gz.jcloud.com",
   "port": 80,
   "pin": "fc62fd6aedacef996b28be508faa1f58",
-  "auth_token": "EX67euK9+Knjp+wRG/tW8N35/uZ6qEGXkCQ126zOX0s=",
+  "auth_token": "r3PHzVas8js25YEGAci6NxCIE/Cd0OGNwRaRx+JCVvXzUCDtLGt3UfXeDujdfmMG",
   "pin_backup": "dafd9d707849abe585a5db3a920d3af8",
   "auth_token_backup": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
   "mysql_host": "192.168.177.89",
