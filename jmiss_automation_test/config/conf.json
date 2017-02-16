@@ -22,5 +22,13 @@
   "retry_getting_topology_from_cfs":"200",
   "retry_getting_info_times":"10",
   "retry_times":"3",
-  "wait_time": "5"
+  "wait_time": "5",
+  "cluster_cfg": {
+    "4": 4,
+    "16": 8,
+    "32": 8,
+    "64": 8,
+    "128": 16,
+    "256": 16
+  }
 }
