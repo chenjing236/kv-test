@@ -1,0 +1,70 @@
+#!/bin/bash
+
+### 测试环境  ###
+env_test="192.168.177.89:8001"
+wait_time="5"
+retry_count=50
+
+### 用户信息 ###
+token="rcBJsqn7fXxKdVN4jlbvzmzCfQsGEAvd+r2TJ3rO9Gk="
+pin="242d9895529bf5ce45a672a3b8bfb212"
+
+### 参数信息  ###
+vpc_id="vpc-lfi3lzlkru"
+subnet_id="subnet-04te25ac6k"
+flavor_id="12704fa2-0f52-4859-b48f-6db86603c248"
+password="a7991892011fd761"
+image_version="mongodb-3.2"
+os_user_info="tenantId:6331663361303166306237323431316362323731376135633762343866636533;tenantName:6a636c6f75645f3030406a636c6f75642e636f6d;userId:6335646339343063323731303439393561353063646565306437663261643063;password:6a636c6f75645f3030406a636c6f75642e636f6d"
+
+### 创建实例  ###
+echo "[STEP1] 创建mongo实例"
+test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XPOST --data '{\"vpcId\":\"${vpc_id}\", \"subnetId\":\"${subnet_id}\", \"flavorId\":\"${flavor_id}\", \"password\":\"${password}\", \"spaceType\":1, \"dbVersion\":\"${image_version}\", \"osUserInfo\":\"${os_user_info}\"}' \"http://${env_test}/v1.0/${pin}/clusters\""
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+code=`echo ${result} | jq '.code'`
+[[ ${code} != 0 ]] && echo "Cannot create a mongo instance" && exit 1;
+echo "[RESULT] ${result}"
+echo ""
+space_id=`echo ${result} | jq .attach.spaceId | sed 's/"//g'`
+[[ ${space_id} == "" ]] && echo "There is no instance to be created sucessfully"
+
+sleep ${wait_time}
+
+### 查看mongo实例的状态 ###
+echo "[STEP2] 查看mongo实例的状态"
+test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XGET \"http://${env_test}/v1.0/${pin}/clusters/${space_id}\""
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+code=`echo ${result} | jq '.code'`
+[[ ${code} != 0 ]] && echo "Cannot get the detail info about the ${space_id}" && exit 1;
+status=`echo ${result} | jq '.attach.status'`
+let retry_count=0
+while [[ {status} != "100" ]]
+do
+	if [ ${status} == "101" ];then
+		echo "[INFO] The mongo ${space_id} is invalid"
+		break
+	fi
+	retry_count=$((retry_count+1))
+	result=`eval ${test_case}`
+	code=`echo ${result} | jq '.code'`
+	[[ ${code} != 0 ]] && echo "Cannot get the detail info about the ${space_id}" && exit 1;
+	status=`echo ${result} | jq '.attach.status'`
+	sleep ${wait_time}
+done
+echo "[INFO] The status of the mongo ${space_id} is ${status}"
+echo ""
+
+### 删除mongo实例 ###
+test_case="curl -s -H\"auth-Token:${token}\" -XDELETE \"http://${env_test}/v1.0/${pin}/clusters/${space_id}\""
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+

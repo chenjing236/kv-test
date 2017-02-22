@@ -1,0 +1,22 @@
+#!/bin/bash
+
+[[ $# != 1 ]] && echo "Please input space id" && exit 1;
+
+space_id="$1"
+
+### 测试环境  ###
+env_test="192.168.177.89:8001"
+wait_time="5"
+
+### 用户信息 ###
+token="rcBJsqn7fXxKdVN4jlbvzmzCfQsGEAvd+r2TJ3rO9Gk="
+pin="242d9895529bf5ce45a672a3b8bfb212"
+
+### 查看mongo实例的详细信息 ###
+test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XGET \"http://${env_test}/v1.0/${pin}/clusters/${space_id}\""
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+format_result=`echo ${result} | jq .`
+echo "${format_result}"
+echo ""
