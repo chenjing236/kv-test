@@ -2,8 +2,9 @@
   "spaceName":"jmiss_auto_test",
   "spaceType":"2",
   "zoneId":"1",
-  "capacity":"67108864",
+  "capacity":"16777216",
   "quantity":"1",
   "remarks":"jmiss",
-  "capacity_resize":"134217728"
+  "capacity_resize":"33554432",
+  "password":"1qaz2WSX"
 }

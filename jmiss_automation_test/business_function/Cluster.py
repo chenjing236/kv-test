@@ -2,6 +2,8 @@
 from Container import *
 from CFS import *
 import json
+import string
+import random
 import time
 import logging
 
@@ -20,6 +22,14 @@ class CreateArgs():
 
     def set_zoneId(self, zoneId):
         self.args_dict["zoneId"] = zoneId
+
+    def set_password(self, password):
+        characters = string.ascii_letters + string.digits
+        length = random.randint(0, 8)
+        for i in range(length):
+            password += characters[random.randint(0, len(characters) - 1)]
+        # print "password = " + password
+        self.args_dict["password"] = password
 
     def get_args_json(self):
         return self.args_dict
@@ -58,10 +68,11 @@ class Cluster(object):
                 "zoneId": self.data_obj["zoneId"], "capacity": self.data_obj["capacity"],
                 "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"], "password": password}
         create_args = CreateArgs(data)
+        create_args.set_password(password)
         args_json = create_args.get_args_json()
         status, headers, res_data = self.httpClient.create_cluster(args_json)
         assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
+        return res_data, args_json["password"]
 
     #删除单实例缓存云实例
     def delete_instance(self, spaceId):

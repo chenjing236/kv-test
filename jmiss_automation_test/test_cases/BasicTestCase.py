@@ -34,9 +34,9 @@ def created_instance(config, instance_data, http_client, request):
     print "\n[SETUP] Create an instance with a master container and a slave container"
     info_logger.info("[SETUP] Create an instance with a master container and a slave container")
     instance = Cluster(config, instance_data, http_client)
-    space_id = create_instance_step(instance)
+    space_id, password = create_instance_with_password_step(instance, instance_data["password"])
     status, capacity = get_status_of_instance_step(instance, space_id, int(config["retry_getting_info_times"]), int(config["wait_time"]))
-    assert status == 100, "[ERROR] Instance {0} is inavialble".format(space_id)
+    assert status == 100, "[ERROR] Instance {0} is unavailable".format(space_id)
 
     def teardown():
         print "\n[TEARDOWN] Delete the instance {0}".format(space_id)
@@ -44,4 +44,4 @@ def created_instance(config, instance_data, http_client, request):
         instance.delete_instance(space_id)
 
     request.addfinalizer(teardown)
-    return space_id, instance
+    return space_id, instance, password
