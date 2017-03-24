@@ -27,7 +27,7 @@ def create_instance_step(instance):
 
 # 创建设置密码参数的缓存云实例，返回缓存云实例的space_id
 def create_instance_with_password_step(instance, password):
-    res_data = instance.create_instance_with_password(password)
+    res_data, password = instance.create_instance_with_password(password)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"],ensure_ascii=False).encode("gbk")
     assert code == 0, "[ERROR] It is failed to create an instance, error message is {0}".format(msg)
@@ -36,7 +36,7 @@ def create_instance_with_password_step(instance, password):
         logger_info.error("[ERROR] Response of creating an instance is incorrect")
         assert False, "[ERROR] Response of creating an instance is incorrect"
     space_id = attach["spaceId"]
-    return space_id
+    return space_id, password
 
 #获取创建后的缓存云实例的信息
 def get_detail_info_of_instance_step(instance, space_id):
