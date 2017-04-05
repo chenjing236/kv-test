@@ -244,8 +244,8 @@ def run_failover_container(space_id, containerIp, containerPort, docker_client, 
         return False
     return True
 
-def run_failover_container_step(instance, cfs_client, container, space_id, masterIp, masterPort, retry_times, wait_time):
-    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time)
+def run_failover_container_step(instance, cfs_client, container, space_id, failover_type, masterIp, masterPort, retry_times, wait_time):
+    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time, failover_type)
     assert is_failover == True,"[ERROR] It is failed to run master failover"
     print "[INFO] It is succesfull to run master failover"
     res_data = cfs_client.get_meta(space_id)
