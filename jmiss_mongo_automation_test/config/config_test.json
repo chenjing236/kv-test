@@ -1,0 +1,11 @@
+{
+  "host":"192.168.177.89:8001",
+  "token":"rcBJsqn7fXxKdVN4jlbvzmzCfQsGEAvd+r2TJ3rO9Gk=",
+  "pin":"242d9895529bf5ce45a672a3b8bfb212",
+  "version":"v2.0",
+  "mysql_host": "192.168.177.89",
+  "mysql_port": 3306,
+  "mysql_user": "jmiss",
+  "mysql_passwd": "jmiss",
+  "mysql_db": "jmiss_mongo_test_master"
+}
