@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+### 参数 ###
+
+### 查看当前mongo实例的instance信息 ###
+
+### stop primary container ###
+
+### 查看primary container failover操作的信息 ###
+
+### stop hidden container ### 
+
+### 查看hidden container failover操作信息 ###
+
+### 查看实例的状态 ###

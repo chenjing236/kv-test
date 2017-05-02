@@ -1,0 +1,97 @@
+#!/bin/bash
+
+### 环境 ###
+env_test="192.168.187.14:9698"
+wait_time="5"
+
+### 参数 ###
+current_date=`date +%Y%m%d`
+env_param="178128"
+vpc_name="vpc-${current_date}-${env_param}-tianjiyuan"
+tenant_id="ba4d92bfff3c449dbc33cab5e129a3f3"
+subnet_name="subnet-${current_date}-050201-847"
+cidr="172.18.123.0/24"
+
+### 创建VPC ###
+test_case="curl -s \"http://${env_test}/cc-server?Action=CreateVpc\" -H \"Content-Type:application/json\" -d '{\"name\":\"${vpc_name}\",\"tenant_id\":\"${tenant_id}\"}'"
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+code=`echo ${result} | jq '.code'`
+[[ ${code} != 0 ]] && echo "Cannot create vpc" && exit 1;
+vpc_id=`echo ${result} | jq '.data.id' | sed 's/"//g'`
+[[ ${vpc_id} == "" ]] && echo "There is no vpc to be created" && exit 1;
+echo "vpc_id=${vpc_id}"
+echo ""
+
+sleep ${wait_time}
+
+### 查看新创建VPC的信息 ###
+test_case="curl -s \"http://${env_test}/cc-server?Action=ListHostsBindingRouter\" -H \"Content-Type:application/json\" -d '{\"vpc_id\":\"${vpc_id}\"}'"
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+code=`echo ${result} | jq '.code'`
+[[ ${code} != 0 ]] && echo "There is no vpc to be created" && exit 1;
+
+sleep ${wait_time}
+
+### 查看ROUTER_ID ###
+test_case="curl -s \"http://${env_test}/cc-server?Action=DescribeRouteTables\" -H \"Content-Type:application/json\" -d '{\"tenant_id\":\"${tenant_id}\",\"desc_offset\":0}'"
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+echo "[RESULT] ${result}"
+echo ""
+code=`echo ${result} | jq '.code'`
+[[ ${code} != 0 ]] && echo "There is no available router" && exit 1;
+router_id=`echo ${result} | jq '.data' | grep ${vpc_id}`
+[[ ${router_id} == "" ]] && echo "There is no available router for the vpc ${vpc_id}" && exit 1;
+router_id=""
+#test_case="curl -s \"http://192.168.178.128:9698/cc-server?Action=DescribeRouteTables\" -H \"Content-Type:application/json\" -d '{\"tenant_id\":\"c1f3a01f0b72411cb2717a5c7b48fce3\",\"desc_offset\":0}'"
+#echo "${test_case}"
+#result=`eval ${test_case}`
+
+count=`echo ${result} | jq .data.total_count`
+
+for((i=0;i<${count};i++))
+do
+        data=`echo ${result} | jq .data.elements[$i]`
+        vpc_info=`echo ${data} | jq .vpc_id | sed 's/"//g'`
+        if [ ${vpc_id} == ${vpc_info} ];then
+                echo "${data}"
+                router_id=`echo ${data} | jq .id | sed 's/"//g'`
+        fi
+        #echo "[$i] ${data}"
+done
+echo "${router_id}"
+echo ""
+
+sleep ${wait_time}
+
+### 创建SUBNET ###
+test_case="curl -s \"http://${env_test}/cc-server?Action=CreateSubnet\"  -H \"Content-Type:application/json\" -d '{\"name\":\"${subnet_name}\",\"Cidr\":\"${cidr}\",\"tenant_id\":\"${tenant_id}\",\"vpc_id\":\"${vpc_id}\",\"route_table_id\":\"${router_id}\"}'"
+echo "${test_case}"
+echo ""
+result=`eval ${test_case}`
+code=`echo ${result} | jq '.code'`
+[[ ${code} != 0 ]] && echo "Cannot create subnet" && exit 1;
+subnet_id=`echo ${result} | jq '.data.id'`
+echo "subnet_id=${subnet_id}"
+echo ""
+
+### 删除VPC ###
+#test_case="curl -s \"http://${env_test}/cc-server?Action=DeleteVpc\" -H \"Content-Type:application/json\" -d '{\"tenant_id\": \"${tenant_id}\", \"id\": \"${vpc_id}\"}'"
+#echo "${test_case}"
+#echo ""
+#result=`eval ${test_case}`
+#echo "[RESULT] ${result}"
+#echo ""
+
+test_case="curl -i -H\"auth-Token:rcBJsqn7fXxKdVN4jlbvzmzCfQsGEAvd+r2TJ3rO9Gk=\" -H\"Content-Type:application/json\" -XPOST --data '{\"vpcId\":\"vpc-lpt520wcb2\", \"subnetId\":\"subnet-hblcl08mj7\", \"flavorId\":\"12704fa2-0f52-4859-b48f-6db86603c248\", \"password\":\"a7991892011fd761\", \"spaceType\":1, \"dbVersion\":\"mongodb-3.2\", \"osUserInfo\":\"tenantId:6261346439326266666633633434396462633333636162356531323961336633;tenantName:6a636c6f75645f3030406a636c6f75642e636f6d;userId:3137646335383630343733333462646638653465336163386337333836373231;password:6a636c6f75645f3030406a636c6f75642e636f6d\"}' \"http://192.168.177.89:8001/v1.0/242d9895529bf5ce45a672a3b8bfb212/clusters\""
+
+echo "${test_case}"

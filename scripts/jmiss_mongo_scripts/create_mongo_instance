@@ -18,7 +18,7 @@ os_user_info="tenantId:633166336130316630623732343131636232373137613563376234386
 
 ### 创建实例  ###
 echo "[STEP1] 创建mongo实例"
-test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XPOST --data '{\"vpcId\":\"${vpc_id}\", \"subnetId\":\"${subnet_id}\", \"flavorId\":\"${flavor_id}\", \"password\":\"${password}\", \"spaceType\":1, \"dbVersion\":\"${image_version}\", \"osUserInfo\":\"${os_user_info}\"}' \"http://${env_test}/v1.0/${pin}/clusters\""
+test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XPOST --data '{\"vpcId\":\"${vpc_id}\", \"subnetId\":\"${subnet_id}\", \"flavorId\":\"${flavor_id}\", \"password\":\"${password}\", \"spaceType\":1, \"dbVersion\":\"${image_version}\", \"osUserInfo\":\"${os_user_info}\"}' \"http://${env_test}/v2.0/${pin}/clusters\""
 echo "${test_case}"
 echo ""
 result=`eval ${test_case}`
