@@ -134,6 +134,15 @@ def get_acl_step(instance, space_id):
         assert False, "[ERROR] Cannot get acl for the instance {0}".format(space_id)
     return attach["ips"]
 
+
+def set_system_acl_step(instance, space_id, enable):
+    res_data = instance.set_system_acl(space_id, enable)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of setting system acl is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to set system acl, error message is {0}".format(msg)
+
 def delete_instance_step(instance, space_id):
     res_data = instance.delete_instance(space_id)
     code = res_data["code"]

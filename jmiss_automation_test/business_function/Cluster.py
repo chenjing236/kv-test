@@ -133,7 +133,7 @@ class Cluster(object):
             masterPort = masterPort_a
             slaveIp = instance_a["ip"]
             slavePort = instance_a["port"]
-            if masterIp_a == None:
+            if masterIp_a is None:
                 masterIp = instance_b["masterIp"]
                 masterPort = instance_b["masterPort"]
                 slaveIp = instance_b["ip"]
@@ -157,6 +157,12 @@ class Cluster(object):
     #获取ACL访问规则
     def get_acl(self, space_id):
         status, headers, res_data = self.httpClient.get_acl(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # set system acl
+    def set_system_acl(self, space_id, enable):
+        status, headers, res_data = self.httpClient.set_system_acl(space_id, enable)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
