@@ -134,6 +134,15 @@ def get_acl_step(instance, space_id):
         assert False, "[ERROR] Cannot get acl for the instance {0}".format(space_id)
     return attach["ips"]
 
+
+def set_system_acl_step(instance, space_id, enable):
+    res_data = instance.set_system_acl(space_id, enable)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of setting system acl is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to set system acl, error message is {0}".format(msg)
+
 def delete_instance_step(instance, space_id):
     res_data = instance.delete_instance(space_id)
     code = res_data["code"]
@@ -244,8 +253,8 @@ def run_failover_container(space_id, containerIp, containerPort, docker_client, 
         return False
     return True
 
-def run_failover_container_step(instance, cfs_client, container, space_id, masterIp, masterPort, retry_times, wait_time):
-    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time)
+def run_failover_container_step(instance, cfs_client, container, space_id, failover_type, masterIp, masterPort, retry_times, wait_time):
+    is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time, failover_type)
     assert is_failover == True,"[ERROR] It is failed to run master failover"
     print "[INFO] It is succesfull to run master failover"
     res_data = cfs_client.get_meta(space_id)

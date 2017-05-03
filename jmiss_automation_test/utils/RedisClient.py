@@ -4,6 +4,7 @@ import redis
 import time
 import json
 
+
 class RedisClient(object):
     def __init__(self, redisHost, redisPort, password):
         self.redisHost = redisHost
@@ -61,17 +62,20 @@ class RedisClient(object):
         try:
             cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
         except redis.ConnectionError:
-            assert False, "[ERROR] Cannot access to AP with the password {0}".format(passwd)
+            return False
+            # assert False, "[ERROR] Cannot access to AP with the password {0}".format(passwd)
         print "[INFO] Set key:value {test_ap:test_ap_value}"
         try:
             cnt.set("test_ap", "test_ap_value")
         except redis.ConnectionError:
-            assert False, "[ERROR] Cannot set key: value with AP"
+            return False
+            # assert False, "[ERROR] Cannot set key: value with AP"
         try:
             value = cnt.get("test_ap")
         except redis.ConnectionError:
-            assert False, "[ERROR] Cannot get value by the key {0}".format("test_ap")
-        assert value  == "test_ap_value"
+            return False
+            # assert False, "[ERROR] Cannot get value by the key {0}".format("test_ap")
+        assert value == "test_ap_value"
         print "[INFO] Get key:value {test_ap:test_ap_value}"
         return True
 
