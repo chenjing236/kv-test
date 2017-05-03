@@ -70,7 +70,6 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
             assert False, "[ERROR] It is failed to get topology from detail information of the instance {0}.".format(space_id)
         attach = res_data["attach"]
         status = attach["status"]
-        attach = res_data["attach"]
         print "[INFO] Retry {0} get information of instance. Status of instance is {1}".format(count, status)
         count += 1
         time.sleep(wait_time)
@@ -80,7 +79,7 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
 def get_topology_of_instance_step(instance, space_id):
     res_data = instance.get_instance_info(space_id)
     if res_data is None or res_data is "":
-        assert False, "[ERROR] Cannot get detail information of the instanceh {0}".format(space_id)
+        assert False, "[ERROR] Cannot get detail information of the instance {0}".format(space_id)
     masterIp, masterPort, slaveIp, slavePort = instance.get_topology_of_instance(res_data, space_id)
     return masterIp, masterPort, slaveIp, slavePort
 
@@ -284,6 +283,16 @@ def reset_password_step(instance, space_id, password):
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, "[ERROR] It is failed to reset password, error message is {0}".format(msg)
+
+
+def get_clusters_step(instance):
+    res_data = instance.get_clusters()
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of get_clusters is incorrect"
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get clusters, error message is {0}".format(msg)
+    return res_data["attach"]
 
 
 def change_topology_json_to_list(shard_count, topology):
