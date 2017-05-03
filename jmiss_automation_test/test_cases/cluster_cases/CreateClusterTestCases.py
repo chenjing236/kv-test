@@ -12,7 +12,7 @@ class TestCreateCluster:
         cluster = Cluster(config, instance_data, http_client)
         # 调用创建缓存云集群接口，创建缓存云集群
         info_logger.info("[STEP1] Create a cluster with a set of master and slave containers")
-        space_id = create_instance_step(cluster)
+        space_id, password = create_instance_with_password_step(cluster)
         self.space_id = space_id
         # 调用查询接口等待缓存云集群创建完成
         info_logger.info("The cluster %s is created", space_id)

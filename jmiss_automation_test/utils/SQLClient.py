@@ -94,20 +94,27 @@ class SQLClient(object):
 
     def get_acl(self, space_id):
         self.init_cursor()
-        sql = "select src_ip,tenant_id from acl where space_id='{0}'".format(space_id)
+        sql = "select ip_list,enable from acl_classic where space_id='{0}'".format(space_id)
         self.cursor.execute(sql)
-        ips = self.cursor.fetchall()
+        acl = self.cursor.fetchall()
         acl_ip = []
-        t_id = None
-        for ip, tenant in ips:
-            if t_id is not None:
-                if t_id != tenant:
-                    raise Exception("tenant_id of one cluster is different in acl table![{0},{1}]".format(t_id, tenant))
-            t_id = tenant
-            if ip not in acl_ip:
-                acl_ip.append(ip)
+        enable = 0
+        if not acl:
+            return acl_ip, enable
+        ip_list, enable = acl[0]
+        acl_ip = ip_list.split(',')
+        # ips = self.cursor.fetchall()
+        # acl_ip = []
+        # t_id = None
+        # for ip, tenant in ips:
+        #     if t_id is not None:
+        #         if t_id != tenant:
+        #             raise Exception("tenant_id of one cluster is different in acl_classic table![{0},{1}]".format(t_id, tenant))
+        #     t_id = tenant
+        #     if ip not in acl_ip:
+        #         acl_ip.append(ip)
         self.close_cursor()
-        return acl_ip
+        return acl_ip, enable
 
     def get_domain(self, space_id):
         self.init_cursor()

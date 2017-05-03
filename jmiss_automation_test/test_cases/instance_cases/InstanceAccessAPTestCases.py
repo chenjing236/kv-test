@@ -35,3 +35,15 @@ class TestAccessAP:
         is_access_ap = access_ap_step(config["ap_host"], config["ap_port"], space_id + ":" + password)
         assert is_access_ap is True, "[ERROR] Cannot access to the ap of the instance {0}".format(space_id)
         info_logger.info("[INFO] It is successful to get the value by key from the instance %s", space_id)
+        # 设置system acl的enable为false，不能进行访问
+        info_logger.info("[STEP5] Set system acl enable false")
+        set_system_acl_step(instance, space_id, False)
+        is_access_ap = access_ap_step(config["ap_host"], config["ap_port"], space_id + ":" + password)
+        assert is_access_ap is False, "[ERROR] Enable=false, but still accessible"
+        info_logger.info("[INFO] Access ap failure when enable is false")
+        # 设置system acl的enable为true，可以正常访问
+        info_logger.info("[STEP6] Set system acl enable true")
+        set_system_acl_step(instance, space_id, True)
+        is_access_ap = access_ap_step(config["ap_host"], config["ap_port"], space_id + ":" + password)
+        assert is_access_ap is True, "[ERROR] Cannot access to the ap of the instance {0}".format(space_id)
+        info_logger.info("[INFO] Access ap successfully when enable is true")
