@@ -15,7 +15,7 @@ def config(request):
     file_path = request.config.getoption("config")
     #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "config/conf.json"
     #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "config/conf_stag.json"
-    file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "config/conf_test_int_v2.json"
+    #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "config/conf_test_int_v2.json"
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
@@ -24,7 +24,7 @@ def instance_data(request):
     file_path = request.config.getoption("data")
     #file_path="C:/Users/guoli5/git/JCacheTest/jmiss_automation_test/data/instance_data.json"
     #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "data/instance_data.json"
-    file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "data/instance_data.json"
+    #file_path = cur_file_dir().replace("\\","/").replace("test_cases", "") + "data/instance_data.json"
     data = json.load(open(file_path, 'r'))
     return data
 
