@@ -78,7 +78,12 @@ class HttpClient(object):
 
     # 修改基本信息 update meta
     def update_meta(self, space_id, space_name, remarks):
-        data = {"spaceName": space_name, "remarks": remarks}
+        if space_name == "":
+            data = {"remarks": remarks}
+        elif remarks == "":
+            data = {"spaceName": space_name}
+        else:
+            data = {"spaceName": space_name, "remarks": remarks}
         return self.http_request("PUT", "updatemeta/{0}".format(space_id), json.dumps(data))
 
     # 获取资源实时信息 realtime info

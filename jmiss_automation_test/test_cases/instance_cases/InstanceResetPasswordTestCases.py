@@ -6,7 +6,7 @@ info_logger = logging.getLogger(__name__)
 
 
 class TestResetPassword:
-    @pytest.mark.smoke
+    @pytest.mark.resetpassword
     def test_reset_password(self, config, created_instance):
         info_logger.info("[SCENARIO] Start to test reset password")
         # 创建缓存云实例，创建成功
