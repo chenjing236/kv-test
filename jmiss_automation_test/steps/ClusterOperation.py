@@ -295,6 +295,35 @@ def get_clusters_step(instance):
     return res_data["attach"]
 
 
+def update_meta_step(instance, space_id, name, remarks):
+    res_data = instance.update_meta(space_id, name, remarks)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of update_meta is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to update meta, error message is {0}".format(msg)
+
+
+def get_realtime_info_step(instance, space_id):
+    res_data = instance.get_realtime_info(space_id)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of get_realtime_info is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get realtime info, error message is {0}".format(msg)
+    return res_data["attach"]
+
+
+def get_resource_info_step(instance, space_id, period="15m", frequency="3m"):
+    res_data = instance.get_resource_info(space_id, period, frequency)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of get_resource_info is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get resource info, error message is {0}".format(msg)
+    return res_data["attach"]
+
+
 def change_topology_json_to_list(shard_count, topology):
     shards = []
     for i in range(0, shard_count):

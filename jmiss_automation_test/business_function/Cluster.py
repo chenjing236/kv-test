@@ -183,3 +183,21 @@ class Cluster(object):
         status, headers, res_data = self.httpClient.get_clusters()
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 修改基本信息
+    def update_meta(self, space_id, name, remarks):
+        status, headers, res_data = self.httpClient.update_meta(space_id, name, remarks)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 获取资源实时使用信息
+    def get_realtime_info(self, space_id):
+        status, headers, res_data = self.httpClient.get_realtime_info(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 获取资源监控信息
+    def get_resource_info(self, space_id, period, frequency):
+        status, headers, res_data = self.httpClient.get_resource_info(space_id, period, frequency)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
