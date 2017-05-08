@@ -5,15 +5,9 @@ import logging
 
 info_logger = logging.getLogger(__name__)
 
+# setup创建mongo实例，teardown删除mongo实例
 @pytest.fixture(scope="class")
-def http_client(config):
-    http_client = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"])
-    return http_client
+def create_mongo_instance():
+    #TODO，创建VPC和VPC下的子网
+    info_logger.info("[PRE-CONDITION] ")
 
-def create_vpc():
-    info_logger.info("[CONDITION] Create a VPC")
-    return vpc_id
-
-def create_subnet(vpc_id):
-    info_logger.info("[CONDITION] Create a subnet under the VPC {0}".format(vpc_id))
-    return subnet_id

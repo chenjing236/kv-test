@@ -1,0 +1,8 @@
+{
+  "vpc_name_suffix":"jmiss_mongo",
+  "tenant_id":"c1f3a01f0b72411cb2717a5c7b48fce3",
+  "vpc_node": "178128",
+  "vrouter_desc_offset":"0",
+  "subnet_name": "",
+  "subnet_cidr":""
+}

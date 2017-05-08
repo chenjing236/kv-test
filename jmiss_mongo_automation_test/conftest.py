@@ -1,6 +1,7 @@
 import pytest
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from utils.HttpClient import *
 
 logger_info = logging.getLogger(__name__)
 
@@ -23,6 +24,13 @@ def data_for_mongo_instance(request):
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
 
+#创建http client对象
+@pytest.fixture(scope="session")
+def http_client(config):
+    http_client = HttpClient(config["host"], config["cc_service_host"], config["pin"], config["auth_token"], config["version"])
+    return http_client
+
+#日志
 @pytest.fixture(scope="session", autouse=True)
 def logger():
     info_logger = logging.getLogger()
@@ -51,7 +59,7 @@ def logger():
     failure_file_handler.setLevel(logging.WARNING)
     failure_file_handler.setFormatter(formatter)
 
-    stat_log_name = './STAT_CLUSTER_RECORD.log
+    stat_log_name = './STAT_CLUSTER_RECORD.log'
     stat_file_handler = logging.FileHandler(stat_log_name, 'a')
     stat_file_handler.setLevel(logging.INFO)
     stat_file_handler.setFormatter(formatter)
