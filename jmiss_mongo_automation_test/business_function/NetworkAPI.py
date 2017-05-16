@@ -28,6 +28,7 @@ class Network(object):
 
     # 创建子网
     def create_subnet(self, vpc_id, vrouter_id):
+        subnet_name = ""
         create_subnet_args = "{\"name\":\"{0}\",\"Cidr\":\"${cidr}\",\"tenant_id\":\"${tenant_id}\",\"vpc_id\":\"${vpc_id}\",\"route_table_id\":\"${router_id}\"}".format()
-        subnet_id = self.httpClient.create_subnet()
+        subnet_id = self.httpClient.create_subnet(create_subnet_args)
         return subnet_id
