@@ -1,0 +1,101 @@
+#!/bin/bash
+
+### 测试环境  ###
+env_test="jmiss-mongo-prod-hb.jcloud.com"
+wait_time="10"
+retry_count=50
+
+### 用户信息 ###
+token="2k+pS3qIBB6TLilR1S7qxwBmM8z0WEZTbk7O8xQuZPGAiG2II5aMD8AzWJdqXKcI"
+pin="242d9895529bf5ce45a672a3b8bfb212"
+
+### 参数信息  ###
+vpc_id="vpc-cv5h3h0gru"
+subnet_id="subnet-3zbd5vstt7"
+flavor_id="de44cbcf-0447-4b85-bb03-2f73b65fda19"
+password="A7991892011fd761"
+image_version="mongodb-3.2"
+os_user_info="tenantId:6638663763623865653634363438353238373736336562333463333838326162;tenantName:6a636c6f75645f3030406a636c6f75642e636f6d;userId:3237623037396333353435353430343262316366363862346234633566633862;password:6a636c6f75645f3030406a636c6f75642e636f6d"
+while true
+do
+	### 创建实例  ###
+	echo "[STEP1] 创建mongo实例"
+	test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XPOST --data '{\"vpcId\":\"${vpc_id}\", \"subnetId\":\"${subnet_id}\", \"flavorId\":\"${flavor_id}\", \"password\":\"${password}\", \"spaceType\":1, \"dbVersion\":\"${image_version}\", \"osUserInfo\":\"${os_user_info}\"}' \"http://${env_test}/v2.0/${pin}/clusters\""
+	echo "${test_case}"
+	echo ""
+	result=`eval ${test_case}`
+	code=`echo ${result} | jq '.code'`
+	[[ ${code} != 0 ]] && echo "Cannot create a mongo instance" && exit 1;
+	echo "[RESULT] ${result}"
+	echo ""
+	space_id=`echo ${result} | jq .attach.spaceId | sed 's/"//g'`
+	[[ ${space_id} == "" ]] && echo "There is no instance to be created sucessfully"
+
+	sleep ${wait_time}
+
+	### 查看mongo实例的状态 ###
+	echo "[STEP2] 查看mongo [${space_id}] 实例的状态"
+	test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XGET \"http://${env_test}/v2.0/${pin}/clusters/${space_id}\""
+	echo "${test_case}"
+	echo ""
+	result=`eval ${test_case}`
+	echo "[RESULT] ${result}"
+	echo ""
+	code=`echo ${result} | jq '.code'`
+	[[ ${code} != 0 ]] && echo "Cannot get the detail info about the ${space_id}" && exit 1;
+	status=`echo ${result} | jq '.attach.status'`
+	while [[ ${status} != "100" ]]
+	do
+		echo "[INFO] The mongo ${space_id} is ${status}"
+		if [ ${status} == "101" ];then
+			echo "[INFO] The mongo ${space_id} is invalid"
+			#break
+			exit 1
+		fi
+		result=`eval ${test_case}`
+		code=`echo ${result} | jq '.code'`
+		[[ ${code} != 0 ]] && echo "Cannot get the detail info about the ${space_id}" && exit 1;
+		status=`echo ${result} | jq '.attach.status'`
+		sleep ${wait_time}
+	done
+	echo "[INFO] The status of the mongo ${space_id} is ${status}"
+	echo ""
+	sleep ${wait_time}
+
+	### 删除mongo实例 ###
+	echo "[STEP3] 删除mongo [${space_id}] 实例"
+	test_case="curl -s -H\"auth-Token:${token}\" -XDELETE \"http://${env_test}/v2.0/${pin}/clusters/${space_id}\""
+	echo "${test_case}"
+	echo ""
+	result=`eval ${test_case}`
+	echo "[RESULT] ${result}"
+	echo ""
+
+	### 查看删除mongo实例后 ###
+	echo "[STEP4] 查看mongo [${space_id}] 实例的状态"
+	test_case="curl -s -H\"auth-Token:${token}\" -H\"Content-Type:application/json\" -XGET \"http://${env_test}/v2.0/${pin}/clusters/${space_id}\""
+	echo "${test_case}"
+	echo ""
+	result=`eval ${test_case}`
+	echo "[RESULT] ${result}"
+	echo ""
+	code=`echo ${result} | jq '.code'`
+	[[ ${code} != 0 ]] && echo "Cannot get the detail info about the ${space_id}" && exit 1;
+	status=`echo ${result} | jq '.attach.status'`
+	#while [[ ${status} != "602" ]]
+	#do
+        #	echo "[INFO] The mongo ${space_id} is ${status}"
+        #	if [ ${status} == "101" ];then
+        #        	echo "[INFO] The mongo ${space_id} is invalid"
+        #        	break
+        #	fi
+        #	result=`eval ${test_case}`
+        #	code=`echo ${result} | jq '.code'`
+        #	[[ ${code} != 0 ]] && echo "Cannot get the detail info about the ${space_id}" && exit 1;
+       	#	status=`echo ${result} | jq '.attach.status'`
+       	#	sleep ${wait_time}
+	#done
+	echo "[INFO] The status of the mongo ${space_id} is ${status}"
+	echo ""
+	sleep ${wait_time}
+done
