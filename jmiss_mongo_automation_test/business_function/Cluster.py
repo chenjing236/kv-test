@@ -1,4 +1,4 @@
-# coding:utf-8
+# encoding:utf-8
 import json
 import string
 import logging
@@ -38,31 +38,30 @@ class Cluster(object):
         self.data_obj = data_obj
         self.httpClient = httpClient
 
-    #创建mongo实例，参数默认
-    def create_mongo_instance(self, vpc_id=self.data_obj["vpc_id"], subnetId=self.data_obj["subnetId"]):
-        #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
-        spaceType = 1
-        data = {"vpc_id": vpc_id, "subnetId": vpc_id,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
+    def create_mongo_instance_with_param(self, data):
         create_args = CreateArgs(data)
         args_json = create_args.get_args_json()
         status, headers, res_data = self.httpClient.create_mongo_instance(args_json)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    #创建mongo实例，参数默认
+    def create_mongo_instance(self, vpc_id, subnetId):
+        #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
+        spaceType = 1
+        data = {"vpc_id": vpc_id, "subnetId": vpc_id,"flavorId":self.data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
+        return self.create_mongo_instance_with_param(data)
+
     #创建mongo实例，指定flavor_id
-    def create_mongo_instance_with_flavor(self, flavorId, vpc_id=self.data_obj["vpc_id"], subnetId=self.data_obj["subnetId"]):
+    def create_mongo_instance_with_flavor(self, flavorId, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
         data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": flavorId, "password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
-        create_args = CreateArgs(data)
-        args_json = create_args.get_args_json()
-        create_args.set_flavor(flavorId)
-        status, headers, res_data = self.httpClient.create_mongo_instance(args_json)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
+        return self.create_mongo_instance_with_param(data)
+
 
     #创建mongo实例，指定password
-    def create_mongo_instance_with_password(self, password, vpc_id=self.data_obj["vpc_id"], subnetId=self.data_obj["subnetId"]):
+    def create_mongo_instance_with_password(self, password, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
         data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
@@ -74,7 +73,7 @@ class Cluster(object):
         return res_data
 
     #创建mongo实例，指定flavor_id和password
-    def create_mongo_instance_with_password(self, flavorId, password, vpc_id=self.data_obj["vpc_id"], subnetId=self.data_obj["subnetId"]):
+    def create_mongo_instance_with_flavor_and_password(self, flavorId, password, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
         data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
