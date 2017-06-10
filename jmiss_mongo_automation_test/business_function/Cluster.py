@@ -76,7 +76,7 @@ class Cluster(object):
         return self.create_mongo_instance_with_param(data)
 
     #删除mongo实例
-    def delete_mongo_instance(self, spaceId):
+    def delete_instance(self, spaceId):
         status, headers, res_data = self.httpClient.delete_mongo_instance(spaceId)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
