@@ -60,6 +60,11 @@ class TestSmokeCasesForMongoInstance:
 	# 获取failover的操作结果，即查看failover是否完成，及完成的状态
 	# 获取mongo的副本集关系
 
+   def _flavor_info(self, config, instance_data, http_client)
+	info_logger.info("[SCENARIO] Verify flavor info is the same with flavor id")
+	# 根据flavor info获取flavor id
+	# 根据flavor id获取flavor info的信息与stpe1的flavor信息一致
+
     def _delete_mongo_instance(self, config, instance_data, http_client):
 	info_logger.info("[SCENARIO] Delete a mongo instance")
 	# 创建mongo实例
