@@ -57,7 +57,7 @@ class Cluster(object):
     def create_mongo_instance_with_flavor(self, flavorId, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
-        data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": flavorId, "password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
+        data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId": flavorId, "password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
         return self.create_mongo_instance_with_param(data)
 
 
@@ -65,14 +65,14 @@ class Cluster(object):
     def create_mongo_instance_with_password(self, password, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
-        data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
+        data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
         return self.create_mongo_instance_with_param(data)
 
     #创建mongo实例，指定flavor_id和password
     def create_mongo_instance_with_flavor_and_password(self, flavorId, password, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
-        data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
+        data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId": self.data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
         return self.create_mongo_instance_with_param(data)
 
     #删除mongo实例
