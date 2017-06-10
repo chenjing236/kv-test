@@ -1,4 +1,5 @@
-# encoding:utf-8
+# -*- coding: utf-8 -*- 
+
 import json
 import string
 import logging
@@ -41,7 +42,7 @@ class Cluster(object):
     def create_mongo_instance_with_param(self, data):
         create_args = CreateArgs(data)
         args_json = create_args.get_args_json()
-        status, headers, res_data = self.httpClient.create_mongo_instance(args_json)
+        status, headers, res_data = self.httpClient.create_mongo_instance(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
@@ -49,7 +50,7 @@ class Cluster(object):
     def create_mongo_instance(self, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
-        data = {"vpc_id": vpc_id, "subnetId": vpc_id,"flavorId":self.data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
+        data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId":self.data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
         return self.create_mongo_instance_with_param(data)
 
     #创建mongo实例，指定flavor_id
@@ -65,34 +66,24 @@ class Cluster(object):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
         data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
-        create_args = CreateArgs(data)
-        args_json = create_args.get_args_json()
-        create_args.set_password(password)
-        status, headers, res_data = self.httpClient.create_mongo_instance(args_json)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
+        return self.create_mongo_instance_with_param(data)
 
     #创建mongo实例，指定flavor_id和password
     def create_mongo_instance_with_flavor_and_password(self, flavorId, password, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
         data = {"vpc_id": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": data_obj["password"],"spaceType": spaceType,"dbVersion": data_obj["dbVersion"],"osUserInfo": data_obj["osUserInfo"]}
-        create_args = CreateArgs(data)
-        args_json = create_args.get_args_json()
-        create_args.set_flavor(flavorId)
-        create_args.set_password(password)
-        status, headers, res_data = self.httpClient.create_mongo_instance(args_json)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
+        return self.create_mongo_instance_with_param(data)
 
     #删除mongo实例
-    def delete_mongo_instance(self, spaceId):
+    def delete_instance(self, spaceId):
         status, headers, res_data = self.httpClient.delete_mongo_instance(spaceId)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     #获取mongo实例详细信息
-    def get_mongo_instance_info(self, space_id):
+    def get_instance_info(self, space_id):
         status, headers, res_data = self.httpClient.get_mongo_detail_info(space_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
