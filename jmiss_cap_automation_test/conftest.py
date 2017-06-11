@@ -19,7 +19,7 @@ def config(request):
 
 #获取创建mongo单实例所需的数据信息
 @pytest.fixture(scope="session", autouse=True)
-def data_for_mongo_instance(request):
+def data_for_instance(request):
     file_path = request.config.getoption("data")
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
