@@ -89,3 +89,4 @@ class HttpClient(object):
     # 删除mongo实例
     def delete_mongo_instance(self, space_id):
         return self.http_request("DELETE", "clusters/{0}".format(space_id))
+

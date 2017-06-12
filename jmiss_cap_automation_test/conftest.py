@@ -17,7 +17,7 @@ def config(request):
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
-#获取创建mongo单实例所需的数据信息
+#获取创建云缓存(redis & mongo)实例所需的数据信息
 @pytest.fixture(scope="session", autouse=True)
 def data_for_instance(request):
     file_path = request.config.getoption("data")
