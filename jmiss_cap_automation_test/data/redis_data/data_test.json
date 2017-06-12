@@ -2,11 +2,17 @@
     "create_cache_cluster":{
 	"dataCenter":"hb",
 	"user":"JaneCloud002",
+	"account":"account",
 	"spaceName":"test",
 	"capacity":"1",
 	"quantity":"1",
 	"remarks":"",
 	"password":"1qaz2WSX",
 	"feeType":"jmiss"
+    },
+    "common_data":{
+	"dataCenter":"hb",
+	"user":"JaneCloud002",
+	"account":"JaneCloud002"
     }
 }
