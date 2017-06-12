@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# coding:utf-8
+# -*- coding: utf-8 -*- 
 
 import httplib
 import json
@@ -82,6 +82,11 @@ class HttpClient(object):
     def get_flavor_detail_info(self, flavor_id):
         return self.http_request("GET", "flavordetail/{0}".format(flavor_id))
 
+    # 获取flavor id
+    def get_flavor_id(self, data):
+	return self.http_request("GET", "flavorid?cpu={0}&disk={1}&iops={2}&memory={3}&maxConn={4}".format(data["cpu"], data["disk"], data["ipos"], data["memory"], data["maxconn"]))
+
     # 删除mongo实例
     def delete_mongo_instance(self, space_id):
         return self.http_request("DELETE", "clusters/{0}".format(space_id))
+

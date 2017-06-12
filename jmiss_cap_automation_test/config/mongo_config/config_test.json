@@ -1,0 +1,5 @@
+{
+  "host":"192.168.166.57:1602",
+  "retry_getting_info_times": 20,
+  "wait_time": 5
+}

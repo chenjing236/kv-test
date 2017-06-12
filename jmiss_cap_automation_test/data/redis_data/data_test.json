@@ -1,0 +1,12 @@
+{
+    "create_cache_cluster":{
+	"dataCenter":"hb",
+	"user":"JaneCloud002",
+	"spaceName":"test",
+	"capacity":"1",
+	"quantity":"1",
+	"remarks":"",
+	"password":"1qaz2WSX",
+	"feeType":"jmiss"
+    }
+}
