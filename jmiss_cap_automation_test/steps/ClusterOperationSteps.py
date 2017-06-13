@@ -9,7 +9,7 @@ from business_function.RedisCap import *
 logger_info = logging.getLogger(__name__)
 
 #创建缓存云实例，创建接口返回request id
-def create_mongo_instance_step(config, instance_data, http_client):
+def create_redis_instance_step(config, instance_data, http_client):
     redis_cap = RedisCap(config, instance_data, http_client)
     res_data = redis_cap.create_instance()
     request_id = res_data["requestId"]
