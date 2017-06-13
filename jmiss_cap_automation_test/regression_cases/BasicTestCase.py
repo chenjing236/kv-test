@@ -37,12 +37,14 @@ def create_redis_instance(config, data_for_instance, http_redis_client, http_cap
 
 # 创建mongo实例
 @pytest.fixture(scope="class")
-def create_mongo_instance(self, config, data, mongo_http_client):
-    info_logger.info("[SET UP] Create a mongo instance")
+def create_mongo_instance(request, config, data_for_instance, mongo_http_client, cap_http_client):
+    info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
-    request_id = create_mongo_instance_step(config, data, mongo_http_client)
+    request_id_for_mongo = create_mongo_instance_step(config, data_for_instance, mongo_http_client)
     info_logger.info("[INFO] The mongo instance %s is created", request_id)
     # 支付
+    info_logger.info("[STEP] Pay for the mongo instance")
+    request_id_for_paying_redis = pay_for_mongo_instance_step(config, data_for_instance, cap_http_client, request_id_for_mongo)
     # 查询订单状态
     # 删除mongo实例
     return request_id

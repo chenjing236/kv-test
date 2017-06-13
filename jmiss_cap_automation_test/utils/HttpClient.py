@@ -99,7 +99,8 @@ class MongoCapClient(object):
 
     # 创建mongo实例
     def create_mongo_db(self, args):
-	return self.http_request("POST", "mongoDb?action=createMongoDb", args)
+	print "============= {0}".format(json.dumps(args))
+	return self.http_request("POST", "mongoDb?action=createMongoDb", json.dumps(args))
 
 #缓存云-CAP HTTP Client
 class CapClient(object):

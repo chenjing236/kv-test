@@ -7,8 +7,6 @@ import logging
 import json
 from logging.handlers import TimedRotatingFileHandler
 from utils.HttpClient import *
-from utils.HttpClient.MongoCapClient import *
-import sys
 
 logger_info = logging.getLogger(__name__)
 
@@ -32,19 +30,19 @@ def data_for_instance(request):
     return data_obj
 
 #创建http client对象 for redis
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def redis_http_client(config):
     http_client = RedisCapClient(config["host"])
     return http_client
 
 #创建http client对象 for mongo
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def mongo_http_client(config):
     http_client = MongoCapClient(config["host"])
     return http_client
 
-#创建http client对象 for mongo
-@pytest.fixture(scope="session")
+#创建http client对象 for cap
+@pytest.fixture(scope="class")
 def cap_http_client(config):
     http_client = CapClient(config["host"])
     return http_client

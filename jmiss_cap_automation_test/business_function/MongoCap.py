@@ -14,8 +14,8 @@ class MongoCap(object):
 
     # 创建mongo实例
     def create_instance(self):
-	create_data = selef.data_obj["create_mongo_db"]
-        data = {"dataCenter": create_data["dataCenter"], "user": create_data["user"], "account": create_data["account"], "cpu": create_data["cpu"], "memory":create_data["memory"], "maxLink":create_data["maxLink"], "ipos":create_data["ipos"], "dbType":create_data["dbType"], "netType":create_data["netType"], "routerId":create_data["routerId"], "subnetId":create_data["subnetId"], "dbVersion":create_data["dbVersion"], "routerName":create_data["routerName"], "subnetName":create_data["subnetName"], "feeType":create_data["feeType"], "disk":create_data["disk"], "password":create_data["password"]}
+	create_data = self.data_obj["create_mongo_db"]
+        data = {"dataCenter": create_data["dataCenter"], "account": create_data["account"], "cpu": create_data["cpu"], "memory":create_data["memory"], "maxLink":create_data["maxLink"], "ipos":create_data["ipos"], "dbType":create_data["dbType"], "netType":create_data["netType"], "routerId":create_data["routerId"], "subnetId":create_data["subnetId"], "dbVersion":create_data["dbVersion"], "routerName":create_data["routerName"], "subnetName":create_data["subnetName"], "feeType":create_data["feeType"], "disk":create_data["disk"], "password":create_data["password"]}
         status, headers, res_data = self.httpClient.create_mongo_db(data)
-        assert status == 200, "[ERROR] HTTP Request is failed"
+        assert status != 200, "[ERROR] HTTP Request is failed"
         return res_data
