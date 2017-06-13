@@ -38,72 +38,63 @@ class RedisCapClient(object):
 	return self.http_request("POST", "cache?action=modifyCacheCluster", args)
 
     # 获取实时被使用内存信息
-    def real_time_info_cache_cluster(self, args, space_ids):
-	uri = "cache?action=realTimeInfoCacheCluster" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&spaceIds=" + space_id
-	return self.http_request("GET", uri)
+    def real_time_info_cache_cluster(self, args):
+	return self.http_request("POST", "cache?action=realTimeInfoCacheCluster", args)
 
     # 查询云缓存实例列表
     def query_cache_clusters(self, args):
-        uri = "cache?action=queryCacheClusters" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"]
-        return self.http_request("GET", uri)
+	return self.http_request("POST", "cache?action=queryCacheClusters", args)
 
     # 使用过滤条件查询云缓存实例列表
     def query_filter_cache_clusters(self, args):
-        uri = "cache?action=queryFilterCacheClusters" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&filterName=" + args["filter_name"] + "&filterSpaceType=" + args["filter_space_type"] + "&filterStatus=" + args["filter_status"] + "&sortName=" + args["sort_name"] + "&sortRule=" + args["sort_rule"] + "&pageSize=" + args["page_size"] + "&pageNum=" + args["page_num"] + "&category=" + args["category"]
-        return self.http_request("GET", uri)
+        return self.http_request("POST", "cache?action=queryFilterCacheClusters", args)
 
     # 查询云缓存实例详情
-    def query_cache_cluster_detail(self, args, cluster_id):
-        uri = "cache?action=queryCacheClusterDetail" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&clusterId=" + cluster_id
-        return self.http_request("GET", uri)
+    def query_cache_cluster_detail(self, args):
+        return self.http_request("POST", "cache?action=queryCacheClusterDetail", args)
 
     # 删除云缓存实例
-    def delete_cache_cluster(self, args, cluster_id):
-        uri = "cache?action=deleteCacheCluster" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&clusterId=" + cluster_id
-        return self.http_request("DELETE", uri)
+    def delete_cache_cluster(self, args):
+        return self.http_request("POST", "cache?action=deleteCacheCluster", args)
 
     # 批量删除云缓存实例
-    def delete_cache_clusters(self, args, cluster_ids):
-        uri = "cache?action=deleteCacheClusters" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&clusterIds=" + cluster_ids
-        return self.http_request("DELETE", uri)
+    def delete_cache_clusters(self, args):
+        return self.http_request("POST", "cache?action=deleteCacheClusters", args)
 
     # 查询云缓存监控信息
-    def query_cache_monitor_metric(self, args, cluster_id, period, period_time_unit):
-        uri = "cache?action=queryCacheMonitorMetric" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&clusterId=" + cluster_id + "&period=" + period + "&periodTimeUnit=" + period_time_unit
-        return self.http_request("GET", uri)
+    def query_cache_monitor_metric(self, args):
+        return self.http_request("POST", "cache?action=queryCacheMonitorMetric", args)
 
     # 根据订单查询缓存云实例详情
-    def query_cache_cluster_detail_by_order(self, args, order_id, cluster_id):
-        uri = "cache?action=queryCacheClusterDetailByOrder" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&orderId=" + order_id + "&clusterId=" + cluster_id
-        return self.http_request("GET", uri)
+    def query_cache_cluster_detail_by_order(self, args):
+        return self.http_request("POST", "cache?action=queryCacheClusterDetailByOrder", args)
 
     # 启动缓存云实例
-    def start_cache_cluster(self, space_id):
-        uri = "cache?action=startCacheCluster" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&spaceId=" + space_id
-        return self.http_request("GET", uri)
+    def start_cache_cluster(self, args):
+        return self.http_request("POST", "cache?action=startCacheCluster", args)
 
     # 停服缓存云实例
-    def stop_cache_cluster(self, space_id):
-        uri = "cache?action=stopCacheCluster" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&spaceId=" + space_id
-        return self.http_request("GET", uri)
+    def stop_cache_cluster(self, args):
+        return self.http_request("POST", "cache?action=stopCacheCluster", args)
 
     # 获取规格
-    def query_flavors(self, type):
-        uri = "cache?action=queryFlavors" + "&account=" + args["account"] + "&dataCenter=" + args["data_center"] + "&user=" + args["user"] + "&type=" + type
-        return self.http_request("GET", uri)
+    def query_flavors(self, args):
+        return self.http_request("POST", "cache?action=queryFlavors", args)
 
 
 #缓存云-CAP HTTP Client
 class CapClient(object):
     # 用户中心 - 获得用户配额
-    def query_user_quota(self, resource):
-        return self.http_request("GET", "user?action=queryUserQuota&resource={0}".format(resource))
+    def query_user_quota(self, args):
+        return self.http_request("POST", "user?action=queryUserQuota", args)
 
     # 用户中心 - 修改已用配额接口
     def modify_quota(self, args):
-	return self.http_request("POST", "user?action=modifyQuota", data)
+	return self.http_request("POST", "user?action=modifyQuota", args)
 
     # 订单支付
     def pay(self, args):
 	return self.http_request("POST", "billing?action=pay", args)
 
+    def query_order_status(self, args):
+	return self.http_request("POST", "order?action=queryOrderStatus", args)
