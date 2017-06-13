@@ -1,5 +1,9 @@
 {
-  "host":"192.168.166.57:1602",
+  "host":"192.168.169.51:1602",
+  "mysql_host":"192.168.169.51:3306",
+  "database_mongo":"jmiss_mongo_cap_2",
+  "user":"jimdb",
+  "password":"jimdb",
   "retry_getting_info_times": 20,
   "wait_time": 5
 }
