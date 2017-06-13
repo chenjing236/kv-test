@@ -6,9 +6,8 @@ import json
 
 #缓存云-CAP,REDIS&MONGO的HTTP Client
 class RedisCapClient(object):
-    def __init__(self, host, service):
+    def __init__(self, host):
         self.host = host
-	self.service = service
 
     # http请求
     def http_request(self, method, uri, data=None):
@@ -81,9 +80,41 @@ class RedisCapClient(object):
     def query_flavors(self, args):
         return self.http_request("POST", "cache?action=queryFlavors", args)
 
+class MongoCapClient(object):
+    def __init__(self, host):
+        self.host = host
+
+    # http请求
+    def http_request(self, method, uri, data=None):
+        hc = httplib.HTTPConnection(self.host)
+        hc.request(method, "/{0}".format(uri), data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close()
+        return status, headers, res_data
+
+    # 创建mongo实例
+    def create_mongo_db(self, args):
+	return self.http_request("POST", "mongoDb?action=createMongoDb", args)
 
 #缓存云-CAP HTTP Client
 class CapClient(object):
+    def __init__(self, host):
+        self.host = host
+
+    # http请求
+    def http_request(self, method, uri, data=None):
+        hc = httplib.HTTPConnection(self.host)
+        hc.request(method, "/{0}".format(uri), data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close()
+        return status, headers, res_data
+
     # 用户中心 - 获得用户配额
     def query_user_quota(self, args):
         return self.http_request("POST", "user?action=queryUserQuota", args)

@@ -27,3 +27,15 @@ def create_redis_instance(self, config, data, http_client):
 
     request.addfinalizer(teardown)
     return request_id
+
+# 创建mongo实例
+@pytest.fixture(scope="class")
+def create_mongo_instance(self, config, data, http_client):
+    info_logger.info("[SET UP] Create a mongo instance")
+    # 创建mongo实例
+    request_id = create_mongo_instance_step(config, data, http_client)
+    info_logger.info("[INFO] The mongo instance %s is created", request_id)
+    # 支付
+    # 查询订单状态
+    # 删除mongo实例
+    return cluster_id
