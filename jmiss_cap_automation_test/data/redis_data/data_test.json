@@ -1,18 +1,16 @@
 {
     "create_cache_cluster":{
-	"dataCenter":"hb",
-	"user":"JaneCloud002",
-	"account":"account",
-	"spaceName":"test",
-	"capacity":"1",
-	"quantity":"1",
-	"remarks":"",
-	"password":"1qaz2WSX",
-	"feeType":"jmiss"
+      "spaceName":"cap_auto_test",
+      "spaceType":"1",
+      "capacity":"1",
+      "quantity":"1",
+      "remarks":"",
+      "password":"1qaz2WSX",
+      "feeType":"1"
     },
-    "common_data":{
-	"dataCenter":"hb",
-	"user":"JaneCloud002",
-	"account":"JaneCloud002"
-    }
+  "common_data":{
+    "dataCenter":"bj_02",
+    "user":"JaneCloud007",
+	"account":"JaneCloud007"
+  }
 }

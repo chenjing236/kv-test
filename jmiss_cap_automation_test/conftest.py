@@ -1,29 +1,31 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 import pytest
 import sys
 import time
 import logging
+import json
 from logging.handlers import TimedRotatingFileHandler
-#from utils.HttpClient.RedisCapClient import *
-#from utils.HttpClient.MongoCapClient import *
+from utils.HttpClient import *
+from utils.HttpClient.MongoCapClient import *
+import sys
 
 logger_info = logging.getLogger(__name__)
 
 #定义命令行参数
 def pytest_addoption(parser):
     parser.addoption("--config", action="store", default="conf_test.json", help="test config file path")
-    parser.addoption("--data", action="store", default="data_for_mongo_instance_test.json", help="data file path")
+    parser.addoption("--data", action="store", default="data_test.json", help="data file path")
 
 #获取环境配置信息
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="class", autouse=True)
 def config(request):
     file_path = request.config.getoption("config")
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
 #获取创建云缓存(redis & mongo)实例所需的数据信息
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="class", autouse=True)
 def data_for_instance(request):
     file_path = request.config.getoption("data")
     data_obj = json.load(open(file_path, 'r'))
