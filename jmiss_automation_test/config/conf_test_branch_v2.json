@@ -3,7 +3,7 @@
   "host": "192.168.177.88",
   "port": 80,
   "pin": "64c8ddb08ad83c7b04fba541c3b085fd",
-  "auth_token": "mSW0o5UUG5dV7sMwr3rEsielXAvi7bQaFZlRzqufc/CgUBhREYtZUt4cQD86xdq2",
+  "auth_token": "mSW0o5UUG5dV7sMwr3rEspZfRDXLf7tJe3Z9yH9caRqgUBhREYtZUt4cQD86xdq2",
   "pin_backup": "dafd9d707849abe585a5db3a920d3af8",
   "auth_token_backup": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
   "mysql_host": "192.168.177.87",
