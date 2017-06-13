@@ -24,10 +24,22 @@ def data_for_instance(request):
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
 
-#创建http client对象
+#创建http client对象 for redis
 @pytest.fixture(scope="session")
-def http_client(config):
-    http_client = HttpClient(config["host"], config["cc_service_host"], config["pin"], config["auth_token"], config["version"])
+def redis_http_client(config):
+    http_client = RedisCapClient(config["host"])
+    return http_client
+
+#创建http client对象 for mongo
+@pytest.fixture(scope="session")
+def mongo_http_client(config):
+    http_client = MongoCapClient(config["host"])
+    return http_client
+
+#创建http client对象 for mongo
+@pytest.fixture(scope="session")
+def cap_http_client(config):
+    http_client = CapClient(config["host"])
     return http_client
 
 #日志

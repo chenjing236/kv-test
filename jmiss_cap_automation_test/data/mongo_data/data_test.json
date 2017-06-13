@@ -1,0 +1,26 @@
+{
+    "create_mongo_db":{
+	"dataCenter":"hb",
+	"user":"jcloud_00",
+	"account":"jcloud_00",
+	"cpu":"1",
+	"memory":"2",
+	"maxLink":"200",
+	"iops":"800",
+	"dbType":"MongoDB",
+	"netType":"VPC",
+	"routerId":"vpc-lfi3lzlkru",
+	"subnetId":"subnet-04te25ac6k",
+	"dbVersion":"3.2",
+	"routerName":"",
+	"subnetName":"",
+	"feeType","1",
+	"disk":"4",
+	"password":"1qaz2WSX"
+    },
+    "common_data":{
+	"dataCenter":"hb",
+	"user":"JaneCloud002",
+	"account":"JaneCloud002"
+    }
+}
