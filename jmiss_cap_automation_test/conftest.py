@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*- 
+
 import pytest
+import sys
+import time
 import logging
 from logging.handlers import TimedRotatingFileHandler
-from utils.HttpClient import *
+#from utils.HttpClient.RedisCapClient import *
+#from utils.HttpClient.MongoCapClient import *
 
 logger_info = logging.getLogger(__name__)
 
