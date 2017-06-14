@@ -13,10 +13,10 @@ def create_redis_instance_step(config, instance_data, http_client):
     redis_cap = RedisCap(config, instance_data, http_client)
     res_data = redis_cap.create_instance()
     request_id = res_data["requestId"]
-    # if res_data["code"] is not None:
-    #     error_msg = res_data["message"]
-    #     logger_info.error("[ERROR] It is failed to create a redis, error message is [%s]", error_msg)
-    #     assert False, "[ERROR] It is failed to create a redis, error message is {0}".format(error_msg)
+    if "code" in res_data:
+         error_msg = res_data["message"]
+         logger_info.error("[ERROR] It is failed to create a redis, error message is [%s]", error_msg)
+         assert False, "[ERROR] It is failed to create a redis, error message is {0}".format(error_msg)
     return request_id
 
 

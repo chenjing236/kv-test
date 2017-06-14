@@ -6,7 +6,7 @@
 	"cpu":"1",
 	"memory":"2",
 	"maxLink":"200",
-	"ipos":"800",
+	"iops":"800",
 	"dbType":"MongoDB",
 	"netType":"VPC",
 	"routerId":"vpc-lfi3lzlkru",
@@ -15,7 +15,7 @@
 	"routerName":"null",
 	"subnetName":"null",
 	"feeType":"1",
-	"disk":"4",
+	"disk":"10",
 	"password":"1qaz2WSX"
     },
     "common_data":{
