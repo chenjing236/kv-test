@@ -27,7 +27,7 @@ class Cap(object):
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
             assert False, "[ERROR] 用户此地域没有配额！！！"
-        assert status != 200, "[ERROR] HTTP Request is failed"
+        assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     def query_order_status(self, order_request):
