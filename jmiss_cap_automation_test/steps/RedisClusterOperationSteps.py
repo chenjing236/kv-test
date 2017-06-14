@@ -24,7 +24,7 @@ def query_cache_cluster_detail_step(config, instance_data, http_client, cluster_
     redis_cap = RedisCap(config, instance_data, http_client)
     res_data = redis_cap.query_cache_cluster_detail(cluster_id)
     request_id = res_data["requestId"]
-    if res_data["code"] is not None:
+    if "code" in res_data:
         error_msg = res_data["message"]
         logger_info.error("[ERROR] It is failed to create a redis, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a redis, error message is {0}".format(error_msg)
