@@ -24,7 +24,7 @@ def config(request):
 
 #获取创建云缓存(redis & mongo)实例所需的数据信息
 @pytest.fixture(scope="class", autouse=True)
-def data_for_instance(request):
+def instance_data(request):
     file_path = request.config.getoption("data")
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
@@ -48,7 +48,7 @@ def cap_http_client(config):
     return http_client
 
 #日志
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="class", autouse=True)
 def logger():
     info_logger = logging.getLogger()
     info_logger.setLevel(logging.DEBUG)

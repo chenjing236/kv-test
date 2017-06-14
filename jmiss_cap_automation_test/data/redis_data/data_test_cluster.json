@@ -1,15 +1,15 @@
 {
     "create_cache_cluster":{
       "spaceName":"cap_auto_test",
-      "spaceType":"1",
-      "capacity":"2",
-      "resize_capacity":"3",
-      "reduce_capacity":"1",
+      "spaceType":"2",
+      "capacity":"32",
+      "resize_capacity":"64",
+      "reduce_capacity":"16",
       "quantity":"1",
       "remarks":"",
       "password":"1qaz2WSX",
       "feeType":"1",
-      "feeType_month": "601"
+      "feeType_month":"601"
     },
   "operation_data":{
     "sourceAuth": "4beeffb694500d149761258d78682a4d",
