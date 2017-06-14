@@ -29,6 +29,7 @@ def pay_for_mongo_instance_step(config, instance_data, http_client, order_reques
          assert False, "[ERROR] It is failed to pay for the redis {0}, error message is {1}".format(order_request_id, error_msg)
     return request_id
 
+# 查询订单状态
 def query_order_status_step(config, instance_data, http_client, order_request_id):
     cap = Cap(config, instance_data, http_client)
     res_data = cap.query_order_status(order_request_id)
@@ -40,7 +41,7 @@ def query_order_status_step(config, instance_data, http_client, order_request_id
     while inProcess == 1 and count < config["retry_getting_info_times"]:
         res_data = cap.query_order_status(order_request_id)
         inProcess = res_data["inProcess"]
-        logger_info.info("[INFO] Retry {0} get order status of instance. {1}".format(count, res_data))
+        logger_info.info("[INFO] Retry {0} get order status of instance. {1}".format(count, json.dumps(res_data)))
         count += 1
         time.sleep(config["wait_time"])
     success = res_data["success"]
@@ -48,8 +49,8 @@ def query_order_status_step(config, instance_data, http_client, order_request_id
     resourceId = res_data["resourceIds"][0]
     if "code" in res_data:
          error_msg = res_data["message"]
-         logger_info.error("[ERROR] It is failed to query redis order status [%s], error message is [%s]", order_request_id,
-                           error_msg)
-         assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id,
-                                                                                                    error_msg)
+         logger_info.error("[ERROR] It is failed to query redis order status [%s], error message is [%s]", order_request_id, error_msg)
+         assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id, error_msg)
+         logger_info.error("[ERROR] It is failed to query redis order status [%s], error message is [%s]", order_request_id, error_msg)
+         assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id, error_msg)
     return success, resourceId
