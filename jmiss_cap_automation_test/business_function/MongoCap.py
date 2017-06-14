@@ -19,3 +19,18 @@ class MongoCap(object):
         status, headers, res_data = self.httpClient.create_mongo_db(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 查询monggo详情
+    def query_mongo_db_detail(self, resource_id):
+	common_data = self.data_obj["common_data"]
+	data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"], "spaceId":resource_id}
+        status, headers, res_data = self.httpClient.query_mongo_db_detail(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    def delete_mongo_db(self, resource_id):
+        common_data = self.data_obj["common_data"]
+        data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"], "spaceId":resource_id}
+        status, headers, res_data = self.httpClient.delete_mongo_db(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

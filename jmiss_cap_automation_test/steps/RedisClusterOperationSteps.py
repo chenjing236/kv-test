@@ -32,6 +32,7 @@ def query_cache_cluster_detail_step(config, instance_data, http_client, cluster_
     billing_order = res_data["billingOrder"]
     return request_id, cluster, billing_order
 
+#删除redis实例
 def delete_redis_instance_step(config, instance_data, http_client, cluster_id):
     redis_cap = RedisCap(config, instance_data, http_client)
     res_data = redis_cap.delete_cache_cluster(cluster_id)
