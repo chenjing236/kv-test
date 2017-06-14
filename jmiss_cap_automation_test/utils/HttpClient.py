@@ -109,6 +109,14 @@ class MongoCapClient(object):
     def delete_mongo_db(self, args):
 	return self.http_request("POST", "mongoDb?action=deleteMongoDb", json.dumps(args))
 
+    # 修改名字
+    def modify_mongo_db_name(self, args):
+	return self.http_request("POST", "mongoDb?action=modifyMongoDbName", json.dumps(args))
+
+    # 查看flavor信息
+    def query_flavors(self, args):
+	return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
+
 #缓存云-CAP HTTP Client
 class CapClient(object):
     def __init__(self, host):

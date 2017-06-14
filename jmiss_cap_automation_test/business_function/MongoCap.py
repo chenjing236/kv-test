@@ -28,9 +28,18 @@ class MongoCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 删除mongo实例
     def delete_mongo_db(self, resource_id):
         common_data = self.data_obj["common_data"]
         data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"], "spaceId":resource_id}
         status, headers, res_data = self.httpClient.delete_mongo_db(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 修改mongo资源的名称
+    def modify_mongo_db_name(self, resource_id, space_name):
+        common_data = self.data_obj["common_data"]
+        data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"], "spaceId":resource_id, "spaceName":space_name}
+        status, headers, res_data = self.httpClient.modify_mongo_db_name(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
