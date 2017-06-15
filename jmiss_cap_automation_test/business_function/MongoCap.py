@@ -43,3 +43,11 @@ class MongoCap(object):
         status, headers, res_data = self.httpClient.modify_mongo_db_name(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 查询flavor信息
+    def query_flavors(self, type):
+        common_data = self.data_obj["common_data"]
+        data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"], "type":type}
+        status, headers, res_data = self.httpClient.query_flavors(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
