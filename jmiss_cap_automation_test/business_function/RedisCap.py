@@ -1,7 +1,6 @@
 # coding:utf-8
 import logging
 
-
 info_logger = logging.getLogger(__name__)
 
 

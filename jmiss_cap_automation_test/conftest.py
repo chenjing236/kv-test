@@ -16,39 +16,39 @@ def pytest_addoption(parser):
     parser.addoption("--data", action="store", default="data_test.json", help="data file path")
 
 #获取环境配置信息
-@pytest.fixture(scope="class", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def config(request):
     file_path = request.config.getoption("config")
     conf_obj = json.load(open(file_path, 'r'))
     return conf_obj
 
 #获取创建云缓存(redis & mongo)实例所需的数据信息
-@pytest.fixture(scope="class", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def instance_data(request):
     file_path = request.config.getoption("data")
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
 
 #创建http client对象 for redis
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def redis_http_client(config):
     http_client = RedisCapClient(config["host"])
     return http_client
 
 #创建http client对象 for mongo
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def mongo_http_client(config):
     http_client = MongoCapClient(config["host"])
     return http_client
 
 #创建http client对象 for cap
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def cap_http_client(config):
     http_client = CapClient(config["host"])
     return http_client
 
 #日志
-@pytest.fixture(scope="class", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def logger():
     info_logger = logging.getLogger()
     info_logger.setLevel(logging.DEBUG)

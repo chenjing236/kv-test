@@ -3,8 +3,6 @@
 
 from BasicTestCase import *
 
-info_logger = logging.getLogger(__name__)
-
 
 class TestSmokeCasesForRedisCap:
     @pytest.mark.smoke

@@ -6,8 +6,6 @@ from BasicTestCase import *
 from steps.BillingOperationSteps import *
 from steps.RedisClusterOperationSteps import *
 
-info_logger = logging.getLogger(__name__)
-
 
 class TestSmokeCasesForRedisCap:
 
