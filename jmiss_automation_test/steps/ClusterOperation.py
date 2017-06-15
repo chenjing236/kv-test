@@ -295,6 +295,19 @@ def get_clusters_step(instance):
     return res_data["attach"]
 
 
+def get_filter_clusters_step(instance, filterName="", filterSpaceType="", filterStatus="", sortName="", sortRule="",
+                             pageSize="", pageNum=""):
+    filters = "filterName={0}&filterSpaceType={1}&filterStatus={2}&sortName={3}&sortRule={4}&pageSize={5}&" \
+              "pageNum={6}".format(filterName, filterSpaceType, filterStatus, sortName, sortRule, pageSize, pageNum)
+    res_data = instance.get_filter_clusters(filters)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of get_clusters is incorrect"
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get clusters, error message is {0}".format(msg)
+    return res_data["attach"]
+
+
 def update_meta_step(instance, space_id, name, remarks):
     res_data = instance.update_meta(space_id, name, remarks)
     if res_data is None or res_data is "":

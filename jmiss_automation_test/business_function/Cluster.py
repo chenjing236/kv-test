@@ -184,6 +184,12 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 使用过滤条件查询缓存云列表
+    def get_filter_clusters(self, filters):
+        status, headers, res_data = self.httpClient.get_filter_clusters(filters)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # 修改基本信息
     def update_meta(self, space_id, name, remarks):
         status, headers, res_data = self.httpClient.update_meta(space_id, name, remarks)
