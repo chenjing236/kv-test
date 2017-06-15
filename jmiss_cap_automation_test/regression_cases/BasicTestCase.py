@@ -78,12 +78,11 @@ def create_mongo_instance(request, config, instance_data, mongo_http_client, cap
     info_logger.info("[INFO] The request id is %s for paying mongo", request_id_for_paying_mongo)
     # 查询订单状态
     info_logger.info("[STEP] Get the status of the order for the mongo instance")
-    success, resource_id = query_order_status_step(config, instance_data, cap_http_client, request_id_for_mongo)
+    success, resource_id = query_order_status_for_mongo_step(config, instance_data, cap_http_client, request_id_for_mongo)
     info_logger.info("[INFO] The resource id is %s for the mongo", resource_id)
     # 查询详情接口
     info_logger.info("[STEP] Get the detail info of the mongo instance")
     request_id, mongo_info = query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
-    flavor_info = mongo_info["flavor"]
     if mongo_info is None:
 	info_logger.info("[ERROR] The mongo instance %s is not be created", resource_id)
 	assert False, "[ERROR] The mongo instance %s is not be created".format(resource_id)
@@ -95,4 +94,4 @@ def create_mongo_instance(request, config, instance_data, mongo_http_client, cap
         request_id_for_delete_mongo = delete_mongo_instance_step(config, instance_data, mongo_http_client, resource_id)
 
     request.addfinalizer(teardown)
-    return resource_id, flavor_info
+    return resource_id, mongo_info
