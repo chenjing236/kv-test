@@ -1,46 +1,87 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 import json
 import logging
 import time
-
 from business_function.RedisCap import *
 
 logger_info = logging.getLogger(__name__)
 
-#创建缓存云实例，创建接口返回request id
-def create_redis_instance_step(config, instance_data, http_client):
-    redis_cap = RedisCap(config, instance_data, http_client)
+
+# 创建缓存云实例，创建接口返回request id
+def create_redis_instance_step(redis_cap):
     res_data = redis_cap.create_instance()
     request_id = res_data["requestId"]
-    if res_data["code"] is not None:
-	error_msg = res_data["message"]
-	logger_info.error("[ERROR] It is failed to create a redis, error message is [%s]", error_msg)
-	assert False, "[ERROR] It is failed to create a redis, error message is {0}".format(error_msg)
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to create a redis [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to create a redis {0}, error message is {1}".format(request_id, error_msg)
     return request_id
 
-#查询云缓存实例详情
-def query_cache_cluster_detail_step(config, instance_data, http_client, cluster_id):
-    redis_cap = RedisCap(config, instance_data, http_client)
+
+# 创建包年包月缓存云实例，创建接口返回request id
+def create_redis_month_instance_step(redis_cap):
+    res_data = redis_cap.create_month_instance()
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to create a month redis [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to create a month redis {0}, error message is {1}".format(request_id, error_msg)
+    return request_id
+
+
+# 查询云缓存实例详情
+def query_cache_cluster_detail_step(redis_cap, cluster_id):
     res_data = redis_cap.query_cache_cluster_detail(cluster_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to create a redis, error message is [%s]", error_msg)
-        assert False, "[ERROR] It is failed to create a redis, error message is {0}".format(error_msg)
-    cluster = res_data["cluster"]
+        logger_info.error("[ERROR] It is failed to query cache cluster detail [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to query cache cluster detail {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
     billing_order = res_data["billingOrder"]
-    return request_id, cluster, billing_order
+    cluster = res_data["cluster"]
+    return billing_order, cluster
 
-#删除redis实例
-def delete_redis_instance_step(config, instance_data, http_client, cluster_id):
-    redis_cap = RedisCap(config, instance_data, http_client)
+
+# 删除redis资源
+def delete_redis_instance_step(redis_cap, cluster_id):
     res_data = redis_cap.delete_cache_cluster(cluster_id)
     request_id = res_data["requestId"]
-    if res_data["code"] is not None:
+    if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to create a redis, error message is [%s]", error_msg)
-        assert False, "[ERROR] It is failed to create a redis, error message is {0}".format(error_msg)
-    cluster = res_data["cluster"]
-    billing_order = res_data["billingOrder"]
-    return request_id, cluster, billing_order
+        logger_info.error("[ERROR] It is failed to delete redis instance [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to delete redis instance {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+    return request_id
+
+
+# redis扩容缩容
+def modify_cache_cluster_step(redis_cap, cluster_id, is_resize):
+    res_data = redis_cap.modify_cache_cluster(cluster_id, is_resize)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to resize cache cluster [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to resize cache cluster {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+    return request_id
+
+
+# Operation-运营删除redis资源
+def delete_resource_step(redis_cap, cluster_id):
+    res_data = redis_cap.delete_resource(cluster_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to delete resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to delete resource by operation {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+    return request_id
+
+
+# Operation-运营删除包年包月未过期redis资源
+def delete_no_overdue_resource_step(redis_cap, cluster_id):
+    res_data = redis_cap.delete_no_overdue_resource(cluster_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to delete no_overdue resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to delete no_overdue resource by operation {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+    return request_id

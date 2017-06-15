@@ -82,6 +82,15 @@ class RedisCapClient(object):
     def query_flavors(self, args):
         return self.http_request("POST", "cache?action=queryFlavors", json.dumps(args))
 
+    # 运营删除资源
+    def delete_resource(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=deleteResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+
+    # 运营删除包年包月未过期资源
+    def delete_no_overdue_resource(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+
+
 class MongoCapClient(object):
     def __init__(self, host):
         self.host = host
@@ -99,25 +108,27 @@ class MongoCapClient(object):
 
     # 创建mongo实例
     def create_mongo_db(self, args):
-	return self.http_request("POST", "mongoDb?action=createMongoDb", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=createMongoDb", json.dumps(args))
 
     # 查询monggo详情
     def query_mongo_db_detail(self, args):
-	return self.http_request("POST", "mongoDb?action=queryMongoDbDetail", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=queryMongoDbDetail", json.dumps(args))
 
     # 删除mongo实例
     def delete_mongo_db(self, args):
-	return self.http_request("POST", "mongoDb?action=deleteMongoDb", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=deleteMongoDb", json.dumps(args))
+
 
     # 修改名字
     def modify_mongo_db_name(self, args):
-	return self.http_request("POST", "mongoDb?action=modifyMongoDbName", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=modifyMongoDbName", json.dumps(args))
 
     # 查看flavor信息
     def query_flavors(self, args):
-	return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
 
-#缓存云-CAP HTTP Client
+
+# 缓存云-CAP HTTP Client
 class CapClient(object):
     def __init__(self, host):
         self.host = host
@@ -145,5 +156,34 @@ class CapClient(object):
     def pay(self, args):
         return self.http_request("POST", "billing?action=pay", json.dumps(args))
 
+    # 查询订单状态
     def query_order_status(self, args):
         return self.http_request("POST", "order?action=queryOrderStatus", json.dumps(args))
+
+    # 查询订单详情
+    def query_order_detail(self, args):
+        return self.http_request("POST", "order?action=queryOrderDetail", json.dumps(args))
+
+    # 查询redis升降配尾款账单余额
+    def query_config_redis_final_payment(self, args):
+        return self.http_request("POST", "billing?action=queryConfigRedisFinalPayment", json.dumps(args))
+
+    # 查询redis资源价格
+    def query_cache_price(self, args):
+        return self.http_request("POST", "billing?action=queryCachePrice", json.dumps(args))
+
+    # 查询计费订单
+    def query_bill_order(self, args):
+        return self.http_request("POST", "billing?action=queryBillingOrder", json.dumps(args))
+
+    # 根据resourceId查询资源状态--续费使用
+    def query_status_by_resource_id(self, args):
+        return self.http_request("POST", "billing?action=queryStatusByResourceId", json.dumps(args))
+
+    # 批量续费价格查询
+    def query_renew_prices(self, args):
+        return self.http_request("POST", "billing?action=queryRenewPrices", json.dumps(args))
+
+    # 批量续费接口
+    def renew_billing_orders(self, args):
+        return self.http_request("POST", "billing?action=renewBillingOrders", json.dumps(args))
