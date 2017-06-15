@@ -4,7 +4,6 @@
 import httplib
 import json
 
-
 # 缓存云-CAP,REDIS&MONGO的HTTP Client
 class RedisCapClient(object):
     def __init__(self, host):
@@ -126,7 +125,6 @@ class MongoCapClient(object):
     # 查看flavor信息
     def query_flavors(self, args):
         return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
-
 
 # 缓存云-CAP HTTP Client
 class CapClient(object):

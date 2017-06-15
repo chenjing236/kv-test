@@ -6,7 +6,6 @@ from business_function.Cap import *
 
 logger_info = logging.getLogger(__name__)
 
-
 # 支付
 def pay_for_redis_instance_step(cap, order_request_id):
     res_data = cap.pay(order_request_id)
@@ -54,6 +53,30 @@ def query_order_status_step(cap, order_request_id):
         assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id, error_msg)
     return success, resourceId
 
+# 查询mongo的订单状态
+def query_order_status_for_mongo_step(config, instance_data, cap_http_client, order_request_id):
+    cap = Cap(config, instance_data, cap_http_client)
+    res_data = cap.query_order_status(order_request_id)
+    # request_id = res_data["requestId"]
+    success = res_data["success"]
+    inProcess = res_data["inProcess"]
+    total = res_data["total"]
+    assert success + inProcess == 1 and total == 1, "[ERROR] Query order status response is wrong!"
+    count = 1
+    while inProcess == 1 and count < cap.config["retry_getting_info_times"]:
+        res_data = cap.query_order_status(order_request_id)
+        inProcess = res_data["inProcess"]
+        logger_info.info("[INFO] Retry {0} get order status of instance. {1}".format(count, json.dumps(res_data)))
+        count += 1
+        time.sleep(cap.config["wait_time"])
+    success = res_data["success"]
+    assert inProcess == 0 and success == 1, "[ERROR] Create redis instance failed!"
+    resourceId = res_data["resourceIds"][0]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query redis order status [%s], error message is [%s]", order_request_id, error_msg)
+        assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id, error_msg)
+    return success, resourceId
 
 # 查询订单详情
 def query_order_detail_step(cap, order_request_id):
