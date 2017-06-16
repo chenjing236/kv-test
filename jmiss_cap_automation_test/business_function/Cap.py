@@ -102,3 +102,43 @@ class Cap(object):
         status, headers, res_data = self.httpClient.renew_billing_orders(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # billing模块，查询mongo的价格
+    def query_mongo_db_price(self, flavor_info):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "cpu":flavor_info["cpu"], "memory":flavor_info["memory"], "disk":flavor_info["disk"], "feeType":flavor_info["feeType"], "region":flavor_info["region"]}
+        status, headers, res_data = self.httpClient.query_mongo_db_price(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # billing模块，查询mongo的折扣
+    def query_mongo_db_discount(self, discount_info):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "serviceCode":discount_info["serviceCode"], "feeType":discount_info["feeType"]}
+        status, headers, res_data = self.httpClient.query_mongo_db_discount(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 运营系统删除资源
+    def delete_resource(self, resourceId, resourceType):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resourceId": resourceId, "resourceType":resourceType}
+        status, headers, res_data = self.httpClient.delete_resource(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 运营系统删除未过期资源
+    def delete_no_overdue_resource(self, resourceId, resourceType):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resourceId": resourceId, "resourceType":resourceType}
+        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 运营修改用户可见flavor
+    def modify_user_visible_flavor(self, flavor_info):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "type":flavor_info["type"], "cpu":flavor_info["cpu"], "memory":flavor_info["memory"], "actionType":flavor_info["actionType"]}
+        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

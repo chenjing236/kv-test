@@ -185,3 +185,23 @@ class CapClient(object):
     # 批量续费接口
     def renew_billing_orders(self, args):
         return self.http_request("POST", "billing?action=renewBillingOrders", json.dumps(args))
+
+    # 查询mongodb的价格
+    def query_mongo_db_price(self, args):
+	return self.http_request("POST", "billing?action=queryMongoDbPrice", json.dumps(args))
+
+    # 查询mongo的折扣信息
+    def query_mongo_db_discount(self, args):
+	return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
+
+    # 运营系统删除资源
+    def delete_resource(self, args):
+	return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
+
+    # 运营系统删除未过期资源
+    def delete_no_overdue_resource(self, args):
+	return self.http_request("POST", "operation?action=deleteNoOverdueResource", json.dumps(args))
+
+    # 运营修改用户可见flavor
+    def modifyi_user_visible_flavor(self, args):
+	return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))

@@ -160,3 +160,27 @@ def renew_billing_orders_step(cap, resource_id, feeType):
         assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
     request_id = res_data["requestId"]
     return request_id
+
+# 查询mongo的价格
+def query_mongo_db_price_step(config, instance_data, httpClient, flavor_info):
+    cap = Cap(config, instance_data, httpClient)
+    res_data = cap.query_mongo_db_price(flavor_info)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
+        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+    request_id = res_data["requestId"]
+    return request_id
+
+# 查询mongo的折扣信息
+def query_query_min_discount_step(config, instance_data, httpClient, discount_info):
+    cap = Cap(config, instance_data, httpClient)
+    res_data = cap.query_mongo_db_price(discount_info)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
+        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+    request_id = res_data["requestId"]
+    return request_id
