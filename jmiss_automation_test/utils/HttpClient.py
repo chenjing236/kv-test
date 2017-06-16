@@ -120,4 +120,13 @@ class HttpClient(object):
 
     # rebuild upgrade spaceId
     # rebuild repair spaceId
+    def rebuild_repair(self, space_id):
+        request_id = uuid_for_request_id()
+        data = {"srcSpaceId": space_id}
+        return self.http_request("PUT", "repair?requestId={0}".format(request_id), json.dumps(data))
+
     # rebuild clone
+    def rebuild_clone(self, clone_args):
+        request_id = uuid_for_request_id()
+        data = self.to_json_string(clone_args)
+        return self.http_request("POST", "clone?requestId={0}".format(request_id), data)

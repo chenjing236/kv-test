@@ -70,7 +70,7 @@ def get_status_of_instance_step(instance, space_id, retry_times, wait_time):
             assert False, "[ERROR] It is failed to get topology from detail information of the instance {0}.".format(space_id)
         attach = res_data["attach"]
         status = attach["status"]
-        print "[INFO] Retry {0} get information of instance. Status of instance is {1}".format(count, status)
+        logger_info.info("[INFO] Retry {0} get information of instance. Status of instance is {1}".format(count, status))
         count += 1
         time.sleep(wait_time)
     return status, capacity
@@ -255,7 +255,7 @@ def run_failover_container(space_id, containerIp, containerPort, docker_client, 
 def run_failover_container_step(instance, cfs_client, container, space_id, failover_type, masterIp, masterPort, retry_times, wait_time):
     is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time, failover_type)
     assert is_failover == True,"[ERROR] It is failed to run master failover"
-    print "[INFO] It is succesfull to run master failover"
+    logger_info.info("[INFO] It is successful to run master failover")
     res_data = cfs_client.get_meta(space_id)
     if res_data == None:
         assert False, "[ERROR] It is failed to get topology after running master failover."
@@ -267,13 +267,104 @@ def run_failover_container_step(instance, cfs_client, container, space_id, failo
 def run_failover_container_of_cluster_step(instance, cfs_client, container, space_id, failover_type, masterIp, masterPort, retry_times, wait_time):
     is_failover = run_failover_container(space_id, masterIp, masterPort, container, cfs_client, retry_times, wait_time, failover_type)
     assert is_failover is True, "[ERROR] It is failed to run master failover"
-    print "[INFO] It is successful to run master failover"
+    logger_info.info("[INFO] It is successful to run master failover")
     res_data = cfs_client.get_meta(space_id)
     if res_data is None:
         assert False, "[ERROR] It is failed to get topology after running master failover."
     currentTopology = res_data["currentTopology"]
     master_ip_new, master_port_new, slave_ip_new, slave_port_new = cfs_client.get_topology_from_cfs(currentTopology)
     return is_failover, master_ip_new, master_port_new, slave_ip_new, slave_port_new
+
+
+def get_operation_result_step(instance, space_id, operation_id):
+    # 获取操作结果，判断repair是否成功
+    code = 1
+    count = 1
+    retry_times = int(instance.conf_obj["retry_getting_info_times"])
+    wait_time = int(instance.conf_obj["wait_time"])
+    while code == 1 and count < retry_times:
+        res_data = instance.get_operation_result(space_id, operation_id)
+        code = res_data["code"]
+        msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+        assert code == 0, "[ERROR] It is failed to get operation result, error message is {0}".format(msg)
+        attach = res_data["attach"]
+        if attach is None or attach is "":
+            logger_info.error("[ERROR] Response of getting operation result is incorrect")
+            assert False, "[ERROR] Response of getting operation result is incorrect"
+        code = attach["code"]
+        count += 1
+        time.sleep(wait_time)
+    if count >= retry_times:
+        assert False, "[ERROR] The operation of instance is failed"
+    if code != 0:
+        assert False, "[ERROR] The operation of instance is failed, error_code = {0}".format(code)
+    return True
+
+
+def run_rebuild_repair_step(instance, space_id, docker_client, cfs_client):
+    # 获取原有epoch
+    res_data_cfs_origin = cfs_client.get_meta(space_id)
+    epoch_origin = res_data_cfs_origin["epoch"]
+    shards = res_data_cfs_origin["currentTopology"]["shards"]
+    shard_1 = shards[0]
+    master_ip = shard_1["master"]["ip"]
+    master_port = shard_1["master"]["port"]
+    slave_ip = shard_1["master"]["slaves"][0]["ip"]
+    slave_port = shard_1["master"]["slaves"][0]["port"]
+    # stop master and slave container
+    docker_client.stop_container(master_ip, master_port)
+    docker_client.stop_container(slave_ip, slave_port)
+    # check space status = 101
+    res_data = instance.get_instance_info(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg)
+    attach = res_data["attach"]
+    if attach is None or attach is "":
+        logger_info.error("[ERROR] Response of getting detail information for the instance %s is incorrect", space_id)
+        assert False, "[ERROR] Response of getting detail information for the instance {0} is incorrect".format(
+            space_id)
+    status = attach["status"]
+    retry_times = int(instance.conf_obj["retry_getting_topology_from_cfs"])
+    wait_time = int(instance.conf_obj["wait_time"])
+    count = 1
+    while status != 101 and count < retry_times:
+        res_data = instance.get_instance_info(space_id)
+        if res_data is None or res_data is "":
+            logger_info.error("[ERROR] It is failed to get topology from detail information of the instance %s.", space_id)
+            assert False, "[ERROR] It is failed to get topology from detail information of the instance {0}.".format(space_id)
+        attach = res_data["attach"]
+        status = attach["status"]
+        logger_info.info("[INFO] Retry {0} get information of instance. Status of instance is {1}".format(count, status))
+        count += 1
+        time.sleep(wait_time)
+    # run rebuild repair
+    logger_info.info("[INFO] Start to run rebuild repair")
+    res_data = instance.rebuild_repair_instance(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    operation_id_repair = res_data["attach"]["operationId"]
+    assert code == 0, "[ERROR] It is failed to rebuild repair instance {0}, error message is {1}".format(space_id, msg)
+    # 获取操作结果，判断repair是否成功
+    get_operation_result_step(instance, space_id, operation_id_repair)
+    logger_info.info("[INFO] Run rebuild repair successfully")
+
+
+def run_rebuild_clone_step(instance, space_id):
+    res_data = instance.rebuild_clone_instance(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to clone an instance, error message is {0}".format(msg)
+    attach = res_data["attach"]
+    if attach is None or attach is "":
+        logger_info.error("[ERROR] Response of cloning an instance is incorrect")
+        assert False, "[ERROR] Response of cloning an instance is incorrect"
+    space_id = attach["spaceId"]
+    operation_id_clone = attach["operationId"]
+    # 获取操作结果，判断repair是否成功
+    get_operation_result_step(instance, space_id, operation_id_clone)
+    logger_info.info("[INFO] Run rebuild clone successfully, The space_id of clone instance is {0}".format(space_id))
+    return space_id
 
 
 def reset_password_step(instance, space_id, password):

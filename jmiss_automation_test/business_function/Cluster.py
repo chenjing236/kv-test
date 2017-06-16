@@ -207,3 +207,18 @@ class Cluster(object):
         status, headers, res_data = self.httpClient.get_resource_info(space_id, period, frequency)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # rebuild-repair
+    def rebuild_repair_instance(self, space_id):
+        status, headers, res_data = self.httpClient.rebuild_repair(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # rebuild-clone
+    def rebuild_clone_instance(self, space_id):
+        data = {"spaceName": self.data_obj["spaceName"], "srcSpaceId": space_id, "remarks": self.data_obj["remarks"], "password": self.data_obj["password"]}
+        create_args = CreateArgs(data)
+        args_json = create_args.get_args_json()
+        status, headers, res_data = self.httpClient.rebuild_clone(args_json)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
