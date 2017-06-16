@@ -8,7 +8,7 @@ from business_function.MongoCap import *
 
 logger_info = logging.getLogger(__name__)
 
-#创建mongo实例，创建接口返回request id
+#创建mongo实例，类型为按配置
 def create_mongo_instance_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.create_instance()
@@ -18,6 +18,18 @@ def create_mongo_instance_step(config, instance_data, http_client):
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
+
+# 创建mongo实例，类型为包年包月
+def create_mongo_instance_with_yealy_fee_step(config, instance_data, http_client):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.create_instance_with_yearly_fee()
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = json.dumps(res_data["message"],ensure_ascii=False).encode("gbk")
+        logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
+    return request_id
+
 
 #查询monggo详情
 def query_mongo_db_detail_step(config, instance_data, http_client, resource_id):

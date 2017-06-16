@@ -18,6 +18,25 @@
 	"disk":"10",
 	"password":"1qaz2WSX"
     },
+    "create_mongo_db_with_yearly_fee":{
+        "dataCenter":"bj_02",
+        "user":"jcloud_00",
+        "account":"jcloud_00",
+        "cpu":"1",
+        "memory":"2",
+        "maxLink":"200",
+        "iops":"800",
+        "dbType":"MongoDB",
+        "netType":"VPC",
+        "routerId":"vpc-lfi3lzlkru",
+        "subnetId":"subnet-04te25ac6k",
+        "dbVersion":"3.2",
+        "routerName":"null",
+        "subnetName":"null",
+        "feeType":"601",
+        "disk":"10",
+        "password":"1qaz2WSX"
+    },
     "common_data":{
 	"dataCenter":"bj_02",
 	"user":"jcloud_00",
