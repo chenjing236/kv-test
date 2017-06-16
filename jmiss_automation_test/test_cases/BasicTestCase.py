@@ -1,4 +1,5 @@
 # coding:utf-8
+
 import pytest
 from utils.HttpClient import *
 from utils.SQLClient import *
@@ -9,6 +10,9 @@ from business_function.Container import *
 from business_function.CFS import *
 from steps.ClusterOperation import *
 import logging
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 info_logger = logging.getLogger(__name__)
 
