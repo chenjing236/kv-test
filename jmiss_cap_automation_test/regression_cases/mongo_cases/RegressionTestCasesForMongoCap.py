@@ -162,19 +162,22 @@ class TestRegressionCasesForMongoCap:
 
     # 获取vpc列表及subnet的列表信息
     def test_vpc_and_subnet_list(self, config, instance_data, mongo_http_client):
+		info_logger.info("[Scenario] Query mongo db vpc and subnet list")
 		# 选择subnet及对应的vpc，创建mongo实例
 		vpc=""
 		subnet=""
-		request_id, res_data=get_vpcs_step(config, instance_data, mongo_http_client)
-		assert res_data["total"] > 0 ,"[ERROR] failed to get vpc"
-		for item in res_data["vpcs"]:
-			request_id ,subnests= get_vpc_subnets_step(config, instance_data, mongo_http_client, item)
-			if subnests["total"] <=0:
+		request_id, total,vpcs=get_vpcs_step(config, instance_data, mongo_http_client)
+		assert total > 0 ,"[ERROR] failed to get vpc"
+		for item in vpcs:
+			request_id ,total,subnests= get_vpc_subnets_step(config, instance_data, mongo_http_client, item["id"])
+			if total <=0:
 				continue
 			else:
-				vpc=item
-				subnet=subnests[0]["name"]
+				vpc=item["id"]
+				subnet=subnests[0]["id"]
 		assert vpc!="" and subnet!="","[ERROR] failed to get vpc or subnet"
+		instance_data["create_mongo_db"]["routerId"]=vpc
+		instance_data["create_mongo_db"]["subnetId"] = subnet
 		resource_id, mongo_info = create_mongo_instance
 		# 获取mongo实例信息中的vpc和subnet信息
 		request_id, mongo_detail=query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
@@ -183,12 +186,19 @@ class TestRegressionCasesForMongoCap:
 
     # 查询监控信息
     #def test_query_monitor_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
-	# 创建mongo实例
-	# 获取mongo实例的监控信息
-	# 验证监控信息项都存在
+		# 创建mongo实例
+		# 获取mongo实例的监控信息
+		# 验证监控信息项都存在
 
     # 查询实时信息
-    #def test_query_mongo_db_real_time_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
-	# 创建mongo实例
-	# 获取mongo实例的实时监控信息
-	# 验证监控项都存在
+    def test_query_mongo_db_real_time_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
+		info_logger.info("[Scenario] Query mongo db real time info")
+		# 创建mongo实例
+		resource_id, mongo_info = create_mongo_instance
+		# 获取mongo实例的实时监控信息
+		request_id,realTimeInfos=get_mongo_reailTimeInfo_step(config, instance_data, http_client, resource_id)
+		# 验证监控项都存在
+		assert  realTimeInfos[0]["cpu_used_rate"] is not None , "[ERROR] the cpu used rate is null"
+		assert realTimeInfos[0]["mem_used_rate"] is not None, "[ERROR] the mem used rate is null"
+		assert realTimeInfos[0]["disk_used_rate"] is not None, "[ERROR] the disk used rate is null"
+		assert realTimeInfos[0]["iops_used_rate"] is not None, "[ERROR] the iopos used rate is null"
