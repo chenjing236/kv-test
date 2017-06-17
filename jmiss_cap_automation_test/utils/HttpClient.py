@@ -117,6 +117,9 @@ class MongoCapClient(object):
     def delete_mongo_db(self, args):
         return self.http_request("POST", "mongoDb?action=deleteMongoDb", json.dumps(args))
 
+    # 删除mongo实例
+    def delete_mongo_dbs(self, args):
+        return self.http_request("POST", "mongoDb?action=deleteMongoDbs", json.dumps(args))
 
     # 修改名字
     def modify_mongo_db_name(self, args):
@@ -126,8 +129,38 @@ class MongoCapClient(object):
     def query_flavors(self, args):
         return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
 
+    # 查看mongo列表过滤
+    def query_filter_mongo_dbs(self, args):
+        return self.http_request("POST", "mongoDb?action=queryFilterMongoDbs", json.dumps(args))
+
+    # 查看mongo列表
     def query_mongo_dbs(self, args):
-	return self.http_request("POST", "mongoDb?action=queryMongoDbs", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=queryMongoDbs", json.dumps(args))
+
+    # 查看实时信息
+    def query_mongo_realTimeInfo(self, args):
+        return self.http_request("POST", "mongoDb?action=queryMongoDbRealTimeInfo", json.dumps(args))
+
+    # 查看拓扑结构
+    def query_mongo_topology(self, args):
+        return self.http_request("POST", "mongoDb?action=queryMongoDbTopology", json.dumps(args))
+
+    # 查看vpc列表
+    def query_vpcs(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcs", json.dumps(args))
+
+    # 查看vpc subnet列表
+    def query_vpc_subnets(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcSubnets", json.dumps(args))
+
+    # 查看vpc详情
+    def query_vpc_detail(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcDetail", json.dumps(args))
+
+    # 查看vpc子网详情
+    def query_vpc_subnet_detail(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcSubnetDetail", json.dumps(args))
+
 # 缓存云-CAP HTTP Client
 class CapClient(object):
     def __init__(self, host):
@@ -207,3 +240,7 @@ class CapClient(object):
     # 运营修改用户可见flavor
     def modifyi_user_visible_flavor(self, args):
 	return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
+
+    # 查询代金券
+    def query_available_coupons(self, args):
+    return self.http_request("POST", "operation?action=queryAvailableCoupons", json.dumps(args))

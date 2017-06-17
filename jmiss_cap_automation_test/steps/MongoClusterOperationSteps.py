@@ -75,13 +75,90 @@ def get_flavor_list_step(config, instance_data, http_client):
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id, res_data["flavors"]
 
-def query_mongo_dbs_step(config, instance_data, http_client):
+# 查询mongodbs列表
+def get_filter_mongo_dbs_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
-    res_data = mongo_cap.query_mongo_dbs("mongodb")
+    res_data = mongo_cap.query_filter_mongo_dbs()
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
-        assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
-    return request_id, res_data["flavors"]
+        logger_info.error("[ERROR] It is failed to get filter mongodbs, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get filter mongodbs, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["mongoDbInfos"]
 
+# 查询mongodbs列表
+def get_mongo_dbs_step(config, instance_data, http_client):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_mongo_dbs()
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get mongodbs, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get mongodbs, error message is {0}".format(error_msg)
+    return request_id, res_data["mongoDbs"]
+
+# 查询实时信息
+def get_mongo_reailTimeInfo_step(config, instance_data, http_client, resource_ids):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_mongo_realTimeInfo(resource_ids)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get reailTimeInfo, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get reailTimeInfo, error message is {0}".format(error_msg)
+    return request_id, res_data["realTimeInfos"]
+
+# 查询拓扑结构
+def get_mongo_topology_stop(config, instance_data, http_client,resource_id):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_mongo_topology(resource_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get topology, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get topology, error message is {0}".format(error_msg)
+    return request_id, res_data["primary"], res_data["secondary"], res_data["hidden"]
+
+# 查询vpc列表
+def get_vpcs_step(config, instance_data, http_client):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_vpcs()
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get vpcs, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get vpcs, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["vpcs"]
+
+# 查询vpc子网列表
+def get_vpc_subnets_step(config, instance_data, http_client, vpcId):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_vpc_subnets(vpcId)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get vpc subnets, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get vpc subnets, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["subNets"]
+
+# 查询vpc详情
+def get_vpc_detail_step(config, instance_data, http_client, vpcId):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_vpc_detail(vpcId)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get vpc detail, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get vpc detail, error message is {0}".format(error_msg)
+    return request_id, res_data["vpc"]
+
+# 查询vpc子网详情
+def get_vpc_subnet_detail_step(config, instance_data, http_client, subnetId):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_vpc_subnet_detail(subnetId)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get vpc subnet detail, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get vpc subnet detail, error message is {0}".format(error_msg)
+    return request_id, res_data["vpc"]

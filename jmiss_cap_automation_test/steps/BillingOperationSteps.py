@@ -174,7 +174,7 @@ def query_mongo_db_price_step(config, instance_data, httpClient, flavor_info):
     return request_id, res_data
 
 # 查询mongo的折扣信息
-def query_query_min_discount_step(config, instance_data, httpClient, discount_info):
+def query_mongo_db_discount_step(config, instance_data, httpClient, discount_info):
     cap = Cap(config, instance_data, httpClient)
     res_data = cap.query_mongo_db_discount(discount_info)
     request_id = res_data["requestId"]
@@ -183,4 +183,49 @@ def query_query_min_discount_step(config, instance_data, httpClient, discount_in
         logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
         assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
     request_id = res_data["requestId"]
-    return request_id, res_data
+    return request_id
+
+# 查询可用代金券
+def query_available_coupons_step(config, instance_data, httpClient, coupon_info):
+    cap = Cap(config, instance_data, httpClient)
+    res_data = cap.query_available_coupons(coupon_info)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed query available coupon, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to query available coupon, error message is {0}".format(error_msg)
+    request_id = res_data["requestId"]
+    return request_id, res_data["coupons"]
+
+# 查询用户配额
+def query_user_quota_step(config, instance_data, http_client, resource):
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.query_user_quota(resource)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query user quota, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to query user quota, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["use"]
+
+# 修改用户配额
+def modify_user_quota_step(config, instance_data, http_client, resource, quota):
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.modify_user_quota(resource,quota)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to modify user quota, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to modify user quota, error message is {0}".format(error_msg)
+    return request_id, res_data["quota"], res_data["use"]
+
+# 设置用户总配额
+def set_user_quota_step(config, instance_data, http_client, resource, quota):
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.set_user_quota(resource,quota)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to set user quota, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to set user quota, error message is {0}".format(error_msg)
+    return request_id
