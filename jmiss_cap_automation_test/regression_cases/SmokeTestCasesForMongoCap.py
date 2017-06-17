@@ -62,8 +62,14 @@ class TestSmokeCasesForMongoCap:
 	assert "true" == is_flavor_in, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
 
     # 使用过滤条件查询mongo实例列表
-    def test_filter_mongo_in_list(self, config, instance_data, mongo_http_client, create_mongo_instance):
+    def _filter_mongo_in_list(self, config, instance_data, mongo_http_client, create_mongo_instance):
 	info_logger.info("[Scenario] Filter the mongo in list")
 	# 创建mongo实例，mongo_instance1
 	# 创建mongo实例，mongo_instance2
 	# 创建mongo实例，mongo_instance3
+	# 查询mongo实例列表，不添加过滤信息
+	# 验证mongo_instance1,mongo_instance2和mongo_instance3在列表中
+	# 分页查询，且过滤资源可用的状态的mongo实例，每页1个资源
+	# 验证，第一页是mongo_instance1
+	# 验证，第二页是mongo_instance2
+	# 验证，第三页是mongo_instance3

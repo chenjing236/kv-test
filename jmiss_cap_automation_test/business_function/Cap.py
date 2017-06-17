@@ -26,7 +26,7 @@ class Cap(object):
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
-            assert False, "[ERROR] 用户此地域没有配额！！！"
+            assert status == 403, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
         assert status == 200, "[ERROR] HTTP Request is failed, error message is {0}".format(res_data["message"])
         return res_data
 
@@ -128,10 +128,10 @@ class Cap(object):
         return res_data
 
     # 运营系统删除未过期资源
-    def delete_no_overdue_resource(self, resourceId, resourceType):
+    def delete_no_overdue_resource(self, resource_id, resource_type, source_auth):
         common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resourceId": resourceId, "resourceType":resourceType}
-        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data)
+        data = {"dataCenter": common_data["dataCenter"], "account": common_data["account"], "resourceId": resource_id, "resourceType":resource_type}
+        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data, source_auth)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

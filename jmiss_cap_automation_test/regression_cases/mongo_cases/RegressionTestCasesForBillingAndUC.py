@@ -13,17 +13,21 @@ class TestRegressionCasesForBillingAndUC:
     @pytest.mark.smoke
     def test_query_mongo_db_price(self, config, instance_data, cap_http_client):
 	info_logger.info("[Scenario] Get the price info about the mongo instance")
+	info_logger.info("[STEP] Get the price info of the mongo")
 	request_id, price_info = query_mongo_db_price_step(config, instance_data, cap_http_client, instance_data["flavor_info_according_configration"])
 	info_logger.info("[INFO] The price of the mongo instance is %s", json.dumps(price_info))
 	#验证点，获取的价格信息与产品给出的价格信息一致
+	info_logger.info("[VERIFICATION] The price of the mongo is the same with the setted up price")
 	assert instance_data["flavor_info_according_configration"]["price"] == price_info["price"], "[ERROR] The price for the flavor {0} is not same whith the price of the mongo".format(json.dumps(price_info))
 
     # 获取mongo的折扣信息
     def test_query_min_discount(self, config, instance_data, cap_http_client):
         info_logger.info("[Scenario] Get the price info about the mongo instance")
+	info_logger.info("[STEP] Get the discount info of the mongo")
         request_id, discount_info = query_query_min_discount_step(config, instance_data, cap_http_client, instance_data["query_min_discount_according_configration"])
         info_logger.info("[INFO] The discount of the mongo instance is %s", json.dumps(discount_info))
 	# 验证点，获取折扣信息与当前的折扣
+	info_logger.info("[VERIFICATION] The discount info of the mongo is the same with the setted up discount")
 	assert instance_data["query_min_discount_according_configration"]["discount"] == discount_info["discount"], "[ERROR] The discount for the discount type {0} is not same whith the price of the mongo".format(json.dumps(discount_info))
 
     def test_user_quota(self, config, instance_data, cap_http_client):

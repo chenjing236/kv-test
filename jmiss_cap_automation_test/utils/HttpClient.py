@@ -86,8 +86,8 @@ class RedisCapClient(object):
         return self.http_request("POST", "operation?action=deleteResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
 
     # 运营删除包年包月未过期资源
-    def delete_no_overdue_resource(self, args, sourceAuth):
-        return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+    def delete_no_overdue_resource(self, args, source_auth):
+        return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
 
 class MongoCapClient(object):
@@ -200,9 +200,9 @@ class CapClient(object):
     def delete_resource(self, args):
 	return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
 
-    # 运营系统删除未过期资源
-    def delete_no_overdue_resource(self, args):
-	return self.http_request("POST", "operation?action=deleteNoOverdueResource", json.dumps(args))
+    # 运营删除包年包月未过期资源
+    def delete_no_overdue_resource(self, args, source_auth):
+        return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
     # 运营修改用户可见flavor
     def modifyi_user_visible_flavor(self, args):
