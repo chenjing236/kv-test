@@ -11,7 +11,7 @@ info_logger = logging.getLogger(__name__)
 class TestRegressionCasesForBillingAndUC:
     # 获取mongo每种规格对应的价格信息
     @pytest.mark.smoke
-    def test_query_mongo_db_price(self, config, instance_data, cap_http_client):
+    def _query_mongo_db_price(self, config, instance_data, cap_http_client):
 	info_logger.info("[Scenario] Get the price info about the mongo instance")
 	info_logger.info("[STEP] Get the price info of the mongo")
 	request_id, price_info = query_mongo_db_price_step(config, instance_data, cap_http_client, instance_data["flavor_info_according_configration"])
@@ -21,7 +21,7 @@ class TestRegressionCasesForBillingAndUC:
 	assert instance_data["flavor_info_according_configration"]["price"] == price_info["price"], "[ERROR] The price for the flavor {0} is not same whith the price of the mongo".format(json.dumps(price_info))
 
     # 获取mongo的折扣信息
-    def test_query_min_discount(self, config, instance_data, cap_http_client):
+    def _query_min_discount(self, config, instance_data, cap_http_client):
         info_logger.info("[Scenario] Get the price info about the mongo instance")
 	info_logger.info("[STEP] Get the discount info of the mongo")
         request_id, discount_info = query_query_min_discount_step(config, instance_data, cap_http_client, instance_data["query_min_discount_according_configration"])
