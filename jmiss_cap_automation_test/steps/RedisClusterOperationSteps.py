@@ -42,6 +42,16 @@ def query_cache_cluster_detail_step(redis_cap, cluster_id):
     cluster = res_data["cluster"]
     return billing_order, cluster
 
+# 根据过滤条件查云缓存实例列表
+def query_filter_cache_clusters_step(redis_cap, filter_data):
+    res_data = redis_cap.query_filter_cache_clusters(filter_data)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query cache cluster detail [%s], resource_id is [%s] error message is [%s]", request_id, str(filter_data), error_msg)
+        assert False, "[ERROR] It is failed to query cache cluster detail {0}, resource_id is {1} error message is {2}".format(request_id, str(filter_data), error_msg)
+    clusters = res_data["clusters"]
+    return clusters
 
 # 删除redis资源
 def delete_redis_instance_step(redis_cap, cluster_id):

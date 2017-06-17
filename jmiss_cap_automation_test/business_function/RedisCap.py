@@ -41,6 +41,30 @@ class RedisCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 根据过滤条件查云缓存实例列表
+    def query_filter_cache_clusters (self, filter_data):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"]};
+        if "filterName" in filter_data:
+            data["filterName"] = filter_data["filterName"]
+        if "filterSpaceType" in filter_data:
+            data["filterSpaceType"] = filter_data["filterSpaceType"]
+        if "filterStatus" in filter_data:
+            data["filterStatus"] = filter_data["filterStatus"]
+        if "sortName" in filter_data:
+            data["sortName"] = filter_data["sortName"]
+        if "sortRule" in filter_data:
+            data["sortRule"] = filter_data["sortRule"]
+        if "pageSize" in filter_data:
+            data["pageSize"] = filter_data["pageSize"]
+        if "pageNum" in filter_data:
+            data["pageNum"] = filter_data["pageNum"]
+        if "category" in filter_data:
+            data["category"] = filter_data["category"]
+        status, headers, res_data = self.httpClient.query_filter_cache_clusters(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # 删除云缓存实例
     def delete_cache_cluster(self, cluster_id):
         common_data = self.instance_data["common_data"]
