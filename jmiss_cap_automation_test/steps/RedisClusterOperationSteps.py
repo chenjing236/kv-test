@@ -42,6 +42,19 @@ def query_cache_cluster_detail_step(redis_cap, cluster_id):
     cluster = res_data["cluster"]
     return billing_order, cluster
 
+# 根据订单查询云缓存实例详情
+def query_cache_cluster_detail_by_order_step(redis_cap, cluster_id, order_id):
+    res_data = redis_cap.query_cache_cluster_detail_by_order(cluster_id, order_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query cache cluster detail by order [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to query cache cluster detail by order {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+    fromLog = res_data["fromLog"]
+    billing_order = res_data["billingOrder"]
+    cluster = res_data["cluster"]
+    return billing_order, cluster, fromLog
+
 # 根据过滤条件查云缓存实例列表
 def query_filter_cache_clusters_step(redis_cap, filter_data):
     res_data = redis_cap.query_filter_cache_clusters(filter_data)
@@ -121,8 +134,8 @@ def real_time_info_cache_cluster_step(redis_cap, space_ids):
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to delete redis instance [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(space_ids), error_msg)
-        assert False, "[ERROR] It is failed to delete redis instance {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(space_ids), error_msg)
+        logger_info.error("[ERROR] It is failed to query realtime info [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(space_ids), error_msg)
+        assert False, "[ERROR] It is failed to query realtime info {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(space_ids), error_msg)
     infos = res_data["infos"]
     return request_id, infos
 
