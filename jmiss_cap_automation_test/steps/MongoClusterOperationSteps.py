@@ -115,9 +115,9 @@ def get_flavor_list_step(config, instance_data, http_client):
     return request_id, res_data["flavors"]
 
 # 查询mongodbs列表
-def get_filter_mongo_dbs_step(config, instance_data, http_client):
+def get_filter_mongo_dbs_step(config, instance_data, http_client,mongo_db_name,page_num):
     mongo_cap = MongoCap(config, instance_data, http_client)
-    res_data = mongo_cap.query_filter_mongo_dbs()
+    res_data = mongo_cap.query_filter_mongo_dbs(mongo_db_name,page_num)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
