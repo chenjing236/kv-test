@@ -185,6 +185,10 @@ class CapClient(object):
     def modify_quota(self, args):
         return self.http_request("POST", "user?action=modifyQuota", json.dumps(args))
 
+    # 用户中心 - 设置用户总配额接口
+    def set_user_quota(self, args):
+        return self.http_request("POST", "user?action=setUserQuota", json.dumps(args))
+
     # 订单支付
     def pay(self, args):
         return self.http_request("POST", "billing?action=pay", json.dumps(args))
@@ -238,7 +242,7 @@ class CapClient(object):
         return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
     # 运营修改用户可见flavor
-    def modifyi_user_visible_flavor(self, args):
+    def modify_user_visible_flavor(self, args):
 	return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
 
     # 查询代金券
