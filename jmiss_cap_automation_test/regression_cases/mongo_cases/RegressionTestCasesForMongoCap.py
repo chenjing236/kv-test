@@ -148,10 +148,18 @@ class TestRegressionCasesForMongoCap:
 		assert flag2 == True and flag1 == False and flag3 == False, "[ERROR] The delete mongo dbs failed"
 
     # 获取拓扑结构
-    #def test_query_mongo_db_topology(self, config, instance_data, mongo_http_client, create_mongo_instance):
-	# 创建mongo实例
-	# 获取拓扑结构
-	# 验证拓扑结构有primary，secondary，hidden信息，且信息不为空
+    def test_query_mongo_db_topology(self, config, instance_data, mongo_http_client, create_mongo_instance):
+		info_logger.info("[Scenario] Query mongo db topology")
+		# 创建mongo实例
+		resource_id, mongo_info = create_mongo_instance
+		info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+		# 获取拓扑结构
+		request_id, res_data= get_mongo_topology_stop(config, instance_data, http_client, resource_id)
+		# 验证拓扑结构有primary，secondary，hidden信息，且信息不为空
+		assert res_data is not None, "[ERROR] the topology is null"
+		assert res_data["primary"] is not None, "[ERROR] the primary is null"
+		assert res_data["secondary"] is not None, "[ERROR] the secondary is null"
+		assert res_data["hidden"] is not None, "[ERROR] the hidden is null"
 
     # 获取vpc列表及subnet的列表信息
     #def test_vpc_and_subnet_list(self, config, instance_data, mongo_http_client):
