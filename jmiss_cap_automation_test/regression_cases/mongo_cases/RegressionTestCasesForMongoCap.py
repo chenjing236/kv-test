@@ -154,20 +154,32 @@ class TestRegressionCasesForMongoCap:
 		resource_id, mongo_info = create_mongo_instance
 		info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
 		# 获取拓扑结构
-		request_id, res_data= get_mongo_topology_stop(config, instance_data, http_client, resource_id)
+		request_id, primary,secondary,hidden= get_mongo_topology_step(config, instance_data, mongo_http_client, resource_id)
 		# 验证拓扑结构有primary，secondary，hidden信息，且信息不为空
-		assert res_data is not None, "[ERROR] the topology is null"
-		assert res_data["primary"] is not None, "[ERROR] the primary is null"
-		assert res_data["secondary"] is not None, "[ERROR] the secondary is null"
-		assert res_data["hidden"] is not None, "[ERROR] the hidden is null"
+		assert primary is not None, "[ERROR] the primary is null"
+		assert secondary is not None, "[ERROR] the secondary is null"
+		assert hidden is not None, "[ERROR] the hidden is null"
 
     # 获取vpc列表及subnet的列表信息
-    #def test_vpc_and_subnet_list(self, config, instance_data, mongo_http_client):
-	# 选择subnet及对应的vpc，创建mongo实例
-	# 获取mongo实例信息中的vpc和subnet信息
-	# 获取vpc信息
-	# 获取subnet信息
-	# 验证，vpc和subnet信息与指定的vpc和subnet信息一致
+    def test_vpc_and_subnet_list(self, config, instance_data, mongo_http_client):
+		# 选择subnet及对应的vpc，创建mongo实例
+		vpc=""
+		subnet=""
+		request_id, res_data=get_vpcs_step(config, instance_data, mongo_http_client)
+		assert res_data["total"] > 0 ,"[ERROR] failed to get vpc"
+		for item in res_data["vpcs"]:
+			request_id ,subnests= get_vpc_subnets_step(config, instance_data, mongo_http_client, item)
+			if subnests["total"] <=0:
+				continue
+			else:
+				vpc=item
+				subnet=subnests[0]["name"]
+		assert vpc!="" and subnet!="","[ERROR] failed to get vpc or subnet"
+		resource_id, mongo_info = create_mongo_instance
+		# 获取mongo实例信息中的vpc和subnet信息
+		request_id, mongo_detail=query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
+		# 验证，vpc和subnet信息与指定的vpc和subnet信息一致
+		assert  vpc==mongo_detail["vpcId"] and subnet==mongo_detail["subnetId"],"[ERROR] the mongo's vpc or subnet not coincide with the vpc"
 
     # 查询监控信息
     #def test_query_monitor_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
