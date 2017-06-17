@@ -9,11 +9,11 @@ from business_function.MongoCap import *
 logger_info = logging.getLogger(__name__)
 
 #创建mongo实例，类型为按配置
-def create_mongo_instance_param(config, instance_data, mongo_http_client,cap_http_client):
+def create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client):
     info_logger.info(
         "[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
-    request_id_for_mongo = create_mongo_instance_param_step(config, instance_data, mongo_http_client)
+    request_id_for_mongo = create_mongo_instance_with_param_step(config, instance_data, mongo_http_client)
     info_logger.info("[INFO] The mongo instance is created, and the request id is %s", request_id_for_mongo)
     # 支付
     info_logger.info("[STEP] Pay for the mongo instance")
@@ -36,7 +36,7 @@ def create_mongo_instance_param(config, instance_data, mongo_http_client,cap_htt
     return resource_id, mongo_info
 
 #创建mongo实例，类型为按配置
-def create_mongo_instance_param_step(config, instance_data, http_client):
+def create_mongo_instance_with_param_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.create_instance_param(instance_data)
     request_id = res_data["requestId"]
