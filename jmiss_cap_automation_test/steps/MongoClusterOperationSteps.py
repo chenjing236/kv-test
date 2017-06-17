@@ -264,6 +264,6 @@ def get_vpc_subnet_detail_step(config, instance_data, http_client, subnetId):
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
-        logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
-        assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
-    return request_id, res_data
+        logger_info.error("[ERROR] It is failed to get vpc subnet detail, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get vpc subnet detail, error message is {0}".format(error_msg)
+    return request_id, res_data["subNet"]

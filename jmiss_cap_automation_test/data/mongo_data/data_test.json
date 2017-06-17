@@ -69,5 +69,8 @@
 		"filterStatus":100,
 		"sortName":"name",
 		"sortRule":"ASC"
+	},
+	"user_quota":{
+		"serviceCode":"mongodb"
 	}
 }

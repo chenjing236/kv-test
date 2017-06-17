@@ -81,3 +81,4 @@ class TestRegressionCasesForBillingAndUC:
         # 获取用户配额，用户配额减少的数量为2
         request_id, total3, use3 = query_user_quota_step(config, instance_data, cap_http_client, "mongodb")
         assert  use2-use3,"[ERROR] the increase is not is 2,before:%s,after:%s".format(use2, use3)
+
