@@ -201,10 +201,3 @@ class Cap(object):
         assert status == 200, "[ERROR] HTTP Request is failed, the error message is %s".format(res_data["message"])
         return res_data
 
-    # billing模块，查询代金券
-    def query_available_coupons(self, coupon_info):
-        common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "serviceCode":coupon_info["serviceCode"], "feeType":coupon_info["feeType"]}
-        status, headers, res_data = self.httpClient.query_available_coupons(data)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
