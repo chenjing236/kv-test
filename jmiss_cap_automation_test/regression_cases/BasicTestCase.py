@@ -6,9 +6,9 @@ import logging
 from steps.RedisClusterOperationSteps import *
 from steps.MongoClusterOperationSteps import *
 from steps.BillingOperationSteps import *
+from steps.OperationSteps import *
 
 info_logger = logging.getLogger(__name__)
-
 
 # 创建按配置计费redis实例
 @pytest.fixture(scope="class")
@@ -36,7 +36,6 @@ def create_redis_instance(config, instance_data, redis_http_client, cap_http_cli
 
     request.addfinalizer(teardown)
     return redis_cap, cap, request_id_for_redis, resource_id
-
 
 # 创建包年包月redis实例
 @pytest.fixture(scope="class")
@@ -102,7 +101,7 @@ def create_mongo_instance_with_yearly_fee(request, config, instance_data, mongo_
     info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
     request_id_for_mongo = create_mongo_instance_with_yealy_fee_step(config, instance_data, mongo_http_client)
-    info_logger.info("[INFO] The mongo instance is created, and the request id is %s", request_id_for_mongo)
+    info_logger.info("[INFO] The mongo instance is created, and the request id is %s", json.dumps(request_id_for_mongo))
     # 支付
     info_logger.info("[STEP] Pay for the mongo instance")
     request_id_for_paying_mongo = pay_for_mongo_instance_step(config, instance_data, cap_http_client, request_id_for_mongo)
@@ -122,7 +121,7 @@ def create_mongo_instance_with_yearly_fee(request, config, instance_data, mongo_
     # 删除mongo实例
     def teardown():
         info_logger.info("[TEARDOWN] Delete the mongo instance %s", resource_id)
-        request_id_for_delete_mongo = delete_mongo_instance_step(config, instance_data, mongo_http_client, resource_id)
+        request_id_for_delete_mongo = delete_no_overdue_resource_step(config, instance_data, cap_http_client, resource_id)
 
     request.addfinalizer(teardown)
     return resource_id, mongo_info

@@ -60,6 +60,7 @@ class MongoCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 查询mongo实例列表信息
     def query_mongo_dbs(self, type):
         common_data = self.data_obj["common_data"]
         data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"], "type":type}

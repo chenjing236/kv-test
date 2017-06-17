@@ -30,7 +30,6 @@ def create_mongo_instance_with_yealy_fee_step(config, instance_data, http_client
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
 
-
 #查询monggo详情
 def query_mongo_db_detail_step(config, instance_data, http_client, resource_id):
     mongo_cap = MongoCap(config, instance_data, http_client)

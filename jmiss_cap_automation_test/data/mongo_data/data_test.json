@@ -15,7 +15,7 @@
 	"routerName":"null",
 	"subnetName":"null",
 	"feeType":"1",
-	"disk":"10",
+	"disk":"4",
 	"password":"1qaz2WSX"
     },
     "create_mongo_db_with_yearly_fee":{
@@ -34,7 +34,7 @@
         "routerName":"null",
         "subnetName":"null",
         "feeType":"601",
-        "disk":"10",
+        "disk":"4",
         "password":"1qaz2WSX"
     },
     "common_data":{
@@ -54,5 +54,10 @@
 	"serviceCode":"mongodb",
 	"feeType":"1",
 	"discount":100
+    },
+    "operation_data":{
+	"sourceAuth": "32fd349505277ee09761258d78682a4d",
+	"requestSource": "operation",
+	"resourceType": "mongodb"
     }
 }
