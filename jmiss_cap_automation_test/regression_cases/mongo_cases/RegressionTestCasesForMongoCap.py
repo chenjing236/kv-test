@@ -181,8 +181,11 @@ class TestRegressionCasesForMongoCap:
 		resource_id, mongo_info = create_mongo_instance_param_step(config,instance_data,mongo_http_client,cap_http_client)
 		# 获取mongo实例信息中的vpc和subnet信息
 		request_id, mongo_detail=query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
+
 		# 验证，vpc和subnet信息与指定的vpc和subnet信息一致
-		assert  vpc==mongo_detail["vpcId"] and subnet==mongo_detail["subnetId"],"[ERROR] the mongo's vpc or subnet not coincide with the vpc"
+		vpcDetail=get_vpc_detail_step(config, instance_data, mongo_http_client, mongo_detail["vpcId"])
+		subnetDetail=get_vpc_subnet_detail_step(config, instance_data, mongo_http_client, mongo_detail["subnetId"])
+		assert  vpcDetail["id"]==vpc and subnetDetail["id"] == subnet,"[ERROR] the mongo's vpc or subnet not coincide with the vpc or subnet"
 
     # 查询监控信息
     #def test_query_monitor_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
@@ -196,9 +199,12 @@ class TestRegressionCasesForMongoCap:
 		# 创建mongo实例
 		resource_id, mongo_info = create_mongo_instance
 		# 获取mongo实例的实时监控信息
-		request_id,realTimeInfos=get_mongo_reailTimeInfo_step(config, instance_data, http_client, resource_id)
+		request_id,realTimeInfos=get_mongo_reailTimeInfo_step(config, instance_data, httpClient, resource_id)
 		# 验证监控项都存在
 		assert  realTimeInfos[0]["cpu_used_rate"] is not None , "[ERROR] the cpu used rate is null"
 		assert realTimeInfos[0]["mem_used_rate"] is not None, "[ERROR] the mem used rate is null"
 		assert realTimeInfos[0]["disk_used_rate"] is not None, "[ERROR] the disk used rate is null"
 		assert realTimeInfos[0]["iops_used_rate"] is not None, "[ERROR] the iopos used rate is null"
+
+
+
