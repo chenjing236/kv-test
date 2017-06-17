@@ -247,4 +247,4 @@ class CapClient(object):
 
     # 查询代金券
     def query_available_coupons(self, args):
-        return self.http_request("POST", "operation?action=queryAvailableCoupons", json.dumps(args))
+        return self.http_request("POST", "Billing?action=queryAvailableCoupons", json.dumps(args))

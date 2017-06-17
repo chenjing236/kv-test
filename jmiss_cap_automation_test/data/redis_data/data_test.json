@@ -9,7 +9,7 @@
       "remarks":"",
       "password":"1qaz2WSX",
       "feeType":"1",
-      "feeType_month": "601"
+      "feeType_month":"601"
     },
   "operation_data":{
     "sourceAuth": "4beeffb694500d149761258d78682a4d",
@@ -20,5 +20,9 @@
     "dataCenter":"bj_02",
     "user":"JaneCloud007",
 	"account":"JaneCloud007"
+  },
+  "redis_coupon_info":{
+    "serviceCode":"redis",
+    "feeType":1
   }
 }
