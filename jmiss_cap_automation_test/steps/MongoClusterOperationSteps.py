@@ -200,8 +200,4 @@ def get_vpc_subnet_detail_step(config, instance_data, http_client, subnetId):
         error_msg = res_data["message"]
         logger_info.error("[ERROR] It is failed to get vpc subnet detail, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to get vpc subnet detail, error message is {0}".format(error_msg)
-<<<<<<< 9c6795581198c4e972b01ce1f01d7511aa806b34
     return request_id, res_data["vpc"]
-=======
-    return request_id, res_data["vpc"]
->>>>>>> mongo和quota的step
