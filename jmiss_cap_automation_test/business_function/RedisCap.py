@@ -81,6 +81,14 @@ class RedisCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 批量删除云缓存实例
+    def delete_cache_clusters(self, cluster_ids):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "clusterIds": cluster_ids}
+        status, headers, res_data = self.httpClient.delete_cache_clusters(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # 删除云缓存实例
     def delete_cache_cluster(self, cluster_id):
         common_data = self.instance_data["common_data"]

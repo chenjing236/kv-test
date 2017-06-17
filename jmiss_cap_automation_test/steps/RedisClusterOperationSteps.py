@@ -63,6 +63,17 @@ def update_cache_cluster_step(redis_cap, space_id, update_data):
         assert False, "[ERROR] It is failed to update cache cluster {0}, resource_id is {1} error message is {2}".format(request_id, space_id, error_msg)
     return request_id
 
+# 批量删除云缓存实例
+def delete_cache_clusters_step(redis_cap, cluster_ids):
+    res_data = redis_cap.delete_cache_clusters(cluster_ids)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to delete redis instance [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(cluster_ids), error_msg)
+        assert False, "[ERROR] It is failed to delete redis instance {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(cluster_ids), error_msg)
+    clusterInfos = res_data["clusterInfos"]
+    return request_id, clusterInfos
+
 # 删除redis资源
 def delete_redis_instance_step(redis_cap, cluster_id):
     res_data = redis_cap.delete_cache_cluster(cluster_id)
