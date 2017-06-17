@@ -108,14 +108,14 @@ class Cluster(object):
             masterPort = instance_b["masterPort"]
             slaveIp = instance_b["ip"]
             slavePort = instance_b["port"]
-        print "[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort)
+        logger_info.info("[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort))
         return masterIp, masterPort, slaveIp, slavePort
 
     # 获取缓存云集群的拓扑结构
     def get_topology_of_cluster(self, res_data, spaceId):
         capa = int(self.data_obj["capacity"]) / 1024 / 1024
         shardNum = self.conf_obj["cluster_cfg"][str(capa)]
-        print "[INFO] The count of shards of cluster is ", shardNum
+        logger_info.info("[INFO] The count of shards of cluster is {0}".format(shardNum))
         msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("utf-8")
         attach = res_data["attach"]
         if attach is None or attach is "":

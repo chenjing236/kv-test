@@ -41,15 +41,14 @@ class TestCreateInstance:
         # 创建缓存云实例
         info_logger.info("[STEP1] Create an instance including a master container and a slave container")
         space_id, password = create_instance_with_password_step(instance, instance_data["password"])
-        info_logger.info("[INFO] The instance %s is created", space_id)
-        info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
+        info_logger.info("[INFO] The instance {0} is created, its password is {1}".format(space_id, password))
         # 查看缓存云实例详细信息
         info_logger.info("[STEP2] Get detailed information of the instance %s", space_id)
         status, capacity = get_status_of_instance_step(instance, space_id, int(config["retry_getting_info_times"]),
                                                        int(config["wait_time"]))
         info_logger.info("[INFO] Status of the instance %s is %s", space_id, status)
         # 验证缓存云实例状态，status=100创建成功
-        assert status == 100
+        assert status == 100, "[ERROR] The cluster status is not 100"
         # 查看缓存云实例详情，获取拓扑结构
         info_logger.info("[STEP3] Get topology information of instance")
         masterIp, masterPort, slaveIp, slavePort = get_topology_of_instance_step(instance, space_id)

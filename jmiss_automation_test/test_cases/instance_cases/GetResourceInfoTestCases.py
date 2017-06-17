@@ -25,8 +25,7 @@ class TestGetResourceInfo:
         info_logger.info("[STEP3] Get resource info of the instance")
         time.sleep(20)
         resource_info = get_resource_info_step(instance, space_id)
-        # print json.dumps(resource_info, indent=4, ensure_ascii=False)
-        print json.dumps(resource_info, ensure_ascii=False)
+        info_logger.info(json.dumps(resource_info, ensure_ascii=False))
         xAxis = resource_info["xAxis"]
         series = resource_info["series"]
         assert len(xAxis) == 5 and len(series) == 5, "[ERROR] The response of get resource info is error!"
@@ -37,7 +36,7 @@ class TestGetResourceInfo:
         info_logger.info("[STEP4] Get realtime info of the instance")
         time.sleep(20)
         realtime_info = get_realtime_info_step(instance, space_id)
-        print json.dumps(realtime_info, ensure_ascii=False)
+        info_logger.info(json.dumps(realtime_info, ensure_ascii=False))
         infos = realtime_info["infos"]
         assert infos[0]["spaceId"] == space_id and infos[0]["memUsed"] >= 0, "[ERROR] The response of get realtime info is error"
         info_logger.info("[INFO] Get realtime info successfully, memUsed of instance is {0}KB".format(infos[0]["memUsed"]))
