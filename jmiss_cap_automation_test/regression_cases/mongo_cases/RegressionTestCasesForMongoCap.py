@@ -66,19 +66,17 @@ class TestRegressionCasesForMongoCap:
         # 按照资源状态过滤创建成功的资源, 按照资源名称排序，每页1个资源，3页
 		# 创建mongo资源
         info_logger.info("[Scenario] query filter mongo list")
-        resource_id1, mongo_info1 = create_mongo_instance_three
+        resource_id1, mongo_info1 ,resource_id2, mongo_info2 ,resource_id3, mongo_info3 = create_mongo_instance_three
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info1["spaceId"])
         # 修改名称，名称为mongo_instance1
         info_logger.info("[STEP] Modify name of the mongo instance")
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info1["spaceId"], "mongo_instance1")
-        # 创建mongo资源
-        resource_id2, mongo_info2 = create_mongo_instance_three
+
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info2["spaceId"])
         # 修改名称, 名称为mongo_instance2
         info_logger.info("[STEP] Modify name of the mongo instance")
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info2["spaceId"], "mongo_instance2")
-        # 创建mongo资源
-        resource_id3, mongo_info3 = create_mongo_instance_three
+
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info3["spaceId"])
         # 修改名称, 名称为mongo_instance3
         info_logger.info("[STEP] Modify name of the mongo instance")
@@ -99,14 +97,12 @@ class TestRegressionCasesForMongoCap:
     def test_delete_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance_three):
 		info_logger.info("[Scenario] Delete mongos instance")
 		# 创建mongo实例1
-		resource_id1, mongo_info = create_mongo_instance_three
-		info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+		resource_id1, mongo_info1 ,resource_id2, mongo_info2 ,resource_id3, mongo_info3 = create_mongo_instance_three
+		info_logger.info("[INFO] The mongo instance %s is created", mongo_info1["spaceId"])
 		# 创建mongo实例2
-		resource_id2, mongo_info = create_mongo_instance_three
-		info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+		info_logger.info("[INFO] The mongo instance %s is created", mongo_info2["spaceId"])
 		# 创建mongo实例3
-		resource_id3, mongo_info = create_mongo_instance_three
-		info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+		info_logger.info("[INFO] The mongo instance %s is created", mongo_info3["spaceId"])
 		# 查询mongo实例列表
 		request_id, list = get_mongo_dbs_step(config, instance_data, mongo_http_client)
 		# 验证mongo1,mongo2,mongo3都在实例列表中
