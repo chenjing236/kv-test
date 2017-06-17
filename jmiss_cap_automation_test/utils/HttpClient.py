@@ -126,6 +126,8 @@ class MongoCapClient(object):
     def query_flavors(self, args):
         return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
 
+    def query_mongo_dbs(self, args):
+	return self.http_request("POST", "mongoDb?action=queryMongoDbs", json.dumps(args))
 # 缓存云-CAP HTTP Client
 class CapClient(object):
     def __init__(self, host):

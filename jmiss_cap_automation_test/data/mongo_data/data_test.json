@@ -41,5 +41,18 @@
 	"dataCenter":"bj_02",
 	"user":"jcloud_00",
 	"account":"jcloud_00"
+    },
+    "flavor_info_according_configration":{
+	"cpu":"1",
+	"memory":"2",
+	"disk":"10",
+	"feeType":"1",
+	"region":"hb",
+	"price":15.35
+    },
+    "query_min_discount_according_configration":{
+	"serviceCode":"mongodb",
+	"feeType":"1",
+	"discount":100
     }
 }
