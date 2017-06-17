@@ -7,7 +7,6 @@ class TestUpdateRedis:
 
     @pytest.mark.smoke
     def test_update_meta(self, create_redis_instance):
-        return
         # 创建云缓存实例，支付成功，验证资源状态为100
         redis_cap, cap, request_id_for_redis, resource_id = create_redis_instance
         # 调用查询详情接口，获取资源name和remarks等信息
@@ -33,7 +32,6 @@ class TestUpdateRedis:
 
     @pytest.mark.smoke
     def test_reset_password(self, create_redis_instance):
-        return
         # 创建云缓存实例，支付成功，验证资源状态为100
         redis_cap, cap, request_id_for_redis, resource_id = create_redis_instance
         # 调用查询详情接口，获取资源password等信息
