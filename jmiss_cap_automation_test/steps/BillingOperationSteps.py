@@ -183,7 +183,7 @@ def query_mongo_db_discount_step(config, instance_data, httpClient, discount_inf
         logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
         assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
     request_id = res_data["requestId"]
-    return request_id
+    return request_id, res_data
 
 # 查询可用代金券
 def query_available_coupons_step(config, instance_data, httpClient, coupon_info):

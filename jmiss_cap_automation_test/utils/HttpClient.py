@@ -227,15 +227,15 @@ class CapClient(object):
 
     # 查询mongodb的价格
     def query_mongo_db_price(self, args):
-	return self.http_request("POST", "billing?action=queryMongoDbPrice", json.dumps(args))
+        return self.http_request("POST", "billing?action=queryMongoDbPrice", json.dumps(args))
 
     # 查询mongo的折扣信息
     def query_mongo_db_discount(self, args):
-	return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
+        return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
 
     # 运营系统删除资源
     def delete_resource(self, args):
-	return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
+        return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
 
     # 运营删除包年包月未过期资源
     def delete_no_overdue_resource(self, args, source_auth):
@@ -243,8 +243,8 @@ class CapClient(object):
 
     # 运营修改用户可见flavor
     def modify_user_visible_flavor(self, args):
-	return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
+        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
 
     # 查询代金券
     def query_available_coupons(self, args):
-    return self.http_request("POST", "operation?action=queryAvailableCoupons", json.dumps(args))
+        return self.http_request("POST", "operation?action=queryAvailableCoupons", json.dumps(args))
