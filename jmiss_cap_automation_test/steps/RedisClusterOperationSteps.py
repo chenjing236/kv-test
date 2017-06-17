@@ -126,6 +126,7 @@ def real_time_info_cache_cluster_step(redis_cap, space_ids):
     infos = res_data["infos"]
     return request_id, infos
 
+
 # Operation-运营删除redis资源
 def delete_resource_step(redis_cap, cluster_id):
     res_data = redis_cap.delete_resource(cluster_id)
