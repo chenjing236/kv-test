@@ -104,6 +104,22 @@ class RedisCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 启动缓存云实例
+    def start_cache_cluster(self, space_id):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceId": space_id}
+        status, headers, res_data = self.httpClient.start_cache_cluster(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # 停服缓存云实例
+    def stop_cache_cluster(self, space_id):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceId": space_id}
+        status, headers, res_data = self.httpClient.stop_cache_cluster(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # Operation-运营删除接口
     def delete_resource(self, cluster_id):
         common_data = self.instance_data["common_data"]

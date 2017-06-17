@@ -48,8 +48,8 @@ def query_filter_cache_clusters_step(redis_cap, filter_data):
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to query cache cluster detail [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(filter_data), error_msg)
-        assert False, "[ERROR] It is failed to query cache cluster detail {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(filter_data), error_msg)
+        logger_info.error("[ERROR] It is failed to query filter cache clusters [%s], filter is [%s] error message is [%s]", request_id, json.dumps(filter_data), error_msg)
+        assert False, "[ERROR] It is failed to query filter cache clusters {0}, filter is {1} error message is {2}".format(request_id, json.dumps(filter_data), error_msg)
     clusters = res_data["clusters"]
     return clusters
 
@@ -59,8 +59,8 @@ def update_cache_cluster_step(redis_cap, space_id, update_data):
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to query cache cluster detail [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(update_data), error_msg)
-        assert False, "[ERROR] It is failed to query cache cluster detail {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(update_data), error_msg)
+        logger_info.error("[ERROR] It is failed to update cache cluster [%s], resource_id is [%s] error message is [%s]", request_id, space_id, error_msg)
+        assert False, "[ERROR] It is failed to update cache cluster {0}, resource_id is {1} error message is {2}".format(request_id, space_id, error_msg)
     return request_id
 
 # 删除redis资源
@@ -84,6 +84,25 @@ def modify_cache_cluster_step(redis_cap, cluster_id, is_resize):
         assert False, "[ERROR] It is failed to resize cache cluster {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
     return request_id
 
+# 启动缓存云实例
+def start_cache_cluster_step(redis_cap, space_id):
+    res_data = redis_cap.start_cache_cluster(space_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to start redis instance [%s], resource_id is [%s] error message is [%s]", request_id, space_id, error_msg)
+        assert False, "[ERROR] It is failed to start redis instance {0}, resource_id is {1} error message is {2}".format(request_id, space_id, error_msg)
+    return request_id
+
+# 停服缓存云实例
+def stop_cache_cluster_step(redis_cap, space_id):
+    res_data = redis_cap.stop_cache_cluster(space_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to stop redis instance [%s], resource_id is [%s] error message is [%s]", request_id, space_id, error_msg)
+        assert False, "[ERROR] It is failed to stop redis instance {0}, resource_id is {1} error message is {2}".format(request_id, space_id, error_msg)
+    return request_id
 
 # Operation-运营删除redis资源
 def delete_resource_step(redis_cap, cluster_id):
