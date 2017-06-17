@@ -139,6 +139,17 @@ def real_time_info_cache_cluster_step(redis_cap, space_ids):
     infos = res_data["infos"]
     return request_id, infos
 
+# 查询flavor列表
+def query_flavors_step(redis_cap):
+    res_data = redis_cap.query_flavors()
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query lowest discount [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to query lowest discount {0}, error message is {1}".format(request_id, error_msg)
+    flavors = res_data["flavors"]
+    return request_id, flavors
+
 # Operation-运营删除redis资源
 def delete_resource_step(redis_cap, cluster_id):
     res_data = redis_cap.delete_resource(cluster_id)
@@ -187,6 +198,6 @@ def query_lowest_discount_step(redis_cap, fee_type):
     if "code" in res_data:
         error_msg = res_data["message"]
         logger_info.error("[ERROR] It is failed to query lowest discount [%s], error message is [%s]", request_id, error_msg)
-        assert False, "[ERROR] It is failed to query lowest discount {0}, error message is {2}".format(request_id, error_msg)
+        assert False, "[ERROR] It is failed to query lowest discount {0}, error message is {1}".format(request_id, error_msg)
     discount = res_data["discount"]
     return request_id, discount

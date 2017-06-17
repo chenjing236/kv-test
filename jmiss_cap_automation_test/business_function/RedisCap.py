@@ -144,6 +144,14 @@ class RedisCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 查询flavor列表
+    def query_flavors(self):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "type": "redis_cluster"}
+        status, headers, res_data = self.httpClient.query_flavors(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # Operation-运营删除接口
     def delete_resource(self, cluster_id):
         common_data = self.instance_data["common_data"]
