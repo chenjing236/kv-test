@@ -112,7 +112,7 @@ class MongoCap(object):
     # 查询vpc子网列表
     def query_vpc_subnets(self,vpcId):
         common_data = self.data_obj["common_data"]
-        data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"],"id":vpcId}
+        data = {"account":common_data["account"], "dataCenter":common_data["dataCenter"],"vpcId":vpcId}
         status, headers, res_data = self.httpClient.query_vpc_subnets(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
