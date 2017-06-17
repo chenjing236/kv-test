@@ -48,8 +48,8 @@ def query_filter_cache_clusters_step(redis_cap, filter_data):
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to query cache cluster detail [%s], resource_id is [%s] error message is [%s]", request_id, str(filter_data), error_msg)
-        assert False, "[ERROR] It is failed to query cache cluster detail {0}, resource_id is {1} error message is {2}".format(request_id, str(filter_data), error_msg)
+        logger_info.error("[ERROR] It is failed to query cache cluster detail [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(filter_data), error_msg)
+        assert False, "[ERROR] It is failed to query cache cluster detail {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(filter_data), error_msg)
     clusters = res_data["clusters"]
     return clusters
 
