@@ -65,6 +65,22 @@ class RedisCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 更新缓存云实例基本信息
+    def update_cache_cluster(self, space_id, update_data):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceId":space_id};
+        if "spaceName" in update_data:
+            data["spaceName"] = update_data["spaceName"]
+        if "remarks" in update_data:
+            data["remarks"] = update_data["remarks"]
+        if "password" in update_data:
+            data["password"] = update_data["password"]
+        if "mark" in update_data:
+            data["mark"] = update_data["mark"]
+        status, headers, res_data = self.httpClient.update_cache_cluster(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # 删除云缓存实例
     def delete_cache_cluster(self, cluster_id):
         common_data = self.instance_data["common_data"]
