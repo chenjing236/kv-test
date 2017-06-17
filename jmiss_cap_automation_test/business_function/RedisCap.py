@@ -186,3 +186,11 @@ class RedisCap(object):
         status, headers, res_data = self.httpClient.modify_user_visible_flavor(data, operation_data["sourceAuth"])
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 查询折扣信息
+    def query_lowest_discount(self, fee_type):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "feeType": fee_type, "serviceCode": "redis"}
+        status, headers, res_data = self.httpClient.query_lowest_discount(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

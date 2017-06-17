@@ -179,3 +179,14 @@ def modify_user_visible_flavor_step(redis_cap, cpu, memory, disk, action_type):
         logger_info.error("[ERROR] It is failed to modify user visible flavor by operation [%s], error message is [%s]", request_id, error_msg)
         assert False, "[ERROR] It is failed to modify user visible flavor by operation {0}, error message is {1}".format(request_id, error_msg)
     return request_id
+
+# 查询折扣信息
+def query_lowest_discount_step(redis_cap, fee_type):
+    res_data = redis_cap.query_lowest_discount(fee_type)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query lowest discount [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to query lowest discount {0}, error message is {2}".format(request_id, error_msg)
+    discount = res_data["discount"]
+    return request_id, discount

@@ -97,6 +97,10 @@ class RedisCapClient(object):
     def modify_user_visible_flavor(self, args, sourceAuth):
         return self.http_request("POST", "operation?action=modifyUserVisibleFlavor&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
 
+    # 查询折扣信息
+    def query_lowest_discount(self, args):
+        return self.http_request("POST", "billing?action=queryLowestDiscount", json.dumps(args))
+
 
 class MongoCapClient(object):
     def __init__(self, host):
