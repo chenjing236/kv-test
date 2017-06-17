@@ -89,6 +89,14 @@ class RedisCapClient(object):
     def delete_no_overdue_resource(self, args, source_auth):
         return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
+    # 运营停服资源
+    def stop_resource(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=stopResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+
+    # 运营修改用户可见flavor
+    def modify_user_visible_flavor(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+
 
 class MongoCapClient(object):
     def __init__(self, host):

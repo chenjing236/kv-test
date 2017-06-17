@@ -159,3 +159,23 @@ def delete_no_overdue_resource_step(redis_cap, cluster_id):
         logger_info.error("[ERROR] It is failed to delete no_overdue resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
         assert False, "[ERROR] It is failed to delete no_overdue resource by operation {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
     return request_id
+
+# Operation-运营停服redis资源
+def stop_resource_step(redis_cap, cluster_id):
+    res_data = redis_cap.stop_resource(cluster_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to stop resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
+        assert False, "[ERROR] It is failed to stop resource by operation {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+    return request_id
+
+# Operation-修改用户可见flavor
+def modify_user_visible_flavor_step(redis_cap, cpu, memory, disk, action_type):
+    res_data = redis_cap.modify_user_visible_flavor(cpu, memory, disk, action_type)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to modify user visible flavor by operation [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to modify user visible flavor by operation {0}, error message is {1}".format(request_id, error_msg)
+    return request_id

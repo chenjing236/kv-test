@@ -165,3 +165,24 @@ class RedisCap(object):
         status, headers, res_data = self.httpClient.delete_no_overdue_resource(data, operation_data["sourceAuth"])
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # Operation-运营停服接口
+    def stop_resource(self, cluster_id):
+        common_data = self.instance_data["common_data"]
+        operation_data = self.instance_data["operation_data"]
+        data = {"dataCenter": common_data["dataCenter"], "account": common_data["account"], "user": common_data["user"],
+                "resourceId": cluster_id, "resourceType": "redis"}
+        status, headers, res_data = self.httpClient.stop_resource(data, operation_data["sourceAuth"])
+        print res_data
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # Operation-运营修改用户可见flavor
+    def modify_user_visible_flavor(self, cpu, memory, disk, action_type):
+        common_data = self.instance_data["common_data"]
+        operation_data = self.instance_data["operation_data"]
+        data = {"dataCenter": common_data["dataCenter"], "account": common_data["account"], "user": common_data["user"],
+                "cpu": cpu, "memory": memory, "disk": disk, "actionType": action_type, "type": "redis_cluster"}
+        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data, operation_data["sourceAuth"])
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
