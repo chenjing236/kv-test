@@ -20,6 +20,14 @@ class MongoCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 创建mongo实例,类型为按配置
+    def create_instance_param(self,data):
+        create_data = data["create_mongo_db"]
+        data = {"dataCenter": create_data["dataCenter"], "account": create_data["account"], "cpu": create_data["cpu"], "memory":create_data["memory"], "maxLink":create_data["maxLink"], "iops":create_data["iops"], "dbType":create_data["dbType"], "netType":create_data["netType"], "routerId":create_data["routerId"], "subnetId":create_data["subnetId"], "dbVersion":create_data["dbVersion"], "routerName":create_data["routerName"], "subnetName":create_data["subnetName"], "feeType":create_data["feeType"], "disk":create_data["disk"], "password":create_data["password"]}
+        status, headers, res_data = self.httpClient.create_mongo_db(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # 创建mongo实例，类型为按包年包月
     def create_instance_with_yearly_fee(self):
         create_data = self.data_obj["create_mongo_db_with_yearly_fee"]
