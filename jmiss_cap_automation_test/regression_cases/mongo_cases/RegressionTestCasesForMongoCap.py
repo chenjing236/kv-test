@@ -62,7 +62,7 @@ class TestRegressionCasesForMongoCap:
         assert "true" == is_flavor_in, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
 
     # 过滤查询mongodb列表信息
-    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client):
+    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance):
         # 按照资源状态过滤创建成功的资源, 按照资源名称排序，每页1个资源，3页
 		# 创建mongo资源
         info_logger.info("[Scenario] query filter mongo list")
@@ -96,7 +96,7 @@ class TestRegressionCasesForMongoCap:
         assert len(list) == 1, "[ERROR] The filter mongo list's size is not 1"
 
 	# 批量删除
-    def test_delete_mongo_dbs(self, config, instance_data, mongo_http_client):
+    def test_delete_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance):
 		info_logger.info("[Scenario] Delete mongos instance")
 		# 创建mongo实例1
 		resource_id1, mongo_info = create_mongo_instance
