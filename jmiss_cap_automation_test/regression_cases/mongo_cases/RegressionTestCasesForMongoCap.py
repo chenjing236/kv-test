@@ -62,27 +62,27 @@ class TestRegressionCasesForMongoCap:
         assert "true" == is_flavor_in, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
 
     # 过滤查询mongodb列表信息
-    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance):
+    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, cap_http_client):
         # 按照资源状态过滤创建成功的资源, 按照资源名称排序，每页1个资源，3页
 		# 创建mongo资源
         info_logger.info("[Scenario] query filter mongo list")
-        resource_id, mongo_info = create_mongo_instance
-        info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+        resource_id1, mongo_info1 = create_mongo_instance_param_step(config,instance_data,mongo_http_client,cap_http_client)
+        info_logger.info("[INFO] The mongo instance %s is created", mongo_info1["spaceId"])
         # 修改名称，名称为mongo_instance1
         info_logger.info("[STEP] Modify name of the mongo instance")
-        modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info["spaceId"], "mongo_instance1")
+        modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info1["spaceId"], "mongo_instance1")
         # 创建mongo资源
-        resource_id, mongo_info = create_mongo_instance
-        info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+        resource_id2, mongo_info2 = create_mongo_instance_param_step(config,instance_data,mongo_http_client,cap_http_client)
+        info_logger.info("[INFO] The mongo instance %s is created", mongo_info2["spaceId"])
         # 修改名称, 名称为mongo_instance2
         info_logger.info("[STEP] Modify name of the mongo instance")
-        modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info["spaceId"], "mongo_instance2")
+        modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info2["spaceId"], "mongo_instance2")
         # 创建mongo资源
-        resource_id, mongo_info = create_mongo_instance
-        info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
+        resource_id3, mongo_info3 = create_mongo_instance_param_step(config,instance_data,mongo_http_client,cap_http_client)
+        info_logger.info("[INFO] The mongo instance %s is created", mongo_info3["spaceId"])
         # 修改名称, 名称为mongo_instance3
         info_logger.info("[STEP] Modify name of the mongo instance")
-        modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info["spaceId"], "mongo_instance3")
+        modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info3["spaceId"], "mongo_instance3")
         # 过滤mongo实例列表，按照资源状态过滤创建成功的资源, 按照资源名称排序，每页1个资源，3页
         info_logger.info("[STEP] Get the filter mongo list")
         request_id, total, list = get_filter_mongo_dbs_step(config, instance_data, mongo_http_client, "mongo_instance", 1)
@@ -94,8 +94,9 @@ class TestRegressionCasesForMongoCap:
         # 验证第三页为mongo_instance_3，且数量为1
         request_id, total, list = get_filter_mongo_dbs_step(config, instance_data, mongo_http_client, "mongo_instance", 3)
         assert len(list) == 1, "[ERROR] The filter mongo list's size is not 1"
+        delete_mongo_instances_step(config, instance_data, mongo_http_client,"['" + resource_id1 + "','" + resource_id2 + "','" + resource_id3 + "']")
 
-	# 批量删除
+    # 批量删除
     def test_delete_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance):
 		info_logger.info("[Scenario] Delete mongos instance")
 		# 创建mongo实例1
@@ -122,7 +123,7 @@ class TestRegressionCasesForMongoCap:
 				flag3 = True
 		assert flag1 == True and flag2 == True and flag3 == True, "[ERROR] create mongo dbs failure"
 		# 批量删除mongo1，mongo3,
-		request_id, res_data = delete_mongo_instances_step(config, instance_data, mongo_http_client,"['" + resource_id1 + "'," + "'" + resource_id2 + "+"''"+" + "]")
+		request_id, res_data = delete_mongo_instances_step(config, instance_data, mongo_http_client,"['" + resource_id1 + "','" + resource_id2 + "','"+ resource_id3 +"']")
 		# 查询mongo实例列表
 		request_id, list = get_mongo_dbs_step(config, instance_data, mongo_http_client)
 		# 验证mongo1和mongo3不在mongo实例列表中，mongo2在实例列表中

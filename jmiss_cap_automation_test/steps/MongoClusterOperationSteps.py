@@ -103,6 +103,17 @@ def delete_mongo_instance_step(config, instance_data, http_client, resource_id):
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
 
+#批量删除mongo实例
+def delete_mongo_instances_step(config, instance_data, http_client, resource_ids):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.delete_mongo_dbs(resource_ids)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
+    return request_id
+
 # 查询flavor列表
 def get_flavor_list_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
