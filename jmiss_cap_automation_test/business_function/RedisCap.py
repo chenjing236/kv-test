@@ -128,6 +128,14 @@ class RedisCap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 获取实时被使用内存信息
+    def real_time_info_cache_cluster(self, space_ids):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceIds": space_ids}
+        status, headers, res_data = self.httpClient.real_time_info_cache_cluster(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # Operation-运营删除接口
     def delete_resource(self, cluster_id):
         common_data = self.instance_data["common_data"]

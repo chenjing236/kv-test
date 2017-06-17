@@ -115,6 +115,17 @@ def stop_cache_cluster_step(redis_cap, space_id):
         assert False, "[ERROR] It is failed to stop redis instance {0}, resource_id is {1} error message is {2}".format(request_id, space_id, error_msg)
     return request_id
 
+# 获取实时被使用内存信息
+def real_time_info_cache_cluster_step(redis_cap, space_ids):
+    res_data = redis_cap.real_time_info_cache_cluster(space_ids)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to delete redis instance [%s], resource_id is [%s] error message is [%s]", request_id, json.dumps(space_ids), error_msg)
+        assert False, "[ERROR] It is failed to delete redis instance {0}, resource_id is {1} error message is {2}".format(request_id, json.dumps(space_ids), error_msg)
+    infos = res_data["infos"]
+    return request_id, infos
+
 # Operation-运营删除redis资源
 def delete_resource_step(redis_cap, cluster_id):
     res_data = redis_cap.delete_resource(cluster_id)
