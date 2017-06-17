@@ -29,9 +29,10 @@ def create_mongo_instance_param_step(config, instance_data, mongo_http_client,ca
     # 查询详情接口
     info_logger.info("[STEP] Get the detail info of the mongo instance")
     request_id, mongo_info = query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
+    print "= ============================ {0}".format(mongo_info)
     if mongo_info is None:
         info_logger.info("[ERROR] The mongo instance %s is not be created", resource_id)
-    assert False, "[ERROR] The mongo instance %s is not be created".format(resource_id)
+        assert False, "[ERROR] The mongo instance %s is not be created".format(resource_id)
     assert mongo_info["status"] == 100, "[ERROR] The mongo instance %s is not be created".format(resource_id)
 
     return resource_id, mongo_info

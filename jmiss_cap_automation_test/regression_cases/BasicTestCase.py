@@ -161,6 +161,7 @@ def create_mongo_instance_three(request, config, instance_data, mongo_http_clien
     info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
     resource_id, mongo_info = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+
     resource_id2, mongo_info2 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
     resource_id3, mongo_info3 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
 
