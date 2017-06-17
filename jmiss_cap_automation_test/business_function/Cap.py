@@ -14,11 +14,26 @@ class Cap(object):
 
     # user模块，查看用户quota
     def query_user_quota(self, resource):
-        status, headers, res_data = self.httpClient.query_user_quota(resource)
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource}
+        status, headers, res_data = self.httpClient.query_user_quota(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # user模块，修改已用配额接口
+    def modify_user_quota(self, resource, quota):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource, "quota":quota}
+        status, headers, res_data = self.httpClient.modify_quota(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+    # user模块，设置用户总配额
+    def set_user_quota(self, resource, quota):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource, "quota":quota}
+        status, headers, res_data = self.httpClient.set_user_quota(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
 
     # billing模块，订单支付
     def pay(self, order_request_id):
