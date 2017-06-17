@@ -63,7 +63,9 @@ class TestRegressionCasesForMongoCap:
 
     # 查看mongo列表信息
     def test_query_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance):
+	resource_id, mongo_info = create_mongo_instance
 	# 查看mongo实例列表
+	
 	# 创建mongo实例，类型为按配置
 	# 查看mongo实例列表
 	# 验证创建的mongo实例在列表中

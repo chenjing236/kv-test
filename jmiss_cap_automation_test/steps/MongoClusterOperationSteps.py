@@ -76,3 +76,13 @@ def get_flavor_list_step(config, instance_data, http_client):
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id, res_data["flavors"]
 
+def query_mongo_dbs_step(config, instance_data, http_client):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_mongo_dbs("mongodb")
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
+    return request_id, res_data["flavors"]
+
