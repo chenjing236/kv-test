@@ -52,7 +52,7 @@ class RedisCap(object):
     # 根据过滤条件查云缓存实例列表
     def query_filter_cache_clusters (self, filter_data):
         common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"]};
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"]}
         if "filterName" in filter_data:
             data["filterName"] = filter_data["filterName"]
         if "filterSpaceType" in filter_data:
@@ -76,7 +76,7 @@ class RedisCap(object):
     # 更新缓存云实例基本信息
     def update_cache_cluster(self, space_id, update_data):
         common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceId":space_id};
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceId":space_id}
         if "spaceName" in update_data:
             data["spaceName"] = update_data["spaceName"]
         if "remarks" in update_data:

@@ -8,7 +8,12 @@ logger_info = logging.getLogger(__name__)
 
 # 支付
 def pay_for_redis_instance_step(cap, order_request_id):
-    res_data = cap.pay(order_request_id)
+    request_id_coupon, coupons = query_available_coupons_step(cap.config, cap.instance_data, cap.httpClient, cap.instance_data["redis_coupon_info"])
+    if len(coupons) == 0 or coupons[0]["balance"] < 5:
+        res_data = cap.pay(order_request_id)
+    else:
+        coupon_id = coupons[0]["id"]
+        res_data = cap.pay(order_request_id, coupon_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]

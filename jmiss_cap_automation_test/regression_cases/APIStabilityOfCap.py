@@ -5,7 +5,7 @@ from BasicTestCase import *
 logger_info = logging.getLogger(__name__)
 
 
-class SmokeCasesForRedisCap:
+class APIStabilityCase:
     def __init__(self, config, instance_data, redis_http_client, cap_http_client):
         self.config = config
         self.instance_data = instance_data
@@ -15,6 +15,7 @@ class SmokeCasesForRedisCap:
                        "resize.reason", "reduce.reason",
                        "realtime.reason", "delete.reason"]
         self.index = 0
+        self.resource_id = ""
 
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
@@ -33,6 +34,13 @@ class SmokeCasesForRedisCap:
         redis_cap = RedisCap(self.config, self.instance_data, self.redis_http_client)
         self.redis_cap = redis_cap
         cap = Cap(self.config, self.instance_data, self.cap_http_client)
+        # 清除残留redis实例
+        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "category": 1})
+        if clusters is not None:
+            for cluster in clusters:
+                delete_redis_instance_step(self.redis_cap, cluster["spaceId"])
+                time.sleep(2)
+
         # 创建redis实例
         # print "[STEP] Create an instance for redis, the instance consists of a master and a slave"
         request_id_for_redis = create_redis_instance_step(redis_cap)
@@ -43,6 +51,7 @@ class SmokeCasesForRedisCap:
         # print "[STEP] Query order status, check the status of order"
         success, resource_id = query_order_status_step(cap, request_id_for_redis)
         self.resource_id = resource_id
+        self.index += 1
 
         # 查询详情接口
         # print "[STEP] Query redis instance detail, check the status of redis instance"
@@ -68,7 +77,7 @@ class SmokeCasesForRedisCap:
         self.index += 1
 
         # 更新实例信息
-        space_name_update = "space_name_update"
+        space_name_update = self.instance_data["create_cache_cluster"]["spaceName"] + "_name_update"
         remarks_update = "remarks_update"
         mark = "updatebaseinfo"
         update_cache_cluster_step(redis_cap, resource_id, {"spaceName": space_name_update, "remarks": remarks_update, "mark": mark})
@@ -108,13 +117,14 @@ class SmokeCasesForRedisCap:
         # realtime info
         request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
         # print infos
-        assert infos[0]["memUsed"] != 0 and infos[0]["spaceId"] == resource_id
+        # assert infos[0]["memUsed"] != 0 and infos[0]["spaceId"] == resource_id
+        assert infos[0]["spaceId"] == resource_id
         self.index += 1
 
 
 def main():
-    conf_file = '../config/redis_config/config_test.json'
-    instance_file = '../data/redis_data/data_test.json'
+    conf_file = './config/redis_config/config_test.json'
+    instance_file = './data/redis_data/data_test.json'
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
@@ -123,7 +133,7 @@ def main():
     fd.close()
     redis_http_client = RedisCapClient(config["host"])
     cap_http_client = CapClient(config["host"])
-    smoke = SmokeCasesForRedisCap(config, instance_data, redis_http_client, cap_http_client)
+    smoke = APIStabilityCase(config, instance_data, redis_http_client, cap_http_client)
     smoke.run_smoke()
 
 if __name__ == "__main__":

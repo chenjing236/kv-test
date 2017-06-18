@@ -36,9 +36,12 @@ class Cap(object):
         return res_data
 
     # billing模块，订单支付
-    def pay(self, order_request_id):
+    def pay(self, order_request_id, coupon_id=None):
         common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id}
+        if coupon_id is None:
+            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id}
+        else:
+            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id, "coupons": [str(coupon_id)]}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
             assert status == 403, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
