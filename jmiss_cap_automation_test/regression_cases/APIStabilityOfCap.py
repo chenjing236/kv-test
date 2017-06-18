@@ -14,13 +14,18 @@ class APIStabilityCase:
         self.result = ["create.reason", "get_detail.reason", "get_list.reason", "update.reason",
                        "resize.reason", "reduce.reason",
                        "realtime.reason", "delete.reason"]
+        self.result_error = ["create_error", "get_detail_error", "get_list_error", "update_error",
+                             "resize_error", "reduce_error", "realtime_error", "delete_error"]
         self.index = 0
         self.resource_id = ""
 
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
         delete_redis_instance_step(self.redis_cap, self.resource_id)
-        self.index += 1
+        # self.index += 1
+        # 如果删除前执行失败了，teardown时index还会加1，不准确
+        if self.index == 7:
+            self.index += 1
         i = 0
         while i < len(self.result):
             if i == self.index:
@@ -28,6 +33,11 @@ class APIStabilityCase:
             else:
                 print self.result[i] + ":0"
             i += 1
+        # 输出总的监控项，正确为"0"，错误为"error_step"
+        if self.index == 8:
+            print "stab.redis.status:\"0\""
+        else:
+            print "stab.redis.status:\"{0}\"".format(self.result_error[self.index])
 
     def run_smoke(self):
         # print "[Scenario] Create an instance for redis, the instance consists of a master and a slave"
@@ -118,6 +128,9 @@ class APIStabilityCase:
         request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
         # print infos
         # assert infos[0]["memUsed"] != 0 and infos[0]["spaceId"] == resource_id
+        if infos is None:
+            time.sleep(10)
+            request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
         assert infos[0]["spaceId"] == resource_id
         self.index += 1
 
