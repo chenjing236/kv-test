@@ -89,6 +89,22 @@ class RedisCapClient(object):
     def delete_no_overdue_resource(self, args, source_auth):
         return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
+    # 运营停服资源
+    def stop_resource(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=stopResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+
+    # 运营修改用户可见flavor
+    def modify_user_visible_flavor(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
+
+    # 查询折扣信息
+    def query_lowest_discount(self, args):
+        return self.http_request("POST", "billing?action=queryLowestDiscount", json.dumps(args))
+
+    # 查询redis变配价格
+    def query_resize_cache_price(self, args):
+        return self.http_request("POST", "billing?action=queryResizeCachePrice", json.dumps(args))
+
 
 class MongoCapClient(object):
     def __init__(self, host):
@@ -117,6 +133,9 @@ class MongoCapClient(object):
     def delete_mongo_db(self, args):
         return self.http_request("POST", "mongoDb?action=deleteMongoDb", json.dumps(args))
 
+    # 删除mongo实例
+    def delete_mongo_dbs(self, args):
+        return self.http_request("POST", "mongoDb?action=deleteMongoDbs", json.dumps(args))
 
     # 修改名字
     def modify_mongo_db_name(self, args):
@@ -126,8 +145,38 @@ class MongoCapClient(object):
     def query_flavors(self, args):
         return self.http_request("POST", "mongoDb?action=queryFlavors", json.dumps(args))
 
+    # 查看mongo列表过滤
+    def query_filter_mongo_dbs(self, args):
+        return self.http_request("POST", "mongoDb?action=queryFilterMongoDbs", json.dumps(args))
+
+    # 查看mongo列表
     def query_mongo_dbs(self, args):
-	return self.http_request("POST", "mongoDb?action=queryMongoDbs", json.dumps(args))
+        return self.http_request("POST", "mongoDb?action=queryMongoDbs", json.dumps(args))
+
+    # 查看实时信息
+    def query_mongo_realTimeInfo(self, args):
+        return self.http_request("POST", "mongoDb?action=queryMongoDbRealTimeInfo", json.dumps(args))
+
+    # 查看拓扑结构
+    def query_mongo_topology(self, args):
+        return self.http_request("POST", "mongoDb?action=queryMongoDbTopology", json.dumps(args))
+
+    # 查看vpc列表
+    def query_vpcs(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcs", json.dumps(args))
+
+    # 查看vpc subnet列表
+    def query_vpc_subnets(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcSubnets", json.dumps(args))
+
+    # 查看vpc详情
+    def query_vpc_detail(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcDetail", json.dumps(args))
+
+    # 查看vpc子网详情
+    def query_vpc_subnet_detail(self, args):
+        return self.http_request("POST", "mongoDb?action=queryVpcSubnetDetail", json.dumps(args))
+
 # 缓存云-CAP HTTP Client
 class CapClient(object):
     def __init__(self, host):
@@ -152,6 +201,10 @@ class CapClient(object):
     def modify_quota(self, args):
         return self.http_request("POST", "user?action=modifyQuota", json.dumps(args))
 
+    # 用户中心 - 设置用户总配额接口
+    def set_user_quota(self, args):
+        return self.http_request("POST", "user?action=setUserQuota", json.dumps(args))
+
     # 订单支付
     def pay(self, args):
         return self.http_request("POST", "billing?action=pay", json.dumps(args))
@@ -163,6 +216,10 @@ class CapClient(object):
     # 查询订单详情
     def query_order_detail(self, args):
         return self.http_request("POST", "order?action=queryOrderDetail", json.dumps(args))
+
+    # 根据失败订单重新创建订单
+    def recreate_failure_order(self, args):
+        return self.http_request("POST", "order?action=recreateFailureOrder", json.dumps(args))
 
     # 查询redis升降配尾款账单余额
     def query_config_redis_final_payment(self, args):
@@ -190,20 +247,28 @@ class CapClient(object):
 
     # 查询mongodb的价格
     def query_mongo_db_price(self, args):
-	return self.http_request("POST", "billing?action=queryMongoDbPrice", json.dumps(args))
+        return self.http_request("POST", "billing?action=queryMongoDbPrice", json.dumps(args))
 
     # 查询mongo的折扣信息
     def query_mongo_db_discount(self, args):
-	return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
+        return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
 
     # 运营系统删除资源
     def delete_resource(self, args):
-	return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
+        return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
 
     # 运营删除包年包月未过期资源
     def delete_no_overdue_resource(self, args, source_auth):
         return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
     # 运营修改用户可见flavor
-    def modifyi_user_visible_flavor(self, args):
-	return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
+    def modify_user_visible_flavor(self, args):
+        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
+
+    # 查询代金券
+    def query_available_coupons(self, args):
+        return self.http_request("POST", "Billing?action=queryAvailableCoupons", json.dumps(args))
+
+    # 查询计费订单列表
+    def query_billing_orders(self, args):
+        return self.http_request("POST", "billing?action=queryBillingOrders", json.dumps(args))

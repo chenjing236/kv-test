@@ -14,16 +14,34 @@ class Cap(object):
 
     # user模块，查看用户quota
     def query_user_quota(self, resource):
-        status, headers, res_data = self.httpClient.query_user_quota(resource)
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource}
+        status, headers, res_data = self.httpClient.query_user_quota(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # user模块，修改已用配额接口
+    def modify_user_quota(self, resource, quota):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource, "quota":quota}
+        status, headers, res_data = self.httpClient.modify_quota(data)
+        assert status == 200, "[ERROR] HTTP Request is failed, error meassage is {0}".format(res_data["message"])
+        return res_data
+    # user模块，设置用户总配额
+    def set_user_quota(self, resource, quota):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource, "quota":quota}
+        status, headers, res_data = self.httpClient.set_user_quota(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
 
     # billing模块，订单支付
-    def pay(self, order_request_id):
+    def pay(self, order_request_id, coupon_id=None):
         common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id}
+        if coupon_id is None:
+            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id}
+        else:
+            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id, "coupons": [str(coupon_id)]}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
             assert status == 403, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
@@ -44,6 +62,15 @@ class Cap(object):
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
                 "orderRequestId": order_request_id}
         status, headers, res_data = self.httpClient.query_order_detail(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # order模块，根据失败订单重新创建订单
+    def recreate_failure_order(self, old_request_id):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
+                "oldRequestId": old_request_id}
+        status, headers, res_data = self.httpClient.recreate_failure_order(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
@@ -139,6 +166,37 @@ class Cap(object):
     def modify_user_visible_flavor(self, flavor_info):
         common_data = self.instance_data["common_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "type":flavor_info["type"], "cpu":flavor_info["cpu"], "memory":flavor_info["memory"], "actionType":flavor_info["actionType"]}
-        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data)
+        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # billing模块，查询代金券
+    def query_available_coupons(self, coupon_info):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "serviceCode":coupon_info["serviceCode"], "feeType":coupon_info["feeType"]}
+        status, headers, res_data = self.httpClient.query_available_coupons(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # billing模块，查询计费订单列表
+    def query_billing_orders(self, condition):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"]}
+        if "resourceType" in condition:
+            data["resourceType"] = condition["resourceType"]
+        if "feeType" in condition:
+            data["feeType"] = condition["feeType"]
+        if "category" in condition:
+            data["category"] = condition["category"]
+        if "expireDays" in condition:
+            data["expireDays"] = condition["expireDays"]
+        if "pageNumber" in condition:
+            data["pageNumber"] = condition["pageNumber"]
+        if "pageSize" in condition:
+            data["pageSize"] = condition["pageSize"]
+        if "showRegion" in condition:
+            data["showRegion"] = condition["showRegion"]
+        status, headers, res_data = self.httpClient.query_billing_orders(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+

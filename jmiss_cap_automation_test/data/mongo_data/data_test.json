@@ -59,5 +59,15 @@
 	"sourceAuth": "32fd349505277ee09761258d78682a4d",
 	"requestSource": "operation",
 	"resourceType": "mongodb"
-    }
+    },
+	"query_coupons":{
+		"serviceCode":"mongodb",
+		"feeType":1
+	},
+	"query_filter_mongo_list":{
+		"pageSize":1,
+		"filterStatus":100,
+		"sortName":"name",
+		"sortRule":"ASC"
+	}
 }

@@ -4,6 +4,6 @@
   "database_mongo":"jmiss_mongo_cap_2",
   "user":"jimdb",
   "password":"jimdb",
-  "retry_getting_info_times": 20,
+  "retry_getting_info_times": 50,
   "wait_time": 5
 }

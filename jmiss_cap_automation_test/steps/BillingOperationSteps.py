@@ -8,7 +8,12 @@ logger_info = logging.getLogger(__name__)
 
 # 支付
 def pay_for_redis_instance_step(cap, order_request_id):
-    res_data = cap.pay(order_request_id)
+    request_id_coupon, coupons = query_available_coupons_step(cap.config, cap.instance_data, cap.httpClient, cap.instance_data["redis_coupon_info"])
+    if len(coupons) == 0 or coupons[0]["balance"] < 5:
+        res_data = cap.pay(order_request_id)
+    else:
+        coupon_id = coupons[0]["id"]
+        res_data = cap.pay(order_request_id, coupon_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
@@ -70,12 +75,12 @@ def query_order_status_for_mongo_step(config, instance_data, cap_http_client, or
         count += 1
         time.sleep(cap.config["wait_time"])
     success = res_data["success"]
-    assert inProcess == 0 and success == 1, "[ERROR] Create redis instance failed!"
+    assert inProcess == 0 and success == 1, "[ERROR] Create mongo instance failed!"
     resourceId = res_data["resourceIds"][0]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to query redis order status [%s], error message is [%s]", order_request_id, error_msg)
-        assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id, error_msg)
+        logger_info.error("[ERROR] It is failed to query mongo order status [%s], error message is [%s]", order_request_id, error_msg)
+        assert False, "[ERROR] It is failed to query mongo order status {0}, error message is {1}".format(order_request_id, error_msg)
     return success, resourceId
 
 # 查询订单详情
@@ -88,6 +93,15 @@ def query_order_detail_step(cap, order_request_id):
     feeType = res_data["feeType"]
     return feeType
 
+# 查询订单详情
+def recreate_failure_order_step(cap, old_request_id):
+    res_data = cap.recreate_failure_order(old_request_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to recreate failure order [%s], error message is [%s]", old_request_id, error_msg)
+        assert False, "[ERROR] It is failed to recreate failure order {0}, error message is {1}".format(old_request_id, error_msg)
+    return request_id
 
 # 查询redis升降配尾款余额
 def query_config_redis_final_payment_step(cap, redis_id):
@@ -168,19 +182,75 @@ def query_mongo_db_price_step(config, instance_data, httpClient, flavor_info):
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
-        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+        logger_info.error("[ERROR] It is failed to renew billing orders [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to renew billing orders {0},error message is {2}".format(request_id, error_msg)
     request_id = res_data["requestId"]
     return request_id, res_data
 
 # 查询mongo的折扣信息
-def query_query_min_discount_step(config, instance_data, httpClient, discount_info):
+def query_mongo_db_discount_step(config, instance_data, httpClient, discount_info):
     cap = Cap(config, instance_data, httpClient)
     res_data = cap.query_mongo_db_discount(discount_info)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
-        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+        logger_info.error("[ERROR] It is failed to renew billing orders [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to renew billing orders {0}, error message is {2}".format(request_id, error_msg)
     request_id = res_data["requestId"]
     return request_id, res_data
+
+# 查询可用代金券
+def query_available_coupons_step(config, instance_data, httpClient, coupon_info):
+    cap = Cap(config, instance_data, httpClient)
+    res_data = cap.query_available_coupons(coupon_info)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed query available coupon, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to query available coupon, error message is {0}".format(error_msg)
+    request_id = res_data["requestId"]
+    return request_id, res_data["coupons"]
+
+# 查询用户配额
+def query_user_quota_step(config, instance_data, http_client, resource):
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.query_user_quota(resource)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query user quota, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to query user quota, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["use"]
+
+# 修改用户配额
+def modify_user_quota_step(config, instance_data, http_client, resource, quota):
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.modify_user_quota(resource,quota)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to modify user quota, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to modify user quota, error message is {0}".format(error_msg)
+    return request_id, res_data["quota"], res_data["use"]
+
+# 设置用户总配额
+def set_user_quota_step(config, instance_data, http_client, resource, quota):
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.set_user_quota(resource,quota)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to set user quota, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to set user quota, error message is {0}".format(error_msg)
+    return request_id
+
+# 查询计费订单列表
+def query_billing_orders_step(config, instance_data, httpClient, condition):
+    cap = Cap(config, instance_data, httpClient)
+    res_data = cap.query_billing_orders(condition)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed query billing orders, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to query billing orders, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["billingOrders"]

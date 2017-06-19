@@ -11,7 +11,7 @@ logger_info = logging.getLogger(__name__)
 
 # 运营系统删除资源
 def delete_resource_step(config, instance_data, http_client, resource_id, resource_type):
-    cap = Cap(config, instance_data, httpClient)
+    cap = Cap(config, instance_data, http_client)
     res_data = cap.delete_resource(resource_id, resource_type)
     request_id = res_data["requestId"]
     if "code" in res_data:
@@ -35,8 +35,8 @@ def delete_no_overdue_resource_step(config, instance_data, http_client, resource
 
 # 运营修改用户可见flavor
 def modify_user_visible_flavor_step(config, instance_data, http_client, resource_id, resource_type):
-    cap = Cap(config, instance_data, httpClient)
-    res_data = cap.modify_user_visible_flavor(flavor_info)
+    cap = Cap(config, instance_data, http_client)
+    res_data = cap.modify_user_visible_flavor(resource_type)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
