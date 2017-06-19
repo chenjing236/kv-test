@@ -202,7 +202,7 @@ def query_lowest_discount_step(redis_cap, fee_type):
     discount = res_data["discount"]
     return request_id, discount
 
-# 查询折扣信息
+# 查询redis扩容的价格
 def query_resize_cache_price_step(redis_cap, space_id, memory):
     res_data = redis_cap.query_resize_cache_price(space_id, memory)
     request_id = res_data["requestId"]

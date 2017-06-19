@@ -8,10 +8,9 @@ from steps.RedisClusterOperationSteps import *
 
 
 class TestResizeMonthRedis:
-
     @pytest.mark.resize
     def test_resize_month_redis(self, instance_data, create_redis_instance):
-        #包年包月资源扩容，删除需要运营接口，单独方法列出
+        # 包年包月资源扩容，删除需要运营接口，单独方法列出
         info_logger.info("[Scenario] Start to resize redis cluster")
         # 创建redis实例用于扩容
         info_logger.info("[STEP] Create a redis cluster for resizing")
@@ -25,7 +24,8 @@ class TestResizeMonthRedis:
         info_logger.info("[STEP] Query redis resize final payment")
         final_payment_price = query_config_redis_final_payment_step(cap, resource_id)
         assert final_payment_price == capacity * 3.28, "[ERROR] The final payment price is wrong!"
-        info_logger.info("[INFO] Check redis resize final payment price successfully, the price is {0}".format(final_payment_price))
+        info_logger.info(
+            "[INFO] Check redis resize final payment price successfully, the price is {0}".format(final_payment_price))
         # 调用扩容接口(is_resize 1:resize,0:reduce)
         info_logger.info("[STEP] Resize redis cluster")
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 1)
@@ -39,7 +39,8 @@ class TestResizeMonthRedis:
         # 查询资源详情，验证扩容信息正确
         info_logger.info("[STEP] Query redis cluster detail, check the redis info")
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
-        assert cluster["status"] == 100 and cluster["capacity"] == int(instance_data["create_cache_cluster"]["resize_capacity"]), "[ERROR] The info of redis resized is wrong!"
+        assert cluster["status"] == 100 and cluster["capacity"] == int(
+            instance_data["create_cache_cluster"]["resize_capacity"]), "[ERROR] The info of redis resized is wrong!"
         info_logger.info("[INFO] Test redis cluster resize successfully!")
 
     @pytest.mark.resize

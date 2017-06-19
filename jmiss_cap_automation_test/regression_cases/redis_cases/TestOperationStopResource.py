@@ -13,7 +13,5 @@ class TestUpdateRedis:
         info_logger.info("[INFO] Test create redis instance successfully, the resourceId is {0}".format(resource_id))
 
         #调用运营接口停止资源，接口返回成功（中间层查询不了acl表enable值，无法做正确性验证）
-        stop_cache_cluster_step(redis_cap, resource_id)
-        #调用运营接口启动资源，接口返回成功（中间层查询不了acl表enable值，无法做正确性验证）
-        start_cache_cluster_step(redis_cap, resource_id)
-        info_logger.info("[INFO] Test stop and start resource successfully!")
+        stop_resource_step(redis_cap, resource_id)
+        info_logger.info("[INFO] Test operation stop resource successfully!")
