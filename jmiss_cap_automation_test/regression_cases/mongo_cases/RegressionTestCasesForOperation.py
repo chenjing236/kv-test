@@ -8,9 +8,9 @@ info_logger = logging.getLogger(__name__)
 class TestSmokeCasesForOperation:
     # 运营系统，删除资源
     @pytest.mark.smoke
-    def test_delete_resource(self, config, instance_data, cap_http_client, mongo_http_client, create_mongo_instance, create_mongo_instance_with_yearl_fee):
+    def test_delete_resource(self, config, instance_data, cap_http_client, mongo_http_client):
         # 创建mongo实例,类型为包年包月的资源
-        resource_id, mongo_info = create_mongo_instance_with_yealy_fee
+        resource_id, mongo_info = create_mongo_instance_yearly_fee_step(config, instance_data, mongo_http_client, cap_http_client)
         # 查看资源列表
         request_id,mongo_info_list = get_mongo_dbs_step(config, instance_data, mongo_http_client)
         # 验证包年包月资源在列表中
@@ -18,7 +18,7 @@ class TestSmokeCasesForOperation:
         for item in mongo_info_list:
             if item["spaceId"] ==resource_id:
                 flag=True
-        assert flag==true,"[ERROR] the resource is not in the list"
+        assert flag==True,"[ERROR] the resource is not in the list"
         #  运营系统删除包年包月资源
         request_id = delete_resource_step(config, instance_data, cap_http_client, resource_id, instance_data["create_mongo_db_with_yearly_fee"]["feeType"])
         # 查看资源列表
@@ -28,9 +28,9 @@ class TestSmokeCasesForOperation:
         for item in mongo_info_list:
             if item["spaceId"] ==resource_id:
                 flag=True
-        assert flag==false,"[ERROR] the resource is in the list"
+        assert flag==False,"[ERROR] the resource is in the list"
         # 创建mongo实例，类型为按计费类型
-        resource_id, mongo_info = create_mongo_instance
+        resource_id, mongo_info = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
         # 运营系统删除按配置类型
         request_id = delete_resource_step(config, instance_data, cap_http_client, resource_id,instance_data["create_mongo_db"]["feeType"])
         # 查看资源列表
@@ -44,7 +44,7 @@ class TestSmokeCasesForOperation:
 
     # 运营系统，删除未过期资源
     @pytest.mark.smoke
-    def test_deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client, create_mongo_instance, create_mongo_instance_with_yealy_fee):
+    def _deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client, create_mongo_instance_with_yealy_fee):
         print ""
         # 创建mongo实例,类型为包年包月的资源
         resource_id, mongo_info = create_mongo_instance_with_yealy_fee

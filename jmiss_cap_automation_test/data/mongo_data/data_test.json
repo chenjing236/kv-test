@@ -60,17 +60,14 @@
 	"requestSource": "operation",
 	"resourceType": "mongodb"
     },
-	"query_available_coupons":{
+	"query_coupons":{
 		"serviceCode":"mongodb",
-		"feeType":"1"
+		"feeType":1
 	},
 	"query_filter_mongo_list":{
 		"pageSize":1,
 		"filterStatus":100,
 		"sortName":"name",
 		"sortRule":"ASC"
-	},
-	"user_quota":{
-		"serviceCode":"mongodb"
 	}
 }

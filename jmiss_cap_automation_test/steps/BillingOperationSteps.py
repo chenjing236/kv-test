@@ -75,12 +75,12 @@ def query_order_status_for_mongo_step(config, instance_data, cap_http_client, or
         count += 1
         time.sleep(cap.config["wait_time"])
     success = res_data["success"]
-    assert inProcess == 0 and success == 1, "[ERROR] Create redis instance failed!"
+    assert inProcess == 0 and success == 1, "[ERROR] Create mongo instance failed!"
     resourceId = res_data["resourceIds"][0]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to query redis order status [%s], error message is [%s]", order_request_id, error_msg)
-        assert False, "[ERROR] It is failed to query redis order status {0}, error message is {1}".format(order_request_id, error_msg)
+        logger_info.error("[ERROR] It is failed to query mongo order status [%s], error message is [%s]", order_request_id, error_msg)
+        assert False, "[ERROR] It is failed to query mongo order status {0}, error message is {1}".format(order_request_id, error_msg)
     return success, resourceId
 
 # 查询订单详情

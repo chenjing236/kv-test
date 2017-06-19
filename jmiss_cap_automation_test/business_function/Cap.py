@@ -25,7 +25,7 @@ class Cap(object):
         common_data = self.instance_data["common_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resource": resource, "quota":quota}
         status, headers, res_data = self.httpClient.modify_quota(data)
-        assert status == 200, "[ERROR] HTTP Request is failed"
+        assert status == 200, "[ERROR] HTTP Request is failed, error meassage is {0}".format(res_data["message"])
         return res_data
     # user模块，设置用户总配额
     def set_user_quota(self, resource, quota):
