@@ -217,6 +217,10 @@ class CapClient(object):
     def query_order_detail(self, args):
         return self.http_request("POST", "order?action=queryOrderDetail", json.dumps(args))
 
+    # 根据失败订单重新创建订单
+    def recreate_failure_order(self, args):
+        return self.http_request("POST", "order?action=recreateFailureOrder", json.dumps(args))
+
     # 查询redis升降配尾款账单余额
     def query_config_redis_final_payment(self, args):
         return self.http_request("POST", "billing?action=queryConfigRedisFinalPayment", json.dumps(args))

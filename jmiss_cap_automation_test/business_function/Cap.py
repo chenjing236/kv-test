@@ -65,6 +65,15 @@ class Cap(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # order模块，根据失败订单重新创建订单
+    def recreate_failure_order(self, old_request_id):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
+                "oldRequestId": old_request_id}
+        status, headers, res_data = self.httpClient.recreate_failure_order(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # billing模块，查询redis升降配尾款账单余额
     def query_config_redis_final_payment(self, redis_id):
         common_data = self.instance_data["common_data"]

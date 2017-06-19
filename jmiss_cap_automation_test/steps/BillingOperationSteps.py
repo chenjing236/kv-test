@@ -93,6 +93,15 @@ def query_order_detail_step(cap, order_request_id):
     feeType = res_data["feeType"]
     return feeType
 
+# 查询订单详情
+def recreate_failure_order_step(cap, old_request_id):
+    res_data = cap.recreate_failure_order(old_request_id)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to recreate failure order [%s], error message is [%s]", old_request_id, error_msg)
+        assert False, "[ERROR] It is failed to recreate failure order {0}, error message is {1}".format(old_request_id, error_msg)
+    return request_id
 
 # 查询redis升降配尾款余额
 def query_config_redis_final_payment_step(cap, redis_id):
