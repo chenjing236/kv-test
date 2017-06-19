@@ -202,3 +202,11 @@ class RedisCap(object):
         status, headers, res_data = self.httpClient.query_lowest_discount(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 查询redis变配价格
+    def query_resize_cache_price(self, space_id, memory):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "redisId": space_id, "memory": memory}
+        status, headers, res_data = self.httpClient.query_resize_cache_price(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

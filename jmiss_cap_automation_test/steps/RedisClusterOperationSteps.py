@@ -201,3 +201,14 @@ def query_lowest_discount_step(redis_cap, fee_type):
         assert False, "[ERROR] It is failed to query lowest discount {0}, error message is {1}".format(request_id, error_msg)
     discount = res_data["discount"]
     return request_id, discount
+
+# 查询折扣信息
+def query_resize_cache_price_step(redis_cap, space_id, memory):
+    res_data = redis_cap.query_resize_cache_price(space_id, memory)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to query resize cache price [%s], resource_id is [%s] error message is [%s]", request_id, space_id, error_msg)
+        assert False, "[ERROR] It is failed to query resize cache price {0}, resource_id is {1} error message is {2}".format(request_id, space_id, error_msg)
+    price = res_data["price"]
+    return request_id, price

@@ -101,6 +101,10 @@ class RedisCapClient(object):
     def query_lowest_discount(self, args):
         return self.http_request("POST", "billing?action=queryLowestDiscount", json.dumps(args))
 
+    # 查询redis变配价格
+    def query_resize_cache_price(self, args):
+        return self.http_request("POST", "billing?action=queryResizeCachePrice", json.dumps(args))
+
 
 class MongoCapClient(object):
     def __init__(self, host):
