@@ -168,3 +168,26 @@ class Cap(object):
         status, headers, res_data = self.httpClient.query_available_coupons(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # billing模块，查询计费订单列表
+    def query_billing_orders(self, condition):
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"]}
+        if "resourceType" in condition:
+            data["resourceType"] = condition["resourceType"]
+        if "feeType" in condition:
+            data["feeType"] = condition["feeType"]
+        if "category" in condition:
+            data["category"] = condition["category"]
+        if "expireDays" in condition:
+            data["expireDays"] = condition["expireDays"]
+        if "pageNumber" in condition:
+            data["pageNumber"] = condition["pageNumber"]
+        if "pageSize" in condition:
+            data["pageSize"] = condition["pageSize"]
+        if "showRegion" in condition:
+            data["showRegion"] = condition["showRegion"]
+        status, headers, res_data = self.httpClient.query_billing_orders(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
