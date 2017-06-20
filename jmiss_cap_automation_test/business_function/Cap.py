@@ -157,17 +157,17 @@ class Cap(object):
     # 运营系统删除未过期资源
     def delete_no_overdue_resource(self, resource_id, resource_type, source_auth):
         common_data = self.instance_data["common_data"]
-        operation_data = self.instance_data["operation_data"]
         data = {"dataCenter": common_data["dataCenter"], "account": common_data["account"], "resourceId": resource_id, "resourceType":resource_type}
-        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data, operation_data["sourceAuth"])
+        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data, source_auth)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # 运营修改用户可见flavor
     def modify_user_visible_flavor(self, flavor_info):
         common_data = self.instance_data["common_data"]
+        operation_data = self.instance_data["operation_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "type":flavor_info["type"], "cpu":flavor_info["cpu"], "memory":flavor_info["memory"], "actionType":flavor_info["actionType"]}
-        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data,source_auth)
+        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data,operation_data["sourceAuth"])
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

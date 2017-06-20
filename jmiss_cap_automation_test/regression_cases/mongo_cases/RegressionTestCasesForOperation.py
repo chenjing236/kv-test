@@ -80,22 +80,22 @@ class TestSmokeCasesForOperation:
         request_id, flavor_info_list=get_flavor_list_step(config,instance_data,mongo_http_client)
 	    # 将enable的flavor规格修改为disale
         flavorDetail=flavor_info_list[0]
-        flavor_info={"type":"mongodb","cpu":flavorDetail["cpu"],"momory":flavorDetail["memory"],"actionType":-1}
+        flavor_info={"type":"mongodb","cpu":flavorDetail["cpu"],"memory":flavorDetail["memory"],"actionType":-1}
         request_id=modify_user_visible_flavor_step(config,instance_data,cap_http_client,flavor_info)
 	    # 验证disale的flavor不存在
         request_id, flavor_info_list2 = get_flavor_list_step(config, instance_data, mongo_http_client)
         flavor_exist=False
         for item in flavor_info_list2:
-            if item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"]:
+            if item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["memory"]:
                 flavor_exist=True
-        assert flavor_exist == True, "[ERROR] modify user visible flavor exist"
+        assert flavor_exist == False, "[ERROR] modify user visible flavor exist"
 	    # 将disable的flavor修改为enable
-        flavor_info = {"type": "mongodb", "cpu": flavorDetail["cpu"], "memoty": flavorDetail["momory"],"actionType": 1}
+        flavor_info = {"type": "mongodb", "cpu": flavorDetail["cpu"], "memory": flavorDetail["momory"],"actionType": 1}
         request_id = modify_user_visible_flavor_step(config, instance_data, cap_http_client, flavor_info)
         # 验证flavor存在
-        request_id, flavor_info_list2 = get_flavor_list_step(config, instance_data, mongo_http_client)
+        request_id, flavor_info_list3 = get_flavor_list_step(config, instance_data, mongo_http_client)
         flavor_exist = False
-        for item in flavor_info_list2:
-            if item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"]:
+        for item in flavor_info_list3:
+            if item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["memory"]:
                 flavor_exist = True
-        assert flavor_exist == False, "[ERROR] modify user visible flavor not exist"
+        assert flavor_exist == True, "[ERROR] modify user visible flavor not exist"
