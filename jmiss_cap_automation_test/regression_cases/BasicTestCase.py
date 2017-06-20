@@ -100,7 +100,7 @@ def create_mongo_instance(request, config, instance_data, mongo_http_client, cap
 def create_mongo_instance_with_yearly_fee(request, config, instance_data, mongo_http_client, cap_http_client):
     info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
-    request_id_for_mongo = create_mongo_instance_with_yealy_fee_step(config, instance_data, mongo_http_client)
+    request_id_for_mongo = create_mongo_instance_with_yearly_fee_step(config, instance_data, mongo_http_client)
     info_logger.info("[INFO] The mongo instance is created, and the request id is %s", json.dumps(request_id_for_mongo))
     # 支付
     info_logger.info("[STEP] Pay for the mongo instance")

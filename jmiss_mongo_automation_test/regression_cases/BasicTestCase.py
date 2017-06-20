@@ -4,6 +4,7 @@ import pytest
 import logging
 from steps.ClusterOperationSteps import *
 from steps.FlavorOperationsSteps import *
+from steps.ContainerOperationSteps import *
 
 info_logger = logging.getLogger(__name__)
 

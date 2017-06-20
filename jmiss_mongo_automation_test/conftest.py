@@ -6,6 +6,8 @@ import time
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from utils.HttpClient import *
+from utils.MySqlClient import *
+from utils.DockerClient import *
 
 logger_info = logging.getLogger(__name__)
 
@@ -35,6 +37,19 @@ def instance_data(request):
 def http_client(config):
     http_client = HttpClient(config["host"], config["cc_service_host"], config["pin"], config["token"], config["version"])
     return http_client
+
+#获取mysql的client对象
+@pytest.fixture(scope="session")
+def mysql_client(config):
+    mysql_client = MysqlClient(config["mysql_host"], config["mysql_port"],
+                           config["mysql_user"], config["mysql_passwd"],
+                           config["mysql_db"])
+    return mysql_client
+
+@pytest.fixture(scope="session")
+def docker_client(config):
+    docker_client = DockerClient(config)
+    return docker_client
 
 #日志
 @pytest.fixture(scope="session", autouse=True)

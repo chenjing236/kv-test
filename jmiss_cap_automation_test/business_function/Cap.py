@@ -139,6 +139,6 @@ class Cap(object):
     def modify_user_visible_flavor(self, flavor_info):
         common_data = self.instance_data["common_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "type":flavor_info["type"], "cpu":flavor_info["cpu"], "memory":flavor_info["memory"], "actionType":flavor_info["actionType"]}
-        status, headers, res_data = self.httpClient.delete_no_overdue_resource(data)
-        assert status == 200, "[ERROR] HTTP Request is failed"
+        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data)
+        assert status == 200, "[ERROR] HTTP Request is failed, the error message is %s".format(res_data["message"])
         return res_data

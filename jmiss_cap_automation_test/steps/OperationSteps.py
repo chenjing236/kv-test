@@ -34,7 +34,7 @@ def delete_no_overdue_resource_step(config, instance_data, http_client, resource
     return request_id
 
 # 运营修改用户可见flavor
-def modify_user_visible_flavor_step(config, instance_data, http_client, resource_id, resource_type):
+def modify_user_visible_flavor_step(config, instance_data, http_client, flavor_info):
     cap = Cap(config, instance_data, httpClient)
     res_data = cap.modify_user_visible_flavor(flavor_info)
     request_id = res_data["requestId"]
