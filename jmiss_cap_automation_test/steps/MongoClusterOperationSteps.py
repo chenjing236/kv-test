@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import json
 import logging
@@ -14,7 +17,7 @@ def create_mongo_instance_step(config, instance_data, http_client):
     res_data = mongo_cap.create_instance()
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = json.dumps(res_data["message"],ensure_ascii=False).encode("gbk")
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
@@ -48,7 +51,7 @@ def create_mongo_instance_with_yearly_fee_step(config, instance_data, http_clien
     res_data = mongo_cap.create_instance_with_yearly_fee()
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = json.dumps(res_data["message"],ensure_ascii=False).encode("gbk")
+	error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
@@ -82,7 +85,7 @@ def query_mongo_db_detail_step(config, instance_data, http_client, resource_id):
     res_data = mongo_cap.query_mongo_db_detail(resource_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     mongo_detail = res_data["mongodbDetail"]
@@ -94,7 +97,7 @@ def modify_mongo_db_name_step(config, instance_data, http_client, resource_id, r
     res_data = mongo_cap.modify_mongo_db_name(resource_id, resource_name)
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
@@ -105,7 +108,7 @@ def delete_mongo_instance_step(config, instance_data, http_client, resource_id):
     res_data = mongo_cap.delete_mongo_db(resource_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
@@ -116,7 +119,7 @@ def get_flavor_list_step(config, instance_data, http_client):
     res_data = mongo_cap.query_flavors("mongodb")
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id, res_data["flavors"]
@@ -127,9 +130,7 @@ def query_mongo_dbs_step(config, instance_data, http_client):
     res_data = mongo_cap.query_mongo_dbs("mongodb")
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
         logger_info.error("[ERROR] It is failed to create a mongo instance, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id, res_data
-
-
