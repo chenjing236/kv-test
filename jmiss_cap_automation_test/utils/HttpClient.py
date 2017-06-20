@@ -105,14 +105,6 @@ class RedisCapClient(object):
     def query_resize_cache_price(self, args):
         return self.http_request("POST", "billing?action=queryResizeCachePrice", json.dumps(args))
 
-    # 运营停服资源
-    def stop_resource(self, args, sourceAuth):
-        return self.http_request("POST", "operation?action=stopResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
-
-    # 运营修改用户可见flavor
-    def modify_user_visible_flavor(self, args, sourceAuth):
-        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
-
 
 class MongoCapClient(object):
     def __init__(self, host):
