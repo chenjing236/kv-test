@@ -85,9 +85,13 @@ class TestSmokeCasesForOperation:
         request_id, flavor_info_list2 = get_flavor_list_step(config, instance_data, mongo_http_client)
         flavor_exist=False
         for item in flavor_info_list2:
-            if(item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"])
+            if item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"]:
                 flavor_exist=True
-        assert flavor_exist == True, "[ERROR] modify user visible flavor exist"
+        assert flavor_exist == True, "[ERROR]:q!:q!" \
+                                     "" \
+                                     "" \
+                                     "" \
+                                     " modify user visible flavor exist"
 	    # 将disable的flavor修改为enable
         flavor_info = {"type": "mongodb", "cpu": flavorDetail["cpu"], "memoty": flavorDetail["momory"],"actionType": 1}
         request_id = modify_user_visible_flavor_step(config, instance_data, mongo_http_client, flavor_info)
@@ -95,6 +99,6 @@ class TestSmokeCasesForOperation:
         request_id, flavor_info_list2 = get_flavor_list_step(config, instance_data, mongo_http_client)
         flavor_exist = False
         for item in flavor_info_list2:
-            if (item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"])
+            if item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"]:
                 flavor_exist = True
         assert flavor_exist == False, "[ERROR] modify user visible flavor not exist"

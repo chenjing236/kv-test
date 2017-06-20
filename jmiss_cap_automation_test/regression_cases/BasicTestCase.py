@@ -189,7 +189,3 @@ def create_mongo_instance_three(request, config, instance_data, mongo_http_clien
 
     request.addfinalizer(teardown)
     return resource_id, mongo_info,resource_id2, mongo_info2,resource_id3, mongo_info3
-        request_id_for_delete_mongo = delete_mongo_instance_step(config, data_for_instance, mongo_http_client, resource_id)
-
-    request.addfinalizer(teardown)
-    return resource_id 
