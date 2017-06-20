@@ -39,15 +39,11 @@ def get_local_ip():
     ip_192 = None
     ip_172 = None
     for name, ip in nw_dict.items():
-        print name
-        print ip
         local_ip = ip
         if ip.startswith("172.") and not name.startswith("docker"):
             ip_172 = ip
             break
     for name, ip in nw_dict.items():
-        print name
-        print ip
         if ip.startswith("192.") and not name.startswith("docker"):
             ip_192 = ip
             break

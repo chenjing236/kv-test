@@ -16,24 +16,24 @@ sys.setdefaultencoding('utf8')
 
 info_logger = logging.getLogger(__name__)
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def http_client(config):
     http_client = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"])
     return http_client
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def docker_client(config):
     docker_client = Container(config)
     return docker_client
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def sql_client(config):
     sql_client = SQLClient(config["mysql_host"], config["mysql_port"],
                            config["mysql_user"], config["mysql_passwd"],
                            config["mysql_db"])
     return sql_client
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def created_instance(config, instance_data, http_client, request):
     info_logger.info("\n[SETUP] Create an instance with a master container and a slave container")
     instance = Cluster(config, instance_data, http_client)

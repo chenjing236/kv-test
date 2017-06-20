@@ -23,7 +23,7 @@ class TestGetResourceInfo:
         info_logger.info("[INFO] Status of the instance %s is %s", space_id, status)
         # 查看缓存云监控信息
         info_logger.info("[STEP3] Get resource info of the instance")
-        time.sleep(20)
+        time.sleep(30)
         resource_info = get_resource_info_step(instance, space_id)
         info_logger.info(json.dumps(resource_info, ensure_ascii=False))
         xAxis = resource_info["xAxis"]
@@ -34,7 +34,7 @@ class TestGetResourceInfo:
         info_logger.info("[INFO] Get resource info successfully")
         # 查看缓存云实时信息
         info_logger.info("[STEP4] Get realtime info of the instance")
-        time.sleep(20)
+        time.sleep(30)
         realtime_info = get_realtime_info_step(instance, space_id)
         info_logger.info(json.dumps(realtime_info, ensure_ascii=False))
         infos = realtime_info["infos"]
