@@ -7,7 +7,6 @@ import sys
 class DockerClient(object):
     def __init__(self, conf_obj):
         self.conf_obj = conf_obj
-        self.docker_daemon_port = self.conf_obj["docker_daemon_port"]
         self.docker_version = self.conf_obj["docker_version"]
 
     def init_docker_client(self, container_host):
@@ -72,6 +71,22 @@ class DockerClient(object):
         docker_container_config = docker_inspect["HostConfig"]
         container_memory_size = docker_container_config["Memory"]
         return container_memory_size
+
+    #获取container的memory size
+    def get_container_disk_size(self, container_host, container_port):
+        docker_client = self.init_docker_client(container_host)
+        container_name = self.get_container_name(container_host, container_port)
+        container = self.get_specific_container(docker_client, container_name)[0]
+        if container == None:
+            print "[ERROR] There is no container"
+            return None
+        docker_inspect = docker_client.inspect_container(container)
+        if docker_inspect == None:
+            print "[ERROR] There is no inspecting information"
+            return None
+        docker_container_config = docker_inspect["HostConfig"]
+        container_disk_size = docker_container_config["Disk"]
+        return container_disk_size
 
     #获取container的创建时间
     def get_creation_time_of_container(self, container_host, container_port):

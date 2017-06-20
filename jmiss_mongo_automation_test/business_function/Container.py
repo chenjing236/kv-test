@@ -1,13 +1,12 @@
 # coding:utf-8
-from utils.DockerClient import *
 import logging
 
 logger_info = logging.getLogger(__name__)
 
 class Container:
-    def __init__(self, conf_obj):
+    def __init__(self, conf_obj, docker_client):
         self.conf_obj = conf_obj
-        self.docker_client = DockerClient(self.conf_obj)
+        self.docker_client = docker_client
 
     #获取container的memory size
     def get_memory_size_of_container(self, containerIp, containerPort):
@@ -18,7 +17,8 @@ class Container:
 
     #获取container的disk size
     def get_disk_size_of_container(self, containerIp, containerPort):
-	logger_info.info("[TODO] get disk size of container")
+	disk_size = get_container_disk_size(self, container_host, container_port)	
+	return disk_size
 
     #获取container的count of cpu
     def get_cpu_count_of_container(self, containerIp, containerPort):

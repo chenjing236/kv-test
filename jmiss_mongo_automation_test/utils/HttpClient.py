@@ -90,3 +90,10 @@ class HttpClient(object):
     def delete_mongo_instance(self, space_id):
         return self.http_request("DELETE", "clusters/{0}".format(space_id))
 
+    # 获取mongo的拓扑结构
+    def get_topology_of_mongo(self, space_id):
+	return self.http_request("GET", "topology/{0}".format(space_id))
+
+    # 获取mongo操作结果
+    def get_results_of_operation(self, space_id, operation_id):
+	return self.http_request("GET", "operation?spaceId={0}&operationId={1}".format(space_id, operation_id))

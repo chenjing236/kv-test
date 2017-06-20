@@ -10,35 +10,49 @@ class TestSmokeCasesForMongoInstance:
 
     # 创建不同规格的mongo实例，验证实际mongo对应的container的规格与创建时指定的规格一致
     @pytest.mark.smoke
-    def test_create_mongo_instance_and_verify_flavor(self, config, instance_data, http_client):
+    def test_create_mongo_instance_and_verify_flavor(self, request, config, instance_data, http_client, mysql_client):
 	info_logger.info("[SCENARIO] Create two mongo instances whith different flavors")
+	# 获取flavor 1C_2M_4D_10E的flavor id
+        info_logger.info("[STEP] Get flavor id by flavor info")
+        flavor_id_1 = get_flavorid_by_flavorinfo_step(instance_data, http_client)
+        info_logger.info("[INFO] Flavor id is %s", flavor_id_1)
+        assert flavor_id_1 != "", "[ERROR] Flavor id is none"
+
+        # 创建mongo实例，规格为1C_2M_4D_10E
+        info_logger.info("[STEP] Create a mongo instance")
+        space_id_1, operation_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
+	info_logger.info("[INFO] The mongo instance %s is going to be created, and the operation id is %s", space_id_1, operation_id_1)
+
 	# 获取flavor 1C_2M_4D_10E的flavor id
 	info_logger.info("[STEP] Get flavor id by flavor info")
 	flavor_id_1 = get_flavorid_by_flavorinfo_step(instance_data, http_client)
 	info_logger.info("[INFO] Flavor id is %s", flavor_id_1)
-	#assert flavor_id == "", "[ERROR] Flavor id is none"
-        # 创建mongo实例，规格为1C_2M_4D_10E
-	info_logger.info("[STEP] Create a mongo instance")
-	space_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
-	info_logger.info("[INFO] The mongo %s is being created", space_id_1)
-	# 查看mongo实例的状态
-	info_logger.info("[STEP] Get status of the mongo instance %s", space_id_1)
+	#查看mongo实例状态
+	info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_1)
 	status_1 = get_status_of_instance_step(config, instance_data, http_client, space_id_1)
 	info_logger.info("[INFO] The status of the mongo %s is %s", space_id_1, status_1)
+	info_logger.info("[VERIFICATION] The status of the mongo instance %s is available", space_id_1)
 	assert status_1 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_1)
+
+	# 获取创建mongo实例的操作结果,线上通过获取操作结果接口获取replica信息，测试环境通过instance表中获取mongo实例的拓扑信息
+	info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id_1)
+	#results_of_operation = get_results_of_operation_step(config, instance_data, http_client, space_id_1, operation_id_1)
+	container_1, container_2, hidden = get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id_1)
+	info_logger.info("[INFO] There are three containers for the mongo instance %s, %s, %s, %s", space_id_1, container_1, container_2, hidden)
 	# 通过docker container获取规格信息
+	info_logger.info("[STEP] Get the flavor info for the mongo instance %s", space_id_1)
+	flavor_info_from_container = get_flavor_info_from_container_step(container_1["host_ip"], container_1["docker_id"])
         # 验证规格信息
         # 创建mongo实例，规格为2C_4M_8D_10E
         # 查看mongo实例状态
         # 通过docker container获取规格信息
-        # 验证规格信息
-	# 删除规格1C_2M_4D_10E
+	# 删除mongo实例
 	info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 	delete_instance_step(config, instance_data, http_client, space_id_1)
 	# 删除规格2C_4M_8D_10E
 
     # 创建mongo实例，验证实际mongo对应的container的副本集关系与创建时设置的副本集关系一致 
-    def test_create_mongo_instance_and_verify_replica(self, create_mongo_instance):
+    def _create_mongo_instance_and_verify_replica(self, create_mongo_instance):
 	info_logger.info("[SCENARIO] Create a mongo instance that consists of a primary container, a secondary container and a hidden container")
 	# 获取mongo实例的副本集信息
 	# 通过mongo的container获取mongo的副本集信息
@@ -61,7 +75,7 @@ class TestSmokeCasesForMongoInstance:
 	# 获取mongo的副本集关系
 
    #def _flavor_info(self, config, instance_data, http_client):
-	#info_logger.info("[SCENARIO] Verify flavor info is the same with flavor id")
+	# info_logger.info("[SCENARIO] Verify flavor info is the same with flavor id")
 	# 根据flavor info获取flavor id
 	# 根据flavor id获取flavor info的信息与stpe1的flavor信息一致
 

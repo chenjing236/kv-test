@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import json
 import logging
@@ -15,9 +18,9 @@ def delete_resource_step(config, instance_data, http_client, resource_id, resour
     res_data = cap.delete_resource(resource_id, resource_type)
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
-        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
+        logger_info.error("[ERROR] It is failed to delete the mongo instance, error message is [%s]",  error_msg)
+        assert False, "[ERROR] It is failed to delete the mongo instance, error message is {2}".format(request_id, resource_id, error_msg)
     request_id = res_data["requestId"]
     return request_id
 
@@ -27,20 +30,19 @@ def delete_no_overdue_resource_step(config, instance_data, http_client, resource
     res_data = cap.delete_no_overdue_resource(resource_id, instance_data["operation_data"]["resourceType"], instance_data["operation_data"]["sourceAuth"])
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
-        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
+        logger_info.error("[ERROR] It is failed to delete the no-overdue instance of the mongo, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to delete the no-overdue instance of the mongo, error message is {0}".format(request_id, resource_id, error_msg)
     request_id = res_data["requestId"]
     return request_id
 
-# 运营修改用户可见flavor
-def modify_user_visible_flavor_step(config, instance_data, http_client, resource_id, resource_type):
-    cap = Cap(config, instance_data, http_client)
-    res_data = cap.modify_user_visible_flavor(resource_type)
+def modify_user_visible_flavor_step(config, instance_data, http_client, flavor_info):
+    cap = Cap(config, instance_data, httpClient)
+    res_data = cap.modify_user_visible_flavor(flavor_info)
     request_id = res_data["requestId"]
     if "code" in res_data:
-        error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to renew billing orders [%s], resource_id is [%s], error message is [%s]", request_id, resource_id, error_msg)
-        assert False, "[ERROR] It is failed to renew billing orders {0}, resource_id is {1} error message is {2}".format(request_id, resource_id, error_msg)
+        error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
+        logger_info.error("[ERROR] It is failed to change the flavor to enable/disable status, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to change the flavor to enable /disable, error message is {0}".format(error_msg)
     request_id = res_data["requestId"]
     return request_id

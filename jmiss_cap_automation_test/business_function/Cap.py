@@ -197,5 +197,5 @@ class Cap(object):
         if "showRegion" in condition:
             data["showRegion"] = condition["showRegion"]
         status, headers, res_data = self.httpClient.query_billing_orders(data)
-        assert status == 200, "[ERROR] HTTP Request is failed"
+        assert status == 200, "[ERROR] HTTP Request is failed, the error message is %s".format(res_data["message"])
         return res_data
