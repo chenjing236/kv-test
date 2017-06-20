@@ -74,28 +74,27 @@ class TestSmokeCasesForOperation:
         assert flag == False, "[ERROR] the resource is in the list"
 
     # 运营修改用户可见flavor
-    def test_modify_user_visibleF_flavor(self, config, instance_data, cap_http_client):
-        print ""
+    def test_modify_user_visibleF_flavor(self, config, instance_data, mongo_http_client):
         # 查看flavor规格信息
+        request_id, flavor_info_list=get_flavor_list_step(config,instance_data,mongo_http_client)
 	    # 将enable的flavor规格修改为disale
-	    # 用disale的flavor创建mongo实例
-	    # 验证创建mongo实例失败
+        flavorDetail=flavor_info_list[0]
+        flavor_info={"type":"mongodb","cpu":flavorDetail["cpu"],"memoty":flavorDetail["momory"],"actionType":-1}
+        request_id=modify_user_visible_flavor_step(config,instance_data,mongo_http_client,flavor_info)
+	    # 验证disale的flavor不存在
+        request_id, flavor_info_list2 = get_flavor_list_step(config, instance_data, mongo_http_client)
+        flavor_exist=False
+        for item in flavor_info_list2:
+            if(item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"])
+                flavor_exist=True
+        assert flavor_exist == True, "[ERROR] modify user visible flavor exist"
 	    # 将disable的flavor修改为enable
-	    # 用enable的flavor规格创建mongo实例
-	    # 验证创建mongo实例成功
-	    # 验证mongo实例的规格为enable的flaovr规格
-    @pytest.mark.smoke
-    def test_modify_user_visibleF_flavor(self, config, instance_data, cap_http_client):
-        info_logger.info("[Scenario] Enable/disable flavor info for the mongo")
-        # 查看flavor规格信息
-	flavor_info_list=get_flavor_list_step(config, instance_data, mongo_http_client)
-	# 将enable的flavor规格修改为disale
-	flavor_info = {"type":"", "cpu":"", "memory":"", "actionType":""}
-	modify_user_visible_flavor_step(config, instance_data, cap_http_client, flavor_info)
-	# 用disale的flavor创建mongo实例
-	
-	# 验证创建mongo实例失败
-	# 将disable的flavor修改为enable
-	# 用enable的flavor规格创建mongo实例
-	# 验证创建mongo实例成功
-	# 验证mongo实例的规格为enable的flaovr规格	
+        flavor_info = {"type": "mongodb", "cpu": flavorDetail["cpu"], "memoty": flavorDetail["momory"],"actionType": 1}
+        request_id = modify_user_visible_flavor_step(config, instance_data, mongo_http_client, flavor_info)
+        # 验证flavor存在
+        request_id, flavor_info_list2 = get_flavor_list_step(config, instance_data, mongo_http_client)
+        flavor_exist = False
+        for item in flavor_info_list2:
+            if (item["cpu"] == flavorDetail["cpu"] and item["memory"] == flavorDetail["momory"])
+                flavor_exist = True
+        assert flavor_exist == False, "[ERROR] modify user visible flavor not exist"
