@@ -29,7 +29,6 @@ def create_mongo_instance_param_step(config, instance_data, mongo_http_client,ca
     # 查询详情接口
     info_logger.info("[STEP] Get the detail info of the mongo instance")
     request_id, mongo_info = query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
-    print "= ============================ {0}".format(mongo_info)
     if mongo_info is None:
         info_logger.info("[ERROR] The mongo instance %s is not be created", resource_id)
         assert False, "[ERROR] The mongo instance %s is not be created".format(resource_id)
@@ -48,7 +47,7 @@ def create_mongo_instance_with_param_step(config, instance_data, http_client):
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
 
-#创建mongo实例，类型为按配置
+#创建mongo实例，创建接口返回request id
 def create_mongo_instance_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.create_instance()
@@ -132,6 +131,11 @@ def delete_mongo_instance_step(config, instance_data, http_client, resource_id):
 def delete_mongo_instances_step(config, instance_data, http_client, resource_ids):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.delete_mongo_dbs(resource_ids)
+
+#查询monggo详情
+def query_mongo_db_detail_step(config, instance_data, http_client, resource_id):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_mongo_db_detail(resource_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
@@ -143,6 +147,13 @@ def delete_mongo_instances_step(config, instance_data, http_client, resource_ids
 def get_flavor_list_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.query_flavors("mongodb")
+    mongo_detail = res_data["mongodbDetail"]
+    return request_id, mongo_detail
+
+#删除mongo实例，删除接口返回request_id
+def delete_mongo_instance_step(config, instance_data, http_client, resource_id):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.delete_mongo_db(resource_id)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]

@@ -87,8 +87,9 @@ def delete_cache_clusters_step(redis_cap, cluster_ids):
     clusterInfos = res_data["clusterInfos"]
     return request_id, clusterInfos
 
-# 删除redis资源
-def delete_redis_instance_step(redis_cap, cluster_id):
+#删除redis实例
+def delete_redis_instance_step(config, instance_data, http_client, cluster_id):
+    redis_cap = RedisCap(config, instance_data, http_client)
     res_data = redis_cap.delete_cache_cluster(cluster_id)
     request_id = res_data["requestId"]
     if "code" in res_data:

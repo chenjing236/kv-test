@@ -44,7 +44,7 @@ class Cap(object):
             data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id, "coupons": [str(coupon_id)]}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
-            assert status == 403, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
+            assert status  == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
         assert status == 200, "[ERROR] HTTP Request is failed, error message is {0}".format(res_data["message"])
         return res_data
 
@@ -199,4 +199,3 @@ class Cap(object):
         status, headers, res_data = self.httpClient.query_billing_orders(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
-
