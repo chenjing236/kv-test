@@ -270,8 +270,8 @@ class CapClient(object):
         return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
     # 运营修改用户可见flavor
-    def modify_user_visible_flavor(self, args):
-        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
+    def modify_user_visible_flavor(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
 
     # 查询代金券
     def query_available_coupons(self, args):
