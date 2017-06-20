@@ -226,7 +226,7 @@ def get_mongo_reailTimeInfo_step(config, instance_data, http_client, resource_id
     return request_id, res_data["realTimeInfos"]
 
 # 查询拓扑结构
-def get_mongo_topology_stop(config, instance_data, http_client,resource_id):
+def get_mongo_topology_step(config, instance_data, http_client,resource_id):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.query_mongo_topology(resource_id)
     request_id = res_data["requestId"]
