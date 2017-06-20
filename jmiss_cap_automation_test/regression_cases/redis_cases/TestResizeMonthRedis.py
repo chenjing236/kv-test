@@ -48,7 +48,7 @@ class TestResizeMonthRedis:
         info_logger.info("[Scenario] Start to reduce redis cluster")
         # 创建redis实例用于扩容
         info_logger.info("[STEP] Create a redis cluster for reducing")
-        redis_cap, cap, resource_id = create_redis_instance
+        redis_cap, cap, request_id_create, resource_id = create_redis_instance
         info_logger.info("[INFO] Create redis cluster successfully, the resourceId is {0}".format(resource_id))
         # 查询资源capacity
         info_logger.info("[STEP] Query redis cluster detail, check the redis info")

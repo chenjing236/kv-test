@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 from BasicTestCase import *
+from steps.RedisClusterOperationSteps import *
 
 
 class TestModifyUserVisibleFlavor:

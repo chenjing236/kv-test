@@ -38,10 +38,8 @@ def pay_for_mongo_instance_step(config, instance_data, http_client, order_reques
 
 
 # 查询订单状态
-def query_order_status_step(config, instance_data, http_client, order_request_id):
-    cap = Cap(config, instance_data, http_client)
+def query_order_status_step(cap, order_request_id):
     res_data = cap.query_order_status(order_request_id)
-    # request_id = res_data["requestId"]
     success = res_data["success"]
     inProcess = res_data["inProcess"]
     total = res_data["total"]

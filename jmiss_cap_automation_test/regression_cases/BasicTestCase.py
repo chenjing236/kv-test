@@ -7,7 +7,6 @@ from steps.OperationSteps import *
 from steps.RedisClusterOperationSteps import *
 from steps.MongoClusterOperationSteps import *
 from steps.BillingOperationSteps import *
-from steps.OperationSteps import *
 
 info_logger = logging.getLogger(__name__)
 
