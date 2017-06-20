@@ -42,7 +42,7 @@ class TestSmokeCasesForOperation:
     def test_deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client):
         print ""
         # 创建mongo实例,类型为包年包月的资源
-        resource_id, mongo_info = create_mongo_instance_yearly_fee_step
+        resource_id, mongo_info = create_mongo_instance_yearly_fee_step(config,instance_data,mongo_http_client,cap_http_client)
         # 运营系统删除资源
         request_id=delete_no_overdue_resource_step(config, instance_data, cap_http_client, resource_id)
         time.sleep(5)
@@ -71,7 +71,7 @@ class TestSmokeCasesForOperation:
                 flavor_exist=True
         assert flavor_exist == False, "[ERROR] modify user visible flavor exist"
 	    # 将disable的flavor修改为enable
-        flavor_info = {"type": "mongodb", "cpu": flavorDetail["cpu"], "memory": flavorDetail["momory"],"actionType": 1}
+        flavor_info = {"type": "mongodb", "cpu": flavorDetail["cpu"], "memory": flavorDetail["memory"],"actionType": 1}
         request_id = modify_user_visible_flavor_step(config, instance_data, cap_http_client, flavor_info)
         # 验证flavor存在
         request_id, flavor_info_list3 = get_flavor_list_step(config, instance_data, mongo_http_client)
