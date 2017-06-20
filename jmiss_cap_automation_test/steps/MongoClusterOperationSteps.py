@@ -131,7 +131,19 @@ def query_mongo_db_detail_step(config, instance_data, http_client, resource_id):
     mongo_detail = res_data["mongodbDetail"]
     return request_id, mongo_detail
 
-# 修改mongo实例名称
+#查询monggo详情
+def query_mongo_db_detail_error_step(config, instance_data, http_client, resource_id):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    try:
+        res_data = mongo_cap.query_mongo_db_detail(resource_id)
+    except Exception as err:
+        if err.message== "[ERROR] HTTP Request is failed":
+            return False
+    return True
+
+
+
+#修改mongo实例名称
 def modify_mongo_db_name_step(config, instance_data, http_client, resource_id, resource_name):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.modify_mongo_db_name(resource_id, resource_name)

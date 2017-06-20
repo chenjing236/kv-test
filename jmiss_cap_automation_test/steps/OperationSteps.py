@@ -13,9 +13,9 @@ from business_function.Cap import *
 logger_info = logging.getLogger(__name__)
 
 # 运营系统删除资源
-def delete_resource_step(config, instance_data, http_client, resource_id, resource_type):
+def delete_mognodb_resource_step(config, instance_data, http_client, resource_id, resource_type,sourceAuth):
     cap = Cap(config, instance_data, http_client)
-    res_data = cap.delete_resource(resource_id, resource_type)
+    res_data = cap.delete_resource(resource_id,resource_type,sourceAuth)
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = json.dumps(res_data["message"]).decode('unicode-escape')

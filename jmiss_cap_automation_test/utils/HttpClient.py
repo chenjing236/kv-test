@@ -270,8 +270,8 @@ class CapClient(object):
         return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
 
     # 运营系统删除资源
-    def delete_resource(self, args):
-        return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
+    def delete_resource(self, args, sourceAuth):
+        return self.http_request("POST","operation?action=deleteResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
 
     # 运营删除包年包月未过期资源
     def delete_no_overdue_resource(self, args, source_auth):

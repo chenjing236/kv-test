@@ -147,10 +147,10 @@ class Cap(object):
         return res_data
 
     # 运营系统删除资源
-    def delete_resource(self, resourceId, resourceType):
+    def delete_resource(self, resourceId, resourceType,sourceAuth):
         common_data = self.instance_data["common_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resourceId": resourceId, "resourceType":resourceType}
-        status, headers, res_data = self.httpClient.delete_resource(data)
+        status, headers, res_data = self.httpClient.delete_resource(data,sourceAuth)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
