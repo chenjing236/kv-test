@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 import logging
-import json
+import time
 from BasicTestCase import *
 info_logger = logging.getLogger(__name__)
 
@@ -45,26 +45,13 @@ class TestSmokeCasesForOperation:
 
     # 运营系统，删除未过期资源
     @pytest.mark.smoke
-    def _delete_resource(self, config, instance_data, cap_http_client, mongo_http_client, cap_http_client):
-	info_logger.info("[Scenario] Delete mongo instance using operation delete action")
-	# 创建mongo实例,类型为包年包月的资源
-	info_logger.info("[STEP] Create a mongo instance with yearly fee")
-	resource_id, mongo_info = get_mongo_instance_created_step(config, instance_data, mongo_http_client, cap_http_client)
-	info_logger.info("[INFO] The mongo instance %s is created", resource_id)
-	# 删除包年包月资源
-	delete_no_overdue_resource_step(config, instance_data, cap_http_client, resource_id)
-	# 查看mongo实例列表
-	mongo_info_list = query_mongo_dbs_step(config, instance_data, mongo_http_client)
-	# 验证被删除的mongo实例不在列表中
-
-    # 运营系统，删除未过期资源
-    @pytest.mark.smoke
-    def _deleteNoOverdueResource(self, config, instance_data, cap_http_client, mongo_http_client):
+    def test_deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client, create_mongo_instance_with_yearly_fee):
         print ""
         # 创建mongo实例,类型为包年包月的资源
-        resource_id, mongo_info = get_mongo_instance_created_with_yearly_fee_step(config, instance_data, mongo_http_client, cap_http_client)
+        resource_id, mongo_info = create_mongo_instance_with_yearly_fee
         # 运营系统删除资源
-        request_id=delete_no_overdue_resource_step(config, instance_data, cap_http_client, resource_id, resource_type)
+        request_id=delete_no_overdue_resource_step(config, instance_data, cap_http_client, resource_id)
+        time.sleep(15)
         # 查看资源列表
         request_id, mongo_info_list = get_mongo_dbs_step(config, instance_data, mongo_http_client)
         # 验证被删除的资源不在资源列表信息中
