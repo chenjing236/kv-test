@@ -50,7 +50,7 @@ def create_mongo_instance_with_param_step(config, instance_data, http_client):
         assert False, "[ERROR] It is failed to create a mongo instance, error message is {0}".format(error_msg)
     return request_id
 
-# 创建mongo实例，类型为按配置
+#创建mongo实例，创建接口返回request id
 def create_mongo_instance_step(config, instance_data, http_client):
     mongo_cap = MongoCap(config, instance_data, http_client)
     res_data = mongo_cap.create_instance()
