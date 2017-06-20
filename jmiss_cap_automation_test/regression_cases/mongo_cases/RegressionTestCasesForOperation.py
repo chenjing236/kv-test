@@ -45,19 +45,19 @@ class TestSmokeCasesForOperation:
 
     # 运营系统，删除未过期资源
     @pytest.mark.smoke
-    def test_deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client, create_mongo_instance_with_yearly_fee):
+    def test_deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client):
         print ""
         # 创建mongo实例,类型为包年包月的资源
-        resource_id, mongo_info = create_mongo_instance_with_yearly_fee
+        resource_id, mongo_info = create_mongo_instance_yearly_fee_step
         # 运营系统删除资源
         request_id=delete_no_overdue_resource_step(config, instance_data, cap_http_client, resource_id)
-        time.sleep(15)
+        time.sleep(5)
         # 查看资源列表
         request_id, mongo_info_list = get_mongo_dbs_step(config, instance_data, mongo_http_client)
         # 验证被删除的资源不在资源列表信息中
         flag = False
         for item in mongo_info_list:
-            if item["spaceId"] == resource_id:
+            if item["spaceId"] == resource_id and item["status"] == 100:
                 flag = True
         assert flag == False, "[ERROR] the resource is in the list"
 
