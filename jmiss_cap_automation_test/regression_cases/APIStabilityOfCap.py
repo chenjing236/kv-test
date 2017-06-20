@@ -129,7 +129,7 @@ class APIStabilityCase:
         # print infos
         # assert infos[0]["memUsed"] != 0 and infos[0]["spaceId"] == resource_id
         if infos is None:
-            time.sleep(10)
+            time.sleep(30)
             request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
         assert infos[0]["spaceId"] == resource_id
         self.index += 1
