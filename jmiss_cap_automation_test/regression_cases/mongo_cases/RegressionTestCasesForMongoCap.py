@@ -134,7 +134,6 @@ class TestRegressionCasesForMongoCap:
         flag2 = False
         flag3 = False
         for item in list:
-            str+="^^"+item["spaceId"]
             if item["spaceId"] == resource_id1:
                 flag1 = True
                 continue
