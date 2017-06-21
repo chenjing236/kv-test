@@ -1,6 +1,9 @@
-# coding:utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import logging
+import json
 
 logger_info = logging.getLogger(__name__)
 
@@ -44,7 +47,8 @@ class Cap(object):
             data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id, "coupons": [str(coupon_id)]}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
-            assert status  == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
+            error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
+            assert status  == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(error_msg)
         assert status == 200, "[ERROR] HTTP Request is failed, error message is {0}".format(res_data["message"])
         return res_data
 
