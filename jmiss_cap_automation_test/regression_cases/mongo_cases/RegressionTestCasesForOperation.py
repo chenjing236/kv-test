@@ -40,7 +40,6 @@ class TestSmokeCasesForOperation:
     # 运营系统，删除未过期包年包月
     @pytest.mark.smoke
     def test_deleteNoOverdueResource(self, config, instance_data, cap_http_client,mongo_http_client):
-        print ""
         # 创建mongo实例,类型为包年包月的资源
         resource_id, mongo_info = create_mongo_instance_yearly_fee_step(config,instance_data,mongo_http_client,cap_http_client)
         # 运营系统删除资源

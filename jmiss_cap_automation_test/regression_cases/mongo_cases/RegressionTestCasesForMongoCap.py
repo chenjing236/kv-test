@@ -56,26 +56,23 @@ class TestRegressionCasesForMongoCap:
         info_logger.info("[VERIFICATION] The flavor info of the mongo instance is in the flavor info list")
         mongo_flavor_info = {"diskStep":10, "minDisk":instance_data["create_mongo_db"]["disk"], "iops":instance_data["create_mongo_db"]["iops"], "maxLink":instance_data["create_mongo_db"]["maxLink"], "memory":instance_data["create_mongo_db"]["memory"], "cpu":instance_data["create_mongo_db"]["cpu"], "maxDisk":200}
         mongo_flavor_info_str = json.dumps(mongo_flavor_info)
-        is_flavor_in = "false"
-        if mongo_flavor_info_str not in flavor_info_list_str:
-            is_flavor_in = "false"
-        else:
-            is_flavor_in = "true"
-        assert "true" == is_flavor_in, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
+        is_flavor_in = False
+        for item in flavor_info_list:
+            if item["cpu"]==flavor_info["cpu"] and item["memory"]==flavor_info["memory"] and item["iops"]==flavor_info["iops"] and item["maxLink"]==flavor_info["maxConn"]:
+                is_flavor_in = True
+        assert True == is_flavor_in, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
 
     # 过滤查询mongodb列表信息
-    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, cap_http_client):
+    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance_three):
         # 按照资源状态过滤创建成功的资源, 按照资源名称排序，每页1个资源，3页
 
         #创建mongo资源
         # 修改名称, 名称为mongo_instance1
-        resource_id1, mongo_info1 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id1, mongo_info1,resource_id2, mongo_info2,resource_id3, mongo_info3 = create_mongo_instance_three
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info1["spaceId"], "mongo_instance1")
 
-        resource_id2, mongo_info2 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info2["spaceId"], "mongo_instance2")
 
-        resource_id3, mongo_info3 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info3["spaceId"], "mongo_instance3")
 
         request_id, total, list = get_filter_mongo_dbs_step(config, instance_data, mongo_http_client, "mongo_instance",1)
@@ -145,12 +142,11 @@ class TestRegressionCasesForMongoCap:
                 continue
         assert flag1 == False and flag2 == True and flag3 == False, "[ERROR] The delete mongo dbs failed"
 
-
     # 获取拓扑结构
-    def test_query_mongo_db_topology(self, config, instance_data, mongo_http_client,cap_http_client):
+    def test_query_mongo_db_topology(self, config, instance_data, mongo_http_client,create_mongo_instance):
         info_logger.info("[Scenario] Query mongo db topology")
         # 创建mongo实例
-        resource_id, mongo_info = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id, mongo_info = create_mongo_instance
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info["spaceId"])
         # 获取拓扑结构
         request_id, primary, secondary, hidden = get_mongo_topology_step(config, instance_data, mongo_http_client,resource_id)
@@ -185,6 +181,8 @@ class TestRegressionCasesForMongoCap:
         request_id,vpcDetail=get_vpc_detail_step(config, instance_data, mongo_http_client, mongo_detail["vpcId"])
         request_id,subnetDetail=get_vpc_subnet_detail_step(config, instance_data, mongo_http_client, mongo_detail["subnetId"])
         assert  vpcDetail["id"]==vpc and subnetDetail["id"] == subnet,"[ERROR] the mongo's vpc or subnet not coincide with the vpc or subnet"
+        spaceIds = [resource_id]
+        request_id = delete_mongo_instances_step(config, instance_data, mongo_http_client, spaceIds)
 
     # 查询监控信息
     #def test_query_monitor_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
@@ -193,10 +191,10 @@ class TestRegressionCasesForMongoCap:
 		# 验证监控信息项都存在
 
     # 查询实时信息
-    def test_query_mongo_db_real_time_info(self, config, instance_data, mongo_http_client, cap_http_client):
+    def test_query_mongo_db_real_time_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
         info_logger.info("[Scenario] Query mongo db real time info")
         # 创建mongo实例
-        resource_id, mongo_info = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id, mongo_info = create_mongo_instance
         # 获取mongo实例的实时监控信息
         request_id,realTimeInfos=get_mongo_reailTimeInfo_step(config, instance_data, mongo_http_client, resource_id)
         # 验证监控项都存在
