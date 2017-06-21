@@ -31,13 +31,29 @@ class HttpClient(object):
     # cc服务
     def http_request_for_cc(self, action):
         hc = httplib.HTTPConnection(self.cc_host)
-        hc.request(method, "/{0}?Action={1}".format("cc-server", action), data)
+        hc.request(method, "/{0}".format("cc-server", action), data)
         res = hc.getresponse()
         status = res.status
         res_data = json.loads(res.read())
         headers = res.getheaders()
         hc.close
         return status, headers, res_data
+
+    # 获取nova agent服务
+    def http_request_for_nova_agent(self, method, uri, nova_agent_host, data=None):
+	hc = httplib.HTTPConnection(nova_agent_host)
+        hc.request(method, "/container/{0}".format(uri), data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close
+        return status, headers, res_data
+
+    # 获取mongo实例的container信息
+    def get_container_info(self, nova_agent_host, nova_container_id):
+	nova_agent = nova_agent_host + ":1024"
+	return self.http_request_for_nova_agent("GET", "stats?name=nova-{0}".format(nova_container_id), nova_agent)
 
     # 创建VPC
     def create_vpc(self, create_vp_args):

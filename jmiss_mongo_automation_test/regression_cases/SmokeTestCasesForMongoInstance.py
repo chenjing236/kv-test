@@ -10,7 +10,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 创建不同规格的mongo实例，验证实际mongo对应的container的规格与创建时指定的规格一致
     @pytest.mark.smoke
-    def test_create_mongo_instance_and_verify_flavor(self, request, config, instance_data, http_client, mysql_client):
+    def test_create_mongo_instance_and_verify_flavor(self, request, config, instance_data, http_client, mysql_client, docker_client):
 	info_logger.info("[SCENARIO] Create two mongo instances whith different flavors")
 	# 获取flavor 1C_2M_4D_10E的flavor id
         info_logger.info("[STEP] Get flavor id by flavor info")
@@ -41,7 +41,8 @@ class TestSmokeCasesForMongoInstance:
 	info_logger.info("[INFO] There are three containers for the mongo instance %s, %s, %s, %s", space_id_1, container_1, container_2, hidden)
 	# 通过docker container获取规格信息
 	info_logger.info("[STEP] Get the flavor info for the mongo instance %s", space_id_1)
-	flavor_info_from_container = get_flavor_info_from_container_step(container_1["host_ip"], container_1["docker_id"])
+	flavor_info_from_container = get_flavor_info_from_container_step(config, instance_data, http_client, docker_client, container_1)
+	info_logger.info("[INFO] The flavor info is %s", flavor_info_from_container)
         # 验证规格信息
         # 创建mongo实例，规格为2C_4M_8D_10E
         # 查看mongo实例状态

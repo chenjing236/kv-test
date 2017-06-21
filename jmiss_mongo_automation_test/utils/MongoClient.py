@@ -12,10 +12,13 @@ class MongoClient(object):
         self.mongoPort = mongoPort
 	self.user = user
         self.password = password
-	self.client = init_connection_with_mongo(user, password, sockFilePath)
 
+    #通过UDS访问mongo的container
     def init_connection_with_mongo(self, user, password, sockFilePath):
 	uds_connection_url = "mongodb://" + user + ":" + password + "@" + sockFilePath
-	#client = MongoClient("mongodb://root:1qaz2WSX@%2fmnt%2fb44f24ec-bb08-4f7a-947d-a06d00e04c5d%2fmongodb-27017.sock")
+	logger_info.info("[INFO] The url for uds is %s", uds_connection_url)
 	client = MongoClient(uds_connection_url)
 	return client
+
+    def get_config_of_container(self, client):
+	logger_info.info("[INFO] Get the container info using uds")

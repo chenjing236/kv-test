@@ -7,6 +7,7 @@ import json
 import logging
 import time
 from business_function.Cluster import *
+from utils.MongoClient import *
 
 logger_info = logging.getLogger(__name__)
 
@@ -114,6 +115,3 @@ def get_replica_info_from_instance_step(config, instance_data, http_client, mysq
     container_1, container_2, container3 = instance.get_results_of_operation(mysql_client, space_id)
     return container_1, container_2, container3
 
-#获取container的flavor信息
-def get_flavor_info_from_container_step(config, instance_data, http_client, container_client, container_id):
-    instance = Cluster(config, instance_data, http_client)
