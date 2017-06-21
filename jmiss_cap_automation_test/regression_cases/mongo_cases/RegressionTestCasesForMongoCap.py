@@ -51,16 +51,13 @@ class TestRegressionCasesForMongoCap:
         # 查询flavor列表
         info_logger.info("[STEP] Get the flavor info list")
         request_id, flavor_info_list = get_flavor_list_step(config, instance_data, mongo_http_client)
-        flavor_info_list_str = json.dumps(flavor_info_list)
         # 验证mongo实例的flavor信息在flavor列表中
         info_logger.info("[VERIFICATION] The flavor info of the mongo instance is in the flavor info list")
-        mongo_flavor_info = {"diskStep":10, "minDisk":instance_data["create_mongo_db"]["disk"], "iops":instance_data["create_mongo_db"]["iops"], "maxLink":instance_data["create_mongo_db"]["maxLink"], "memory":instance_data["create_mongo_db"]["memory"], "cpu":instance_data["create_mongo_db"]["cpu"], "maxDisk":200}
-        mongo_flavor_info_str = json.dumps(mongo_flavor_info)
         is_flavor_in = False
         for item in flavor_info_list:
-            if item["cpu"]==flavor_info["cpu"] and item["memory"]==flavor_info["memory"] and item["iops"]==flavor_info["iops"] and item["maxLink"]==flavor_info["maxConn"]:
+            if item["cpu"]+"" == flavor_info["cpu"] and item["memory"]+"" == flavor_info["memory"] and item["iops"]+"" == flavor_info["iops"] and item["maxLink"]+"" == flavor_info["maxConn"]:
                 is_flavor_in = True
-        assert True == is_flavor_in, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
+        assert is_flavor_in == True, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
 
     # 过滤查询mongodb列表信息
     def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance_three):
@@ -141,6 +138,8 @@ class TestRegressionCasesForMongoCap:
                 flag3 = True
                 continue
         assert flag1 == False and flag2 == True and flag3 == False, "[ERROR] The delete mongo dbs failed"
+        spaceIds = [resource_id2]
+        request_id = delete_mongo_instances_step(config, instance_data, mongo_http_client, spaceIds)
 
     # 获取拓扑结构
     def test_query_mongo_db_topology(self, config, instance_data, mongo_http_client,create_mongo_instance):
