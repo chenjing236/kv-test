@@ -11,7 +11,7 @@ from steps.BillingOperationSteps import *
 info_logger = logging.getLogger(__name__)
 
 # 创建按配置计费redis实例
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def create_redis_instance(config, instance_data, redis_http_client, cap_http_client, request):
     redis_cap = RedisCap(config, instance_data, redis_http_client)
     cap = Cap(config, instance_data, cap_http_client)
@@ -38,7 +38,7 @@ def create_redis_instance(config, instance_data, redis_http_client, cap_http_cli
     return redis_cap, cap, request_id_for_redis, resource_id
 
 # 创建按配置计费redis实例
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def create_redis_instance_no_teardown(config, instance_data, redis_http_client, cap_http_client, request):
     redis_cap = RedisCap(config, instance_data, redis_http_client)
     cap = Cap(config, instance_data, cap_http_client)
@@ -66,7 +66,7 @@ def create_redis_instance_no_teardown(config, instance_data, redis_http_client, 
 
 
 # 创建包年包月redis实例
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def create_redis_month_instance(config, instance_data, redis_http_client, cap_http_client, request):
     redis_cap = RedisCap(config, instance_data, redis_http_client)
     cap = Cap(config, instance_data, cap_http_client)
@@ -93,7 +93,7 @@ def create_redis_month_instance(config, instance_data, redis_http_client, cap_ht
     return redis_cap, cap, request_id_for_redis, resource_id
 
 # 创建mongo实例,类型为按配置
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def create_mongo_instance(request, config, instance_data, mongo_http_client, cap_http_client):
     info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
@@ -169,7 +169,7 @@ def create_mongo_instance_with_yearly_fee(request, config, instance_data, mongo_
 
 
 # 创建mongo实例,类型为按配置
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def create_mongo_instance_three(request, config, instance_data, mongo_http_client, cap_http_client):
     info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
