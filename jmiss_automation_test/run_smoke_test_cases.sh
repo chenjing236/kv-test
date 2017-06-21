@@ -10,6 +10,6 @@ wait_time=$1
 test_cases_list=`ls -l ${current_path}/test_cases | grep 'SmokeTestCases' | awk '{print $NF}'`
 for line in ${test_cases_list}
 do
-	python -m pytest -v ./regression_cases/redis_cases/$line -s -v --config ./config/redis_config/config_test.json --data ./data/redis_data/data_test.json
+	python -m pytest -v ./test_cases/$line -s -v --config ./config/conf_test_int_v2.json --data ./data/instance_data.json
 	sleep ${wait_time}
 done
