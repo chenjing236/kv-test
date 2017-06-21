@@ -23,22 +23,27 @@ class TestGetResourceInfo:
         info_logger.info("[INFO] Status of the instance %s is %s", space_id, status)
         # 查看缓存云监控信息
         info_logger.info("[STEP3] Get resource info of the instance")
-        time.sleep(20)
+        time.sleep(30)
         resource_info = get_resource_info_step(instance, space_id)
-        # print json.dumps(resource_info, indent=4, ensure_ascii=False)
-        print json.dumps(resource_info, ensure_ascii=False)
-        xAxis = resource_info["xAxis"]
-        series = resource_info["series"]
-        assert len(xAxis) == 5 and len(series) == 5, "[ERROR] The response of get resource info is error!"
-        for i in range(0, 5):
-            assert len(series[i]["data"]) == 5, "[ERROR] The response of get resource info is error!"
-        info_logger.info("[INFO] Get resource info successfully")
+        if resource_info is not None:
+            info_logger.info(json.dumps(resource_info, ensure_ascii=False))
+            xAxis = resource_info["xAxis"]
+            series = resource_info["series"]
+            assert len(xAxis) == 5 and len(series) == 5, "[ERROR] The response of get resource info is error!"
+            for i in range(0, 5):
+                assert len(series[i]["data"]) == 5, "[ERROR] The response of get resource info is error!"
+            info_logger.info("[INFO] Get resource info successfully")
+        else:
+            info_logger.info("[INFO] API of get resource info is right, but there is no data of resource")
         # 查看缓存云实时信息
         info_logger.info("[STEP4] Get realtime info of the instance")
-        time.sleep(20)
+        time.sleep(30)
         realtime_info = get_realtime_info_step(instance, space_id)
-        print json.dumps(realtime_info, ensure_ascii=False)
-        infos = realtime_info["infos"]
-        assert infos[0]["spaceId"] == space_id and infos[0]["memUsed"] >= 0, "[ERROR] The response of get realtime info is error"
-        info_logger.info("[INFO] Get realtime info successfully, memUsed of instance is {0}KB".format(infos[0]["memUsed"]))
+        if realtime_info is not None:
+            info_logger.info(json.dumps(realtime_info, ensure_ascii=False))
+            infos = realtime_info["infos"]
+            assert infos[0]["spaceId"] == space_id and infos[0]["memUsed"] >= 0, "[ERROR] The response of get realtime info is error"
+            info_logger.info("[INFO] Get realtime info successfully, memUsed of instance is {0}KB".format(infos[0]["memUsed"]))
+        else:
+            info_logger.info("[INFO] API of get realtime info is right, but there is no data of resource")
         info_logger.info("[INFO] Test get realtime info successfully")

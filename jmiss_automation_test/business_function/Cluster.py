@@ -108,14 +108,14 @@ class Cluster(object):
             masterPort = instance_b["masterPort"]
             slaveIp = instance_b["ip"]
             slavePort = instance_b["port"]
-        print "[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort)
+        logger_info.info("[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort))
         return masterIp, masterPort, slaveIp, slavePort
 
     # 获取缓存云集群的拓扑结构
     def get_topology_of_cluster(self, res_data, spaceId):
         capa = int(self.data_obj["capacity"]) / 1024 / 1024
         shardNum = self.conf_obj["cluster_cfg"][str(capa)]
-        print "[INFO] The count of shards of cluster is ", shardNum
+        logger_info.info("[INFO] The count of shards of cluster is {0}".format(shardNum))
         msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("utf-8")
         attach = res_data["attach"]
         if attach is None or attach is "":
@@ -184,6 +184,12 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # 使用过滤条件查询缓存云列表
+    def get_filter_clusters(self, filters):
+        status, headers, res_data = self.httpClient.get_filter_clusters(filters)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # 修改基本信息
     def update_meta(self, space_id, name, remarks):
         status, headers, res_data = self.httpClient.update_meta(space_id, name, remarks)
@@ -199,5 +205,20 @@ class Cluster(object):
     # 获取资源监控信息
     def get_resource_info(self, space_id, period, frequency):
         status, headers, res_data = self.httpClient.get_resource_info(space_id, period, frequency)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # rebuild-repair
+    def rebuild_repair_instance(self, space_id):
+        status, headers, res_data = self.httpClient.rebuild_repair(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # rebuild-clone
+    def rebuild_clone_instance(self, space_id):
+        data = {"spaceName": self.data_obj["spaceName"], "srcSpaceId": space_id, "remarks": self.data_obj["remarks"], "password": self.data_obj["password"]}
+        create_args = CreateArgs(data)
+        args_json = create_args.get_args_json()
+        status, headers, res_data = self.httpClient.rebuild_clone(args_json)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
