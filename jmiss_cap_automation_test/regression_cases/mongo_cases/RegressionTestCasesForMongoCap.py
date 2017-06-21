@@ -55,9 +55,9 @@ class TestRegressionCasesForMongoCap:
         info_logger.info("[VERIFICATION] The flavor info of the mongo instance is in the flavor info list")
         is_flavor_in = False
         for item in flavor_info_list:
-            if item["cpu"]+"" == flavor_info["cpu"] and item["memory"]+"" == flavor_info["memory"] and item["iops"]+"" == flavor_info["iops"] and item["maxLink"]+"" == flavor_info["maxConn"]:
+            if str(item["cpu"]) == flavor_info["cpu"] and str(item["memory"]) == flavor_info["memory"] and str(item["iops"]) == flavor_info["iops"] and str(item["maxLink"]) == flavor_info["maxConn"]:
                 is_flavor_in = True
-        assert is_flavor_in == True, "[ERROR]The flavor info of the mongo instance {0} is not in flavor list".format(resource_id)
+        assert is_flavor_in == True, "[ERROR]The flavor info of the mongo instance flavor {0} is not in flavor list {1}".format(flavor_info,flavor_info_list)
 
     # 过滤查询mongodb列表信息
     def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance_three):
