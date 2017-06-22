@@ -1,6 +1,10 @@
-# coding:utf-8
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import logging
+import json
 
 logger_info = logging.getLogger(__name__)
 
@@ -44,7 +48,8 @@ class Cap(object):
             data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id, "coupons": [str(coupon_id)]}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
-            assert status  == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(res_data["message"])
+            error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
+            assert status  == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(error_msg)
         assert status == 200, "[ERROR] HTTP Request is failed, error message is {0}".format(res_data["message"])
         return res_data
 
@@ -147,10 +152,10 @@ class Cap(object):
         return res_data
 
     # 运营系统删除资源
-    def delete_resource(self, resourceId, resourceType):
+    def delete_resource(self, resourceId, resourceType,sourceAuth):
         common_data = self.instance_data["common_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "resourceId": resourceId, "resourceType":resourceType}
-        status, headers, res_data = self.httpClient.delete_resource(data)
+        status, headers, res_data = self.httpClient.delete_resource(data,sourceAuth)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
@@ -165,8 +170,9 @@ class Cap(object):
     # 运营修改用户可见flavor
     def modify_user_visible_flavor(self, flavor_info):
         common_data = self.instance_data["common_data"]
+        operation_data = self.instance_data["operation_data"]
         data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "type":flavor_info["type"], "cpu":flavor_info["cpu"], "memory":flavor_info["memory"], "actionType":flavor_info["actionType"]}
-        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data)
+        status, headers, res_data = self.httpClient.modify_user_visible_flavor(data,operation_data["sourceAuth"])
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
@@ -199,3 +205,4 @@ class Cap(object):
         status, headers, res_data = self.httpClient.query_billing_orders(data)
         assert status == 200, "[ERROR] HTTP Request is failed, the error message is %s".format(res_data["message"])
         return res_data
+

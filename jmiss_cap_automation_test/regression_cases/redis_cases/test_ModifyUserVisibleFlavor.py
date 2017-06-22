@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 from BasicTestCase import *
+from steps.RedisClusterOperationSteps import *
 
 
 class TestModifyUserVisibleFlavor:
@@ -49,3 +50,4 @@ class TestModifyUserVisibleFlavor:
 
         assert is_512_canSee == False ,"[Info] After set flovor is OK "
         info_logger.info("[INFO] Test modify user visible flavor successfully!")
+

@@ -262,20 +262,20 @@ class CapClient(object):
         return self.http_request("POST", "billing?action=queryMinDiscount", json.dumps(args))
 
     # 运营系统删除资源
-    def delete_resource(self, args):
-        return self.http_request("POST", "operation?action=deleteResource", json.dumps(args))
+    def delete_resource(self, args, sourceAuth):
+        return self.http_request("POST","operation?action=deleteResource&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
 
     # 运营删除包年包月未过期资源
     def delete_no_overdue_resource(self, args, source_auth):
         return self.http_request("POST", "operation?action=deleteNoOverdueResource&sourceAuth={0}&requestSource=operation".format(source_auth), json.dumps(args))
 
     # 运营修改用户可见flavor
-    def modify_user_visible_flavor(self, args):
-        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor", json.dumps(args))
+    def modify_user_visible_flavor(self, args, sourceAuth):
+        return self.http_request("POST", "operation?action=modifyUserVisibleFlavor&sourceAuth={0}&requestSource=operation".format(sourceAuth), json.dumps(args))
 
     # 查询代金券
     def query_available_coupons(self, args):
-        return self.http_request("POST", "Billing?action=queryAvailableCoupons", json.dumps(args))
+        return self.http_request("POST", "billing?action=queryAvailableCoupons", json.dumps(args))
 
     # 查询计费订单列表
     def query_billing_orders(self, args):

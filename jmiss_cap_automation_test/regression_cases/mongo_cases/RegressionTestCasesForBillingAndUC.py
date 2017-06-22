@@ -24,7 +24,7 @@ class TestRegressionCasesForBillingAndUC:
     def test_query_min_discount(self, config, instance_data, cap_http_client):
         info_logger.info("[Scenario] Get the price info about the mongo instance")
 	info_logger.info("[STEP] Get the discount info of the mongo")
-        request_id, discount_info = query_query_min_discount_step(config, instance_data, cap_http_client, instance_data["query_min_discount_according_configration"])
+        request_id, discount_info = query_mongo_db_discount_step(config, instance_data, cap_http_client, instance_data["query_min_discount_according_configration"])
         info_logger.info("[INFO] The discount of the mongo instance is %s", json.dumps(discount_info))
 	# 验证点，获取折扣信息与当前的折扣
 	info_logger.info("[VERIFICATION] The discount info of the mongo is the same with the setted up discount")
@@ -80,4 +80,5 @@ class TestRegressionCasesForBillingAndUC:
         request_id=delete_mongo_instances_step(config, instance_data, mongo_http_client,spaceIds)
         # 获取用户配额，用户配额减少的数量为2
         request_id, total3, use3 = query_user_quota_step(config, instance_data, cap_http_client, "mongodb")
-        assert  use2-use3,"[ERROR] the increase is not is 2,before:%s,after:%s".format(use2, use3)
+        assert  use2-use3 == 2,"[ERROR] the increase is not is 2,before:%s,after:%s".format(use2, use3)
+

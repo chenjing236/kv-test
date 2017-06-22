@@ -13,7 +13,6 @@ class TestOperationQuota:
         if res_data_total>0:
             assert res_data_total>res_data_use,"[INFO] Query user quota is incorrect,used quota > tatal quota"
         #调用中间层修改配额接口，将user_quota修改为total_quota，接口返回成功,user_quota大于total_quota时total_quota和user_quota相等。
-        print "======"
         print res_data_total
         print res_data_use
         request_id, quota, use = modify_user_quota_step(config, instance_data, cap_http_client, resource, res_data_total)
