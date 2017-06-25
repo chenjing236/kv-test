@@ -49,7 +49,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 修改名称
     @pytest.mark.smoke
-    def _change_name_of_mongo_instance(self,config, instance_data, http_client, create_mongo_instance):
+    def test_change_name_of_mongo_instance(self,config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Change the name for the mongo instance")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -65,7 +65,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 创建mongo实例，验证实际mongo对应的container的副本集关系与创建时设置的副本集关系一致
     @pytest.mark.smoke 
-    def _create_mongo_instance_and_verify_replica(self, config, instance_data, http_client, mysql_client, docker_client, create_mongo_instance):
+    def test_create_mongo_instance_and_verify_replica(self, config, instance_data, http_client, mysql_client, docker_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Create a mongo instance that consists of a primary container, a secondary container and a hidden container")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -112,7 +112,7 @@ class TestSmokeCasesForMongoInstance:
 
     #通过flavor信息，查看数据库flavor表中flavor id；在根据flavor id查看数据库flavor中的信息
     @pytest.mark.smoke
-    def _flavor_info(self, config, instance_data, http_client):
+    def test_flavor_info(self, config, instance_data, http_client):
 	# info_logger.info("[SCENARIO] Verify flavor info is the same with flavor id")
         # 获取flavor 1C_2M_4D_10E的flavor id
         info_logger.info("[STEP] Get flavor id by flavor info")
@@ -130,7 +130,7 @@ class TestSmokeCasesForMongoInstance:
 
     #删除mongo实例
     @pytest.mark.smoke
-    def _delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
+    def test_delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
 	info_logger.info("[SCENARIO] Delete a mongo instance")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -219,7 +219,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 获取mongo实时信息
     @pytest.mark.smoke
-    def _get_real_time_info(self, config, instance_data, http_client, create_mongo_instance):
+    def test_get_real_time_info(self, config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Get real time info of the mongo instance")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -234,7 +234,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 获取mongo实例的监控信息
     @pytest.mark.smoke
-    def _get_monitor_message(self, config, instance_data, http_client, create_mongo_instance):
+    def test_get_monitor_message(self, config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Get the monitor message of the mongo instance")
         # 创建mongo实例
         info_logger.info("[STEP] Create a mongo instance")
