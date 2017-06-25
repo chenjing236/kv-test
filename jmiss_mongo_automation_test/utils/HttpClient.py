@@ -50,6 +50,17 @@ class HttpClient(object):
         hc.close
         return status, headers, res_data
 
+    # 获取mongo agent的client
+    def http_request_for_mongo_agent(self, method, mongo_agent_host, uri, data=None):
+        hc = httplib.HTTPConnection(mongo_agent_host)
+        hc.request(method, uri, data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close
+	return status, headers, res_data
+
     # 获取mongo实例的container信息
     def get_container_info(self, nova_agent_host, nova_container_id):
 	nova_agent = nova_agent_host + ":1024"
@@ -87,8 +98,8 @@ class HttpClient(object):
         return self.http_request("GET", "topology/{0}".format(space_id))
 
     # 修改mongo实例名称
-    def updatemeta_mongo_name(self, space_id, space_name):
-        return self.http_request("PUT", "updatemeta/{0}".format(space_id))
+    def updatemeta_mongo_name(self, space_id, data):
+        return self.http_request("PUT", "updatemeta/{0}".format(space_id), json.dumps(data))
 
     # 获取操作结果
     def get_operation_result(self, space_id, operation_id):
@@ -100,7 +111,7 @@ class HttpClient(object):
 
     # 获取flavor id
     def get_flavor_id(self, data):
-	return self.http_request("GET", "flavorid?cpu={0}&disk={1}&iops={2}&memory={3}&maxConn={4}".format(data["cpu"], data["disk"], data["ipos"], data["memory"], data["maxconn"]))
+	return self.http_request("GET", "flavorid?cpu={0}&disk={1}&iops={2}&memory={3}&maxConn={4}".format(data["cpu"], data["disk"], data["iops"], data["memory"], data["maxconn"]))
 
     # 删除mongo实例
     def delete_mongo_instance(self, space_id):
@@ -113,3 +124,13 @@ class HttpClient(object):
     # 获取mongo操作结果
     def get_results_of_operation(self, space_id, operation_id):
 	return self.http_request("GET", "operation?spaceId={0}&operationId={1}".format(space_id, operation_id))
+
+    # ping mongo的container是否存在
+    def ping_container_of_mongo_instance(self, mongo_agent_host, container_id):
+	uri = "/ping?dockerId={0}".format(container_id)
+	return self.http_request_for_mongo_agent("GET", mongo_agent_host, uri)
+
+    # 通过uds访问container获取拓扑结构
+    def get_replic_info_from_container(self, mongo_agent_host, container_id):
+	uri = "/rsstatus?dockerId={0}".format(container_id)
+        return self.http_request_for_mongo_agent("GET", mongo_agent_host, uri)

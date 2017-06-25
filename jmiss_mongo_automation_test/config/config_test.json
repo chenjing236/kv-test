@@ -10,6 +10,7 @@
   "mysql_db": "jmiss_mongo_test_master",
   "cc_service_host": "192.168.178.128:9698",
   "docker_version":"3.2.9-1.0.6",
+  "mongo_agent_port":"9999",
   "retry_getting_info_times": 20,
   "wait_time": 5
 }

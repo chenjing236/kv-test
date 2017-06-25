@@ -71,6 +71,13 @@ class Cluster(object):
         data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId": self.data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
         return self.create_mongo_instance_with_param(data)
 
+    #修改mongo名称
+    def change_name_for_mongo_instance(self, space_id, space_name):
+	data = {"spaceName":space_name}
+	status, headers, res_data = self.httpClient.updatemeta_mongo_name(space_id, data)
+	assert status == 200, "[ERROR] HTTP Request is failed"
+	return res_data
+
     #删除mongo实例
     def delete_instance(self, spaceId):
         status, headers, res_data = self.httpClient.delete_mongo_instance(spaceId)
@@ -93,6 +100,7 @@ class Cluster(object):
     def get_results_of_operation(self, mysql_client, space_id):
 	self.init_mysql_client(mysql_client)
 	ins = self.mysql_client.get_instances(space_id)
+	assert len(ins) == 3, "[ERROR] The replica info is incomplete"
 	container_1 = {"docker_id":ins[0][0], "host_ip":ins[0][1], "domain":ins[0][2], "instance_ip":ins[0][3]}
 	container_2 = {"docker_id":ins[1][0], "host_ip":ins[1][1], "domain":ins[1][2], "instance_ip":ins[1][3]}
 	container_3 = {"docker_id":ins[2][0], "host_ip":ins[2][1], "domain":ins[2][2], "instance_ip":ins[2][3]}

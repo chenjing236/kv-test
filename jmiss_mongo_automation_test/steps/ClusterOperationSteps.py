@@ -37,8 +37,7 @@ def create_mongo_instance_with_flavor_step(config, instance_data, http_client, f
         logger_info.error("[ERROR] Response of creating an instance is incorrect")
         assert False, "[ERROR] Response of creating an instance is incorrect"
     space_id = attach["spaceId"]
-    operation_id = attach["operationId"]
-    return space_id, operation_id
+    return space_id
 
 #获取mongo实例的状态
 def get_status_of_instance_step(config, instance_data, http_client, space_id):
@@ -66,6 +65,26 @@ def get_status_of_instance_step(config, instance_data, http_client, space_id):
         count += 1
         time.sleep(wait_time)
     return status
+
+#删除mongo资源后获取mongo资源的状态
+def get_status_of_deleted_instance_step(config, instance_data, http_client, space_id):
+    retry_times = int(config["retry_getting_info_times"])
+    wait_time = int(config["wait_time"])
+    instance= Cluster(config, instance_data, http_client)
+    res_data = instance.get_instance_info(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode('unicode-escape')
+    assert 10114 == code, "[ERROR] The space [{0}] of mongo cannot be delete, and error message is {1}".format(space_id, msg)
+    status = 102
+    return status
+
+#修改mongo实例的名称
+def change_name_for_mongo_instance_step(config, instance_data, http_client, space_id, space_name):
+    instance= Cluster(config, instance_data, http_client)
+    res_data = instance.change_name_for_mongo_instance(space_id, space_name)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode('unicode-escape')
+    assert code == 0, "[ERROR] It is failed to change name for the instance of mongo {0}, error message is {1}".format(space_id, msg)
 
 #获取mongo实例的信息
 def get_detail_info_of_instance_step(config, instance_data, http_client, space_id):
@@ -100,6 +119,7 @@ def delete_instance_step(config, instance_data, http_client, space_id):
     code = res_data["code"]
     msg = json.dumps(res_data["msg"]).decode('unicode-escape')
     assert code == 0, "[ERROR] It is failed to delete the instance {0}, error message is {1}".format(space_id, msg)
+    #time.sleep(int(instance_data["wait_time"]))
 
 #获取操作结果
 def get_results_of_operation_step(config, instance_data, http_client, space_id, operation_id):
@@ -114,4 +134,3 @@ def get_replica_info_from_instance_step(config, instance_data, http_client, mysq
     instance = Cluster(config, instance_data, http_client)
     container_1, container_2, container3 = instance.get_results_of_operation(mysql_client, space_id)
     return container_1, container_2, container3
-

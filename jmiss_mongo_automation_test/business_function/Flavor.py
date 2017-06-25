@@ -18,7 +18,6 @@ class Flavor(object):
 
     # 根据flavor id获取flavor info
     def get_flavor_info_by_flavor_id(self, flavor_id):
-	#assert flavor_id is None, "[ERROR] Flavor id is none"
         status, headers, res_data = self.httpClient.get_flavor_detail_info(flavor_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
