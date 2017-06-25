@@ -111,7 +111,8 @@ class HttpClient(object):
 
     # 获取flavor id
     def get_flavor_id(self, data):
-	return self.http_request("GET", "flavorid?cpu={0}&disk={1}&iops={2}&memory={3}&maxConn={4}".format(data["cpu"], data["disk"], data["iops"], data["memory"], data["maxconn"]))
+	#return self.http_request("GET", "flavorid?cpu={0}&disk={1}&iops={2}&memory={3}&maxConn={4}".format(data["cpu"], data["disk"], data["iops"], data["memory"], data["maxconn"]))
+	return self.http_request("GET", "flavorid?{0}".format(data))
 
     # 删除mongo实例
     def delete_mongo_instance(self, space_id):
@@ -134,3 +135,15 @@ class HttpClient(object):
     def get_replic_info_from_container(self, mongo_agent_host, container_id):
 	uri = "/rsstatus?dockerId={0}".format(container_id)
         return self.http_request_for_mongo_agent("GET", mongo_agent_host, uri)
+
+    # 获取实时信息
+    def get_real_time_info(self, space_id):
+	return self.http_request("GET", "realtimeinfo?spaceIds={0}".format(space_id))
+
+    # 获取监控信息
+    def get_monitor_info(self, space_id, data):
+	return self.http_request("GET", "resourceinfo/{0}".format(data))
+
+    # 分页查询列表
+    def get_clusters_by_page(self, data):
+	return self.http_request("GET", "clustersByPage?{0}".format(data))

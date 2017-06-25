@@ -105,3 +105,26 @@ class Cluster(object):
 	container_2 = {"docker_id":ins[1][0], "host_ip":ins[1][1], "domain":ins[1][2], "instance_ip":ins[1][3]}
 	container_3 = {"docker_id":ins[2][0], "host_ip":ins[2][1], "domain":ins[2][2], "instance_ip":ins[2][3]}
         return container_1, container_2, container_3
+
+    #获取实时信息
+    def get_real_time_info(self, space_id):
+        status, headers, res_data = self.httpClient.get_real_time_info(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    #获取监控信息
+    def get_monitor_info(self, space_id):
+	#data="period={0}m&frequency={1}m&role={2}".format(self.data_obj["monitor_param"]["period"], self.data_obj["monitor_param"]["frequency"], self.data_obj["monitor_param"]["role"])
+	data = space_id + "?period=15m&frequency=1m&role=primary"
+        status, headers, res_data = self.httpClient.get_monitor_info(space_id, data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    #分页查询列表
+    def get_clusters_by_page(self, filter_name, page_size, page_num):
+        data = "filterName={0}&filterSpaceType=1&filterStatus=100&sortName=&sortRule=desc&pageSize={1}&pageNum={2}".format(filter_name, page_size, page_num)
+        status, headers, res_data = self.httpClient.get_clusters_by_page(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+

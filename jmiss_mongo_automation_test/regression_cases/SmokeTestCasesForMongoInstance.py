@@ -36,7 +36,6 @@ class TestSmokeCasesForMongoInstance:
 	info_logger.info("[INFO] There are three containers for the mongo instance %s, %s, %s, %s", space_id_1, container_1, container_2, hidden)
 	# 通过docker container获取规格信息
 	info_logger.info("[STEP] Get the flavor info for the mongo instance %s", space_id_1)
-	#flavor_info_from_container = get_flavor_info_from_container_step(config, instance_data, http_client, docker_client, container_1)
 	flavor_info_from_container = get_flavor_info_using_mongo_agent_step(config, instance_data, http_client, container_1)
 	info_logger.info("[INFO] The flavor info is %s", flavor_info_from_container)
         # 验证规格信息
@@ -64,7 +63,8 @@ class TestSmokeCasesForMongoInstance:
 	info_logger.info("[VERIFICATION] The name changed is the same with the specific name")
 	assert name_changed == mongo_info["name"], "[ERROR] It is failed to change name for the mongo instance {0}".format(space_id)
 
-    # 创建mongo实例，验证实际mongo对应的container的副本集关系与创建时设置的副本集关系一致 
+    # 创建mongo实例，验证实际mongo对应的container的副本集关系与创建时设置的副本集关系一致
+    @pytest.mark.smoke 
     def _create_mongo_instance_and_verify_replica(self, config, instance_data, http_client, mysql_client, docker_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Create a mongo instance that consists of a primary container, a secondary container and a hidden container")
 	# 创建mongo实例
@@ -94,6 +94,7 @@ class TestSmokeCasesForMongoInstance:
 	assert hidden == hidden_info, "[ERROR] The hidden info of the mongo instance is not the same with the hidden info of the container"
 
     # 创建mongo实例，验证通过绑定外网IP的VM访问mongo实例，可以执行读写操作
+    @pytest.mark.smoke
     def _access_mongo_instance(self, create_mongo_instance):
 	info_logger.info("[SCENARIO] Access a mongo instance with a VM that binds a internet IP")
 	# 获取mongo实例的domain信息
@@ -128,6 +129,7 @@ class TestSmokeCasesForMongoInstance:
 	assert flavor_info["maxConn"] == int(instance_data["mongo_1C_2M_4D_10E"]["maxconn"]), "[ERROR] Iops is not {0}".format(int(instance_data["mongo_1C_2M_4D_10E"]["maxConn"]))
 
     #删除mongo实例
+    @pytest.mark.smoke
     def _delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
 	info_logger.info("[SCENARIO] Delete a mongo instance")
 	# 创建mongo实例
@@ -151,3 +153,94 @@ class TestSmokeCasesForMongoInstance:
 	# 验证通过物理资源机查看mongo实例对应的container已经不存在
 	is_alive =  ping_container_step(config, instance_data, http_client, docker_client, container_1)
 	assert "false" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
+
+    #分页查看列表信息
+    @pytest.mark.smoke
+    def test_get_clusters_by_page(self, config, instance_data, http_client):
+	try:
+		info_logger.info("[SCENARIO] Get the clusters by page")
+		# 创建mongo实例1
+		info_logger.info("[STEP] Create a mongo instance 1")
+		space_id_1=create_available_mongo_instance_step(config, instance_data, http_client)
+		info_logger.info("[INFO] The mongo instance %s is created", space_id_1)
+		# 修改mongo实例名称
+		mongo_info_1=get_changed_name_of_mongo_instance_step(config, instance_data, http_client, space_id_1, "SMOKE_TEST_1")
+		info_logger.info("[INFO] The name of the mongo instance %s is changed to %s", space_id_1, mongo_info_1["name"])
+
+		# 创建mongo实例2
+		info_logger.info("[STEP] Create a mongo instance 2")
+        	space_id_2=create_available_mongo_instance_step(config, instance_data, http_client)
+        	info_logger.info("[INFO] The mongo instance %s is created", space_id_2)
+        	# 修改mongo实例名称
+        	mongo_info_2=get_changed_name_of_mongo_instance_step(config, instance_data, http_client, space_id_2, "SMOKE_TEST_2")
+        	info_logger.info("[INFO] The name of the mongo instance %s is changed to %s", space_id_2, mongo_info_2["name"])
+
+		# 创建mongo实例3
+        	info_logger.info("[STEP] Create a mongo instance 3")
+        	space_id_3=create_available_mongo_instance_step(config, instance_data, http_client)
+        	info_logger.info("[INFO] The mongo instance %s is created", space_id_3)
+        	# 修改mongo实例名称
+        	mongo_info_3=get_changed_name_of_mongo_instance_step(config, instance_data, http_client, space_id_3, "SMOKE_TEST_3")
+        	info_logger.info("[INFO] The name of the mongo instance %s is changed to %s", space_id_3, mongo_info_3["name"])
+
+		# 分页查询，每页1个实例，按名称倒序排列
+		info_logger.info("[STEP] Get the mongo instance in the frist page")
+		space_in_page_1=get_clusters_by_page_step(config, instance_data, http_client, "SMOKE_TEST", 1, 1)
+		# 验证第一页是mongo3
+		info_logger.info("[INFO] The mongo instance is %s in first page", json.dumps(space_in_page_1))
+		assert "SMOKE_TEST_3" == space_in_page_1["spaces"][0]["name"]
+
+		# 验证第二页是mongo2
+        	info_logger.info("[STEP] Get the mongo instance in the secondary page")
+        	space_in_page_2=get_clusters_by_page_step(config, instance_data, http_client, "SMOKE_TEST", 1, 2)
+        	info_logger.info("[INFO] The mongo instance is %s in secondary page", json.dumps(space_in_page_2))
+		assert "SMOKE_TEST_2" == space_in_page_2["spaces"][0]["name"]
+	
+		# 验证第三页是mongo1
+        	info_logger.info("[STEP] Get the mongo instance in the third page")
+        	space_in_page_3=get_clusters_by_page_step(config, instance_data, http_client, "SMOKE_TEST", 1, 3)
+        	info_logger.info("[INFO] The mongo instance is %s in third page", json.dumps(space_in_page_3))
+		assert "SMOKE_TEST_1" == space_in_page_3["spaces"][0]["name"]
+	except Exception as e:
+		assert False, "[ERROR] Exception is %s".format(e)
+	finally:
+		# 删除mongo实例1
+		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
+		delete_instance_step(config, instance_data, http_client, space_id_1)
+		info_logger.info("[INFO] The mongo instance %s is deleted", space_id_1)
+		# 删除mongo实例2
+        	info_logger.info("[STEP] Delete the mongo instance %s", space_id_2)
+        	delete_instance_step(config, instance_data, http_client, space_id_2)
+        	info_logger.info("[INFO] The mongo instance %s is deleted", space_id_2)
+		# 删除mongo实例3
+        	info_logger.info("[STEP] Delete the mongo instance %s", space_id_3)
+        	delete_instance_step(config, instance_data, http_client, space_id_3)
+        	info_logger.info("[INFO] The mongo instance %s is deleted", space_id_3)
+
+    # 获取mongo实时信息
+    @pytest.mark.smoke
+    def _get_real_time_info(self, config, instance_data, http_client, create_mongo_instance):
+	info_logger.info("[SCENARIO] Get real time info of the mongo instance")
+	# 创建mongo实例
+	info_logger.info("[STEP] Create a mongo instance")
+	space_id = create_mongo_instance
+	info_logger.info("[INFO] The mongo instance %s is created", space_id)
+	# 通过接口获取实时信息
+	info_logger.info("[STEP] Get the real time info")
+	real_time_info=get_real_time_info_step(config, instance_data, http_client, space_id)
+	info_logger.info("[INFO] The real time info for the mongo instance is %s", real_time_info)
+	# 验证接口返回"成功"
+	assert "成功" == real_time_info, "[ERROR] The interface for the real time info cannot work"
+
+    # 获取mongo实例的监控信息
+    @pytest.mark.smoke
+    def _get_monitor_message(self, config, instance_data, http_client, create_mongo_instance):
+	info_logger.info("[SCENARIO] Get the monitor message of the mongo instance")
+        # 创建mongo实例
+        info_logger.info("[STEP] Create a mongo instance")
+        space_id = create_mongo_instance
+        info_logger.info("[INFO] The mongo instance %s is created", space_id)
+	# 通过接口获取监控信息
+	monitor_info = get_monitor_info_step(config, instance_data, http_client, space_id)
+	# 验证接口返回的值可以显示
+	info_logger.info("[INFO] The monitor message is %s", monitor_info)
