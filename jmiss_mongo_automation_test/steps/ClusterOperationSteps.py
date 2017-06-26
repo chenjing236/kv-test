@@ -95,7 +95,7 @@ def get_status_of_deleted_instance_step(config, instance_data, http_client, spac
     res_data = instance.get_instance_info(space_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"]).decode('unicode-escape')
-    assert 10114 == code, "[ERROR] The space [{0}] of mongo cannot be delete, and error message is {1}".format(space_id, msg)
+    assert 12010 == code, "[ERROR] The space [{0}] of mongo cannot be delete, and error message is {1}".format(space_id, msg)
     status = 102
     return status
 
