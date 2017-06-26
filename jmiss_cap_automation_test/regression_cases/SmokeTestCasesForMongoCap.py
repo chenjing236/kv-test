@@ -22,7 +22,7 @@ class TestSmokeCasesForMongoCap:
 	assert instance_data["create_mongo_db"]["cpu"] == flavor_info["cpu"] and instance_data["create_mongo_db"]["memory"] == flavor_info["memory"] and instance_data["create_mongo_db"]["disk"] == flavor_info["disk"] and instance_data["create_mongo_db"]["iops"] == flavor_info["iops"] and instance_data["create_mongo_db"]["maxLink"] == flavor_info["maxConn"], "[ERROR] The flavor info is not {0}".format(json.dumps(flavor_info))
 
     # 修改mongo实例名称
-    def test_modify_name_for_mongo_instance(self, config, instance_data, mongo_http_client, create_mongo_instance):
+    def _modify_name_for_mongo_instance(self, config, instance_data, mongo_http_client, create_mongo_instance):
 	info_logger.info("[Scenario] Modify the name of the mongo instance")
 	# 创建mongo实例
 	resource_id, mongo_info = create_mongo_instance
@@ -38,7 +38,7 @@ class TestSmokeCasesForMongoCap:
 	assert "mongo_instance" == mongo_info_modified["name"], "[ERROR] It is failed to modify the name of mongo instance {0}".format(mongo_info["spaceId"])
 
     # 获取flaovr规格信息
-    def test_get_flavor_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
+    def _get_flavor_info(self, config, instance_data, mongo_http_client, create_mongo_instance):
 	info_logger.info("[Scenario] Modify the name of the mongo instance")
         # 创建mongo实例
         resource_id, mongo_info = create_mongo_instance
