@@ -153,8 +153,11 @@ def get_results_of_operation_step(config, instance_data, http_client, space_id, 
 #从数据库中获取mongo实例的副本集关系
 def get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id):
     instance = Cluster(config, instance_data, http_client)
-    container_1, container_2, container3 = instance.get_results_of_operation(mysql_client, space_id)
-    return container_1, container_2, container3
+    ins = instance.get_results_of_operation(mysql_client, space_id)
+    container_1 = {"docker_id":ins[0][0], "host_ip":ins[0][1], "domain":ins[0][2], "instance_ip":ins[0][3]}
+    container_2 = {"docker_id":ins[1][0], "host_ip":ins[1][1], "domain":ins[1][2], "instance_ip":ins[1][3]}
+    container_3 = {"docker_id":ins[2][0], "host_ip":ins[2][1], "domain":ins[2][2], "instance_ip":ins[2][3]}
+    return container_1, container_2, container_3
 
 #获取实时信息
 def get_real_time_info_step(config, instance_data, http_client, space_id):
@@ -178,7 +181,7 @@ def get_monitor_info_step(config, instance_data, http_client, space_id):
     if None == res_data["attach"]:
         #assert False, "[ERROR] There is no real time info, and error message is {0}".format(msg)
         return msg
-    return res_data["attach"]["infos"][0]
+    return res_data["attach"]
 
 #分页过滤mongo实例信息
 def get_clusters_by_page_step(config, instance_data, http_client, filter_name, page_size, page_num):

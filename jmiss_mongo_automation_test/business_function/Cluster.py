@@ -101,10 +101,11 @@ class Cluster(object):
 	self.init_mysql_client(mysql_client)
 	ins = self.mysql_client.get_instances(space_id)
 	assert len(ins) == 3, "[ERROR] The replica info is incomplete"
-	container_1 = {"docker_id":ins[0][0], "host_ip":ins[0][1], "domain":ins[0][2], "instance_ip":ins[0][3]}
-	container_2 = {"docker_id":ins[1][0], "host_ip":ins[1][1], "domain":ins[1][2], "instance_ip":ins[1][3]}
-	container_3 = {"docker_id":ins[2][0], "host_ip":ins[2][1], "domain":ins[2][2], "instance_ip":ins[2][3]}
-        return container_1, container_2, container_3
+	#container_1 = {"docker_id":ins[0][0], "host_ip":ins[0][1], "domain":ins[0][2], "instance_ip":ins[0][3]}
+	#container_2 = {"docker_id":ins[1][0], "host_ip":ins[1][1], "domain":ins[1][2], "instance_ip":ins[1][3]}
+	#container_3 = {"docker_id":ins[2][0], "host_ip":ins[2][1], "domain":ins[2][2], "instance_ip":ins[2][3]}
+        #return container_1, container_2, container_3
+	return ins
 
     #获取实时信息
     def get_real_time_info(self, space_id):

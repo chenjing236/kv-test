@@ -93,23 +93,6 @@ class TestSmokeCasesForMongoInstance:
 	assert secondary == secondary_info, "[ERROR] The secondary info of the mongo instance is not the same with the secondary info of the container"
 	assert hidden == hidden_info, "[ERROR] The hidden info of the mongo instance is not the same with the hidden info of the container"
 
-    # 创建mongo实例，验证通过绑定外网IP的VM访问mongo实例，可以执行读写操作
-    @pytest.mark.smoke
-    def _access_mongo_instance(self, create_mongo_instance):
-	info_logger.info("[SCENARIO] Access a mongo instance with a VM that binds a internet IP")
-	# 获取mongo实例的domain信息
-        # 通过VM访问mongo实例
-        # 对mongo实例执行写操作
-        # 获取写入mongo实例的数据
-
-    # 创建mongo实例，验证stop mongo三个containers触发failover，failover执行完成后，mongo的状态为可用状态，副本集关系为primary, sencondary和hidden
-    def _falover_mongo_containers(self, create_mongo_instance):
-	info_logger.info("[SCENARIO] Failover the primary container, the secondary container and the hidden container for the mongo instance")
-	# 获取mongo的副本集关系
-	# 同时stop mongo实例的三个containers,触发failover
-	# 获取failover的操作结果，即查看failover是否完成，及完成的状态
-	# 获取mongo的副本集关系
-
     #通过flavor信息，查看数据库flavor表中flavor id；在根据flavor id查看数据库flavor中的信息
     @pytest.mark.smoke
     def test_flavor_info(self, config, instance_data, http_client):
@@ -117,7 +100,7 @@ class TestSmokeCasesForMongoInstance:
         # 获取flavor 1C_2M_4D_10E的flavor id
         info_logger.info("[STEP] Get flavor id by flavor info")
         flavor_id = get_flavorid_by_flavorinfo_step(instance_data, http_client)
-        info_logger.info("[INFO] Flavor id is %s for flavor info [%s]", flavor_id, instance_data["mongo_1C_2M_4D_10E"])
+        info_logger.info("[INFO] Flavor id is %s for flavor info [%s]", flavor_id, json.dumps(instance_data["mongo_1C_2M_4D_10E"]))
         assert flavor_id != "", "[ERROR] Flavor id is none"
 	# 根据flavor id获取flavor info的信息与stpe1的flavor信息一致
 	flavor_info = get_flavor_info_step(instance_data, http_client, flavor_id)
@@ -131,28 +114,31 @@ class TestSmokeCasesForMongoInstance:
     #删除mongo实例
     @pytest.mark.smoke
     def test_delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
-	info_logger.info("[SCENARIO] Delete a mongo instance")
-	# 创建mongo实例
-	info_logger.info("[STEP] Create a mongo instance")
-	space_id=space_id = create_mongo_instance_step(config, instance_data, http_client)
-	info_logger.info("[STEP] Get status of the mongo instance %s", space_id)
-	status = get_status_of_instance_step(config, instance_data, http_client, space_id)
-	info_logger.info("[INFO] The status of the mongo %s is %s", space_id, status)
-	#从数据库的instance表中查询mongo的instance信息
-	container_1, container_2, hidden = get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id)
-	# mongo的primary container，secondary container, hidden container存在于物理资源机上
-	is_alive =  ping_container_step(config, instance_data, http_client, docker_client, container_1)
-	assert "true" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
-	info_logger.info("[INFO] The status of the container {} is aliv", container_1["docker_id"])
-	# 删除mongo实例
-	info_logger.info("[STEP] Delete the mongo instance %s", space_id)
-        delete_instance_step(config, instance_data, http_client, space_id)
-	time.sleep(int(instance_data["wait_time"]))
-	status_for_delete_instance = get_status_of_deleted_instance_step(config, instance_data, http_client, space_id)
-	assert 102 == status_for_delete_instance, "[ERROR] The mongo instance [{0}] cannot be deleted".format(space_id)
-	# 验证通过物理资源机查看mongo实例对应的container已经不存在
-	is_alive =  ping_container_step(config, instance_data, http_client, docker_client, container_1)
-	assert "false" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
+	try:
+		info_logger.info("[SCENARIO] Delete a mongo instance")
+		# 创建mongo实例
+		info_logger.info("[STEP] Create a mongo instance")
+		space_id=space_id = create_mongo_instance_step(config, instance_data, http_client)
+		info_logger.info("[STEP] Get status of the mongo instance %s", space_id)
+		status = get_status_of_instance_step(config, instance_data, http_client, space_id)
+		info_logger.info("[INFO] The status of the mongo %s is %s", space_id, status)
+		#从数据库的instance表中查询mongo的instance信息
+		container_1, container_2, hidden = get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id)
+		# mongo的primary container，secondary container, hidden container存在于物理资源机上
+		is_alive =  ping_container_step(config, instance_data, http_client, docker_client, container_1)
+		assert "true" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
+		info_logger.info("[INFO] The status of the container [%s] is alive", container_1["docker_id"])
+	except Exception as e:
+		assert False, "[ERROR] Exception is %s".format(e)
+	finally:
+		info_logger.info("[STEP] Delete the mongo instance %s", space_id)
+        	delete_instance_step(config, instance_data, http_client, space_id)
+		time.sleep(int(instance_data["wait_time"]))
+		status_for_delete_instance = get_status_of_deleted_instance_step(config, instance_data, http_client, space_id)
+		assert 102 == status_for_delete_instance, "[ERROR] The mongo instance [{0}] cannot be deleted".format(space_id)
+		# 验证通过物理资源机查看mongo实例对应的container已经不存在
+		is_alive =  ping_container_step(config, instance_data, http_client, docker_client, container_1)
+		assert "false" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
 
     #分页查看列表信息
     @pytest.mark.smoke
@@ -230,7 +216,7 @@ class TestSmokeCasesForMongoInstance:
 	real_time_info=get_real_time_info_step(config, instance_data, http_client, space_id)
 	info_logger.info("[INFO] The real time info for the mongo instance is %s", real_time_info)
 	# 验证接口返回"成功"
-	assert "成功" == real_time_info, "[ERROR] The interface for the real time info cannot work"
+	assert "成功" == real_time_info or real_time_info is not None, "[ERROR] The interface for the real time info cannot work"
 
     # 获取mongo实例的监控信息
     @pytest.mark.smoke
