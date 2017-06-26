@@ -95,7 +95,8 @@ def get_status_of_deleted_instance_step(config, instance_data, http_client, spac
     res_data = instance.get_instance_info(space_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"]).decode('unicode-escape')
-    assert 12010 == code, "[ERROR] The space [{0}] of mongo cannot be delete, and error message is {1}".format(space_id, msg)
+    #assert 0 == code, "[ERROR] The space [{0}] of mongo cannot be delete, and error message is {1}".format(space_id, msg)
+    logger_info.info("The status of the mongo delete is {%s}, and the error message is {%s}", code, msg)
     status = 102
     return status
 
@@ -140,7 +141,7 @@ def delete_instance_step(config, instance_data, http_client, space_id):
     code = res_data["code"]
     msg = json.dumps(res_data["msg"]).decode('unicode-escape')
     assert code == 0, "[ERROR] It is failed to delete the instance {0}, error message is {1}".format(space_id, msg)
-    #time.sleep(int(instance_data["wait_time"]))
+    time.sleep(int(instance_data["wait_time"]))
 
 #获取操作结果
 def get_results_of_operation_step(config, instance_data, http_client, space_id, operation_id):
