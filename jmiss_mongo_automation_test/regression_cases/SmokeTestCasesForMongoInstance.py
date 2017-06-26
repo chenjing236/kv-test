@@ -227,6 +227,6 @@ class TestSmokeCasesForMongoInstance:
         space_id = create_mongo_instance
         info_logger.info("[INFO] The mongo instance %s is created", space_id)
 	# 通过接口获取监控信息
-	monitor_info = get_monitor_info_step(config, instance_data, http_client, space_id)
+	message, monitor_info = get_monitor_info_step(config, instance_data, http_client, space_id)
 	# 验证接口返回的值可以显示
-	info_logger.info("[INFO] The monitor message is %s", monitor_info)
+	info_logger.info("[INFO] The result of getting monitoring message is %s, and the monitor message is %s", message, monitor_info)
