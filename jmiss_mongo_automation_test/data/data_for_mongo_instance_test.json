@@ -10,6 +10,6 @@
   "mongo_2C_4M_8D_10E": {"cpu":"4", "memory":"4294967296", "disk":"8589934592", "iops":"1600", "maxconn":"1000"},
   "user":"root",
   "password":"A7991892011fd761",
-  "wait_time":"60",
+  "wait_time":"30",
   "wait_short_time":"10"
 }

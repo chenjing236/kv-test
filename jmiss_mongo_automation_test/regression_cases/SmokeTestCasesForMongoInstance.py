@@ -131,6 +131,8 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
+		if None == space_id:
+			assert False, "[ERROR] The mongo instance cannot be created"
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id)
         	delete_instance_step(config, instance_data, http_client, space_id)
 		time.sleep(int(instance_data["wait_time"]))
@@ -190,6 +192,8 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
+		if None == space_id_1 or None == space_id_2 or None == space_id_3:
+			assert False, "[ERROR] The mongo instance cannot be created"
 		# 删除mongo实例1
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 		delete_instance_step(config, instance_data, http_client, space_id_1)
@@ -214,7 +218,10 @@ class TestSmokeCasesForMongoInstance:
 	# 通过接口获取实时信息
 	info_logger.info("[STEP] Get the real time info")
 	real_time_info=get_real_time_info_step(config, instance_data, http_client, space_id)
-	info_logger.info("[INFO] The real time info for the mongo instance is %s", real_time_info)
+	if None != real_time_info:
+		info_logger.info("[INFO] The real time info for the mongo instance is %s", json.dumps(real_time_info))
+	else:
+		info_logger.info("[INFO] The real time info for the mongo instance is %s", real_time_info)
 	# 验证接口返回"成功"
 	assert "成功" == real_time_info or real_time_info is not None, "[ERROR] The interface for the real time info cannot work"
 
@@ -229,4 +236,8 @@ class TestSmokeCasesForMongoInstance:
 	# 通过接口获取监控信息
 	message, monitor_info = get_monitor_info_step(config, instance_data, http_client, space_id)
 	# 验证接口返回的值可以显示
-	info_logger.info("[INFO] The result of getting monitoring message is %s, and the monitor message is %s", message, monitor_info)
+	if None != monitor_info:
+		info_logger.info("[INFO] The result of getting monitoring message is %s, and the monitor message is %s", message, json.dumps(monitor_info))
+	else:
+		info_logger.info("[INFO] The result of getting monitoring message is %s, and the monitor message is %s", message, monitor_info)
+	assert "成功" == message, "[ERROR] Cannot get the monitor message"
