@@ -40,7 +40,7 @@ class HttpClient(object):
         return status, headers, res_data
 
     # 获取nova agent服务
-    def http_request_for_nova_agent(self, method, uri, nova_agent_host, data=None):
+    def http_request_for_nova_agent(self, method, nova_agent_host, uri, data=None):
 	hc = httplib.HTTPConnection(nova_agent_host)
         hc.request(method, "/container/{0}".format(uri), data)
         res = hc.getresponse()
@@ -63,8 +63,7 @@ class HttpClient(object):
 
     # 获取mongo实例的container信息
     def get_container_info(self, nova_agent_host, nova_container_id):
-	nova_agent = nova_agent_host + ":1024"
-	return self.http_request_for_nova_agent("GET", "stats?name=nova-{0}".format(nova_container_id), nova_agent)
+	return self.http_request_for_nova_agent("GET", nova_agent_host, "stats?name=nova-{0}".format(nova_container_id))
 
     # 创建VPC
     def create_vpc(self, create_vp_args):

@@ -11,7 +11,7 @@ class Container:
 
     #通过nova agent获取container信息
     def get_container_info(self, container_info):
-	mongo_agent_host=container_info["host_ip"] + ":" + self.config["mongo_agent_port"]
+	mongo_agent_host=container_info["host_ip"] + ":" + self.conf_obj["nova_agent_port"]
 	status, headers, res_data = self.http_client.get_container_info(mongo_agent_host, container_info["docker_id"])
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data

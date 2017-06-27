@@ -2,6 +2,7 @@
 
 import pytest
 import logging
+import math
 from BasicTestCase import *
 
 info_logger = logging.getLogger(__name__)
@@ -10,46 +11,94 @@ class TestSmokeCasesForMongoInstance:
 
     # 创建不同规格的mongo实例，验证实际mongo对应的container的规格与创建时指定的规格一致
     @pytest.mark.smoke
-    def _create_mongo_instance_and_verify_flavor(self, config, instance_data, http_client, mysql_client, docker_client):
-	info_logger.info("[SCENARIO] Create two mongo instances whith different flavors")
-	# 获取flavor 1C_2M_4D_10E的flavor id
-        info_logger.info("[STEP] Get flavor id by flavor info")
-        flavor_id_1 = get_flavorid_by_flavorinfo_step(instance_data, http_client)
-        info_logger.info("[INFO] Flavor id is %s", flavor_id_1)
-        assert flavor_id_1 != "", "[ERROR] Flavor id is none"
+    def test_create_mongo_instance_and_verify_flavor(self, config, instance_data, http_client, mysql_client, docker_client):
+	try:
+		info_logger.info("[SCENARIO] Create two mongo instances whith different flavors")
+		# 获取flavor 1C_2M_4D_10E的flavor id
+        	info_logger.info("[STEP] Get flavor id by flavor info for 1C_2M_4D_10E")
+        	flavor_id_1 = get_flavorid_by_flavor_info_step(instance_data, http_client, "mongo_1C_2M_4D_10E")
+        	info_logger.info("[INFO] Flavor id is %s", flavor_id_1)
+        	assert flavor_id_1 != "", "[ERROR] Flavor id is none"
 
-        # 创建mongo实例，规格为1C_2M_4D_10E
-        info_logger.info("[STEP] Create a mongo instance")
-        space_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
-	info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
+                # 获取flavor 2C_4M_8D_10E的flavor id
+                info_logger.info("[STEP] Get flavor id by flavor info for 2C_4M_8D_10E")
+                flavor_id_2 = get_flavorid_by_flavor_info_step(instance_data, http_client, "mongo_2C_4M_8D_10E")
+                info_logger.info("[INFO] Flavor id is %s", flavor_id_2)
+                assert flavor_id_2 != "", "[ERROR] Flavor id is none"
 
-	#查看mongo实例状态
-	info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_1)
-	status_1 = get_status_of_instance_step(config, instance_data, http_client, space_id_1)
-	info_logger.info("[INFO] The status of the mongo %s is %s", space_id_1, status_1)
-	info_logger.info("[VERIFICATION] The status of the mongo instance %s is available", space_id_1)
-	assert status_1 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_1)
+        	# 创建mongo实例，规格为1C_2M_4D_10E
+        	info_logger.info("[STEP] Create a mongo instance with flavor 1C_2M_4D_10E")
+        	space_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
+		info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
 
-	# 获取创建mongo实例的操作结果,线上通过获取操作结果接口获取replica信息，测试环境通过instance表中获取mongo实例的拓扑信息
-	info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id_1)
-	container_1, container_2, hidden = get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id_1)
-	info_logger.info("[INFO] There are three containers for the mongo instance %s, %s, %s, %s", space_id_1, container_1, container_2, hidden)
-	# 通过docker container获取规格信息
-	info_logger.info("[STEP] Get the flavor info for the mongo instance %s", space_id_1)
-	flavor_info_from_container = get_flavor_info_using_mongo_agent_step(config, instance_data, http_client, container_1)
-	info_logger.info("[INFO] The flavor info is %s", flavor_info_from_container)
-        # 验证规格信息
-        # 创建mongo实例，规格为2C_4M_8D_10E
-        # 查看mongo实例状态
-        # 通过docker container获取规格信息
-	# 删除mongo实例
-	info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
-	delete_instance_step(config, instance_data, http_client, space_id_1)
-	# 删除规格2C_4M_8D_10E
+		#查看mongo实例状态
+		info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_1)
+		status_1 = get_status_of_instance_step(config, instance_data, http_client, space_id_1)
+		info_logger.info("[INFO] The status of the mongo %s is %s", space_id_1, status_1)
+		info_logger.info("[VERIFICATION] The status of the mongo instance %s is available", space_id_1)
+		assert status_1 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_1)
+
+		# 获取创建mongo实例的操作结果,线上通过获取操作结果接口获取replica信息，测试环境通过instance表中获取mongo实例的拓扑信息
+		info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id_1)
+		container_1, container_2, hidden = get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id_1)
+		info_logger.info("[INFO] There are three containers for the mongo instance %s, %s, %s, %s", space_id_1, json.dumps(container_1), json.dumps(container_2), json.dumps(hidden))
+		# 通过docker container获取规格信息
+		info_logger.info("[STEP] Get the flavor info for the mongo instance %s", space_id_1)
+		flavor_info_from_container = get_flavor_info_from_container_step(config, instance_data, http_client, docker_client, container_1)
+		info_logger.info("[INFO] The flavor info is %s", json.dumps(flavor_info_from_container))
+        	# 验证规格信息
+		info_logger.info("[INFO] The flavor info is cpu=%s, memory=%s, disk=%s", flavor_info_from_container["cpuInfo"]["num"], flavor_info_from_container["memInfo"]["total"], flavor_info_from_container["dataDisk"]["total"])
+		perg= float(1024*1024*1024)
+		disk_1 = math.ceil(float(flavor_info_from_container["dataDisk"]["total"]) / perg)
+		memory_1 = float(flavor_info_from_container["memInfo"]["total"]) / perg
+		assert 2 == int(memory_1), "[ERROR] Memmory is not 2G"
+		assert 4 == int(disk_1), "[ERROR] Disk is not 4G"
+
+        	# 创建mongo实例，规格为2C_4M_8D_10E
+                info_logger.info("[STEP] Create a mongo instance with flavor 2C_4M_8D_10E")
+                space_id_2 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_2)
+                info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
+
+        	# 查看mongo实例状态
+                info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_2)
+                status_2 = get_status_of_instance_step(config, instance_data, http_client, space_id_2)
+                info_logger.info("[INFO] The status of the mongo %s is %s", space_id_2, status_2)
+                info_logger.info("[VERIFICATION] The status of the mongo instance %s is available", space_id_2)
+                assert status_2 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_2)
+
+        	# 通过docker container获取规格信息
+                info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id_2)
+                container_2_1, container_2_2, hidden_2 = get_replica_info_from_instance_step(config, instance_data, http_client, mysql_client, space_id_2)
+                info_logger.info("[INFO] There are three containers for the mongo instance %s, %s, %s, %s", space_id_2, json.dumps(container_2_1), json.dumps(container_2_2), json.dumps(hidden_2))
+                # 通过docker container获取规格信息
+                info_logger.info("[STEP] Get the flavor info for the mongo instance %s", space_id_2)
+                flavor_info_from_container_2 = get_flavor_info_from_container_step(config, instance_data, http_client, docker_client, container_2_1)
+                info_logger.info("[INFO] The flavor info is %s", json.dumps(flavor_info_from_container_2))
+                # 验证规格信息
+                info_logger.info("[INFO] The flavor info is cpu=%s, memory=%s, disk=%s", flavor_info_from_container_2["cpuInfo"]["num"], flavor_info_from_container_2["memInfo"]["total"], flavor_info_from_container_2["dataDisk"]["total"])
+                perg= float(1024*1024*1024)
+                disk_2 = math.ceil(float(flavor_info_from_container_2["dataDisk"]["total"]) / perg)
+                memory_2 = float(flavor_info_from_container_2["memInfo"]["total"]) / perg
+                assert 4 == int(memory_2), "[ERROR] Memmory is not 4G"
+                assert 8 == int(disk_2), "[ERROR] Disk is not 8G"
+
+	except Exception as e:
+		assert False, "[ERROR] Exception is %s".format(e)
+	finally:
+		if None == space_id_1:
+			assert False, "[ERROR] The mongo instance1 cannot be created"
+		if None == space_id_2:
+			assert False, "[ERROR] The mongo instance2 cannot be created"
+		# 删除mongo实例
+		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
+		delete_instance_step(config, instance_data, http_client, space_id_1)
+		# 删除规格2C_4M_8D_10E
+		info_logger.info("[STEP] Delete the mongo instance %s", space_id_2)
+		delete_instance_step(config, instance_data, http_client, space_id_2)
 
     # 修改名称
     @pytest.mark.smoke
-    def test_change_name_of_mongo_instance(self,config, instance_data, http_client, create_mongo_instance):
+    def _change_name_of_mongo_instance(self,config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Change the name for the mongo instance")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -65,7 +114,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 创建mongo实例，验证实际mongo对应的container的副本集关系与创建时设置的副本集关系一致
     @pytest.mark.smoke 
-    def test_create_mongo_instance_and_verify_replica(self, config, instance_data, http_client, mysql_client, docker_client, create_mongo_instance):
+    def _create_mongo_instance_and_verify_replica(self, config, instance_data, http_client, mysql_client, docker_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Create a mongo instance that consists of a primary container, a secondary container and a hidden container")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -95,7 +144,7 @@ class TestSmokeCasesForMongoInstance:
 
     #通过flavor信息，查看数据库flavor表中flavor id；在根据flavor id查看数据库flavor中的信息
     @pytest.mark.smoke
-    def test_flavor_info(self, config, instance_data, http_client):
+    def _flavor_info(self, config, instance_data, http_client):
 	# info_logger.info("[SCENARIO] Verify flavor info is the same with flavor id")
         # 获取flavor 1C_2M_4D_10E的flavor id
         info_logger.info("[STEP] Get flavor id by flavor info")
@@ -113,7 +162,7 @@ class TestSmokeCasesForMongoInstance:
 
     #删除mongo实例
     @pytest.mark.smoke
-    def test_delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
+    def _delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
 	try:
 		info_logger.info("[SCENARIO] Delete a mongo instance")
 		# 创建mongo实例
@@ -144,7 +193,7 @@ class TestSmokeCasesForMongoInstance:
 
     #分页查看列表信息
     @pytest.mark.smoke
-    def test_get_clusters_by_page(self, config, instance_data, http_client):
+    def _get_clusters_by_page(self, config, instance_data, http_client):
 	try:
 		info_logger.info("[SCENARIO] Get the clusters by page")
 		# 创建mongo实例1
@@ -209,7 +258,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 获取mongo实时信息
     @pytest.mark.smoke
-    def test_get_real_time_info(self, config, instance_data, http_client, create_mongo_instance):
+    def _get_real_time_info(self, config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Get real time info of the mongo instance")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
@@ -227,7 +276,7 @@ class TestSmokeCasesForMongoInstance:
 
     # 获取mongo实例的监控信息
     @pytest.mark.smoke
-    def test_get_monitor_message(self, config, instance_data, http_client, create_mongo_instance):
+    def _get_monitor_message(self, config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Get the monitor message of the mongo instance")
         # 创建mongo实例
         info_logger.info("[STEP] Create a mongo instance")
