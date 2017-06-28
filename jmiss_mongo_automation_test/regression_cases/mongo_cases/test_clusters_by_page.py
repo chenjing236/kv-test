@@ -53,6 +53,8 @@ class TestClustersByPage:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
+		if None == space_id_1 or None == space_id_2 or None == space_id_3:
+			assert False, "[ERROR] The mongo instance cannot be created"
 		# 删除mongo实例1
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 		delete_instance_step(config, instance_data, http_client, space_id_1)

@@ -85,10 +85,6 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
-		if None == space_id_1:
-			assert False, "[ERROR] The mongo instance1 cannot be created"
-		if None == space_id_2:
-			assert False, "[ERROR] The mongo instance2 cannot be created"
 		# 删除mongo实例
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 		delete_instance_step(config, instance_data, http_client, space_id_1)
@@ -180,8 +176,6 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
-		if None == space_id:
-			assert False, "[ERROR] The mongo instance cannot be created"
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id)
         	delete_instance_step(config, instance_data, http_client, space_id)
 		time.sleep(int(instance_data["wait_time"]))
@@ -241,8 +235,6 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
-		if None == space_id_1 or None == space_id_2 or None == space_id_3:
-			assert False, "[ERROR] The mongo instance cannot be created"
 		# 删除mongo实例1
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 		delete_instance_step(config, instance_data, http_client, space_id_1)
