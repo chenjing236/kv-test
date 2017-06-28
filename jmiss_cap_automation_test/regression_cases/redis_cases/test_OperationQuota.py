@@ -19,7 +19,7 @@ class TestOperationQuota:
         if quota>0:
             assert quota == use,"[INFO] Query user quota is incorrect,used quota !=  tatal quota"
         #调用中间层获取用户配额接口，调用接口成功，将user_quota修改成正常小于total_quota值
-        request_id, quota, use = modify_user_quota_step(config, instance_data, cap_http_client, resource, -7)
+        request_id, quota, use = modify_user_quota_step(config, instance_data, cap_http_client, resource, res_data_use - res_data_total)
         if quota>0:
             assert quota > use,"[INFO] Query user quota is incorrect,used quota !> tatal quota"
 
