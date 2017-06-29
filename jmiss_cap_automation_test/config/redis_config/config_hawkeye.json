@@ -1,0 +1,5 @@
+{
+  "host":"redis-biz.jcloud.com",
+  "retry_getting_info_times": 20,
+  "wait_time": 5
+}

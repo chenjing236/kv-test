@@ -18,13 +18,13 @@
   },
   "common_data":{
     "dataCenter":"bj_02",
-    "user":"JaneCloud007",
-	"account":"JaneCloud007"
+    "user":"iaas-ops",
+	"account":"iaas-ops"
   },
   "redis_coupon_info":{
     "serviceCode":"redis",
     "feeType":1,
-    "discountId": null,
-    "discountValue": null
+    "discountId": 266,
+    "discountValue": 0
   }
 }

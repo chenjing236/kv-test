@@ -56,7 +56,7 @@ class APIStabilityCase:
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 支付
         # print "[STEP] Pay for the create order of redis instance"
-        pay_for_redis_instance_step(cap, request_id_for_redis)
+        pay_for_redis_instance_step(cap, request_id_for_redis, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态
         # print "[STEP] Query order status, check the status of order"
         success, resource_id = query_order_status_step(cap, request_id_for_redis)
@@ -98,7 +98,7 @@ class APIStabilityCase:
 
         # 扩容
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 1)
-        pay_for_redis_instance_step(cap, request_id_resize)
+        pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态，验证扩容成功
         info_logger.info("[STEP] Query resize order status until resize over")
         success, resource_id = query_order_status_step(cap, request_id_resize)
@@ -112,7 +112,7 @@ class APIStabilityCase:
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 0)
         # 调用支付接口
         info_logger.info("[STEP] Pay for reduce order")
-        pay_for_redis_instance_step(cap, request_id_resize)
+        pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态，验证扩容成功
         info_logger.info("[STEP] Query reduce order status until resize over")
         success, resource_id = query_order_status_step(cap, request_id_resize)
@@ -136,8 +136,8 @@ class APIStabilityCase:
 
 
 def main():
-    conf_file = './config/redis_config/config_test.json'
-    instance_file = './data/redis_data/data_test.json'
+    conf_file = './config/redis_config/config_hawkeye.json'
+    instance_file = './data/redis_data/data_hawkeye.json'
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
