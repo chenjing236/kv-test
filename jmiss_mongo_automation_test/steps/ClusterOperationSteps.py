@@ -198,3 +198,27 @@ def get_clusters_by_page_step(config, instance_data, http_client, filter_name, p
     if None == clusters:
 	assert Flase, "[ERROR] There is no matched mongo instance, and the error message is %s".format(msg)
     return clusters
+
+#获取mongo实例列表信息
+def get_mongo_instance_list_step(config, instance_data, http_client):
+    instance = Cluster(config, instance_data, http_client)
+    res_data = instance.get_mongo_instance_list()
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode('unicode-escape')
+    assert code == 0, "[ERROR] It is failed to get the real time info for the instance {0}, error message is {1}".format(space_id, msg)
+    clusters = res_data["attach"]
+    if None == clusters:
+        assert Flase, "[ERROR] There is no matched mongo instance, and the error message is %s".format(msg)
+    return clusters
+
+#实例是否在列表中
+def is_mongo_exites_in_mongo_list_step(config, instance_data, http_client, space_id):
+    mongo_instance_list = get_mongo_instance_list_step(config, instance_data, http_client)
+    if None == mongo_instance_list:
+	assert Flase, "[ERROR] There is no mongo instance, and the error message is %s".format(msg)
+    is_exited = True
+    mongo_list_json = json.dumps(mongo_instance_list)
+    if space_id not in mongo_list_json:
+	logger_info.info("[INFO] There is no mongo instance %s in the mongo instance list", space_id)	
+	is_exited = False
+    return False

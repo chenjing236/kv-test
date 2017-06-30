@@ -146,3 +146,6 @@ class HttpClient(object):
     # 分页查询列表
     def get_clusters_by_page(self, data):
 	return self.http_request("GET", "clustersByPage?{0}".format(data))
+
+    def get_mongo_instance_list(self):
+	return self.http_request("GET", "clusters")

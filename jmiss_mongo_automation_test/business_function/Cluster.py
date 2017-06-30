@@ -128,4 +128,8 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
-
+    #获取mongo列表信息
+    def get_mongo_instance_list(self):
+        status, headers, res_data = self.httpClient.get_mongo_instance_list()
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
