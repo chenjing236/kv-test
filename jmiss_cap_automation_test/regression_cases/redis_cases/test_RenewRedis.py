@@ -53,7 +53,8 @@ class TestRenewRedis:
         success, resource_id = query_order_status_step(cap, request_id_renew)
         assert success == 1, "[ERROR] Renew redis failed!"
         # 调用查询计费订单接口，验证计费方式为包年包月
-        info_logger.info("[STEP] Query bill order, check the feeType is 601")
+        info_logger.info("[STEP] Wait for a while and query bill order, check the feeType is 601")
+        time.sleep(15)
         fee_type = query_bill_order_step(cap, resource_id)
         assert fee_type == 601, "[ERROR] The feeType of the redis instance is wrong!"
         info_logger.info("[INFO] Check the feeType of the redis instance successfully, the feeType = {0}".format(fee_type))
