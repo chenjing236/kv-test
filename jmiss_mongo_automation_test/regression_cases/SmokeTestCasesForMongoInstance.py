@@ -18,13 +18,13 @@ class TestSmokeCasesForMongoInstance:
         	info_logger.info("[STEP] Get flavor id by flavor info for 1C_2M_4D_10E")
         	flavor_id_1 = get_flavorid_by_flavor_info_step(instance_data, http_client, "mongo_1C_2M_4D_10E")
         	info_logger.info("[INFO] Flavor id is %s", flavor_id_1)
-        	assert flavor_id_1 != "", "[ERROR] Flavor id is none"
+        	assert flavor_id_1 != "" or None == flavor_id, "[ERROR] Flavor id is none"
 
                 # 获取flavor 2C_4M_8D_10E的flavor id
                 info_logger.info("[STEP] Get flavor id by flavor info for 2C_4M_8D_10E")
                 flavor_id_2 = get_flavorid_by_flavor_info_step(instance_data, http_client, "mongo_2C_4M_8D_10E")
                 info_logger.info("[INFO] Flavor id is %s", flavor_id_2)
-                assert flavor_id_2 != "", "[ERROR] Flavor id is none"
+                assert flavor_id_2 != "" or None == flavor_id_2, "[ERROR] Flavor id is none"
 
         	# 创建mongo实例，规格为1C_2M_4D_10E
         	info_logger.info("[STEP] Create a mongo instance with flavor 1C_2M_4D_10E")
@@ -85,6 +85,10 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
+		if None == space_id_1:
+			space_id_1 = "NULL"
+		if None == space_id_2:
+			space_id_2 = "NULL"
 		# 删除mongo实例
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 		delete_instance_step(config, instance_data, http_client, space_id_1)
@@ -176,14 +180,22 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
+		if None == space_id:
+			space_id = "NULL"
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id)
         	delete_instance_step(config, instance_data, http_client, space_id)
 		time.sleep(int(instance_data["wait_time"]))
 		status_for_delete_instance = get_status_of_deleted_instance_step(config, instance_data, http_client, space_id)
 		assert 102 == status_for_delete_instance, "[ERROR] The mongo instance [{0}] cannot be deleted".format(space_id)
 		# 验证通过物理资源机查看mongo实例对应的container已经不存在
+                info_logger.info("[VERIFICATION] The mongo instance %s is not in the mongo instance list", space_id)
+                is_exited = is_mongo_exites_in_mongo_list_step(config, instance_data, http_client, space_id)
+                assert is_exited == False, "[ERROR] The mongo instance {0} is deleted".format(space_id)
+		if None == container_1:
+			assert False, "[ERROR] There is no available container"
+		info_logger.info("[VERIFICATION] The container %s is not alive", container_1["docker_id"])
 		is_alive =  ping_container_step(config, instance_data, http_client, docker_client, container_1)
-		assert "false" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
+		assert "false" == is_alive, "[ERROR] The container [{0}] is still alive or still exited".format(container_1["docker_id"])
 
     #分页查看列表信息
     @pytest.mark.smoke
@@ -235,6 +247,12 @@ class TestSmokeCasesForMongoInstance:
 	except Exception as e:
 		assert False, "[ERROR] Exception is %s".format(e)
 	finally:
+		if None == space_id_1:
+			space_id_1 = "NULL"
+		if None == space_id_2:
+			space_id_2 = "NULL"
+		if None == space_id_3:
+			space_id_3 = "NULL"
 		# 删除mongo实例1
 		info_logger.info("[STEP] Delete the mongo instance %s", space_id_1)
 		delete_instance_step(config, instance_data, http_client, space_id_1)
