@@ -273,6 +273,8 @@ class TestSmokeCasesForMongoInstance:
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
 	space_id = create_mongo_instance
+        if None == space_id:
+                assert False, "[ERROR] It is failed to create mongo instance"
 	info_logger.info("[INFO] The mongo instance %s is created", space_id)
 	# 通过接口获取实时信息
 	info_logger.info("[STEP] Get the real time info")
@@ -291,6 +293,8 @@ class TestSmokeCasesForMongoInstance:
         # 创建mongo实例
         info_logger.info("[STEP] Create a mongo instance")
         space_id = create_mongo_instance
+	if None == space_id:
+		assert False, "[ERROR] It is failed to create mongo instance"
         info_logger.info("[INFO] The mongo instance %s is created", space_id)
 	# 通过接口获取监控信息
 	message, monitor_info = get_monitor_info_step(config, instance_data, http_client, space_id)

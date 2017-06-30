@@ -184,7 +184,7 @@ def get_monitor_info_step(config, instance_data, http_client, space_id):
     assert code == 0, "[ERROR] It is failed to get the real time info for the instance {0}, error message is {1}".format(space_id, msg)
     if None == res_data["attach"]:
         #assert False, "[ERROR] There is no real time info, and error message is {0}".format(msg)
-        return msg
+        return msg, None
     return res_data["msg"], res_data["attach"]
 
 #分页过滤mongo实例信息
