@@ -58,6 +58,6 @@ class TestDeleteMongoInstance:
                 info_logger.info("[STEP] Delete the mongo instance %s", space_id)
                 delete_instance_step(config, instance_data, http_client, space_id)
                 time.sleep(int(instance_data["wait_time"]))
-		info_loggger.info("[VERIFICATION] The mongo instance %s is not in the mongo instance list", space_id)
+		info_logger.info("[VERIFICATION] The mongo instance %s is not in the mongo instance list", space_id)
 		is_exited = is_mongo_exites_in_mongo_list_step(config, instance_data, http_client, space_id)
 		assert is_exited == False, "[ERROR] The mongo instance {0} is deleted".format(space_id)
