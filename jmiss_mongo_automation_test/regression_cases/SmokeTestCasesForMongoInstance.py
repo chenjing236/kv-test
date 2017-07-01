@@ -83,7 +83,7 @@ class TestSmokeCasesForMongoInstance:
                 assert 8 == int(disk_2), "[ERROR] Disk is not 8G"
 
 	except Exception as e:
-		assert False, "[ERROR] Exception is %s".format(e)
+		assert False, "[ERROR] Exception is %s".format(e.message)
 	finally:
 		if None == space_id_1:
 			space_id_1 = "NULL"
@@ -178,7 +178,7 @@ class TestSmokeCasesForMongoInstance:
 		assert "true" == is_alive, "[ERROR] The container [{0}] is not alive or not exited".format(container_1["docker_id"])
 		info_logger.info("[INFO] The status of the container [%s] is alive", container_1["docker_id"])
 	except Exception as e:
-		assert False, "[ERROR] Exception is %s".format(e)
+		assert False, "[ERROR] Exception is %s".format(e.message)
 	finally:
 		if None == space_id:
 			space_id = "NULL"
@@ -245,7 +245,7 @@ class TestSmokeCasesForMongoInstance:
         	info_logger.info("[INFO] The mongo instance is %s in third page", json.dumps(space_in_page_3))
 		assert "SMOKE_TEST_1" == space_in_page_3["spaces"][0]["name"]
 	except Exception as e:
-		assert False, "[ERROR] Exception is %s".format(e)
+		assert False, "[ERROR] Exception is %s".format(e.message)
 	finally:
 		if None == space_id_1:
 			space_id_1 = "NULL"

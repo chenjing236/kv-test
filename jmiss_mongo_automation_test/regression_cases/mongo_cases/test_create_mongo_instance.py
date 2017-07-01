@@ -81,7 +81,7 @@ class TestCreateMongoInstance:
                 assert 8 == int(disk_2), "[ERROR] Disk is not 8G"
 
         except Exception as e:
-                assert False, "[ERROR] Exception is %s".format(e)
+                assert False, "[ERROR] Exception is %s".format(e.message)
         finally:
                 if None == space_id_1:
                         space_id_1 = "NULL"
