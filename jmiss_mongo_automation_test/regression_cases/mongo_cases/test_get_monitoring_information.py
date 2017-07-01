@@ -14,6 +14,8 @@ class TestGetMonitoringInformation:
         # 创建mongo实例
         info_logger.info("[STEP] Create a mongo instance")
         space_id = create_mongo_instance
+        if None == space_id:
+                assert False, "[ERROR] It is failed to create mongo instance"
         info_logger.info("[INFO] The mongo instance %s is created", space_id)
         # 通过接口获取实时信息
         info_logger.info("[STEP] Get the real time info")
@@ -23,7 +25,7 @@ class TestGetMonitoringInformation:
         else:
                 info_logger.info("[INFO] The real time info for the mongo instance is %s", real_time_info)
         # 验证接口返回"成功"
-        assert "成功" == real_time_info or real_time_info is not None, "[ERROR] The interface for the real time info cannot work"
+        assert "成功".decode() in real_time_info or real_time_info is not None, "[ERROR] The interface for the real time info cannot work"
 
     # 获取mongo实例的监控信息
     @pytest.mark.smoke
@@ -32,6 +34,8 @@ class TestGetMonitoringInformation:
         # 创建mongo实例
         info_logger.info("[STEP] Create a mongo instance")
         space_id = create_mongo_instance
+        if None == space_id:
+                assert False, "[ERROR] It is failed to create mongo instance"
         info_logger.info("[INFO] The mongo instance %s is created", space_id)
         # 通过接口获取监控信息
         message, monitor_info = get_monitor_info_step(config, instance_data, http_client, space_id)
@@ -40,5 +44,4 @@ class TestGetMonitoringInformation:
                 info_logger.info("[INFO] The result of getting monitoring message is %s, and the monitor message is %s", message, json.dumps(monitor_info))
         else:
                 info_logger.info("[INFO] The result of getting monitoring message is %s, and the monitor message is %s", message, monitor_info)
-        assert "成功" == message, "[ERROR] Cannot get the monitor message"
-
+        assert "成功".decode() in message, "[ERROR] Cannot get the monitor message"

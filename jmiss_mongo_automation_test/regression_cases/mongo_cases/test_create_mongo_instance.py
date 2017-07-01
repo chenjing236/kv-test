@@ -23,6 +23,9 @@ class TestCreateMongoInstance:
                 flavor_id_2 = get_flavorid_by_flavor_info_step(instance_data, http_client, "mongo_2C_4M_8D_10E")
                 info_logger.info("[INFO] Flavor id is %s", flavor_id_2)
                 assert flavor_id_2 != "", "[ERROR] Flavor id is none"
+
+		space_id_1 = None
+		space_id_2 = None
         	# 创建mongo实例，规格为1C_2M_4D_10E
         	info_logger.info("[STEP] Create a mongo instance with flavor 1C_2M_4D_10E")
         	space_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
