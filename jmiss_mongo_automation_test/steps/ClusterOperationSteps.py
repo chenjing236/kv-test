@@ -136,7 +136,7 @@ def get_topology_of_mongo_step(config, instance_data, http_client, space_id):
 
 #删除mongo实例
 def delete_instance_step(config, instance_data, http_client, space_id):
-    if None == space_id:
+    if None == space_id or "NULL" == space_id:
 	logger_info.info("[ERROR] The space id is None")
 	return
     instance = Cluster(config, instance_data, http_client)
