@@ -2,6 +2,7 @@
 
 import pytest
 import logging
+import math
 from BasicTestCase import *
 
 info_logger = logging.getLogger(__name__)
@@ -23,9 +24,6 @@ class TestCreateMongoInstance:
                 flavor_id_2 = get_flavorid_by_flavor_info_step(instance_data, http_client, "mongo_2C_4M_8D_10E")
                 info_logger.info("[INFO] Flavor id is %s", flavor_id_2)
                 assert flavor_id_2 != "" or None == flavor_id_2, "[ERROR] Flavor id is none"
-		
-		space_id_1 = None
-		space_id_2 = None
 
                 # 创建mongo实例，规格为1C_2M_4D_10E
                 info_logger.info("[STEP] Create a mongo instance with flavor 1C_2M_4D_10E")
@@ -36,6 +34,20 @@ class TestCreateMongoInstance:
                 info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_1)
                 status_1 = get_status_of_instance_step(config, instance_data, http_client, space_id_1)
                 assert status_1 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_1)
+
+		time.sleep(int(instance_data["wait_short_time"]))
+                # 创建mongo实例，规格为2C_4M_8D_10E
+                info_logger.info("[STEP] Create a mongo instance with flavor 2C_4M_8D_10E")
+                space_id_2 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_2)
+                info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
+
+                # 查看mongo实例状态
+                info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_2)
+                status_2 = get_status_of_instance_step(config, instance_data, http_client, space_id_2)
+                info_logger.info("[INFO] The status of the mongo %s is %s", space_id_2, status_2)
+                info_logger.info("[VERIFICATION] The status of the mongo instance %s is available", space_id_2)
+                assert status_2 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_2)
+		time.sleep(int(instance_data["wait_short_time"]))
 
                 # 获取创建mongo实例的操作结果,线上通过获取操作结果接口获取replica信息，测试环境通过instance表中获取mongo实例的拓扑信息
                 info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id_1)
@@ -51,18 +63,6 @@ class TestCreateMongoInstance:
                 memory_1 = float(flavor_info_from_container["memInfo"]["total"]) / perg
                 assert 2 == int(memory_1), "[ERROR] Memmory is not 2G"
                 assert 4 == int(disk_1), "[ERROR] Disk is not 4G"
-
-                # 创建mongo实例，规格为2C_4M_8D_10E
-                info_logger.info("[STEP] Create a mongo instance with flavor 2C_4M_8D_10E")
-                space_id_2 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_2)
-                info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
-
-                # 查看mongo实例状态
-                info_logger.info("[STEP] Get the status of the mongo instance %s", space_id_2)
-                status_2 = get_status_of_instance_step(config, instance_data, http_client, space_id_2)
-                info_logger.info("[INFO] The status of the mongo %s is %s", space_id_2, status_2)
-                info_logger.info("[VERIFICATION] The status of the mongo instance %s is available", space_id_2)
-                assert status_2 == 100, "[ERROR] Instance {0} is unavailable".format(space_id_2)
 
                 # 通过docker container获取规格信息
                 info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id_2)
