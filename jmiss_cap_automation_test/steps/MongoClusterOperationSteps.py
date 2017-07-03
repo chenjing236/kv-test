@@ -13,21 +13,18 @@ from business_function.MongoCap import *
 logger_info = logging.getLogger(__name__)
 
 #创建mongo实例，类型为按配置
-def create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client):
-    info_logger.info(
-        "[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
+def create_mongo_instance_with_params_step(config, instance_data, mongo_http_client, cap_http_client):
+    info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
     request_id_for_mongo = create_mongo_instance_with_param_step(config, instance_data, mongo_http_client)
     info_logger.info("[INFO] The mongo instance is created, and the request id is %s", request_id_for_mongo)
     # 支付
     info_logger.info("[STEP] Pay for the mongo instance")
-    request_id_for_paying_mongo = pay_for_mongo_instance_step(config, instance_data, cap_http_client,
-                                                              request_id_for_mongo)
+    request_id_for_paying_mongo = pay_for_mongo_instance_step(config, instance_data, cap_http_client, request_id_for_mongo)
     info_logger.info("[INFO] The request id is %s for paying mongo", request_id_for_paying_mongo)
     # 查询订单状态
     info_logger.info("[STEP] Get the status of the order for the mongo instance")
-    success, resource_id = query_order_status_for_mongo_step(config, instance_data, cap_http_client,
-                                                             request_id_for_mongo)
+    success, resource_id = query_order_status_for_mongo_step(config, instance_data, cap_http_client, request_id_for_mongo)
     info_logger.info("[INFO] The resource id is %s for the mongo", resource_id)
     # 查询详情接口
     info_logger.info("[STEP] Get the detail info of the mongo instance")
@@ -279,3 +276,27 @@ def get_vpc_subnet_detail_step(config, instance_data, http_client, subnetId):
         logger_info.error("[ERROR] It is failed to get vpc subnet detail, error message is [%s]", error_msg)
         assert False, "[ERROR] It is failed to get vpc subnet detail, error message is {0}".format(error_msg)
     return request_id, res_data["subNet"]
+
+# 查看flavor信息是否在flavor list中
+def is_exited_in_flavor_list_step(flavor_list, flavor_info):
+    is_flavor_exited = False
+    for item in flavor_list:
+	min_disk = item["minDisk"]
+	iops = item["iops"]
+	max_link = item["maxLink"]
+        memory = item["memory"]
+        cpu = item["cpu"]
+        if min_disk == int(flavor_info["disk"]):
+		is_flavor_exited = True
+    return is_flavor_exited
+
+# 查询mongodbs列表
+def get_filter_mongo_dbs_step(config, instance_data, http_client,mongo_db_name,page_num):
+    mongo_cap = MongoCap(config, instance_data, http_client)
+    res_data = mongo_cap.query_filter_mongo_dbs(mongo_db_name,page_num)
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to get filter mongodbs, error message is [%s]", error_msg)
+        assert False, "[ERROR] It is failed to get filter mongodbs, error message is {0}".format(error_msg)
+    return request_id, res_data["total"], res_data["mongoDbInfos"]

@@ -12,8 +12,7 @@ info_logger = logging.getLogger(__name__)
 @pytest.fixture(scope="class")
 def create_mongo_instance(request, config, instance_data, http_client):
     #TODO，创建VPC和VPC下的子网
-    info_logger.info("[PRE-CONDITION] Create a VPC and subnet under the VPC")
-    print "[PRE-CONDITION] Create a VPC and subnet under the VPC"
+    #info_logger.info("[PRE-CONDITION] Create a VPC and subnet under the VPC")
     info_logger.info("[STEP] Create a mongo instance")
     space_id = create_mongo_instance_step(config, instance_data, http_client)
     info_logger.info("[INFO] The mongo %s is being created", space_id)

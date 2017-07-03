@@ -56,12 +56,12 @@ def create_redis_instance_no_teardown(config, instance_data, redis_http_client, 
     billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
     assert cluster["status"] == 100, "[ERROR] The status of redis cluster is not 100!"
 
-    # # tear down 删除redis实例
-    # def teardown():
-    #     info_logger.info("[TEARDOWN] Delete the redis instance %s", resource_id)
-    #     delete_redis_instance_step(redis_cap, resource_id)
-    #
-    # request.addfinalizer(teardown)
+    # tear down 删除redis实例
+    def teardown():
+        info_logger.info("[TEARDOWN] Delete the redis instance %s", resource_id)
+        delete_redis_instance_step(redis_cap, resource_id)
+    
+    request.addfinalizer(teardown)
     return redis_cap, cap, request_id_for_redis, resource_id
 
 
@@ -124,7 +124,7 @@ def create_mongo_instance(request, config, instance_data, mongo_http_client, cap
     return resource_id, mongo_info
 
 # 创建mongo实例,类型为包年包月
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def create_mongo_instance_with_yearly_fee(request, config, instance_data, mongo_http_client, cap_http_client):
     info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
     # 创建mongo实例
@@ -170,13 +170,12 @@ def create_mongo_instance_with_yearly_fee(request, config, instance_data, mongo_
 
 # 创建mongo实例,类型为按配置
 @pytest.fixture(scope="session")
-def create_mongo_instance_three(request, config, instance_data, mongo_http_client, cap_http_client):
-    info_logger.info("[STEP] Create a mongo instance, the instance consists of primary container, secondary container and hidden container")
+def create_three_mongo_instances(request, config, instance_data, mongo_http_client, cap_http_client):
+    info_logger.info("[STEP] Create three mongo instance with different name")
     # 创建mongo实例
-    resource_id, mongo_info = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
-
-    resource_id2, mongo_info2 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
-    resource_id3, mongo_info3 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+    resource_id, mongo_info = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client, cap_http_client)
+    resource_id2, mongo_info2 = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client, cap_http_client)
+    resource_id3, mongo_info3 = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client, cap_http_client)
 
     # 删除mongo实例
     def teardown():

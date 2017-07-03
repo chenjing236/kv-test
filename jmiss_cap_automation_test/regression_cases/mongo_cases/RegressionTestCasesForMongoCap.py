@@ -60,12 +60,12 @@ class TestRegressionCasesForMongoCap:
         assert is_flavor_in == True, "[ERROR]The flavor info of the mongo instance flavor {0} is not in flavor list {1}".format(flavor_info,flavor_info_list)
 
     # 过滤查询mongodb列表信息
-    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_mongo_instance_three):
+    def test_query_filter_mongo_dbs(self, config, instance_data, mongo_http_client, create_three_mongo_instances):
         # 按照资源状态过滤创建成功的资源, 按照资源名称排序，每页1个资源，3页
 
         #创建mongo资源
         # 修改名称, 名称为mongo_instance1
-        resource_id1, mongo_info1,resource_id2, mongo_info2,resource_id3, mongo_info3 = create_mongo_instance_three
+        resource_id1, mongo_info1,resource_id2, mongo_info2,resource_id3, mongo_info3 = create_three_mongo_instances
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info1["spaceId"], "mongo_instance1")
 
         modify_mongo_db_name_step(config, instance_data, mongo_http_client, mongo_info2["spaceId"], "mongo_instance2")
