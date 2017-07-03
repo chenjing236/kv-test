@@ -40,16 +40,18 @@ class Cap(object):
         return res_data
 
     # billing模块，订单支付
-    def pay(self, order_request_id, coupon_id=None):
+    def pay(self, order_request_id, coupon_id=None, discount_id=None, discount_value=None):
         common_data = self.instance_data["common_data"]
-        if coupon_id is None:
-            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id}
+        if coupon_id is None or discount_id is not None:
+            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
+                    "orderRequestId": order_request_id, "discountId": discount_id, "discountValue": discount_value}
         else:
-            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "orderRequestId": order_request_id, "coupons": [str(coupon_id)]}
+            data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
+                    "orderRequestId": order_request_id, "coupons": [str(coupon_id)], "discountId": discount_id, "discountValue": discount_value}
         status, headers, res_data = self.httpClient.pay(data)
         if status == 403 and res_data["code"] == 'OverAge':
             error_msg = json.dumps(res_data["message"]).decode('unicode-escape')
-            assert status  == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(error_msg)
+            assert status == 200, "[ERROR] There is no quota for the user in this region, error message is [{0}]".format(error_msg)
         assert status == 200, "[ERROR] HTTP Request is failed, error message is {0}".format(res_data["message"])
         return res_data
 
