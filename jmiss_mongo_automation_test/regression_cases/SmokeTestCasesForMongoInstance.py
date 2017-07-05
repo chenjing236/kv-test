@@ -29,6 +29,7 @@ class TestSmokeCasesForMongoInstance:
         	# 创建mongo实例，规格为1C_2M_4D_10E
         	info_logger.info("[STEP] Create a mongo instance with flavor 1C_2M_4D_10E")
         	space_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
+		assert None == space_id_1, "[ERROR] There is no mongo instance 1 created"
 		info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
 
 		#查看mongo实例状态
@@ -57,6 +58,7 @@ class TestSmokeCasesForMongoInstance:
         	# 创建mongo实例，规格为2C_4M_8D_10E
                 info_logger.info("[STEP] Create a mongo instance with flavor 2C_4M_8D_10E")
                 space_id_2 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_2)
+		assert None == space_id_2, "[ERROR] There is no mongo instance 2 created"
                 info_logger.info("[INFO] The mongo instance %s is going to be created", space_id_1)
 
         	# 查看mongo实例状态
