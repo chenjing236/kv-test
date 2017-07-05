@@ -211,6 +211,7 @@ class TestSmokeCasesForMongoInstance:
 		info_logger.info("[SCENARIO] Get the clusters by page")
 		space_id_1=None
 		space_id_2=None
+		space_id_3=None
 		# 创建mongo实例1
 		info_logger.info("[STEP] Create a mongo instance 1")
 		space_id_1=create_available_mongo_instance_step(config, instance_data, http_client)
