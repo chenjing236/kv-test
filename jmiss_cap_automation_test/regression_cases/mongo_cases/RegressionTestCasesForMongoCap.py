@@ -85,14 +85,14 @@ class TestRegressionCasesForMongoCap:
     def test_delete_mongo_dbs(self, config, instance_data, mongo_http_client,cap_http_client):
         info_logger.info("[Scenario] Delete mongos instance")
         # 创建mongo实例1
-        resource_id1, mongo_info1 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id1, mongo_info1 = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client,cap_http_client)
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info1["spaceId"])
 
         # 创建mongo实例2
-        resource_id2, mongo_info2 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id2, mongo_info2 = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client,cap_http_client)
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info2["spaceId"])
         # 创建mongo实例3
-        resource_id3, mongo_info3 = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id3, mongo_info3 = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client,cap_http_client)
         info_logger.info("[INFO] The mongo instance %s is created", mongo_info3["spaceId"])
 
         # 查询mongo实例列表
@@ -173,7 +173,7 @@ class TestRegressionCasesForMongoCap:
 		assert vpc!="" and subnet!="","[ERROR] failed to get vpc or subnet"
         instance_data["create_mongo_db"]["routerId"]=vpc
         instance_data["create_mongo_db"]["subnetId"] = subnet
-        resource_id, mongo_info = create_mongo_instance_param_step(config, instance_data, mongo_http_client,cap_http_client)
+        resource_id, mongo_info = create_mongo_instance_with_params_step(config, instance_data, mongo_http_client,cap_http_client)
         # 获取mongo实例信息中的vpc和subnet信息
         request_id, mongo_detail=query_mongo_db_detail_step(config, instance_data, mongo_http_client, resource_id)
         # 验证，vpc和subnet信息与指定的vpc和subnet信息一致

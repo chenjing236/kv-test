@@ -167,7 +167,8 @@ class TestSmokeCasesForMongoInstance:
 		info_logger.info("[SCENARIO] Delete a mongo instance")
 		# 创建mongo实例
 		info_logger.info("[STEP] Create a mongo instance")
-		space_id=space_id = create_mongo_instance_step(config, instance_data, http_client)
+		space_id = create_mongo_instance_step(config, instance_data, http_client)
+		assert None == space_id, "[ERROR] There is no mongo instance created"
 		info_logger.info("[STEP] Get status of the mongo instance %s", space_id)
 		status = get_status_of_instance_step(config, instance_data, http_client, space_id)
 		info_logger.info("[INFO] The status of the mongo %s is %s", space_id, status)
@@ -205,6 +206,7 @@ class TestSmokeCasesForMongoInstance:
 		# 创建mongo实例1
 		info_logger.info("[STEP] Create a mongo instance 1")
 		space_id_1=create_available_mongo_instance_step(config, instance_data, http_client)
+		assert None == space_id_1, "[ERROR] There is no mongo instance 1 created"
 		info_logger.info("[INFO] The mongo instance %s is created", space_id_1)
 		# 修改mongo实例名称
 		mongo_info_1=get_changed_name_of_mongo_instance_step(config, instance_data, http_client, space_id_1, "SMOKE_TEST_1")
@@ -213,6 +215,7 @@ class TestSmokeCasesForMongoInstance:
 		# 创建mongo实例2
 		info_logger.info("[STEP] Create a mongo instance 2")
         	space_id_2=create_available_mongo_instance_step(config, instance_data, http_client)
+		assert None == space_id_2, "[ERROR] There is no mongo instance 2 created"
         	info_logger.info("[INFO] The mongo instance %s is created", space_id_2)
         	# 修改mongo实例名称
         	mongo_info_2=get_changed_name_of_mongo_instance_step(config, instance_data, http_client, space_id_2, "SMOKE_TEST_2")
@@ -221,6 +224,7 @@ class TestSmokeCasesForMongoInstance:
 		# 创建mongo实例3
         	info_logger.info("[STEP] Create a mongo instance 3")
         	space_id_3=create_available_mongo_instance_step(config, instance_data, http_client)
+		assert None == space_id_3, "[ERROR] There is no mongo instance 3 created"
         	info_logger.info("[INFO] The mongo instance %s is created", space_id_3)
         	# 修改mongo实例名称
         	mongo_info_3=get_changed_name_of_mongo_instance_step(config, instance_data, http_client, space_id_3, "SMOKE_TEST_3")
