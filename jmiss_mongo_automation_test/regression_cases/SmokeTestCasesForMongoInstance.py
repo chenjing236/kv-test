@@ -26,6 +26,8 @@ class TestSmokeCasesForMongoInstance:
                 info_logger.info("[INFO] Flavor id is %s", flavor_id_2)
                 assert flavor_id_2 != "" or None == flavor_id_2, "[ERROR] Flavor id is none"
 
+		space_id_1=None
+		space_id_2=None
         	# 创建mongo实例，规格为1C_2M_4D_10E
         	info_logger.info("[STEP] Create a mongo instance with flavor 1C_2M_4D_10E")
         	space_id_1 = create_mongo_instance_with_flavor_step(config, instance_data, http_client, flavor_id_1)
@@ -120,6 +122,7 @@ class TestSmokeCasesForMongoInstance:
 	info_logger.info("[SCENARIO] Create a mongo instance that consists of a primary container, a secondary container and a hidden container")
 	# 创建mongo实例
 	info_logger.info("[STEP] Create a mongo instance")
+	space_id=None
 	space_id=create_mongo_instance
 	info_logger.info("[INFO] The mongo instance %s is created", space_id)
 	info_logger.info("[STEP] Get the replica of the mongo instance %s", space_id)
@@ -169,6 +172,7 @@ class TestSmokeCasesForMongoInstance:
 		info_logger.info("[SCENARIO] Delete a mongo instance")
 		# 创建mongo实例
 		info_logger.info("[STEP] Create a mongo instance")
+		space_id=None
 		space_id = create_mongo_instance_step(config, instance_data, http_client)
 		assert None == space_id, "[ERROR] There is no mongo instance created"
 		info_logger.info("[STEP] Get status of the mongo instance %s", space_id)
@@ -205,6 +209,8 @@ class TestSmokeCasesForMongoInstance:
     def test_get_clusters_by_page(self, config, instance_data, http_client):
 	try:
 		info_logger.info("[SCENARIO] Get the clusters by page")
+		space_id_1=None
+		space_id_2=None
 		# 创建mongo实例1
 		info_logger.info("[STEP] Create a mongo instance 1")
 		space_id_1=create_available_mongo_instance_step(config, instance_data, http_client)
