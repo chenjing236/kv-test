@@ -161,7 +161,7 @@ class TestSmokeCasesForMongoInstance:
 
     #删除mongo实例
     @pytest.mark.smoke
-    def _delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
+    def test_delete_mongo_instance(self, config, instance_data, http_client, mysql_client, docker_client):
 	try:
 		info_logger.info("[SCENARIO] Delete a mongo instance")
 		# 创建mongo实例
@@ -199,7 +199,7 @@ class TestSmokeCasesForMongoInstance:
 
     #分页查看列表信息
     @pytest.mark.smoke
-    def _get_clusters_by_page(self, config, instance_data, http_client):
+    def test_get_clusters_by_page(self, config, instance_data, http_client):
 	try:
 		info_logger.info("[SCENARIO] Get the clusters by page")
 		space_id_1=None
