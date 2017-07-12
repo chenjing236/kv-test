@@ -182,7 +182,9 @@ class RedisCap(object):
                 "resourceId": cluster_id, "resourceType": "redis"}
         status, headers, res_data = self.httpClient.stop_resource(data, operation_data["sourceAuth"])
         print res_data
-        assert status == 200, "[ERROR] HTTP Request is failed"
+        # 对于不欠费不过期资源计费不支持停服操作，会返回错误
+        if status != 500:
+            assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # Operation-运营修改用户可见flavor

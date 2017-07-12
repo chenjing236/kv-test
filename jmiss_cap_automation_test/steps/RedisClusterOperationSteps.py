@@ -175,10 +175,14 @@ def delete_no_overdue_resource_step(redis_cap, cluster_id):
 def stop_resource_step(redis_cap, cluster_id):
     res_data = redis_cap.stop_resource(cluster_id)
     request_id = res_data["requestId"]
+    code = res_data["code"]
     if "code" in res_data:
         error_msg = res_data["message"]
         logger_info.error("[ERROR] It is failed to stop resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
-        assert False, "[ERROR] It is failed to stop resource by operation {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
+        if code == "InternalError" and "置计费状态失败" in error_msg:
+            logger_info.info("[INFO] Set bill ae state failed, but the operation stop cache api is not wrong!")
+        else:
+            assert False, "[ERROR] It is failed to stop resource by operation {0}, resource_id is {1} error message is {2}".format(request_id, cluster_id, error_msg)
     return request_id
 
 # Operation-修改用户可见flavor
