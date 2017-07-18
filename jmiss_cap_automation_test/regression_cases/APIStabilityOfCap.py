@@ -21,11 +21,15 @@ class APIStabilityCase:
 
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
-        delete_redis_instance_step(self.redis_cap, self.resource_id)
+        try:
+            delete_redis_instance_step(self.redis_cap, self.resource_id)
+            # 如果删除前执行失败了，teardown时index还会加1，不准确
+            if self.index == 7:
+                self.index += 1
+        except Exception as e:
+            # 删除请求失败的情况
+            self.index = 7
         # self.index += 1
-        # 如果删除前执行失败了，teardown时index还会加1，不准确
-        if self.index == 7:
-            self.index += 1
         i = 0
         while i < len(self.result):
             if i == self.index:
