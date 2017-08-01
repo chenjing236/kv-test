@@ -22,6 +22,7 @@ class APIStabilityCase:
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
         try:
+            time.sleep(5)  # 创建失败情况等待中间层回滚
             delete_redis_instance_step(self.redis_cap, self.resource_id)
             # 如果删除前执行失败了，teardown时index还会加1，不准确
             if self.index == 7:
@@ -49,7 +50,7 @@ class APIStabilityCase:
         self.redis_cap = redis_cap
         cap = Cap(self.config, self.instance_data, self.cap_http_client)
         # 清除残留redis实例
-        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "category": 1})
+        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "filterSpaceType": 1})
         if clusters is not None:
             for cluster in clusters:
                 delete_redis_instance_step(self.redis_cap, cluster["spaceId"])
