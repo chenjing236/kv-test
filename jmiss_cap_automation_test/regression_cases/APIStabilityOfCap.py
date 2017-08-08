@@ -102,6 +102,7 @@ class APIStabilityCase:
         self.index += 1
 
         # 扩容
+        time.sleep(60)  # 等待一分钟，避免计费超时
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 1)
         pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态，验证扩容成功
@@ -114,6 +115,7 @@ class APIStabilityCase:
         self.index += 1
 
         # 缩容
+        time.sleep(60)  # 等待一分钟，避免计费超时
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 0)
         # 调用支付接口
         info_logger.info("[STEP] Pay for reduce order")
@@ -133,9 +135,12 @@ class APIStabilityCase:
         request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
         # print infos
         # assert infos[0]["memUsed"] != 0 and infos[0]["spaceId"] == resource_id
-        if infos is None:
-            time.sleep(30)
-            request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
+        for i in range(3):  # 重试三次，在三分钟周期内需取到realtimeinfo
+            if infos is None:
+                time.sleep(60)
+                request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
+            else:
+                break
         assert infos[0]["spaceId"] == resource_id
         self.index += 1
 
