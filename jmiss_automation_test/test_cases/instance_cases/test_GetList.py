@@ -27,7 +27,7 @@ class TestGetList:
         assert cluster_list is not None, "[ERROR] Cluster list is none"
         for c in cluster_list:
             assert c["status"] != 102, "[ERROR] There is a cluster which status equals 102 in the cluster list"
-            if c["space_id"] == space_id:
+            if c["spaceId"] == space_id:
                 # 验证列表页信息与详情页一致
                 assert c["status"] == cluster_info["status"] and c["name"] == cluster_info["name"] and\
                         c["spaceType"] == cluster_info["spaceType"] and c["zoneId"] == cluster_info["zoneId"] and\
