@@ -222,3 +222,30 @@ def is_mongo_exites_in_mongo_list_step(config, instance_data, http_client, space
 	logger_info.info("[INFO] There is no mongo instance %s in the mongo instance list", space_id)	
 	is_exited = False
     return False
+
+
+#创建备份
+def generate_backup_for_mongo_step(config,instance_data,http_client,space_id):
+    instance = Cluster(config,instance_data,http_client)
+    logger_info.info("[INFO] Generate backup of the mongo %s", space_id)
+    res_data = instance.generate_backup_for_mongo(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode('unicode-escape')
+    assert code == 0,"[ERROR] It is failed to generate a backup for the mongo instance {0},error message is {1}".format(space_id,msg)
+    operation_id = res_data["attach"]["operationId"]
+    if operation_id is None:
+        assert False, "[ERROR] There is no backup task,the error message is {0}".format(msg)
+    return operation_id
+#查看备份列表
+def get_list_of_backup_step(config,instance_data,http_client,space_id):
+    instance = Cluster(config,instance_data,http_client)
+    logger_info.info("[STEP] Get list of backup of mongo instance %s",space_id)
+    res_data = instance.get_list_of_backup(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode('unicode-escape')
+    assert code == 0,"[ERROR] It is failed to get the list of instance {0},error message is {1}".format(space_id,msg)
+    attach = res_data["attach"]
+    if None == attach or attach =='':
+        logger_info.error("[ERROR] Response of getting list of backup for the instance %s is incorrect", space_id)
+        assert False, "[ERROR] Response of getting list of backup for the instance {0} is incorrect".format(space_id)
+    return attach["items"]

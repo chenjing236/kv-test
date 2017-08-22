@@ -133,3 +133,14 @@ class Cluster(object):
         status, headers, res_data = self.httpClient.get_mongo_instance_list()
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    #手动创建备份
+    def generate_backup_for_mongo(self,space_id):
+        status,headers,res_data = self.httpClient.generate_backup_for_mongo(space_id)
+        assert status == 200,"[ERROR] HTTP Request is failed"
+        return res_data
+
+    def get_list_of_backup(self,space_id):
+        status,headers,res_data = self.httpClient.get_list_of_backup(space_id)
+        assert status == 200,"[ERROR] HTTP Request is failed"
+        return res_data

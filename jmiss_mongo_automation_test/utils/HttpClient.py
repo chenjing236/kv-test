@@ -31,7 +31,7 @@ class HttpClient(object):
     # cc服务
     def http_request_for_cc(self, action):
         hc = httplib.HTTPConnection(self.cc_host)
-        hc.request(method, "/{0}".format("cc-server", action), data)
+        hc.request(method,"/{0}".format("cc-server", action), data)
         res = hc.getresponse()
         status = res.status
         res_data = json.loads(res.read())
@@ -150,5 +150,12 @@ class HttpClient(object):
     def get_mongo_instance_list(self):
 	return self.http_request("GET", "clusters")
 
+    # 创建备份
+    def generate_backup_for_mongo(self,space_id):
+        return self.http_request("POST","backup/{0}".format(space_id))
+
+    # 获取备份列表
+    def get_list_of_backup(self,space_id):
+        return self.http_request("GET","queryBackups/{0}?startTime=&endTime=&pageNum=1&pageSize=".format(space_id))
     #def stop_container(self):
 	#return self.

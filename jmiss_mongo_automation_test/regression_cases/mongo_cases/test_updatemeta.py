@@ -7,7 +7,7 @@ from BasicTestCase import *
 info_logger = logging.getLogger(__name__)
 
 class TestUpdatemeta:
-    # 修改名称
+    # 修改名称个
     @pytest.mark.smoke
     def test_change_name_of_mongo_instance(self,config, instance_data, http_client, create_mongo_instance):
 	info_logger.info("[SCENARIO] Change the name for the mongo instance")
