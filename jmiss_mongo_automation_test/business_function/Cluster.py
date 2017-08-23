@@ -142,12 +142,12 @@ class Cluster(object):
         return res_data
 
     def get_list_of_backup(self,space_id):
-        status,headers,res_data = self.httpClient.get_list_of_backup(space_id)
+        data = space_id + "?startTime=&endTime=&pageNum=1&pageSize="
+        status,headers,res_data = self.httpClient.get_list_of_backup(data)
         assert status == 200,"[ERROR] HTTP Request is failed"
         return res_data
 
     def get_backup_info(self,mysql_client,operation_id):
         self.init_mysql_client(mysql_client)
-	ins = self.mysql_client.get_backup_info(operation_id)
-        assert ins[0][1] == 3,"[ERROR] The backup info is incompleted"
+        ins = self.mysql_client.get_backup_info(operation_id)
         return ins

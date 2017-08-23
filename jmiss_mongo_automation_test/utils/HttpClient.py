@@ -156,7 +156,7 @@ class HttpClient(object):
         return self.http_request("POST","backup?",json.dumps(data))
 
     # 获取备份列表
-    def get_list_of_backup(self,space_id):
-        return self.http_request("GET","queryBackups/{0}?startTime=&endTime=&pageNum=1&pageSize=".format(space_id))
+    def get_list_of_backup(self,data):
+        return self.http_request("GET","queryBackups/{0}".format(data))
     #def stop_container(self):
 	#return self.
