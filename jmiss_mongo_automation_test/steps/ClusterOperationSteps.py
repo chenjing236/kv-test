@@ -238,6 +238,8 @@ def generate_backup_for_mongo_step(config,instance_data,http_client,space_id):
     return operation_id
 #查看备份列表
 def get_list_of_backup_step(config,instance_data,http_client,space_id):
+    retry_times = int(config["retry_getting_info_times"])
+    wait_time = int(config["wait_time"])
     instance = Cluster(config,instance_data,http_client)
     logger_info.info("[STEP] Get list of backup of mongo instance %s",space_id)
     res_data = instance.get_list_of_backup(space_id)
@@ -248,6 +250,17 @@ def get_list_of_backup_step(config,instance_data,http_client,space_id):
     if None == attach or attach =='':
         logger_info.error("[ERROR] Response of getting list of backup for the instance %s is incorrect", space_id)
         assert False, "[ERROR] Response of getting list of backup for the instance {0} is incorrect".format(space_id)
+    status = attach["items"][0]['status']
+    count = 1
+    while status != 'Finished' and count < retry_times:
+        res_data = instance.get_list_of_backup(space_id)
+        if res_data is None or res_data is "":
+            assert False, "[ERROR] It is failed to get status from detail information of the instance {0}.".format(space_id)
+        attach = res_data["attach"]
+        status = attach["items"][0]['status']
+        print "[INFO] Retry {0} get information of instance. Status of instance is {1}".format(count, status)
+        count += 1
+        time.sleep(wait_time)
     return attach["total"], attach["items"]
 
 #从数据库中查询备份信息
