@@ -9,7 +9,7 @@ info_logger = logging.getLogger(__name__)
 
 class TestBackupManually:
     @pytest.mark.smoke
-    def test_backup_manually(self,config,instance_data,http_client,create_mongo_instance):
+    def test_backup_manually(self,config,instance_data,http_client,mysql_client,create_mongo_instance):
         info_logger.info("[SCENARIO] Generate a backup file for the mongo instance")
         space_id = create_mongo_instance
         #create an instance about mongo

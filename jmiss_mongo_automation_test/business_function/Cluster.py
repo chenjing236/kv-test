@@ -149,5 +149,5 @@ class Cluster(object):
     def get_backup_info(self,mysql_client,operation_id):
         self.init_mysql_client(mysql_client)
 	ins = self.mysql_client.get_backup_info(operation_id)
-        assert ins['status'] == 3,"[ERROR] The backup info is incompleted"
+        assert ins[0][1] == 3,"[ERROR] The backup info is incompleted"
         return ins

@@ -254,5 +254,5 @@ def get_list_of_backup_step(config,instance_data,http_client,space_id):
 def get_backup_info_step(config,instance_data,http_client,mysql_client,operation_id):
     instance = Cluster(config,instance_data,http_client)
     ins = instance.get_backup_info(mysql_client,operation_id)
-    return ins['name']
+    return ins[0][0]
 
