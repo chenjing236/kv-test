@@ -38,3 +38,12 @@ class MysqlClient(object):
         ins = list(self.cursor.fetchall())
         self.close_cursor()
         return ins
+    def get_backup_info(self,operation_id):
+        self.init_cursor()
+        sql = "select name,status from backup where request_id = '{0}'".format(operation_id)
+        n = self.cursor.execute(sql)
+        if n<1:
+            return None
+        ins = list(self.cursor.fetchall())
+        self.close_cursor()
+        return ins

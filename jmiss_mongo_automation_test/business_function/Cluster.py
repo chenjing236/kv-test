@@ -136,7 +136,8 @@ class Cluster(object):
 
     #手动创建备份
     def generate_backup_for_mongo(self,space_id):
-        status,headers,res_data = self.httpClient.generate_backup_for_mongo(space_id)
+        data = {"spaceId": space_id}
+        status,headers,res_data = self.httpClient.generate_backup_for_mongo(data)
         assert status == 200,"[ERROR] HTTP Request is failed"
         return res_data
 
@@ -144,3 +145,9 @@ class Cluster(object):
         status,headers,res_data = self.httpClient.get_list_of_backup(space_id)
         assert status == 200,"[ERROR] HTTP Request is failed"
         return res_data
+
+    def get_backup_info(self,mysql_client,operation_id):
+        self.init_mysql_client(mysql_client)
+	ins = self.mysql_client.get_backup_info(operation_id)
+        assert ins['status'] == 3,"[ERROR] The backup info is incompleted"
+        return ins

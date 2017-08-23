@@ -18,3 +18,6 @@ class TestBackupManually:
         operation_id = generate_backup_for_mongo_step(config,instance_data,http_client,space_id)
         #get list of backup
         backup_list = get_list_of_backup_step(config,instance_data,http_client,space_id)
+        #get the backup of the instance in table backup
+        name = get_backup_info_step(config,instance_data,http_client,mysql_client,operation_id)
+        assert backup_list['backupId'] == name,"[ERROR] The backup in sql is not the same"

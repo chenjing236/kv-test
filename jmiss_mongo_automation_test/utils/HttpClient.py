@@ -151,8 +151,9 @@ class HttpClient(object):
 	return self.http_request("GET", "clusters")
 
     # 创建备份
-    def generate_backup_for_mongo(self,space_id):
-        return self.http_request("POST","backup/{0}".format(space_id))
+    def generate_backup_for_mongo(self,data):
+        #return self.http_request("PUT", "updatemeta/{0}".format(space_id), json.dumps(data))
+        return self.http_request("POST","backup?",json.dumps(data))
 
     # 获取备份列表
     def get_list_of_backup(self,space_id):

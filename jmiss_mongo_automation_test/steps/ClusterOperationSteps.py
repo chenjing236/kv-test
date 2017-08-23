@@ -249,3 +249,10 @@ def get_list_of_backup_step(config,instance_data,http_client,space_id):
         logger_info.error("[ERROR] Response of getting list of backup for the instance %s is incorrect", space_id)
         assert False, "[ERROR] Response of getting list of backup for the instance {0} is incorrect".format(space_id)
     return attach["items"]
+
+#从数据库中查询备份信息
+def get_backup_info_step(config,instance_data,http_client,mysql_client,operation_id):
+    instance = Cluster(config,instance_data,http_client)
+    ins = instance.get_backup_info(mysql_client,operation_id)
+    return ins['name']
+
