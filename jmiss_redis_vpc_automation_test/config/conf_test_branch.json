@@ -1,0 +1,26 @@
+{
+  "version": "v3.0",
+  "host": "192.168.177.88",
+  "port": 80,
+  "pin": "39bb3c95955c10f069f5d5c6d85c879b",
+  "auth_token": "X4DNrPTn6zOMHItY4+SHSc2lMC6tTlgQu+syGS8FnCFmR5eziAeo2SATsRvlJfad",
+  "mysql_host": "192.168.177.87",
+  "mysql_port": 3306,
+  "mysql_user": "jimdb",
+  "mysql_passwd": "jimdbtest",
+  "mysql_db": "jmiss_redis_vpc_test",
+  "cfs_host": "192.168.177.87:6060",
+  "cfs_sign_key":"std-jim-cfs",
+  "retry_getting_topology_from_cfs":"200",
+  "retry_getting_info_times":"30",
+  "retry_times":"3",
+  "wait_time": "5",
+  "cluster_cfg":{
+    "4":4,
+    "16":8,
+    "32":8,
+    "64":8,
+    "128":16,
+    "256":16
+  }
+}

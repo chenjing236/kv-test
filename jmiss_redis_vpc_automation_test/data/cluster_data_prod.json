@@ -1,0 +1,11 @@
+{
+  "spaceName":"jmiss_auto_test_gz",
+  "spaceType":"1",
+  "zoneId":"1",
+  "capacity":"2097152",
+  "quantity":"1",
+  "remarks":"jmiss",
+  "capacity_resize":"3145728",
+  "capacity_reduce":"1048576",
+  "password":"1qaz2WSX"
+}
