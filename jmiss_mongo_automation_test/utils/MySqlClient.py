@@ -47,3 +47,23 @@ class MysqlClient(object):
         ins = list(self.cursor.fetchall())
         self.close_cursor()
         return ins
+
+    '''def get_schedule_time(self,space_id):
+        self.init_cursor()
+        sql = "select schedule_time from backup_task where space_id = '{0}'".format(space_id)
+        n = self.cursor.execute(sql)
+        if n < 1:
+            return None
+        ins = self.cursor.fetchall()
+        self.close_cursor()
+        return ins
+    '''
+    def get_info_of_automated(self,space_id):
+        self.init_cursor()
+        sql = "select begin_time,end_time,schedule_time,modified_time from backup_task where space_id = '{0}'".format(space_id)
+        n = self.cursor.execute(sql)
+        if n < 1:
+            return None
+        ins = list(self.cursor.fetchall())
+        self.close_cursor()
+        return ins

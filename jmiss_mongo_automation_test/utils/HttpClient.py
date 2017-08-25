@@ -158,5 +158,9 @@ class HttpClient(object):
     # 获取备份列表
     def get_list_of_backup(self,data):
         return self.http_request("GET","queryBackups/{0}".format(data))
+
+    #修改备份策略
+    def change_strategy_of_backup(self,data):
+        return self.http_request("POST","modifyBackupPolicy?",json.dumps(data))
     #def stop_container(self):
 	#return self.

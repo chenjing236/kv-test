@@ -151,3 +151,20 @@ class Cluster(object):
         self.init_mysql_client(mysql_client)
         ins = self.mysql_client.get_backup_info(operation_id)
         return ins
+
+    def get_schedule_time(self, mysql_client, space_id):
+        self.init_mysql_client(mysql_client)
+        ins = self.mysql_client.get_info_of_automated(space_id)
+        return ins
+
+    def get_info_of_automated(self,mysql_client, space_id):
+        self.init_mysql_client(mysql_client)
+        ins = self.mysql_client.get_info_of_automated(space_id)
+        return ins
+
+    def change_strategy_of_backup(self, space_id, begin_time, end_time):
+        data = {"spaceId":space_id, "beginTime":begin_time, "endTime":end_time}
+        status,headers,res_data = self.httpClient.change_strategy_of_backup(data)
+        assert status == 200,"[ERROR] HTTP Request is failed"
+        return res_data
+

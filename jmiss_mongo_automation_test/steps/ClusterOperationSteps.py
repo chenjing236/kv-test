@@ -193,14 +193,14 @@ def get_clusters_by_page_step(config, instance_data, http_client, filter_name, p
     res_data = instance.get_clusters_by_page(filter_name, page_size, page_num)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"]).decode('unicode-escape')
-    assert code == 0, "[ERROR] It is failed to get the real time info for the instance {0}, error message is {1}".format(space_id, msg)
+    assert code == 0, "[ERROR] It is failed to get the real time info for the instance {0}, error message is {1}".format(filter_name, msg)
     clusters = res_data["attach"]
     if None == clusters:
-	assert False, "[ERROR] There is no matched mongo instance, and the error message is %s".format(msg)
+	    assert False, "[ERROR] There is no matched mongo instance, and the error message is %s".format(msg)
     return clusters
 
 #获取mongo实例列表信息
-def get_mongo_instance_list_step(config, instance_data, http_client):
+def get_mongo_instance_list_step(config, instance_data, http_client, space_id):
     instance = Cluster(config, instance_data, http_client)
     res_data = instance.get_mongo_instance_list()
     code = res_data["code"]
@@ -210,19 +210,19 @@ def get_mongo_instance_list_step(config, instance_data, http_client):
     if None == clusters:
         assert False, "[ERROR] There is no matched mongo instance, and the error message is %s".format(msg)
     return clusters
-
+"""
 #实例是否在列表中
 def is_mongo_exites_in_mongo_list_step(config, instance_data, http_client, space_id):
     mongo_instance_list = get_mongo_instance_list_step(config, instance_data, http_client)
     if None == mongo_instance_list:
-	assert False, "[ERROR] There is no mongo instance, and the error message is %s".format(msg)
+	    assert False, "[ERROR] There is no mongo instance, and the error message is %s".format(msg)
     is_exited = True
     mongo_list_json = json.dumps(mongo_instance_list)
     if space_id not in mongo_list_json:
-	logger_info.info("[INFO] There is no mongo instance %s in the mongo instance list", space_id)	
-	is_exited = False
+	    logger_info.info("[INFO] There is no mongo instance %s in the mongo instance list", space_id)	
+	    is_exited = False
     return False
-
+"""
 
 #创建备份
 def generate_backup_for_mongo_step(config, instance_data, http_client, space_id):
@@ -282,11 +282,13 @@ def get_list_of_finished_backup_step(config, instance_data, http_client, space_i
     total = attach["total"]
     count = 0
     key = 0
+    #backup_list = []
     for i in range(total):
         status = attach["items"][i]["status"]
         if status == 'Finished':
             count = count + 1
             key = i
+            #backup_list.append(attach["items"][i])
     return count,attach["items"][key]
 
 #从数据库中查询备份信息
@@ -306,4 +308,37 @@ def get_backup_info_step(config, instance_data, http_client, mysql_client, opera
         count += 1
         time.sleep(wait_time)
     return ins
+
+#从数据库中查询schedule_time
+def get_schedule_time_from_backup_task_step(config, instance_data, http_client, mysql_client, space_id):
+    instance = Cluster(config,instance_data,http_client)
+    ins = instance.get_schedule_time(mysql_client,space_id)
+    return ins
+
+def get_info_of_automated_step(config, instance_data, http_client,mysql_client,space_id):
+    instance = Cluster(config, instance_data, http_client)
+    ins = instance.get_info_of_automated(mysql_client,space_id)
+    return ins
+
+#修改备份策略
+def change_strategy_of_backup_step(config, instance_data, http_client,space_id, begin_time, end_time):
+    instance = Cluster(config,instance_data,http_client)
+    logger_info.info("[INFO] Change the mongo %s strategy of backup",space_id)
+    res_data = instance.change_strategy_of_backup(space_id, begin_time,end_time)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode("unicode-escape")
+    assert code == 0,"[ERROR] It is failed to change the strategy of mongo instance {0} /'s backup, error message is {1}".format(space_id,msg)
+
+def get_auto_backup_list_step(config,instance_data,http_client,space_id):
+    instance = Cluster(config, instance_data, http_client)
+    logger_info.info("[STEP] Get list of auto-backup of mongo instance %s", space_id)
+    res_data = instance.get_list_of_backup(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"]).decode('unicode-escape')
+    assert code == 0, "[ERROR] It is failed to get the list of instance {0},error message is {1}".format(space_id, msg)
+    attach = res_data["attach"]
+    if None == attach or attach == '':
+        logger_info.error("[ERROR] Response of getting list of backup for the instance %s is incorrect", space_id)
+        assert False, "[ERROR] Response of getting list of backup for the instance {0} is incorrect".format(space_id)
+    return attach
 
