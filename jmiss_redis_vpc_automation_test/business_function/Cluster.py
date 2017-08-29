@@ -76,21 +76,18 @@ class Cluster(object):
             assert False, "{0}".format(msg)
         shards = attach["shards"][0]
         instances = shards["instances"]
-        instance_a = instances[0]
-        instance_b = instances[1]
-        masterIp_a = instance_a["masterIp"]
-        masterPort_a = instance_a["masterPort"]
-        masterIp = masterIp_a
-        masterPort = masterPort_a
-        slaveIp = instance_a["ip"]
-        slavePort = instance_a["port"]
-        if masterIp_a is None:
-            masterIp = instance_b["masterIp"]
-            masterPort = instance_b["masterPort"]
-            slaveIp = instance_b["ip"]
-            slavePort = instance_b["port"]
-        logger_info.info("[INFO] Master_Ip:Master_Port={0}:{1}, Slave_Ip:Slave_Port={2}:{3}".format(masterIp, masterPort, slaveIp, slavePort))
-        return masterIp, masterPort, slaveIp, slavePort
+        if instances[0]["copyId"] == 'm':
+            masterIp = instances[0]["hostIp"]
+            masterDocker = instances[0]["dockerId"]
+            slaveIp = instances[1]["hostIp"]
+            slaveDocker = instances[1]["dockerId"]
+        else:
+            masterIp = instances[1]["hostIp"]
+            masterDocker = instances[1]["dockerId"]
+            slaveIp = instances[0]["hostIp"]
+            slaveDocker = instances[0]["dockerId"]
+        logger_info.info("[INFO] Master_Info:{0}[{1}], Slave_Info:{2}[{3}]".format(masterIp, masterDocker, slaveIp, slaveDocker))
+        return masterIp, masterDocker, slaveIp, slaveDocker
 
     # 获取缓存云集群的拓扑结构
     def get_topology_of_cluster(self, res_data):
@@ -124,8 +121,8 @@ class Cluster(object):
         return shards_list
 
     # 扩容/缩容缓存云实例
-    def resize_instance(self, space_id, zoneId, capacity):
-        status, headers, res_data = self.httpClient.resize_cluster(space_id, zoneId, capacity)
+    def resize_instance(self, space_id, flavorId):
+        status, headers, res_data = self.httpClient.resize_cluster(space_id, flavorId)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

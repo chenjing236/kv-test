@@ -50,16 +50,16 @@ class CFS:
             return None, None, None, None
         else:
             master = tp['shards'][0]['master']
-            master_ip = master['ip']
-            master_port = master['port']
+            master_ip = master['hostIp']
+            master_docker_id = master['dockerId']
         if 'slaves' not in master or master['slaves'] is None or len(master['slaves']) == 0:
-            slaveIp = None
-            slavePort = None
+            slave_ip = None
+            slave_docker_id= None
         else:
             slave = master['slaves'][0]
-            slaveIp = slave['ip']
-            slavePort = slave['port']
-        return master_ip, master_port, slaveIp, slavePort
+            slave_ip = slave['hostIp']
+            slave_docker_id = slave['dockerId']
+        return master_ip, master_docker_id, slave_ip, slave_docker_id
 
     def get_topology_of_cluster_from_cfs(self, tp):
         shards = []

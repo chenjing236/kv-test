@@ -13,23 +13,22 @@ class TestResizeInstance:
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
         info_logger.info("[INFO] The instance %s is created", space_id)
+        info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
         # 获取原有缓存云实例的capacity
         info_logger.info("[STEP2] Get the memory size of the origin instance %s", space_id)
-        instance_info = get_detail_info_of_instance_step(instance, space_id)
-        capacity_origin = int(instance_info["capacity"])
-        # password = instance_info["password"]
+        detail_info = get_detail_info_of_instance_step(instance, space_id)
+        capacity_origin = int(detail_info["capacity"])
         # 获取拓扑结构
         info_logger.info("[STEP3] Get topology information of instance %s", space_id)
-        masterIp, masterPort, slaveIp, slavePort = get_topology_of_instance_step(instance, space_id)
-        info_logger.info("[INFO] Information of master container is %s:%s", masterIp, masterPort)
-        info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp, slavePort)
-        # 通过master，执行set/get key
-        info_logger.info("[STEP4] Set key to the master container of the instance %s", space_id)
-        is_successful, key, value = access_container_step(masterIp, masterPort, slaveIp, slavePort)
-        assert is_successful is True
-        info_logger.info("[INFO] It is successful to set key to the master of the instance %s", space_id)
+        masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
+        info_logger.info("[INFO] Information of master container is {0}:[{1}]".format(masterIp, masterDocker))
+        info_logger.info("[INFO] Information of slave container is {0}:[{1}]".format(slaveIp, slaveDocker))
         # 执行扩容操作
-        info_logger.info("[STEP5] Resize the instance %s", space_id)
+
+
+
+
+        info_logger.info("[STEP4] Resize the instance %s", space_id)
         cfs_client = CFS(config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_resize"])

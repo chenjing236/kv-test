@@ -1,31 +1,19 @@
 # coding:utf-8
-from utils.DockerClient import *
+# from utils.HttpClient import *
 import logging
 
 logger_info = logging.getLogger(__name__)
 
+
 class Container:
-    def __init__(self, conf_obj):
+    def __init__(self, conf_obj, httpClient):
         self.conf_obj = conf_obj
-        self.docker_client = DockerClient(self.conf_obj)
+        self.http_client = httpClient
 
-    #获取container的memory size
-    def get_memory_size_of_container(self, containerIp, containerPort):
-        if self.docker_client == None:
-            assert False, "[ERROR] Docker client is not initialized"
-        memory_size = long(self.docker_client.get_container_mem_size(containerIp, containerPort)) / 1024
-        return memory_size
-
-    #获取container的创建时间
-    def get_creation_time_of_container(self, containerIp, containerPort):
-        if self.docker_client == None:
-            assert False, "[ERROR] Docker client is not initialized"
-        creation_time = self.docker_client.get_creation_time_of_container(containerIp, containerPort)
-        return creation_time
-
-    #failover master container or failover slave container
-    def stop_container(self, containerIp, containerPort):
-        if self.docker_client == None:
-            assert False, "[ERROR] Docker client is not initialized"
-        is_stopped = self.docker_client.stop_container(containerIp, containerPort)
-        assert is_stopped == True, "Container {0}:{1} is stopped".format(containerIp, containerPort)
+    # 获取container信息，通过nova agent
+    def get_container_info(self, nova_agent_host, container_id):
+        status, headers, res_data = self.http_client.get_container_info(nova_agent_host + ":" + self.conf_obj["nova_agent_port"], container_id)
+        if status == 404:
+            assert False, "[ERROR] The container [{0}] on host [{1}] is not exist!".format(container_id, nova_agent_host)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

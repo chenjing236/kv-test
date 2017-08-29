@@ -9,6 +9,7 @@
   "mysql_user": "jimdb",
   "mysql_passwd": "jimdbtest",
   "mysql_db": "jmiss_redis_vpc_test",
+  "nova_agent_port": "1024",
   "cfs_host": "192.168.177.87:6060",
   "cfs_sign_key":"std-jim-cfs",
   "retry_getting_topology_from_cfs":"200",

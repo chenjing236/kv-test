@@ -115,8 +115,8 @@ def get_topology_of_instance_from_cfs_step(cfs_client, space_id):
     currentTopology = res_data["currentTopology"]
     if currentTopology is None or currentTopology is "":
         assert False, "[ERROR] The information of topology is incorrect from CFS."
-    master_ip, master_port, slaveIp, slavePort = cfs_client.get_topology_from_cfs(currentTopology)
-    return master_ip, master_port, slaveIp, slavePort
+    master_host_ip, master_docker_id, slave_host_ip, slave_docker_id = cfs_client.get_topology_from_cfs(currentTopology)
+    return master_host_ip, master_docker_id, slave_host_ip, slave_docker_id
 
 
 def get_topology_of_cluster_from_cfs_step(cfs_client, space_id):
@@ -192,11 +192,13 @@ def access_container_step(masterIp, masterPort, slaveIp, slavePort):
     return True, key, value
 
 
-def resize_instance_step(instance, space_id, zoneId, capacity, retry_times, wait_time):
+def resize_instance_step(instance, space_id, flavorId):
     # 获取原有epoch
     # res_data_cfs_origin = cfs_client.get_meta(space_id)
     # epoch_origin = res_data_cfs_origin["epoch"]
     # 执行resize扩容操作
+    retry_times = int(instance.conf_obj["retry_getting_info_times"])
+    wait_time = int(instance.conf_obj["wait_time"])
     res_data = instance.resize_instance(space_id, zoneId, capacity)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")

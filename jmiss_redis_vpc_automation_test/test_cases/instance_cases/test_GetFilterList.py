@@ -31,12 +31,13 @@ class TestGetFilterList:
             if c["spaceId"] == space_id:
                 # 验证列表页信息与详情页一致
                 assert c["status"] == cluster_info["status"] and c["name"] == cluster_info["name"] and\
-                        c["spaceType"] == cluster_info["spaceType"] and c["zoneId"] == cluster_info["zoneId"] and\
-                        c["capacity"] == cluster_info["capacity"] and c["domain"] == cluster_info["domain"], "[ERROR] " \
-                        "Info of cluster list is incorrect"
-                info_logger.info("[INFO] Info of cluster list is correct, status={0}, name={1}, spaceType={2}, zoneId={3}, "
-                                 "capacity={4}, domain={5}".format(c["status"], c["name"], c["spaceType"], c["zoneId"],
-                                                                   c["capacity"], c["domain"]))
+                        c["spaceType"] == cluster_info["spaceType"] and c["zone"] == cluster_info["zone"] and\
+                        c["capacity"] * 1024 == cluster_info["capacity"] and c["domain"] == cluster_info["domain"] and\
+                        c["flavorId"] == cluster_info["flavorId"], "[ERROR] Info of cluster list is incorrect"
+                info_logger.info("[INFO] Info of cluster list is correct, status={0}, "
+                                 "name={1}, spaceType={2}, zone={3}, capacity={4}, domain={5}, "
+                                 "flavorId={6}".format(c["status"], c["name"], c["spaceType"],
+                                                       c["zone"], c["capacity"], c["domain"], c["flavorId"]))
                 is_exist = True
         # 列表页不存在此资源时
         assert is_exist is True, "[ERROR] The cluster {0} is not in cluster list".format(space_id)

@@ -23,7 +23,6 @@ class TestGetResourceInfo:
         info_logger.info("[INFO] Status of the instance %s is %s", space_id, status)
         # 查看缓存云监控信息
         info_logger.info("[STEP3] Get resource info of the instance")
-        time.sleep(30)
         resource_info = get_resource_info_step(instance, space_id)
         if resource_info is not None:
             info_logger.info(json.dumps(resource_info, ensure_ascii=False))
@@ -37,13 +36,16 @@ class TestGetResourceInfo:
             info_logger.info("[INFO] API of get resource info is right, but there is no data of resource")
         # 查看缓存云实时信息
         info_logger.info("[STEP4] Get realtime info of the instance")
-        time.sleep(30)
         realtime_info = get_realtime_info_step(instance, space_id)
-        if realtime_info is not None:
-            info_logger.info(json.dumps(realtime_info, ensure_ascii=False))
-            infos = realtime_info["infos"]
-            assert infos[0]["spaceId"] == space_id and infos[0]["memUsed"] >= 0, "[ERROR] The response of get realtime info is error"
-            info_logger.info("[INFO] Get realtime info successfully, memUsed of instance is {0}KB".format(infos[0]["memUsed"]))
-        else:
-            info_logger.info("[INFO] API of get realtime info is right, but there is no data of resource")
+        for i in range(3):
+            if realtime_info is not None:
+                info_logger.info(json.dumps(realtime_info, ensure_ascii=False))
+                infos = realtime_info["infos"]
+                assert infos[0]["spaceId"] == space_id and infos[0]["memUsed"] >= 0, "[ERROR] The response of get realtime info is error"
+                info_logger.info("[INFO] Get realtime info successfully, memUsed of instance is {0} Byte".format(infos[0]["memUsed"]))
+                break
+            else:
+                info_logger.info("[INFO] API of get realtime info is right, but there is no data of resource, wait for a moment")
+                time.sleep(60)
+                realtime_info = get_realtime_info_step(instance, space_id)
         info_logger.info("[INFO] Test get realtime info successfully")

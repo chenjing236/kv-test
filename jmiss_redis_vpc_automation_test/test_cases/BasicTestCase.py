@@ -4,6 +4,7 @@ import pytest
 from utils.HttpClient import *
 from utils.SQLClient import *
 from steps.ClusterOperation import *
+from steps.ContainerOperation import *
 import logging
 import sys
 reload(sys)
@@ -34,11 +35,14 @@ def sql_client(config):
 
 @pytest.fixture(scope="class")
 def created_instance(config, instance_data, http_client, request):
-    info_logger.info("\n[SETUP] Create an instance with a master container and a slave container")
+    info_logger.info("\n[SETUP] Create an instance including a master container and a slave container")
     instance = Cluster(config, instance_data, http_client)
-    space_id, password = create_instance_with_password_step(instance, instance_data["password"])
-    status, capacity = get_status_of_instance_step(instance, space_id, int(config["retry_getting_info_times"]), int(config["wait_time"]))
-    assert status == 100, "[ERROR] Instance {0} is unavailable".format(space_id)
+    space_id, operation_id, password = create_instance_step(instance)
+    info_logger.info("[INFO] The instance {0} is created, its password is {1}".format(space_id, password))
+    # 查看创建操作结果，验证创建成功
+    info_logger.info("[INFO] Get creation result of the instance %s", space_id)
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, "[INFO] Get the right operation result, create instance successfully"
 
     def teardown():
         info_logger.info("\n[TEARDOWN] Delete the instance %s", space_id)

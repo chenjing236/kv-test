@@ -31,6 +31,16 @@ class HttpClient(object):
         hc.close()
         return status, headers, res_data
 
+    def http_request_for_nova_agent(self, nova_agent_host, method, uri, data=None):
+        hc = httplib.HTTPConnection(nova_agent_host)
+        hc.request(method, "/{0}".format(uri), data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close()
+        return status, headers, res_data
+
     # 创建缓存云实例 create
     def create_cluster(self, create_args):
         data = to_json_string(create_args)
@@ -55,8 +65,8 @@ class HttpClient(object):
         return self.http_request("PUT", "acl?requestId={0}".format(request_id), json.dumps(acl))
 
     # 扩容/缩容操作 resize
-    def resize_cluster(self, space_id, zoneId, capacity):
-        data = {"zoneId": zoneId, "capacity": capacity}
+    def resize_cluster(self, space_id, flavorId):
+        data = {"flavorId": flavorId}
         request_id = uuid_for_request_id()
         return self.http_request("PUT", "resize/{0}?requestId={1}".format(space_id, request_id), json.dumps(data))
 
@@ -119,6 +129,11 @@ class HttpClient(object):
         return self.http_request("GET", "resourceinfo/{0}?period={1}&frequency={2}&requestId={3}".format(space_id, period, frequency, request_id))
 
     # rebuild upgrade spaceId
+    def rebuild_upgrade(self, space_id):
+        request_id = uuid_for_request_id()
+        data = {"srcSpaceId": space_id}
+        return self.http_request("PUT", "upgrade?requestId={0}".format(request_id), json.dumps(data))
+
     # rebuild repair spaceId
     def rebuild_repair(self, space_id):
         request_id = uuid_for_request_id()
@@ -130,3 +145,7 @@ class HttpClient(object):
         request_id = uuid_for_request_id()
         data = to_json_string(clone_args)
         return self.http_request("POST", "clone?requestId={0}".format(request_id), data)
+
+    # get nova docker info
+    def get_container_info(self, nova_agent_host, container_id):
+        return self.http_request_for_nova_agent(nova_agent_host, "GET", "container/stats?name=nova-{0}".format(container_id))
