@@ -17,3 +17,15 @@ class Container:
             assert False, "[ERROR] The container [{0}] on host [{1}] is not exist!".format(container_id, nova_agent_host)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # 删除nova docker
+    def delete_nova_docker(self, container_id):
+        status = self.http_client.delete_nova_docker(container_id)
+        assert status == 204, "[ERROR] HTTP Request of nova docker is failed"
+        return True
+
+    # stop nova docker
+    def stop_nova_docker(self, container_id):
+        status = self.http_client.stop_nova_docker(container_id)
+        assert status == 202, "[ERROR] HTTP Request of nova docker is failed"
+        return True

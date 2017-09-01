@@ -15,11 +15,14 @@ def to_json_string(args):
 
 
 class HttpClient(object):
-    def __init__(self, host, md5_pin, auth_token, version):
+    def __init__(self, host, md5_pin, auth_token, version, tenant_id, nova_docker_host, nova_docker_token):
         self.host = host
         self.md5_pin = md5_pin
         self.auth_token = auth_token
         self.version = version
+        self.tenant_id = tenant_id
+        self.nova_docker_host = nova_docker_host
+        self.nova_docker_token = nova_docker_token
 
     def http_request(self, method, uri, data=None):
         hc = httplib.HTTPConnection(self.host)
@@ -40,6 +43,17 @@ class HttpClient(object):
         headers = res.getheaders()
         hc.close()
         return status, headers, res_data
+
+    def http_request_for_nova_docker(self, method, uri, data=None):
+        hc = httplib.HTTPConnection(self.nova_docker_host)
+        hc.request(method, "/v2.1/{0}/servers/{1}".format(self.tenant_id, uri), data,
+                   {"X-auth-Token": self.nova_docker_token, "User-Agent": "python-novaclient", "X-OpenStack-Nova-API-Version": 2.5})
+        res = hc.getresponse()
+        status = res.status
+        hc.close()
+        return status
+
+    # JMISS接口
 
     # 创建缓存云实例 create
     def create_cluster(self, create_args):
@@ -146,6 +160,29 @@ class HttpClient(object):
         data = to_json_string(clone_args)
         return self.http_request("POST", "clone?requestId={0}".format(request_id), data)
 
+    # query flavorId by config
+    def query_flavor_id_by_config(self, flavor):
+        request_id = uuid_for_request_id()
+        return self.http_request("GET", "flavorid?cpu={0}&disk={1}&memory={2}&maxConn{3}&net={4}&requestId={5}"
+                                 .format(flavor["cpu"], flavor["disk"], flavor["memory"], flavor["maxConn"],
+                                         flavor["net"], request_id))
+
+    # query config by flavorId
+    def query_config_by_flavor_id(self, flavor_id):
+        request_id = uuid_for_request_id()
+        return self.http_request("GET", "flavordetail/{0}?requestId={1}".format(flavor_id, request_id))
+
+    # NOVA 接口
+
     # get nova docker info
     def get_container_info(self, nova_agent_host, container_id):
         return self.http_request_for_nova_agent(nova_agent_host, "GET", "container/stats?name=nova-{0}".format(container_id))
+
+    # delete nova docker
+    def delete_nova_docker(self, container_id):
+        return self.http_request_for_nova_docker("DELETE", container_id)
+
+    # stop nova docker
+    def stop_nova_docker(self, container_id):
+        data = {"pause": None}
+        return self.http_request_for_nova_docker("POST", container_id, json.dumps(data))

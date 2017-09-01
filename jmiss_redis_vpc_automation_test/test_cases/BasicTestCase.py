@@ -15,7 +15,8 @@ info_logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope="class")
 def http_client(config):
-    http_client = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"])
+    http_client = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"],
+                             config["tenant_id"], config["nova_docker_host"], config["nova_docker_token"])
     return http_client
 
 
@@ -35,7 +36,8 @@ def sql_client(config):
 
 @pytest.fixture(scope="class")
 def created_instance(config, instance_data, http_client, request):
-    info_logger.info("\n[SETUP] Create an instance including a master container and a slave container")
+    print "\n"
+    info_logger.info("[SETUP] Create an instance including a master container and a slave container")
     instance = Cluster(config, instance_data, http_client)
     space_id, operation_id, password = create_instance_step(instance)
     info_logger.info("[INFO] The instance {0} is created, its password is {1}".format(space_id, password))
@@ -45,7 +47,8 @@ def created_instance(config, instance_data, http_client, request):
     assert is_success is True, "[INFO] Get the right operation result, create instance successfully"
 
     def teardown():
-        info_logger.info("\n[TEARDOWN] Delete the instance %s", space_id)
+        print "\n"
+        info_logger.info("[TEARDOWN] Delete the instance %s", space_id)
         instance.delete_instance(space_id)
 
     request.addfinalizer(teardown)

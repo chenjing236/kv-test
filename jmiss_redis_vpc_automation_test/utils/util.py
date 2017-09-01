@@ -1,16 +1,20 @@
-#coding:utf-8
+# coding:utf-8
 import socket
 import array
 import struct
 import fcntl
-import sys,os
+import sys, os
 import platform
+import hashlib
+import base64
+
 
 def format_ip(addr):
     return str(ord(addr[0])) + '.' + \
            str(ord(addr[1])) + '.' + \
            str(ord(addr[2])) + '.' + \
            str(ord(addr[3]))
+
 
 def all_interfaces():
     max_possible = 128  # arbitrary. raise if needed.
@@ -30,7 +34,8 @@ def all_interfaces():
         ni_dict[name] = format_ip(ip)
     return ni_dict
 
-#获取本地IP
+
+# 获取本地IP
 def get_local_ip():
     if platform.system() == 'Darwin' or platform.system() == 'Windows':
         return "192.168.162.16"
@@ -53,7 +58,8 @@ def get_local_ip():
         local_ip = ip_192
     return local_ip
 
-#获取当前文件的绝对路径
+
+# 获取当前文件的绝对路径
 def cur_file_dir():
     path = sys.path[0]
     if os.path.isdir(path):
@@ -61,3 +67,11 @@ def cur_file_dir():
     elif os.path.isfile(path):
         return os.path.dirname(path)
 
+
+# jmiss-web密码加密
+def get_md5_pwd(password):
+    m = hashlib.md5()
+    m.update(password)
+    pwd_md5 = m.digest()
+    pwd_base64 = base64.b64encode(pwd_md5)
+    return pwd_base64

@@ -9,6 +9,7 @@ class TestCreateInstance:
     # 创建单实例缓存云实例，通过查询接口验证创建缓存云实例的正确性
     @pytest.mark.createInstance
     def test_create_instance(self, config, instance_data, http_client):
+        print "\n"
         info_logger.info("[SCENARIO] Create an instance including a master container and a slave container")
         instance = Cluster(config, instance_data, http_client)
         # 创建缓存云实例
@@ -29,14 +30,14 @@ class TestCreateInstance:
         # 查看缓存云实例详情，获取拓扑结构
         info_logger.info("[STEP4] Get topology information of instance")
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
-        info_logger.info("[INFO] Information of master container is {0}:[{1}]".format(masterIp, masterDocker))
-        info_logger.info("[INFO] Information of slave container is {0}:[{1}]".format(slaveIp, slaveDocker))
+        info_logger.info("[INFO] Information of master container is {0}: [{1}]".format(masterIp, masterDocker))
+        info_logger.info("[INFO] Information of slave container is {0}: [{1}]".format(slaveIp, slaveDocker))
         # 获取CFS的拓扑结构
         info_logger.info("[STEP5] Get topology information of instance from CFS")
         cfs_client = CFS(config)
         masterIp_cfs, masterDocker_cfs, slaveIp_cfs, slaveDocker_cfs = get_topology_of_instance_from_cfs_step(cfs_client, space_id)
-        info_logger.info("[INFO] Information of master container is {0}:[{1}]".format(masterIp_cfs, masterDocker_cfs))
-        info_logger.info("[INFO] Information of slave container is {0}:[{1}]".format(slaveIp_cfs, slaveDocker_cfs))
+        info_logger.info("[INFO] Information of master container is {0}: [{1}]".format(masterIp_cfs, masterDocker_cfs))
+        info_logger.info("[INFO] Information of slave container is {0}: [{1}]".format(slaveIp_cfs, slaveDocker_cfs))
         assert masterIp == masterIp_cfs, "[ERROR] Ip of master container is inconsistent"
         assert masterDocker == masterDocker_cfs, "[ERROR] Docker_id of master container is inconsistent"
         assert slaveIp == slaveIp_cfs, "[ERROR] Ip of slave container is inconsistent"

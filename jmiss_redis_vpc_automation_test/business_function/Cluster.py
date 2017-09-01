@@ -86,7 +86,6 @@ class Cluster(object):
             masterDocker = instances[1]["dockerId"]
             slaveIp = instances[0]["hostIp"]
             slaveDocker = instances[0]["dockerId"]
-        logger_info.info("[INFO] Master_Info:{0}[{1}], Slave_Info:{2}[{3}]".format(masterIp, masterDocker, slaveIp, slaveDocker))
         return masterIp, masterDocker, slaveIp, slaveDocker
 
     # 获取缓存云集群的拓扑结构
@@ -186,6 +185,12 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # rebuild-upgrade
+    def rebuild_upgrade_instance(self, space_id):
+        status, headers, res_data = self.httpClient.rebuild_upgrade(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
     # rebuild-repair
     def rebuild_repair_instance(self, space_id):
         status, headers, res_data = self.httpClient.rebuild_repair(space_id)
@@ -198,5 +203,17 @@ class Cluster(object):
         create_args = CreateArgs(data)
         args_json = create_args.get_args_json()
         status, headers, res_data = self.httpClient.rebuild_clone(args_json)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # query flavorId by config
+    def query_flavor_id_by_config(self, flavor):
+        status, headers, res_data = self.httpClient.query_flavor_id_by_config(flavor)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # query config by flavorId
+    def query_config_by_flavor_id(self, flavor_id):
+        status, headers, res_data = self.httpClient.query_config_by_flavor_id(flavor_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data

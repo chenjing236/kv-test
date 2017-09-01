@@ -18,3 +18,13 @@ def get_container_info_step(container, nova_agent_host, container_id):
         assert False, "[ERROR] Response of get_container_info is incorrect for the container {0}".format(container_id)
     return res_data["memInfo"]
 
+
+# 调用nova接口删除nova docker
+def delete_nova_docker_step(container, container_id):
+    return container.delete_nova_docker(container_id)
+
+
+# 调用nova接口stop nova docker
+def stop_nova_docker_step(container, container_id):
+    return container.stop_nova_docker(container_id)
+
