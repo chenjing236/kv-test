@@ -15,7 +15,14 @@ class RedisCap(object):
     def create_instance(self):
         create_data = self.instance_data["create_cache_cluster"]
         common_data = self.instance_data["common_data"]
-        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"], "spaceName": create_data["spaceName"], "spaceType": create_data["spaceType"], "capacity": create_data["capacity"], "quantity": create_data["quantity"], "remarks": create_data["remarks"], "password": create_data["password"], "feeType": create_data["feeType"]}
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
+                "spaceName": create_data["spaceName"], "spaceType": create_data["spaceType"],
+                "quantity": create_data["quantity"], "remarks": create_data["remarks"],
+                "password": create_data["password"], "itemType": create_data["itemType"],
+                "networkOperator": create_data["networkOperator"], "chargeMode": create_data["chargeMode"],
+                "chargeDuration": create_data["chargeDuration"], "chargeUnit": create_data["chargeUnit"],
+                "promotionType": create_data["promotionType"], "memory": create_data["memory"],
+                "source": create_data["source"]}
         status, headers, res_data = self.httpClient.create_cache_cluster(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
@@ -30,6 +37,22 @@ class RedisCap(object):
                 "remarks": create_data["remarks"], "password": create_data["password"],
                 "feeType": create_data["feeType_month"]}
         status, headers, res_data = self.httpClient.create_cache_cluster(data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    #创建包年包月缓存云实例，跳过支付页面
+    def create_month_instance_skip_pay(self):
+        create_data = self.instance_data["create_cache_cluster"]
+        common_data = self.instance_data["common_data"]
+        data = {"dataCenter": common_data["dataCenter"], "user": common_data["user"], "account": common_data["account"],
+                "spaceName": create_data["spaceName"], "spaceType": create_data["spaceType"],
+                "quantity": create_data["quantity"],"remarks": create_data["remarks"],
+                "password": create_data["password"],"itemType":create_data["itemType"],
+                "networkOperator":create_data["networkOperator"],"chargeMode":create_data["chargeMode"],
+                "chargeDuration":create_data["chargeDuration"],"chargeUnit":create_data["chargeUnit"],
+                "promotionType":create_data["promotionType"],"memory":create_data["memory"],
+                "source":create_data["source"]}
+        status, headers, res_data = self.httpClient.create_cache_cluster_skip_pay(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

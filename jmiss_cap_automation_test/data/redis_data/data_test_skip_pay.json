@@ -1,0 +1,38 @@
+{
+    "create_cache_cluster":{
+      "spaceName":"test",
+      "spaceType":"1",
+      "capacity":"2",
+      "resize_capacity":"3",
+      "reduce_capacity":"1",
+      "quantity":"1",
+      "remarks":"",
+      "password":"1qaz2WSX",
+      "itemType":"1",
+      "networkOperator":"2",
+      "chargeMode":"1",
+      "chargeDuration":"0",
+      "chargeUnit":"1",
+      "promotionType":"1",
+      "memory":"1",
+      "source":"API",
+      "feeType":"1",
+      "feeType_month":"601"
+    },
+  "operation_data":{
+    "sourceAuth": "4beeffb694500d149761258d78682a4d",
+    "requestSource": "operation",
+    "resourceType": "cache"
+  },
+  "common_data":{
+    "dataCenter":"bj_02",
+    "user":"huancun",
+	"account":"huancun"
+  },
+  "redis_coupon_info":{
+    "serviceCode":"redis",
+    "feeType":1,
+    "discountId": null,
+    "discountValue": null
+  }
+}
