@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from BasicTestCase import *
+from utils.HttpClient import RedisCapClient, CapClient
 
 logger_info = logging.getLogger(__name__)
 
@@ -146,8 +147,8 @@ class APIStabilityCase:
 
 
 def main():
-    conf_file = './config/redis_config/config_hawkeye.json'
-    instance_file = './data/redis_data/data_hawkeye.json'
+    conf_file = '../../config/redis_config/config_hawkeye.json'
+    instance_file = '../../data/redis_data/data_hawkeye.json'
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
@@ -158,7 +159,6 @@ def main():
     cap_http_client = CapClient(config["host"])
     smoke = APIStabilityCase(config, instance_data, redis_http_client, cap_http_client)
     smoke.run_smoke()
-
 if __name__ == "__main__":
     try:
         main()

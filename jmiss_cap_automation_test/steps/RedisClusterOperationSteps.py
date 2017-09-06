@@ -30,13 +30,13 @@ def create_redis_month_instance_step(redis_cap):
     return request_id
 
 #创建包年包月缓存云实例，创建借口返回request_id
-def create_redis_instance_skip_pay_step(redis_cap):
-    res_data = redis_cap.create_month_instance_skip_pay()
+def create_redis_month_instance_with_new_payment_step(redis_cap):
+    res_data = redis_cap.create_month_instance_with_new_payment()
     request_id = res_data["requestId"]
     if "code" in res_data:
         error_msg = res_data["message"]
-        logger_info.error("[ERROR] It is failed to create a month redis [%s], error message is [%s]", request_id,error_msg)
-        assert False, "[ERROR] It is failed to create a month redis {0}, error message is {1}".format(request_id,error_msg)
+        logger_info.error("[ERROR] It is failed to create a month redis [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to create a month redis {0}, error message is {1}".format(request_id, error_msg)
     return request_id
 
 # 查询云缓存实例详情

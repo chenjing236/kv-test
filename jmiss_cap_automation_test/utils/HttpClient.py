@@ -30,7 +30,7 @@ class RedisCapClient(object):
         return self.http_request("POST", "cache?action=createCacheCluster", json.dumps(args))
 
     #创建云缓存实例，跳过支付页面
-    def create_cache_cluster_skip_pay(self,args):
+    def create_cache_cluster_with_new_payment(self, args):
         return self.http_request("POST", "cache?action=createCacheCluster", json.dumps(args))
 
     # 更新云缓存基本信息
