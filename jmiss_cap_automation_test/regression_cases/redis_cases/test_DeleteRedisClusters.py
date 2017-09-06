@@ -14,8 +14,8 @@ class TestDeleteCacheClusters:
         info_logger.info("[STEP] Create the first redis instance")
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 支付
-        info_logger.info("[STEP] Pay for the create order of redis instance")
-        pay_for_redis_instance_step(cap, request_id_for_redis)
+        #info_logger.info("[STEP] Pay for the create order of redis instance")
+        #pay_for_redis_instance_step(cap, request_id_for_redis)
         # 查询订单状态
         info_logger.info("[STEP] Query order status, check the status of order")
         success, resource_id = query_order_status_step(cap, request_id_for_redis)
@@ -29,8 +29,8 @@ class TestDeleteCacheClusters:
         info_logger.info("[Scenario] Create the second redis instance")
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 支付
-        info_logger.info("[STEP] Pay for the create order of redis instance")
-        pay_for_redis_instance_step(cap, request_id_for_redis)
+        #info_logger.info("[STEP] Pay for the create order of redis instance")
+        #pay_for_redis_instance_step(cap, request_id_for_redis)
         # 查询订单状态
         info_logger.info("[STEP] Query order status, check the status of order")
         success, resource_id_2 = query_order_status_step(cap, request_id_for_redis)

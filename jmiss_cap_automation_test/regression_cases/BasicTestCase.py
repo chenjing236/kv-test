@@ -46,8 +46,8 @@ def create_redis_month_instance(config, instance_data, redis_http_client, cap_ht
     info_logger.info("[STEP] Create an instance for redis, the instance consists of a master and a slave")
     request_id_for_redis = create_redis_month_instance_step(redis_cap)
     # 支付
-    info_logger.info("[STEP] Pay for the create order of redis instance")
-    request_id_for_paying_redis = pay_for_redis_instance_step(cap, request_id_for_redis)
+    #info_logger.info("[STEP] Pay for the create order of redis instance")
+    #request_id_for_paying_redis = pay_for_redis_instance_step(cap, request_id_for_redis)
     # 查询订单状态
     info_logger.info("[STEP] Query order status, check the status of order")
     success, resource_id = query_order_status_step(cap, request_id_for_redis)
