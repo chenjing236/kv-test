@@ -25,7 +25,7 @@ class TestSmokeCasesForRedisCap:
             info_logger.info("[Scenario]queryFilterCacheClusters result with no filter:{0}".format(cluster))
 
         # 调用过滤条件查询列表接口，添加过滤条件status=100，feeType=1，filterName，验证返回列表包含按配置实例1
-        filter_data = {"filterStatus": "100", "category": "1","filterName": "test"}
+        filter_data = {"filterStatus": "100", "category": "1", "filterName": "test"}
         clusters = query_filter_cache_clusters_step(redis_cap, filter_data)
         info_logger.info("[Scenario] queryFilterCacheClusters result:{0}".format(json.dumps(clusters)))
         for cluster in clusters:
@@ -34,7 +34,7 @@ class TestSmokeCasesForRedisCap:
             assert cluster["billingOrder"]["chargeMode"] == 1, "[ERROR] QueryFilterCacheCluster use filter category=6 is incorrect"
 
         # 调用过滤条件查询列表接口，添加过滤条件status=100，feeType=6，filterName，验证返回列表包含包年包月实例2
-        filter_data = {"filterStatus": "100", "category": "3", "filterName": "test"}
+        filter_data = {"filterStatus": "100",  "category": "3", "filterName": "test"}
         clusters = query_filter_cache_clusters_step(redis_cap, filter_data)
         info_logger.info("[Scenario] queryFilterCacheClusters result:{0}".format(json.dumps(clusters)))
         for cluster in clusters:

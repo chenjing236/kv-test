@@ -3,7 +3,7 @@
 from BasicTestCase import *
 
 
-class TestUpdateRedis:
+class TestOperationStopResource:
 
     @pytest.mark.smoke
     def test_stop_resource(self, create_redis_instance):

@@ -184,7 +184,8 @@ def delete_no_overdue_resource_step(redis_cap, cluster_id):
 def stop_resource_step(redis_cap, cluster_id):
     res_data = redis_cap.stop_resource(cluster_id)
     request_id = res_data["requestId"]
-    code = res_data["code"]
+    print res_data
+    #code = res_data["code"]
     if "code" in res_data:
         error_msg = res_data["message"]
         logger_info.error("[ERROR] It is failed to stop resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)

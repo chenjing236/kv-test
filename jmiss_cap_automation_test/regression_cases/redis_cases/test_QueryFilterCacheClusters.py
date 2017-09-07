@@ -21,21 +21,21 @@ class TestQueryFilterCacheClusters :
 
 
         # 调用过滤条件查询列表接口，添加过滤条件status=100，feeType=1，filterName，验证返回列表包含按配置实例1
-        filter_data = {"filterStatus":"100","category":"1","filterName":"cap_auto_test"}
+        filter_data = {"filterStatus":"100", "category": "1", "filterName":"test"}
         clusters = query_filter_cache_clusters_step(redis_cap, filter_data)
         info_logger.info("[Scenario] queryFilterCacheClusters result:{0}".format(json.dumps(clusters)))
         for cluster in clusters:
             info_logger.info("[Scenario] queryFilterCacheClusters result:{0}".format(json.dumps(cluster)))
-            assert "cap_auto_test" in cluster["name"], "[ERROR] QueryFilterCacheClusters use filter category=1 is incorrect!"
-            assert cluster["billingOrder"]["category"] == 1, "[ERROR] QueryFilterCacheCluster use filter category=6 is incorrect"
+            assert "test" in cluster["name"], "[ERROR] QueryFilterCacheClusters use filter category=1 is incorrect!"
+            assert cluster["billingOrder"]["chargeMode"] == 1, "[ERROR] QueryFilterCacheCluster use filter category=6 is incorrect"
 
         # 调用过滤条件查询列表接口，添加过滤条件status=100，feeType=6，filterName，验证返回列表包含包年包月实例2
-        filter_data = {"filterStatus":"100","category":"6","filterName":"cap_auto_test"}
+        filter_data = {"filterStatus":"100", "category": "3", "filterName":"test"}
         clusters = query_filter_cache_clusters_step(redis_cap, filter_data)
         info_logger.info("[Scenario] queryFilterCacheClusters result:{0}".format(json.dumps(clusters)))
         for cluster in clusters:
-            assert ("cap_auto_test") in cluster["name"], "[ERROR] QueryFilterCacheClusters use filter category=6 is correct!"
-            assert cluster["billingOrder"]["category"] == 6, "[ERROR] QueryFilterCacheCluster use filter category=6 is incorrect"
+            assert ("test") in cluster["name"], "[ERROR] QueryFilterCacheClusters use filter category=6 is correct!"
+            assert cluster["billingOrder"]["chargeMode"] == 3, "[ERROR] QueryFilterCacheCluster use filter category=6 is incorrect"
 
         info_logger.info("[INFO] Test query filter cacheClusters successfully!")
 
