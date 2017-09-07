@@ -1,6 +1,7 @@
 {
     "create_cache_cluster":{
       "spaceName":"test",
+      "spaceName0": "hawkeye_auto_test",
       "spaceType":"1",
       "capacity":"2",
       "resize_capacity":"3",

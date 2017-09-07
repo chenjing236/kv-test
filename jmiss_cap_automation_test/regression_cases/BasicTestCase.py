@@ -29,11 +29,13 @@ def create_redis_instance(config, instance_data, redis_http_client, cap_http_cli
     billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
     assert cluster["status"] == 100, "[ERROR] The status of redis cluster is not 100!"
     #tear down 删除redis实例
+
     def teardown():
         info_logger.info("[TEARDOWN] Delete the redis instance %s", resource_id)
         delete_redis_instance_step(redis_cap, resource_id)
 
     request.addfinalizer(teardown)
+
     return redis_cap, cap, request_id_for_redis, resource_id
 
 

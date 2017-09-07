@@ -145,7 +145,6 @@ class RedisCap(object):
                 "promotionType": create_data["promotionType"], "memory": memory,
                 "cacheClusterId": cluster_id}
         status, headers, res_data = self.httpClient.modify_cache_cluster(data)
-        print status
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

@@ -8,7 +8,13 @@ from steps.RedisClusterOperationSteps import create_redis_month_instance_with_ne
 logger_info = logging.getLogger(__name__)
 
 # 创建redis实例
-def create_an_instance_with_new_payment(redis_cap,cap):
+def create_an_instance_with_NP(redis_cap,cap):
+    def __init__(self, config, instance_data, redis_http_client, cap_http_client):
+        self.config = config
+        self.instance_data = instance_data
+        self.redis_http_client = redis_http_client
+        self.cap_http_client = cap_http_client
+
     # 创建redis实例
     info_logger.info("[STEP] Create an instance for redis, the instance consists of a master and a slave")
     request_id_for_redis = create_redis_instance_step(redis_cap)

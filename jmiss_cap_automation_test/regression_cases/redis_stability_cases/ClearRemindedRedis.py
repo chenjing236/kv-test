@@ -13,4 +13,4 @@ def clear_reminded_redis(redis_cap, instance_data):
         for cluster in clusters:
             delete_redis_instance_step(redis_cap, cluster["spaceId"])
             time.sleep(2)
-    logger_info.info("[STEP] Clear Reminded Redis have Finished!")
+    # logger_info.info("[STEP] Clear Reminded Redis have Finished!")
