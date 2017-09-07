@@ -180,10 +180,8 @@ class APIStabilityCase:
 
 
 def main():
-    #conf_file = './config/redis_config/config_hawkeye.json'
-    #instance_file = './data/redis_data/data_hawkeye.json'
-    conf_file = './config/redis_config/config_test.json'
-    instance_file = './data/redis_data/data_test_with_new_payment.json'
+    conf_file = './config/redis_config/config_hawkeye.json'
+    instance_file = './data/redis_data/data_hawkeye.json'
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
