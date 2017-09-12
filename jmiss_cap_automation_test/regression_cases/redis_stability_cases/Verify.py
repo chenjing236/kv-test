@@ -4,7 +4,7 @@ from BasicTestCase import *
 
 logger_info = logging.getLogger(__name__)
 
-def verufy(clusters, cluster_info, resource_id):
+def verify(clusters, cluster_info, resource_id):
     for cluster in clusters:
         assert cluster["status"] != 102, "[ERROR] There is a cluster which status equals 102 in the cluster list"
         if cluster["spaceId"] == resource_id:
