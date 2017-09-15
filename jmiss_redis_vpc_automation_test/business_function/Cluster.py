@@ -90,32 +90,25 @@ class Cluster(object):
 
     # 获取缓存云集群的拓扑结构
     def get_topology_of_cluster(self, res_data):
-        capa = int(self.data_obj["capacity"]) / 1024 / 1024
-        shardNum = self.conf_obj["cluster_cfg"][str(capa)]
-        logger_info.info("[INFO] The count of shards of cluster is {0}".format(shardNum))
         msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("utf-8")
         attach = res_data["attach"]
         if attach is None or attach is "":
             assert False, "{0}".format(msg)
         shards = attach["shards"]
         shards_list = []
-        for i in range(0, shardNum):
+        for i in range(0, len(shards)):
             instances = shards[i]["instances"]
-            instance_a = instances[0]
-            instance_b = instances[1]
-            # print "[INFO] Info of instance is {0}".format(instances)
-            masterIp_a = instance_a["masterIp"]
-            masterPort_a = instance_a["masterPort"]
-            masterIp = masterIp_a
-            masterPort = masterPort_a
-            slaveIp = instance_a["ip"]
-            slavePort = instance_a["port"]
-            if masterIp_a is None:
-                masterIp = instance_b["masterIp"]
-                masterPort = instance_b["masterPort"]
-                slaveIp = instance_b["ip"]
-                slavePort = instance_b["port"]
-            shard = {"masterIp": masterIp, "masterPort": masterPort, "slaveIp": slaveIp, "slavePort": slavePort}
+            if instances[0]["copyId"] == 'm':
+                masterIp = instances[0]["hostIp"]
+                masterDocker = instances[0]["dockerId"]
+                slaveIp = instances[1]["hostIp"]
+                slaveDocker = instances[1]["dockerId"]
+            else:
+                masterIp = instances[1]["hostIp"]
+                masterDocker = instances[1]["dockerId"]
+                slaveIp = instances[0]["hostIp"]
+                slaveDocker = instances[0]["dockerId"]
+            shard = {"masterIp": masterIp, "masterDocker": masterDocker, "slaveIp": slaveIp, "slaveDocker": slaveDocker}
             shards_list.append(shard)
         return shards_list
 

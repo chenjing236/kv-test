@@ -100,11 +100,11 @@ def get_topology_of_instance_step(instance, space_id):
     return masterIp, masterPort, slaveIp, slavePort
 
 
-def get_topology_of_cluster_step(instance, space_id):
-    res_data = instance.get_instance_info(space_id)
+def get_topology_of_cluster_step(cluster, space_id):
+    res_data = cluster.get_instance_info(space_id)
     if res_data is None or res_data is "":
         assert False, "[ERROR] Cannot get detail information of the instance {0}".format(space_id)
-    shards = instance.get_topology_of_cluster(res_data, space_id)
+    shards = cluster.get_topology_of_cluster(res_data)
     return shards
 
 

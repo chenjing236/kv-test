@@ -31,7 +31,7 @@ class TestGetList:
                 # 验证列表页信息与详情页一致
                 assert c["status"] == cluster_info["status"] and c["name"] == cluster_info["name"] and \
                         c["spaceType"] == cluster_info["spaceType"] and c["zone"] == cluster_info["zone"] and \
-                        c["capacity"] * 1024 == cluster_info["capacity"] and c["domain"] == cluster_info["domain"] and \
+                        c["capacity"] == cluster_info["capacity"] and c["domain"] == cluster_info["domain"] and \
                         c["flavorId"] == cluster_info["flavorId"], "[ERROR] Info of cluster list is incorrect"
                 info_logger.info("[INFO] Info of cluster list is correct, status={0}, "
                                  "name={1}, spaceType={2}, zone={3}, capacity={4}, domain={5}, "

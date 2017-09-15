@@ -13,10 +13,9 @@ def get_timestr():
 
 
 class CFS:
-    def __init__(self, conf_obj, capacity='16777216'):
+    def __init__(self, conf_obj):
         self.cfs_host = conf_obj["cfs_host"]
         self.sign_key = conf_obj["cfs_sign_key"]
-        self.shard_count = conf_obj["cluster_cfg"][str(int(capacity) / 1024 / 1024)]
 
     def http_request(self, method, uri, data=None, headers=None):
         if headers is None:
@@ -49,8 +48,7 @@ class CFS:
             return None
         return res_data['data']
 
-    @staticmethod
-    def get_topology_from_cfs(tp):
+    def get_topology_from_cfs(self, tp):
         if 'shards' not in tp or tp['shards'] is None or len(tp['shards']) == 0 or 'master' not in tp['shards'][0]:
             return None, None, None, None
         else:
@@ -67,21 +65,22 @@ class CFS:
         return master_ip, master_docker_id, slave_ip, slave_docker_id
 
     def get_topology_of_cluster_from_cfs(self, tp):
+        shard_count = len(tp['shards'])
         shards = []
-        for i in range(0, self.shard_count):
+        for i in range(0, shard_count):
             if 'shards' not in tp or tp['shards'] is None or len(tp['shards']) == 0 or 'master' not in tp['shards'][i]:
                 return None
             else:
                 master = tp['shards'][i]['master']
-                master_ip = master['ip']
-                master_port = master['port']
+                master_ip = master['hostIp']
+                master_docker_id = master['dockerId']
             if 'slaves' not in master or master['slaves'] is None or len(master['slaves']) == 0:
                 slave_ip = None
-                slave_port = None
+                slave_docker_id = None
             else:
                 slave = master['slaves'][0]
-                slave_ip = slave['ip']
-                slave_port = slave['port']
-            shard = {"masterIp": master_ip, "masterPort": master_port, "slaveIp": slave_ip, "slavePort": slave_port}
+                slave_ip = slave['hostIp']
+                slave_docker_id = slave['dockerId']
+            shard = {"masterIp": master_ip, "masterDocker": master_docker_id, "slaveIp": slave_ip, "slaveDocker": slave_docker_id}
             shards.append(shard)
         return shards

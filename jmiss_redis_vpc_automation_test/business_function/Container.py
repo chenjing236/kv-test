@@ -21,7 +21,7 @@ class Container:
     # 删除nova docker
     def delete_nova_docker(self, container_id):
         status = self.http_client.delete_nova_docker(container_id)
-        assert status == 204, "[ERROR] HTTP Request of nova docker is failed"
+        assert status == 204, "[ERROR] HTTP Request of nova docker is failed, response is {0}".format(status)
         return True
 
     # stop nova docker

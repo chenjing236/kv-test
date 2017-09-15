@@ -47,8 +47,8 @@ class TestCreateInstance:
         container = Container(config, http_client)
         mem_info_master = get_container_info_step(container, masterIp, masterDocker)
         mem_info_slave = get_container_info_step(container, slaveIp, slaveDocker)
-        assert mem_info_master["total"] == capacity, "[ERROR] Memory size of master container is inconsistent with request"
-        assert mem_info_slave["total"] == capacity, "[ERROR] Memory size of slave container is inconsistent with request"
+        assert mem_info_master["total"] == capacity * 1024, "[ERROR] Memory size of master container is inconsistent with request"
+        assert mem_info_slave["total"] == capacity * 1024, "[ERROR] Memory size of slave container is inconsistent with request"
         info_logger.info("[INFO] Memory size of master and slave container is {0}".format(capacity))
         # 删除缓存云实例
         info_logger.info("[STEP7] Delete the instance {0}".format(space_id))
