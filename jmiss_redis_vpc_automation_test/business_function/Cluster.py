@@ -118,24 +118,6 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
-    # 设置ACL访问规则
-    def set_acl(self, space_id, ips):
-        status, headers, res_data = self.httpClient.set_acl(space_id, ips)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
-
-    # 获取ACL访问规则
-    def get_acl(self, space_id):
-        status, headers, res_data = self.httpClient.get_acl(space_id)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
-
-    # set system acl
-    def set_system_acl(self, space_id, enable):
-        status, headers, res_data = self.httpClient.set_system_acl(space_id, enable)
-        assert status == 200, "[ERROR] HTTP Request is failed"
-        return res_data
-
     # reset password
     def reset_password(self, space_id, password):
         status, headers, res_data = self.httpClient.reset_password(space_id, password)

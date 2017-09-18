@@ -11,7 +11,7 @@ class TestResetPassword:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create a cluster with a set of master and slave containers")
         space_id, instance, password_default = created_instance
-        info_logger.info("[INFO] The cluster %s is created, the password is %s", space_id, password_default)
+        info_logger.info("[INFO] The cluster {0} is created, the password is {1}".format(space_id, password_default))
         # 通过AP访问缓存云实例，输入auth默认token,可以正常访问
 
         # run reset password

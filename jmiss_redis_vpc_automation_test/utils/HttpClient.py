@@ -14,15 +14,56 @@ def to_json_string(args):
     return json.dumps(args)
 
 
+def get_nova_token(nova_token_host, user):
+    name = user + "@jcloud.com"
+    data = {
+        "auth": {
+            "identity": {
+                "methods": [
+                    "password"
+                ],
+                "password": {
+                    "user": {
+                        "domain": {
+                            "name": "default"
+                        },
+                        "name": name,
+                        "password": name
+                    }
+                }
+            },
+            "scope": {
+                "project": {
+                    "domain": {
+                        "name": "default"
+                    },
+                    "name": name
+                }
+            }
+        }
+    }
+    hc = httplib.HTTPConnection(nova_token_host)
+    hc.request("POST", "/v3/auth/tokens", to_json_string(data))
+    res = hc.getresponse()
+    status = res.status
+    assert status == 201, "[ERROR] Http Request for getting nova token is failed"
+    x_subject_token = res.getheader('x-subject-token')
+    if x_subject_token is None:
+        assert False, "[ERROR] Nova x-subject-token is none!"
+    hc.close()
+    return x_subject_token
+
+
 class HttpClient(object):
-    def __init__(self, host, md5_pin, auth_token, version, tenant_id, nova_docker_host, nova_docker_token):
+    def __init__(self, host, md5_pin, auth_token, version, tenant_id, nova_docker_host, nova_token_host, user):
         self.host = host
         self.md5_pin = md5_pin
         self.auth_token = auth_token
         self.version = version
         self.tenant_id = tenant_id
         self.nova_docker_host = nova_docker_host
-        self.nova_docker_token = nova_docker_token
+        self.nova_token_host = nova_token_host
+        self.user = user
 
     def http_request(self, method, uri, data=None):
         hc = httplib.HTTPConnection(self.host)
@@ -45,9 +86,10 @@ class HttpClient(object):
         return status, headers, res_data
 
     def http_request_for_nova_docker(self, method, uri, data=None):
+        nova_token = get_nova_token(self.nova_token_host, self.user)
         hc = httplib.HTTPConnection(self.nova_docker_host)
         hc.request(method, "/v2.1/{0}/servers/{1}".format(self.tenant_id, uri), data,
-                   {"X-auth-Token": self.nova_docker_token, "User-Agent": "python-novaclient", "X-OpenStack-Nova-API-Version": 2.5})
+                   {"X-auth-Token": nova_token, "User-Agent": "python-novaclient", "X-OpenStack-Nova-API-Version": 2.5})
         res = hc.getresponse()
         status = res.status
         hc.close()

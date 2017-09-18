@@ -15,11 +15,11 @@ class TestCreateCluster:
         space_id, operation_id, password = create_instance_step(cluster)
         info_logger.info("[INFO] The cluster {0} is created, its password is {1}".format(space_id, password))
         # 查看创建操作结果，验证创建成功
-        info_logger.info("[STEP2] Get creation result of the cluster %s", space_id)
+        info_logger.info("[STEP2] Get creation result of the cluster {0}".format(space_id))
         is_success = get_operation_result_step(cluster, space_id, operation_id)
         assert is_success is True, "[INFO] Get the right operation result, create cluster successfully"
         # 查看缓存云实例详细信息
-        info_logger.info("[STEP3] Get detail info of the instance %s", space_id)
+        info_logger.info("[STEP3] Get detail info of the instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(cluster, space_id)
         assert detail_info["status"] == 100, "[ERROR] The cluster status is not 100!"
         assert detail_info["zone"] != 'clsdocker', "[ERROR] The cluster zone is clsdocker!"

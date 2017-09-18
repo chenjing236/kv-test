@@ -12,8 +12,8 @@ class TestFailoverCluster:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create a cluster with a set of master container and a slave container")
         space_id, cluster, password = created_instance
-        info_logger.info("[INFO] The cluster %s is created", space_id)
-        info_logger.info("[INFO] The password of the cluster %s is %s", space_id, password)
+        info_logger.info("[INFO] The cluster {0} is created".format(space_id))
+        info_logger.info("[INFO] The password of the cluster {0} is {1}".format(space_id, password))
         # 获取拓扑结构
         info_logger.info("[STEP2] Get topology information of cluster {0}".format(space_id))
         shards = get_topology_of_cluster_step(cluster, space_id)
@@ -46,8 +46,8 @@ class TestFailoverCluster:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create a cluster with a set of slave container and a slave container")
         space_id, cluster, password = created_instance
-        info_logger.info("[INFO] The cluster %s is created", space_id)
-        info_logger.info("[INFO] The password of the cluster %s is %s", space_id, password)
+        info_logger.info("[INFO] The cluster {0} is created".format(space_id))
+        info_logger.info("[INFO] The password of the cluster {0} is {1}".format(space_id, password))
         # 获取拓扑结构
         info_logger.info("[STEP2] Get topology information of cluster {0}".format(space_id))
         shards = get_topology_of_cluster_step(cluster, space_id)

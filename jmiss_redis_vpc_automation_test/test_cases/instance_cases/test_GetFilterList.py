@@ -13,13 +13,13 @@ class TestGetFilterList:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
         info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
         # 查看缓存云实例详细信息
-        info_logger.info("[STEP2] Get detailed information of the instance %s", space_id)
+        info_logger.info("[STEP2] Get detailed information of the instance {0}".format(space_id))
         cluster_info = get_detail_info_of_instance_step(instance, space_id)
         status = cluster_info["status"]
-        info_logger.info("[INFO] Status of the instance %s is %s", space_id, status)
+        info_logger.info("[INFO] Status of the instance {0} is {1}".format(space_id, status))
         # 根据过滤条件查询缓存云实例列表
         info_logger.info("[STEP3] Get filter list information of instance")
         attach = get_filter_clusters_step(instance)

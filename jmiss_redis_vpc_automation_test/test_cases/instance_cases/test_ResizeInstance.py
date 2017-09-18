@@ -8,19 +8,19 @@ class TestResizeInstance:
 
     @pytest.mark.resizeinstance
     def test_resize_instance(self, config, instance_data, created_instance, http_client):
-        info_logger.info("[SCENARIO] Start to resize instance")
+        info_logger.info("[SCENARIO] Start to resize an instance")
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
         info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
         # 获取原有缓存云实例的flavor
-        info_logger.info("[STEP2] Get the flavor of the origin instance %s", space_id)
+        info_logger.info("[STEP2] Get the flavor of the origin instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         flavor_id = detail_info["flavorId"]
         info_logger.info("[INFO] The flavorId of the origin instance is [{}]".format(flavor_id))
         # 执行扩容操作
-        info_logger.info("[STEP3] Resize the instance %s", space_id)
+        info_logger.info("[STEP3] Resize the instance {0}".format(space_id))
         flavor_id_resize = instance_data["flavorIdResize"]
         status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_resize)
         # 验证扩容操作后的规格
@@ -33,7 +33,7 @@ class TestResizeInstance:
         flavor = query_config_by_flavor_id_step(instance, flavor_id_new)
         capacity = flavor["memory"]
         # 获取拓扑结构
-        info_logger.info("[STEP4] Get topology information of instance %s after resize", space_id)
+        info_logger.info("[STEP4] Get topology information of instance {0} after resize".format(space_id))
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         info_logger.info("[INFO] Information of master container is {0}:[{1}]".format(masterIp, masterDocker))
         info_logger.info("[INFO] Information of slave container is {0}:[{1}]".format(slaveIp, slaveDocker))
@@ -54,15 +54,15 @@ class TestResizeInstance:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
         info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
         # 获取原有缓存云实例的flavor
-        info_logger.info("[STEP2] Get the memory size of the origin instance %s", space_id)
+        info_logger.info("[STEP2] Get the memory size of the origin instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         flavor_id = detail_info["flavorId"]
         info_logger.info("[INFO] The flavorId of the origin instance is [{}]".format(flavor_id))
         # 执行缩容操作
-        info_logger.info("[STEP3] Reduce the instance %s", space_id)
+        info_logger.info("[STEP3] Reduce the instance {0}".format(space_id))
         flavor_id_reduce = instance_data["flavorIdReduce"]
         status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_reduce)
         # 验证扩容操作后的规格

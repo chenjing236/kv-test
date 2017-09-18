@@ -16,11 +16,11 @@ class TestSmokeCases:
         space_id, operation_id, password = create_instance_step(instance)
         info_logger.info("[INFO] The instance {0} is created, its password is {1}".format(space_id, password))
         # 查看创建操作结果，验证创建成功
-        info_logger.info("[STEP2] Get creation result of the instance %s", space_id)
+        info_logger.info("[STEP2] Get creation result of the instance {0}".format(space_id))
         is_success = get_operation_result_step(instance, space_id, operation_id)
         assert is_success is True, "[INFO] Get the right operation result, create instance successfully"
         # 查看redis详情，验证缓存云实例状态，status=100创建成功
-        info_logger.info("[STEP3] Get detail info of the instance %s", space_id)
+        info_logger.info("[STEP3] Get detail info of the instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         assert detail_info["status"] == 100, "[ERROR] The cluster status is not 100!"
         assert detail_info["zone"] != 'clsdocker', "[ERROR] The cluster zone is clsdocker!"
@@ -64,15 +64,15 @@ class TestSmokeCases:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
         info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
         # 获取原有缓存云实例的flavor
-        info_logger.info("[STEP2] Get the flavor of the origin instance %s", space_id)
+        info_logger.info("[STEP2] Get the flavor of the origin instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         flavor_id = detail_info["flavorId"]
         info_logger.info("[INFO] The flavorId of the origin instance is [{}]".format(flavor_id))
         # 执行扩容操作
-        info_logger.info("[STEP3] Resize the instance %s", space_id)
+        info_logger.info("[STEP3] Resize the instance {0}".format(space_id))
         flavor_id_resize = instance_data["flavorIdResize"]
         status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_resize)
         # 验证扩容操作后的规格
@@ -85,7 +85,7 @@ class TestSmokeCases:
         flavor = query_config_by_flavor_id_step(instance, flavor_id_new)
         capacity = flavor["memory"]
         # 获取拓扑结构
-        info_logger.info("[STEP4] Get topology information of instance %s after resize", space_id)
+        info_logger.info("[STEP4] Get topology information of instance {0} after resize".format(space_id))
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         info_logger.info("[INFO] Information of master container is {0}:[{1}]".format(masterIp, masterDocker))
         info_logger.info("[INFO] Information of slave container is {0}:[{1}]".format(slaveIp, slaveDocker))
@@ -106,15 +106,15 @@ class TestSmokeCases:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
         info_logger.info("[INFO] The password of instance {0} is {1}".format(space_id, password))
         # 获取原有缓存云实例的flavor
-        info_logger.info("[STEP2] Get the memory size of the origin instance %s", space_id)
+        info_logger.info("[STEP2] Get the memory size of the origin instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         flavor_id = detail_info["flavorId"]
         info_logger.info("[INFO] The flavorId of the origin instance is [{}]".format(flavor_id))
         # 执行缩容操作
-        info_logger.info("[STEP3] Reduce the instance %s", space_id)
+        info_logger.info("[STEP3] Reduce the instance {0}".format(space_id))
         flavor_id_reduce = instance_data["flavorIdReduce"]
         status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_reduce)
         # 验证扩容操作后的规格
@@ -148,10 +148,10 @@ class TestSmokeCases:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
-        info_logger.info("[INFO] The password of the instance %s is %s", space_id, password)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
+        info_logger.info("[INFO] The password of the instance {0} is {1}".format(space_id, password))
         # 获取拓扑结构
-        info_logger.info("[STEP2] Get topology information of the instance %s", space_id)
+        info_logger.info("[STEP2] Get topology information of the instance {0}".format(space_id))
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         info_logger.info("[INFO] Information of master container is {0}: [{1}]".format(masterIp, masterDocker))
         info_logger.info("[INFO] Information of slave container is {0}: [{1}]".format(slaveIp, slaveDocker))
@@ -180,10 +180,10 @@ class TestSmokeCases:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create an instance with a master container and a slave container")
         space_id, instance, password = created_instance
-        info_logger.info("[INFO] The instance %s is created", space_id)
-        info_logger.info("[INFO] The password of the instance %s is %s", space_id, password)
+        info_logger.info("[INFO] The instance {0} is created".format(space_id))
+        info_logger.info("[INFO] The password of the instance {0} is {1}".format(space_id, password))
         # 获取拓扑结构
-        info_logger.info("[STEP2] Get topology information of the instance %s", space_id)
+        info_logger.info("[STEP2] Get topology information of the instance {0}".format(space_id))
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         info_logger.info("[INFO] Information of master container is {0}: [{1}]".format(masterIp, masterDocker))
         info_logger.info("[INFO] Information of slave container is {0}: [{1}]".format(slaveIp, slaveDocker))
@@ -212,7 +212,7 @@ class TestSmokeCases:
         # 创建缓存云实例，创建成功
         info_logger.info("[STEP1] Create a cluster with a set of master and slave containers")
         space_id, cluster, password_default = created_instance
-        info_logger.info("[INFO] The cluster %s is created, the password is %s", space_id, password_default)
+        info_logger.info("[INFO] The cluster {0} is created, the password is {1}".format(space_id, password_default))
         # 通过AP访问缓存云实例，输入auth默认token,可以正常访问
 
         # run reset password
