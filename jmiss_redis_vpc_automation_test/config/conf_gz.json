@@ -1,0 +1,16 @@
+{
+  "version": "v3.0",
+  "host": "jmiss-redis-prod-gz.jcloud.com",
+  "port": 80,
+  "user": "jcloudiaas2",
+  "pin": "cab6260cdc0734c940ddf719612c6614",
+  "auth_token": "953ClsHhMASQ8IF0zPx4290A9RQAcJqxdp10iSZ26BWgI6eALaicucvMJZFrqNBS",
+  "nova_agent_port": "1024",
+  "nova_docker_host": "172.27.51.50:8774",
+  "nova_token_host": "172.27.51.50:35357",
+  "cfs_host": "172.27.31.127:6060",
+  "cfs_sign_key":"std-jim-cfs",
+  "retry_getting_topology_from_cfs": 200,
+  "retry_getting_info_times": 60,
+  "wait_time": 5
+}

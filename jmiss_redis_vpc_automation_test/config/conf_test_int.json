@@ -1,0 +1,17 @@
+{
+  "version": "v3.0",
+  "host": "192.168.172.68",
+  "port": 80,
+  "user": "JaneCloud007",
+  "pin": "39bb3c95955c10f069f5d5c6d85c879b",
+  "auth_token": "X4DNrPTn6zOMHItY4+SHSc2lMC6tTlgQu+syGS8FnCFmR5eziAeo2SATsRvlJfad",
+  "tenant_id": "b7ea7adbb9d740dbb762a871515d6e40",
+  "nova_agent_port": "1024",
+  "nova_docker_host": "192.168.178.128:8774",
+  "nova_token_host": "192.168.178.128:35357",
+  "cfs_host": "192.168.171.39:6060",
+  "cfs_sign_key": "std-jim-cfs",
+  "retry_getting_topology_from_cfs": 200,
+  "retry_getting_info_times": 60,
+  "wait_time": 5
+}
