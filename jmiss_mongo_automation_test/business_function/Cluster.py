@@ -61,7 +61,7 @@ class Cluster(object):
     def create_mongo_instance_with_password(self, password, vpc_id, subnetId):
         #一个mongo实例包括一个primary container，一个secondary container，一个hidden container
         spaceType = 1
-        data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId": data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
+        data = {"vpcId": vpc_id, "subnetId": subnetId,"flavorId": self.data_obj["flavorId"],"password": self.data_obj["password"],"spaceType": spaceType,"dbVersion": self.data_obj["dbVersion"],"osUserInfo": self.data_obj["osUserInfo"]}
         return self.create_mongo_instance_with_param(data)
 
     #创建mongo实例，指定flavor_id和password
@@ -115,7 +115,7 @@ class Cluster(object):
 
     #获取监控信息
     def get_monitor_info(self, space_id):
-	#data="period={0}m&frequency={1}m&role={2}".format(self.data_obj["monitor_param"]["period"], self.data_obj["monitor_param"]["frequency"], self.data_obj["monitor_param"]["role"])
+	    #data="period={0}m&frequency={1}m&role={2}".format(self.data_obj["monitor_param"]["period"], self.data_obj["monitor_param"]["frequency"], self.data_obj["monitor_param"]["role"])
 	data = space_id + "?period=15m&frequency=1m&role=primary"
         status, headers, res_data = self.httpClient.get_monitor_info(space_id, data)
         assert status == 200, "[ERROR] HTTP Request is failed"
@@ -133,3 +133,38 @@ class Cluster(object):
         status, headers, res_data = self.httpClient.get_mongo_instance_list()
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    #手动创建备份
+    def generate_backup_for_mongo(self,space_id):
+        data = {"spaceId": space_id}
+        status,headers,res_data = self.httpClient.generate_backup_for_mongo(data)
+        assert status == 200,"[ERROR] HTTP Request is failed"
+        return res_data
+
+    def get_list_of_backup(self,space_id):
+        data = space_id + "?startTime=&endTime=&pageNum=1&pageSize="
+        status,headers,res_data = self.httpClient.get_list_of_backup(data)
+        assert status == 200,"[ERROR] HTTP Request is failed"
+        return res_data
+
+    def get_backup_info(self,mysql_client,operation_id):
+        self.init_mysql_client(mysql_client)
+        ins = self.mysql_client.get_backup_info(operation_id)
+        return ins
+
+    def get_schedule_time(self, mysql_client, space_id):
+        self.init_mysql_client(mysql_client)
+        ins = self.mysql_client.get_info_of_automated(space_id)
+        return ins
+
+    def get_info_of_automated(self,mysql_client, space_id):
+        self.init_mysql_client(mysql_client)
+        ins = self.mysql_client.get_info_of_automated(space_id)
+        return ins
+
+    def change_strategy_of_backup(self, space_id, begin_time, end_time):
+        data = {"spaceId":space_id, "beginTime":begin_time, "endTime":end_time}
+        status,headers,res_data = self.httpClient.change_strategy_of_backup(data)
+        assert status == 200,"[ERROR] HTTP Request is failed"
+        return res_data
+
