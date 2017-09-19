@@ -1,6 +1,7 @@
 {
     "create_cache_cluster":{
-      "spaceName":"hawkeye_auto_test",
+      "spaceName":"test",
+      "spaceName0": "hawkeye_auto_test",
       "spaceType":"1",
       "capacity":"2",
       "resize_capacity":"3",
@@ -31,13 +32,13 @@
   },
   "common_data":{
     "dataCenter":"bj_02",
-    "user":"iaas-ops",
-	"account":"iaas-ops"
+	"account":"huancun",
+    "user":"huancun"
   },
   "redis_coupon_info":{
     "serviceCode":"redis",
     "feeType":1,
-    "discountId": 266,
-    "discountValue": 0
+    "discountId": null,
+    "discountValue": null
   }
 }

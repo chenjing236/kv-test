@@ -21,17 +21,16 @@ class TestResizeMonthRedis:
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
         capacity = int(cluster["capacity"])
         # 查询升降配尾款账单余额
-        info_logger.info("[STEP] Query redis resize final payment")
-        final_payment_price = query_config_redis_final_payment_step(cap, resource_id)
-        assert final_payment_price == capacity * 3.28, "[ERROR] The final payment price is wrong!"
-        info_logger.info(
-            "[INFO] Check redis resize final payment price successfully, the price is {0}".format(final_payment_price))
+        #info_logger.info("[STEP] Query redis resize final payment")
+        #final_payment_price = query_config_redis_final_payment_step(cap, resource_id)
+        #assert final_payment_price == capacity * 3.28, "[ERROR] The final payment price is wrong!"
+        #info_logger.info("[INFO] Check redis resize final payment price successfully, the price is {0}".format(final_payment_price))
         # 调用扩容接口(is_resize 1:resize,0:reduce)
         info_logger.info("[STEP] Resize redis cluster")
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 1)
         # 调用支付接口
-        info_logger.info("[STEP] Pay for resize order")
-        pay_for_redis_instance_step(cap, request_id_resize)
+        #info_logger.info("[STEP] Pay for resize order")
+        #pay_for_redis_instance_step(cap, request_id_resize)
         # 查询订单状态，验证扩容成功
         info_logger.info("[STEP] Query resize order status until resize over")
         success, resource_id = query_order_status_step(cap, request_id_resize)
@@ -55,17 +54,16 @@ class TestResizeMonthRedis:
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
         capacity = int(cluster["capacity"])
         # 查询升降配尾款账单余额
-        info_logger.info("[STEP] Query redis reduce final payment")
-        final_payment_price = query_config_redis_final_payment_step(cap, resource_id)
-        assert final_payment_price == capacity * 3.28, "[ERROR] The final payment price is wrong!"
-        info_logger.info(
-            "[INFO] Check redis reduce final payment price successfully, the price is {0}".format(final_payment_price))
+        #info_logger.info("[STEP] Query redis reduce final payment")
+        #final_payment_price = query_config_redis_final_payment_step(cap, resource_id)
+        #assert final_payment_price == capacity * 3.28, "[ERROR] The final payment price is wrong!"
+        #info_logger.info("[INFO] Check redis reduce final payment price successfully, the price is {0}".format(final_payment_price))
         # 调用扩容接口(is_resize 1:resize,0:reduce)
         info_logger.info("[STEP] Reduce redis cluster")
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 0)
         # 调用支付接口
-        info_logger.info("[STEP] Pay for reduce order")
-        pay_for_redis_instance_step(cap, request_id_resize)
+        #info_logger.info("[STEP] Pay for reduce order")
+        #pay_for_redis_instance_step(cap, request_id_resize)
         # 查询订单状态，验证扩容成功
         info_logger.info("[STEP] Query reduce order status until resize over")
         success, resource_id = query_order_status_step(cap, request_id_resize)

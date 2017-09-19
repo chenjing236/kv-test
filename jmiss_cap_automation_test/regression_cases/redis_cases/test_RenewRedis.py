@@ -17,8 +17,8 @@ class TestRenewRedis:
         info_logger.info("[STEP] Create an instance for redis, the instance consists of a master and a slave")
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 支付
-        info_logger.info("[STEP] Pay for the create order of redis instance")
-        pay_for_redis_instance_step(cap, request_id_for_redis)
+        #info_logger.info("[STEP] Pay for the create order of redis instance")
+        #pay_for_redis_instance_step(cap, request_id_for_redis)
         # 查询订单状态
         info_logger.info("[STEP] Query order status, check the status of order")
         success, resource_id = query_order_status_step(cap, request_id_for_redis)
@@ -46,8 +46,8 @@ class TestRenewRedis:
         info_logger.info("[STEP] Renew for the redis instance")
         request_id_renew = renew_billing_orders_step(cap, resource_id, 601)
         # 调用支付接口进行支付
-        info_logger.info("[STEP] Pay for the renew order of the redis instance")
-        pay_for_redis_instance_step(cap, request_id_renew)
+        #info_logger.info("[STEP] Pay for the renew order of the redis instance")
+        #pay_for_redis_instance_step(cap, request_id_renew)
         # 查询订单状态，验证续费成功
         info_logger.info("[STEP] Query order status until renew over")
         success, resource_id = query_order_status_step(cap, request_id_renew)
@@ -93,8 +93,8 @@ class TestRenewRedis:
         info_logger.info("[STEP] Renew for the redis instance")
         request_id_renew = renew_billing_orders_step(cap, resource_id, 601)
         # 调用支付接口进行支付
-        info_logger.info("[STEP] Pay for the renew order of the redis instance")
-        pay_for_redis_instance_step(cap, request_id_renew)
+        #info_logger.info("[STEP] Pay for the renew order of the redis instance")
+        #pay_for_redis_instance_step(cap, request_id_renew)
         # 查询订单状态，验证续费成功
         info_logger.info("[STEP] Query order status until renew over")
         success, resource_id = query_order_status_step(cap, request_id_renew)

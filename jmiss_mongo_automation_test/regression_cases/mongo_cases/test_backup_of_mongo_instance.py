@@ -77,7 +77,7 @@ class TestBackupManually:
         #查看第一个备份是否被删除
         assert first_backup["backupId"] != name[0],"[ERROR] The first backup is not deleted"
 
-   
+
 
     @pytest.mark.somke
     def test_auto_backup(self,config, instance_data, http_client, mysql_client, create_mongo_instance):

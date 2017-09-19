@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from BasicTestCase import *
+from utils.HttpClient import RedisCapClient, CapClient
+import time
 
 logger_info = logging.getLogger(__name__)
 
@@ -12,24 +14,23 @@ class APIStabilityCase:
         self.redis_http_client = redis_http_client
         self.cap_http_client = cap_http_client
         self.result = ["create.reason", "get_detail.reason", "get_list.reason", "update.reason",
-                       "resize.reason", "reduce.reason",
-                       "realtime.reason", "delete.reason"]
+                       "resize.reason", "reduce.reason", "delete.reason"]
         self.result_error = ["create_error", "get_detail_error", "get_list_error", "update_error",
-                             "resize_error", "reduce_error", "realtime_error", "delete_error"]
+                             "resize_error", "reduce_error", "delete_error"]
         self.index = 0
         self.resource_id = ""
-
+    '''
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
         try:
             time.sleep(5)  # 创建失败情况等待中间层回滚
             delete_redis_instance_step(self.redis_cap, self.resource_id)
             # 如果删除前执行失败了，teardown时index还会加1，不准确
-            if self.index == 7:
+            if self.index == 6:
                 self.index += 1
         except Exception as e:
             # 删除请求失败的情况
-            self.index = 7
+            self.index = 6
         # self.index += 1
         i = 0
         while i < len(self.result):
@@ -39,7 +40,34 @@ class APIStabilityCase:
                 print self.result[i] + ":0"
             i += 1
         # 输出总的监控项，正确为"0"，错误为"error_step"
-        if self.index == 8:
+        if self.index == 7:
+            print "stab.redis.status:\"0\""
+        else:
+            print "stab.redis.status:\"{0}\"".format(self.result_error[self.index])
+    '''
+
+    def __del__(self):
+        # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
+        try:
+            time.sleep(5)  # 创建失败情况等待中间层回滚
+            if self.index != 0:
+                delete_redis_instance_step(self.redis_cap, self.resource_id)
+                # 如果删除执行成功，teardown时index还会加1，不准确
+                if self.index == 6:
+                    self.index += 1
+        except Exception as e:
+            # 删除前请求失败的情况
+            self.index = 6
+        # self.index += 1
+        i = 0
+        while i < len(self.result):
+            if i == self.index:
+                print self.result[i] + ":1"
+            else:
+                print self.result[i] + ":0"
+            i += 1
+        # 输出总的监控项，正确为"0"，错误为"error_step"
+        if self.index == 7:
             print "stab.redis.status:\"0\""
         else:
             print "stab.redis.status:\"{0}\"".format(self.result_error[self.index])
@@ -50,18 +78,19 @@ class APIStabilityCase:
         self.redis_cap = redis_cap
         cap = Cap(self.config, self.instance_data, self.cap_http_client)
         # 清除残留redis实例
-        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "filterSpaceType": 1})
+        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "filterSpaceType": 1, "category": "1"})
+        # print clusters
         if clusters is not None:
             for cluster in clusters:
                 delete_redis_instance_step(self.redis_cap, cluster["spaceId"])
                 time.sleep(2)
-
         # 创建redis实例
         # print "[STEP] Create an instance for redis, the instance consists of a master and a slave"
         request_id_for_redis = create_redis_instance_step(redis_cap)
+        # print request_id_for_redis
         # 支付
         # print "[STEP] Pay for the create order of redis instance"
-        pay_for_redis_instance_step(cap, request_id_for_redis, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
+        # pay_for_redis_instance_step(cap, request_id_for_redis, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态
         # print "[STEP] Query order status, check the status of order"
         success, resource_id = query_order_status_step(cap, request_id_for_redis)
@@ -75,7 +104,9 @@ class APIStabilityCase:
         # print "success"
         self.index += 1
 
+
         # 查询详情列表
+        # print "[STEP] Query redis instance detail list"
         clusters = query_filter_cache_clusters_step(redis_cap, {})
         for cluster in clusters:
             assert cluster["status"] != 102, "[ERROR] There is a cluster which status equals 102 in the cluster list"
@@ -92,6 +123,7 @@ class APIStabilityCase:
         self.index += 1
 
         # 更新实例信息
+        # print "[STEP] Update info"
         space_name_update = self.instance_data["create_cache_cluster"]["spaceName"] + "_name_update"
         remarks_update = "remarks_update"
         mark = "updatebaseinfo"
@@ -102,24 +134,25 @@ class APIStabilityCase:
         self.index += 1
 
         # 扩容
+        # print "[STEP] resize big"
         time.sleep(60)  # 等待一分钟，避免计费超时
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 1)
-        pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
+        #pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态，验证扩容成功
         info_logger.info("[STEP] Query resize order status until resize over")
         success, resource_id = query_order_status_step(cap, request_id_resize)
         assert success == 1, "[ERROR] Redis resize failed!"
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
-        assert cluster["status"] == 100 and cluster["capacity"] == int(
-            self.instance_data["create_cache_cluster"]["resize_capacity"]), "[ERROR] The info of redis resized is wrong!"
+        assert cluster["status"] == 100 and cluster["capacity"] == int(self.instance_data["create_cache_cluster"]["resize_capacity"]), "[ERROR] The info of redis resized is wrong!"
         self.index += 1
 
         # 缩容
+        # print "[STEP] reduce"
         time.sleep(60)  # 等待一分钟，避免计费超时
         request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 0)
         # 调用支付接口
-        info_logger.info("[STEP] Pay for reduce order")
-        pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
+        # info_logger.info("[STEP] Pay for reduce order")
+        # pay_for_redis_instance_step(cap, request_id_resize, self.instance_data["redis_coupon_info"]["discountId"], self.instance_data["redis_coupon_info"]["discountValue"])
         # 查询订单状态，验证扩容成功
         info_logger.info("[STEP] Query reduce order status until resize over")
         success, resource_id = query_order_status_step(cap, request_id_resize)
@@ -127,10 +160,10 @@ class APIStabilityCase:
         # 查询资源详情，验证扩容信息正确
         info_logger.info("[STEP] Query redis cluster detail, check the redis info")
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
-        assert cluster["status"] == 100 and cluster["capacity"] == int(
-            self.instance_data["create_cache_cluster"]["reduce_capacity"]), "[ERROR] The info of redis reduced is wrong!"
+        assert cluster["status"] == 100 and cluster["capacity"] == int(self.instance_data["create_cache_cluster"]["reduce_capacity"]), "[ERROR] The info of redis reduced is wrong!"
         self.index += 1
 
+        '''
         # realtime info
         request_id_realtime, infos = real_time_info_cache_cluster_step(redis_cap, resource_id)
         # print infos
@@ -143,6 +176,7 @@ class APIStabilityCase:
                 break
         assert infos[0]["spaceId"] == resource_id
         self.index += 1
+        '''
 
 
 def main():
@@ -158,7 +192,6 @@ def main():
     cap_http_client = CapClient(config["host"])
     smoke = APIStabilityCase(config, instance_data, redis_http_client, cap_http_client)
     smoke.run_smoke()
-
 if __name__ == "__main__":
     try:
         main()

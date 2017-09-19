@@ -14,8 +14,8 @@ class TestDeleteCacheClusters:
         info_logger.info("[STEP] Create the first redis instance")
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 支付
-        info_logger.info("[STEP] Pay for the create order of redis instance")
-        pay_for_redis_instance_step(cap, request_id_for_redis)
+        #info_logger.info("[STEP] Pay for the create order of redis instance")
+        #pay_for_redis_instance_step(cap, request_id_for_redis)
         # 查询订单状态
         info_logger.info("[STEP] Query order status, check the status of order")
         success, resource_id = query_order_status_step(cap, request_id_for_redis)
@@ -24,13 +24,12 @@ class TestDeleteCacheClusters:
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
         assert cluster["status"] == 100, "[ERROR] The status of redis cluster is not 100!"
         info_logger.info("[INFO] Create the first redis instance successfully, the resourceId is {0}".format(resource_id))
-
         # 创建第二个redis资源
         info_logger.info("[Scenario] Create the second redis instance")
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 支付
-        info_logger.info("[STEP] Pay for the create order of redis instance")
-        pay_for_redis_instance_step(cap, request_id_for_redis)
+        #info_logger.info("[STEP] Pay for the create order of redis instance")
+        #pay_for_redis_instance_step(cap, request_id_for_redis)
         # 查询订单状态
         info_logger.info("[STEP] Query order status, check the status of order")
         success, resource_id_2 = query_order_status_step(cap, request_id_for_redis)
@@ -45,3 +44,4 @@ class TestDeleteCacheClusters:
         delete_cache_clusters_step(redis_cap, cluster_ids)
         # 验证返回信息正确
         info_logger.info("[INFO] Test delete cacheClusters successfully!")
+

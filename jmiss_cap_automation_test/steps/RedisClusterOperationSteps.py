@@ -29,6 +29,15 @@ def create_redis_month_instance_step(redis_cap):
         assert False, "[ERROR] It is failed to create a month redis {0}, error message is {1}".format(request_id, error_msg)
     return request_id
 
+#创建包年包月缓存云实例，创建借口返回request_id
+def create_redis_month_instance_with_new_payment_step(redis_cap):
+    res_data = redis_cap.create_month_instance_with_new_payment()
+    request_id = res_data["requestId"]
+    if "code" in res_data:
+        error_msg = res_data["message"]
+        logger_info.error("[ERROR] It is failed to create a month redis [%s], error message is [%s]", request_id, error_msg)
+        assert False, "[ERROR] It is failed to create a month redis {0}, error message is {1}".format(request_id, error_msg)
+    return request_id
 
 # 查询云缓存实例详情
 def query_cache_cluster_detail_step(redis_cap, cluster_id):
@@ -175,7 +184,8 @@ def delete_no_overdue_resource_step(redis_cap, cluster_id):
 def stop_resource_step(redis_cap, cluster_id):
     res_data = redis_cap.stop_resource(cluster_id)
     request_id = res_data["requestId"]
-    code = res_data["code"]
+    print res_data
+    #code = res_data["code"]
     if "code" in res_data:
         error_msg = res_data["message"]
         logger_info.error("[ERROR] It is failed to stop resource by operation [%s], resource_id is [%s] error message is [%s]", request_id, cluster_id, error_msg)
