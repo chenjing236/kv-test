@@ -114,13 +114,15 @@ class Cluster(object):
 
     # 扩容/缩容缓存云实例
     def resize_instance(self, space_id, flavorId):
-        status, headers, res_data = self.httpClient.resize_cluster(space_id, flavorId)
+        data = {"flavorId": flavorId}
+        status, headers, res_data = self.httpClient.resize_cluster(space_id, data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # reset password
     def reset_password(self, space_id, password):
-        status, headers, res_data = self.httpClient.reset_password(space_id, password)
+        data = {"password": password}
+        status, headers, res_data = self.httpClient.reset_password(space_id, data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
@@ -144,7 +146,13 @@ class Cluster(object):
 
     # 修改基本信息
     def update_meta(self, space_id, name, remarks):
-        status, headers, res_data = self.httpClient.update_meta(space_id, name, remarks)
+        if name == "":
+            data = {"remarks": remarks}
+        elif remarks == "":
+            data = {"spaceName": name}
+        else:
+            data = {"spaceName": name, "remarks": remarks}
+        status, headers, res_data = self.httpClient.update_meta(space_id, data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
@@ -162,22 +170,22 @@ class Cluster(object):
 
     # rebuild-upgrade
     def rebuild_upgrade_instance(self, space_id):
-        status, headers, res_data = self.httpClient.rebuild_upgrade(space_id)
+        data = {"srcSpaceId": space_id}
+        status, headers, res_data = self.httpClient.rebuild_upgrade(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # rebuild-repair
     def rebuild_repair_instance(self, space_id):
-        status, headers, res_data = self.httpClient.rebuild_repair(space_id)
+        data = {"srcSpaceId": space_id}
+        status, headers, res_data = self.httpClient.rebuild_repair(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
     # rebuild-clone
     def rebuild_clone_instance(self, space_id):
         data = {"spaceName": self.data_obj["spaceName"], "srcSpaceId": space_id, "remarks": self.data_obj["remarks"], "password": self.data_obj["password"]}
-        create_args = CreateArgs(data)
-        args_json = create_args.get_args_json()
-        status, headers, res_data = self.httpClient.rebuild_clone(args_json)
+        status, headers, res_data = self.httpClient.rebuild_clone(data)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

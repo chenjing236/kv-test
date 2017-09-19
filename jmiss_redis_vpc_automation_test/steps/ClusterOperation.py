@@ -85,7 +85,6 @@ def get_topology_of_cluster_step(cluster, space_id):
 # 通过查询CFS接口获取主从资源拓扑结构
 def get_topology_of_instance_from_cfs_step(cfs_client, space_id):
     res_data = cfs_client.get_meta(space_id)
-    print res_data
     if res_data is None or res_data is "":
         assert False, "[ERROR] It is failed to get topology from CFS."
     currentTopology = res_data["currentTopology"]
