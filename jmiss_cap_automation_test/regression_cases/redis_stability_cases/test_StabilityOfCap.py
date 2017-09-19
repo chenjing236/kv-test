@@ -1,151 +1,128 @@
 # -*- coding: utf-8 -*-
 
+# -*- coding: utf-8 -*-
+from CreateRedisInstance import *
+from QueryCacheClusterDetail import query_cache_cluster_detail
+from QueryFilterCacheCluster import query_filter_cache_clusters
+from UpdateRedis import update_redis
+from Reduce import reduce_redis
+from Resize import resize_redis
+from VerifyRedis import verify_redis
+from steps.RedisClusterOperationSteps import *
 from BasicTestCase import *
-from redis_stability_cases.CraeteRedisWithNP import create_an_instance_with_NP
-from redis_stability_cases.Verify import verify
+from utils.HttpClient import *
+from business_function.Cap import *
+from business_function.RedisCap import *
 import pytest
-logger_info = logging.getLogger(__name__)
-resource_id = ''
-cluster_info = ''
+import json
+import os
+cap_http_client = ''
+redis_http_client = ''
 redis_cap = ''
-cap = ''
+cap = ""
+resource_id = ''
+cluster_info = {}
 result = ["create.reason", "get_detail.reason", "get_list.reason", "update.reason",
                        "resize.reason", "reduce.reason", "delete.reason"]
 result_error = ["create_error", "get_detail_error", "get_list_error", "update_error",
                              "resize_error", "reduce_error", "delete_error"]
-index = 0
-class TestStabilityOfCap:
-    # 创建Redis实例
-    def test_create_redis(self, create_an_instance_with_NP):
-        global redis_cap
-        global cap
-        global resource_id
-        global index
-        redis_cap, cap,  resource_id = create_an_instance_with_NP
-        index += 1
+index = {"create":1, "get_detail":1, "get_list":1, "update": 1, "resize": 1, "reduce": 1, "delete":1}
+logger_info = logging.getLogger(__name__)
 
-    # 查询详情
+params = ["config\url"]
+class TestStability:
+    def setup_class(cls):
+        logger_info.info("setup_class       class:%s" % cls.__name__)
+        global cap_http_client, redis_http_client, cap, redis_cap
+        url = os.path.join(os.getcwd(), params[0])
+        file = json.load(open(url, 'r'))
+        cls.config = file["config"]
+        cls.instance_data = file["instance_data"]
+        cls.config = json.load(open(cls.config, 'r'))
+        cls.instance_data = json.load(open(cls.instance_data, 'r'))
+        redis_http_client = RedisCapClient(cls.config["host"])
+        cap_http_client = CapClient(cls.config["host"])
+        redis_cap = RedisCap(cls.config, cls.instance_data, redis_http_client)
+        cap = Cap(cls.config, cls.instance_data, cap_http_client)
+    
+    def teardown_class(cls):
+        global index
+        logger_info.info("teardown_class    class:%s" % cls.__name__)
+        time.sleep(5)
+        if index["create"] == 0:
+            delete_redis_instance_step(redis_cap, resource_id)
+            index["delete"] = 0
+        """try:
+            time.sleep(5)  # 创建失败情况等待中间层回滚
+            if index["create"] == 0:
+                delete_redis_instance_step(redis_cap, resource_id)
+                # 如果删除执行成功，teardown时index还会加1
+                # if index["reduce"] == 0:
+                index["delete"] = 0
+        except Exception as e:
+            # 删除前请求失败的情况
+            index["delete"] = 1
+        """
+        for i in index.items():
+            print i[0] + ':' + str(i[1])
+        # 输出总的监控项，正确为"0"，错误为"error_step"
+        if index.values() == [0,0,0,0,0,0,0]:
+            print "stab.redis.status:\"0\""
+        else:
+            print "stab.redis.status: error"
+    
+    @pytest.mark.run(order=1)
+    def test_create_redis_instance(self,config, instance_data):
+        global redis_cap, cap, resource_id, index
+        success, redis_cap, cap, resource_id = create_an_instance_with_NP(config,instance_data,redis_http_client,cap_http_client)
+        assert success == 1, "[ERROR] Create a redis instance failed"
+        index['create'] = 0
+    
+    @pytest.mark.run(order=2)
     def test_query_cache_cluster_detail(self):
-        global redis_cap
-        global resource_id
-        global cluster_info
-        global index
-        info_logger.info("[STEP] Query redis instance detail, check the status of redis instance")
-        billing_order, cluster_info = query_cache_cluster_detail_step(redis_cap, resource_id)
+        global cluster_info, redis_cap, resource_id, index
+        cluster_info = query_cache_cluster_detail(redis_cap, resource_id)
         assert cluster_info["status"] == 100, "[ERROR] The status of redis cluster is not 100!"
-        index += 1
-
-    #查询详情列表
+        index['get_detail'] = 0
+    
+    @pytest.mark.run(order=3)
     def test_query_filter_cache_cluster(self):
-        global resource_id
-        global cluster_info
-        global redis_cap
-        global index
-        clusters = query_filter_cache_clusters_step(redis_cap, {})
+        global resource_id, cluster_info, redis_cap, index
+        clusters = query_filter_cache_clusters(redis_cap)
+        assert clusters != None or clusters != '', "[ERROR] Failed to get the list or redis instance"
         # 验证列表页信息与详情页一致
-        verify(clusters,cluster_info, resource_id)
-        index += 1
-
-    # 更新实例信息
+        verify_redis(clusters, cluster_info, resource_id)
+        index['get_list'] = 0
+    
+    @pytest.mark.run(order=4)
     def test_update_redis(self, instance_data):
-        global resource_id
-        global cluster_info
-        global redis_cap
-        global index
-        space_name_update = instance_data["create_cache_cluster"]["spaceName"] + "_name_update"
-        remarks_update = "remarks_update"
-        mark = "updatebaseinfo"
-        update_cache_cluster_step(redis_cap, resource_id, {"spaceName": space_name_update, "remarks": remarks_update, "mark": mark})
+        global resource_id, cluster_info, redis_cap,cluster_info, index
+        cluster_info = update_redis(instance_data, redis_cap, resource_id, cluster_info)
         # 查询详情接口验证更新信息的正确性
         space_name_update = instance_data["create_cache_cluster"]["spaceName"] + "_name_update"
         remarks_update = "remarks_update"
         billing_order, cluster_info = query_cache_cluster_detail_step(redis_cap, resource_id)
-        assert cluster_info["name"] == space_name_update and cluster_info["remarks"] == remarks_update
-        index += 1
-
-    # 扩容
-    def test_resize_to_expansion(self, instance_data):
-        global resource_id
-        global redis_cap
-        global cap
-        global index
-        request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 1)
-        # 查询订单状态，验证扩容成功
-        info_logger.info("[STEP] Query resize order status until resize over")
+        assert cluster_info["name"] == space_name_update and cluster_info["remarks"] == remarks_update, "[ERROR] Failed to update!"
+        index['update'] = 0
+    
+    @pytest.mark.run(order=5)
+    def test_resize(self, instance_data):
+        global resource_id, redis_cap, cap, index
+        request_id_resize = resize_redis(redis_cap, resource_id)
+        # 验证
         success, resource_id = query_order_status_step(cap, request_id_resize)
-        assert success == 1, "[ERROR] Redis resize failed!"
+        assert success == 1, "[ERROR] Failed to resize!"
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
         assert cluster["status"] == 100 and cluster["capacity"] == int(instance_data["create_cache_cluster"]["resize_capacity"]), "[ERROR] The info of redis resized is wrong!"
-        index += 1
-    # 缩容
-    def test_resize_to_reduction(self, instance_data):
-        global resource_id
-        global redis_cap
-        global cap
-        global index
-        request_id_resize = modify_cache_cluster_step(redis_cap, resource_id, 0)
-        # 查询订单状态，验证扩容成功
-        info_logger.info("[STEP] Query reduce order status until resize over")
+        index['resize'] = 0
+    
+    @pytest.mark.run(order=6)
+    def test_reduce(self, instance_data):
+        global resource_id, redis_cap, cap, index
+        request_id_resize = reduce_redis(redis_cap, resource_id)
+        #验证
         success, resource_id = query_order_status_step(cap, request_id_resize)
-        assert success == 1, "[ERROR] Reduce resize failed!"
-        # 查询资源详情，验证扩容信息正确
-        # info_logger.info("[STEP] Query redis cluster detail, check the redis info")
+        assert success == 1, "[ERROR] Failed to reduce!"
         billing_order, cluster = query_cache_cluster_detail_step(redis_cap, resource_id)
         assert cluster["status"] == 100 and cluster["capacity"] == int(instance_data["create_cache_cluster"]["reduce_capacity"]), "[ERROR] The info of redis reduced is wrong!"
-        index += 1
-    '''
-    # 删除资源
-    # @pytest.mark.stability
-    def test_delete_redis(self):
-        global resource_id
-        global redis_cap
-        info_logger.info("[TEARDOWN] Delete the redis instance %s", resource_id)
-        delete_redis_instance_step(redis_cap, resource_id)
-    '''
-    # 删除
-    def test_delete_redis(self):
-        global resource_id
-        global redis_cap
-        global index
-        global result
-        global result_error
-        try:
-            time.sleep(5)  # 创建失败情况等待中间层回滚
-            if index != 0:
-                delete_redis_instance_step(redis_cap, resource_id)
-                # 如果删除执行成功，teardown时index还会加1
-                if index == 6:
-                    index += 1
-        except Exception as e:
-            # 删除前请求失败的情况
-            index = 6
-        i = 0
-        while i < len(result):
-            if i == index:
-                print result[i] + ":1"
-            else:
-                print result[i] + ":0"
-            i += 1
-        # 输出总的监控项，正确为"0"，错误为"error_step"
-        if index == 7:
-            print "stab.redis.status:\"0\""
-        else:
-            print "stab.redis.status:\"{0}\"".format(result_error[index])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        index['reduce'] = 0
