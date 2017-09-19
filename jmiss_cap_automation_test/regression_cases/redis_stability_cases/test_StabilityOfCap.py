@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# -*- coding: utf-8 -*-
 from CreateRedisInstance import *
 from QueryCacheClusterDetail import query_cache_cluster_detail
 from QueryFilterCacheCluster import query_filter_cache_clusters
