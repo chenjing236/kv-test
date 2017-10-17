@@ -78,7 +78,7 @@ class APIStabilityCase:
         self.redis_cap = redis_cap
         cap = Cap(self.config, self.instance_data, self.cap_http_client)
         # 清除残留redis实例
-        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "filterSpaceType": 1, "category": "1"})
+        clusters = query_filter_cache_clusters_step(redis_cap, {"filterName": self.instance_data["create_cache_cluster"]["spaceName"], "filterSpaceType": 1})
         # print clusters
         if clusters is not None:
             for cluster in clusters:

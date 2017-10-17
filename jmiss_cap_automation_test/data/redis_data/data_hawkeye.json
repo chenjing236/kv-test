@@ -30,7 +30,7 @@
     "resourceType": "cache"
   },
   "common_data":{
-    "dataCenter":"bj_02",
+    "dataCenter":"cn-north-1",
     "user":"iaas-ops",
 	"account":"iaas-ops"
   },
