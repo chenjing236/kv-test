@@ -4,12 +4,12 @@ from CFS import *
 import json
 import string
 import random
-import time
 import logging
 
 logger_info = logging.getLogger(__name__)
 
-#创建缓存云实例API接口参数
+
+# 创建缓存云实例API接口参数
 class CreateArgs():
     def __init__(self, data):
         self.args_dict = data
@@ -34,27 +34,34 @@ class CreateArgs():
     def get_args_json(self):
         return self.args_dict
 
-#缓存云实例类
+
+# 缓存云实例类
 class Cluster(object):
     def __init__(self, conf_obj, data_obj, httpClient):
         self.conf_obj = conf_obj
         self.data_obj = data_obj
         self.httpClient = httpClient
 
-    #创建单实例缓存云实例
+    # 创建单实例缓存云实例
     def create_instance(self):
-        zoneId = (self.conf_obj["version"] == "v2.0") and "0" or self.data_obj["zoneId"]
-        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":zoneId,"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
+        zone_id = (self.conf_obj["version"] == "v2.0") and "0" or self.data_obj["zoneId"]
+        data = {"spaceName": self.data_obj["spaceName"], "spaceType": self.data_obj["spaceType"],
+                "zoneId": zone_id, "capacity": self.data_obj["capacity"],
+                "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"],
+                "availableZone": self.data_obj["availableZone"]}
         create_args = CreateArgs(data)
         args_json = create_args.get_args_json()
         status, headers, res_data = self.httpClient.create_cluster(args_json)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
-    #创建单实例缓存云实例
+    # 创建单实例缓存云实例
     def create_instance_with_capacity(self, capacity):
-        zoneId = (self.conf_obj["version"] == "v2.0") and "0" or self.data_obj["zoneId"]
-        data = {"spaceName": self.data_obj["spaceName"],"spaceType":self.data_obj["spaceType"],"zoneId":zoneId,"capacity":self.data_obj["capacity"],"quantity":self.data_obj["quantity"],"remarks":self.data_obj["remarks"]}
+        zone_id = (self.conf_obj["version"] == "v2.0") and "0" or self.data_obj["zoneId"]
+        data = {"spaceName": self.data_obj["spaceName"], "spaceType": self.data_obj["spaceType"],
+                "zoneId": zone_id, "capacity": self.data_obj["capacity"],
+                "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"],
+                "availableZone": self.data_obj["availableZone"]}
         create_args = CreateArgs(data)
         create_args.set_capacity(capacity)
         args_json = create_args.get_args_json()
@@ -66,7 +73,8 @@ class Cluster(object):
     def create_instance_with_password(self, password):
         data = {"spaceName": self.data_obj["spaceName"], "spaceType": self.data_obj["spaceType"],
                 "zoneId": self.data_obj["zoneId"], "capacity": self.data_obj["capacity"],
-                "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"], "password": password}
+                "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"], "password": password,
+                "availableZone": self.data_obj["availableZone"]}
         create_args = CreateArgs(data)
         create_args.set_password(password)
         args_json = create_args.get_args_json()

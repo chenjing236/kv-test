@@ -7,5 +7,6 @@
   "remarks":"jmiss",
   "capacity_resize":"3145728",
   "capacity_reduce":"1048576",
-  "password":"1qaz2WSX"
+  "password":"1qaz2WSX",
+  "availableZone":"az1,az2"
 }
