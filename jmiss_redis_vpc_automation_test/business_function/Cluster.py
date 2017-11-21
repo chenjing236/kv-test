@@ -48,7 +48,7 @@ class Cluster(object):
         data = {"spaceName": self.data_obj["spaceName"], "spaceType": self.data_obj["spaceType"],
                 "vpcId": self.data_obj["vpcId"], "subnetId": self.data_obj["subnetId"], "flavorId": self.data_obj["flavorId"],
                 "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"], "password": self.data_obj["password"],
-                "openStackInfo": self.data_obj["openStackInfo"], "slaves": self.data_obj["slaves"]}
+                "openStackInfo": self.data_obj["openStackInfo"], "slaves": self.data_obj["slaves"], "availableZone": self.data_obj["availableZone"]}
         create_args = CreateArgs(data)
         create_args.set_password(self.data_obj["password"])
         args_json = create_args.get_args_json()
