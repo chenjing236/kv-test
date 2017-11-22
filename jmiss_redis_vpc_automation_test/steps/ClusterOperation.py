@@ -147,7 +147,7 @@ def run_failover_container_step(space_id, container_id, container, cfs_client, f
         assert False, "[ERROR] Cannot get topology information from cfs"
     epoch_origin = res_data["epoch"]
     # stop指定的container
-    container.delete_nova_docker(container_id)
+    container.stop_nova_docker(container_id)
     logger_info.info("[INFO] Success to stop container [{0}]".format(container_id))
     # 查询CFS的redis，查看epoch的值是否有变化
     res_data = cfs_client.get_meta(space_id)
@@ -194,8 +194,8 @@ def run_rebuild_repair_step(instance, space_id, container, cfs_client):
     # 获取原有epoch
     masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_from_cfs_step(cfs_client, space_id)
     # stop master and slave container
-    container.delete_nova_docker(masterDocker)
-    container.delete_nova_docker(slaveDocker)
+    container.stop_nova_docker(masterDocker)
+    container.stop_nova_docker(slaveDocker)
     # check space status = 101
     detail_info = get_detail_info_of_instance_step(instance, space_id)
     status = detail_info["status"]

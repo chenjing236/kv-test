@@ -48,7 +48,8 @@ class HttpClient(object):
     def http_request_for_nova_docker(self, method, uri, nova_token, data=None):
         hc = httplib.HTTPConnection(self.nova_docker_host)
         hc.request(method, "/v2.1/{0}/servers/{1}".format(self.tenant_id, uri), data,
-                   {"X-auth-Token": nova_token, "User-Agent": "python-novaclient", "X-OpenStack-Nova-API-Version": 2.5})
+                   {"X-auth-Token": nova_token, "User-Agent": "python-novaclient", "X-OpenStack-Nova-API-Version": 2.5,
+                    "Content-Type": "application/json"})
         res = hc.getresponse()
         status = res.status
         hc.close()
