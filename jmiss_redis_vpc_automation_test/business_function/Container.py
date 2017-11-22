@@ -62,7 +62,7 @@ class Container:
 
     # stop nova docker
     def stop_nova_docker(self, container_id):
-        data = {"os-stop": None}
+        data = {"os-stop": "null"}
         nova_token = self.get_nova_token_info()
         status = self.http_client.stop_nova_docker(container_id, nova_token, data)
         assert status == 202, "[ERROR] HTTP Request of nova docker is failed, status = {0}".format(status)
