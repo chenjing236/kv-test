@@ -116,11 +116,7 @@ def get_container_memory_size_step(container, masterIp, masterPort, slaveIp, sla
     return master_memory_size, slave_memory_size
 
 def set_acl_step(instance, space_id, ips):
-    ips.append("192.168.178.113")
-    ips.append("192.168.178.114")
-    ips.append("192.168.178.115")
-    ips.append("192.168.169.136")
-    ips.append("192.168.172.99")
+    ips.append("0.0.0.0")
     res_data = instance.set_acl(space_id, ips)
     if res_data is None or res_data is "":
         assert False, "[ERROR] Response of setting acl is incorrect for the instance {0}".format(space_id)
