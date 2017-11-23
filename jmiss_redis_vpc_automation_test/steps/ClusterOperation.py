@@ -328,3 +328,17 @@ def query_config_by_flavor_id_step(instance, flavor_id):
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, "[ERROR] It is failed to query config by flavorId, error message is {0}".format(msg)
     return res_data["attach"]
+
+
+# 通过web get_cluster_info接口查询当前主CFS
+def get_master_cfs_step(instance):
+    res_data = instance.op_get_cluster_info()
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of op_get_cluster_info is incorrect".format()
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get cluster op info, error message is {0}".format(msg)
+    cfs_host = res_data["attach"]["cfsUrl"]
+    if cfs_host is None or cfs_host is "":
+        assert False, "[ERROR] There is no useful cfs".format()
+    return cfs_host

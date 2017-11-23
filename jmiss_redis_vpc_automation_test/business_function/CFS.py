@@ -13,8 +13,8 @@ def get_timestr():
 
 
 class CFS:
-    def __init__(self, conf_obj):
-        self.cfs_host = conf_obj["cfs_host"]
+    def __init__(self, host, conf_obj):
+        self.cfs_host = host
         self.sign_key = conf_obj["cfs_sign_key"]
 
     def http_request(self, method, uri, data=None, headers=None):

@@ -9,7 +9,6 @@
   "nova_agent_port": "1024",
   "nova_docker_host": "172.19.54.141:8774",
   "nova_token_host": "172.19.54.141:35357",
-  "cfs_host": "172.19.57.41:6060",
   "cfs_sign_key": "std-jim-cfs",
   "retry_getting_topology_from_cfs": 200,
   "retry_getting_info_times": 60,

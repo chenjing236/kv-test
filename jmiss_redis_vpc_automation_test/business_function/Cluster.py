@@ -200,3 +200,9 @@ class Cluster(object):
         status, headers, res_data = self.httpClient.query_config_by_flavor_id(flavor_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
+
+    # web 获取down az信息
+    def op_get_cluster_info(self):
+        status, headers, res_data = self.httpClient.op_get_cluster_info()
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data

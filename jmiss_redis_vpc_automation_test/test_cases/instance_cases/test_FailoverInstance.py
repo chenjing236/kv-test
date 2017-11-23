@@ -23,7 +23,9 @@ class TestFailoverCluster:
         # 通过AP访问缓存云实例，执行set/get key
         # run master failover
         info_logger.info("[STEP3] Run failover for master container")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config, http_client)
         is_failover = run_failover_container_step(space_id, masterDocker, container, cfs_client, 2)
         assert is_failover is True, "[ERROR] Run master failover is failed"
@@ -55,7 +57,9 @@ class TestFailoverCluster:
         # 通过AP访问缓存云实例，执行set/get key
         # run master failover
         info_logger.info("[STEP3] Run failover for slave container")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config, http_client)
         is_failover = run_failover_container_step(space_id, slaveDocker, container, cfs_client, 1)
         assert is_failover is True, "[ERROR] Run slave failover is failed"

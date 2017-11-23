@@ -23,7 +23,9 @@ class TestFailoverCluster:
             info_logger.info("Information of shard_{0} container is {1}".format(i + 1, shards[i]))
         # 通过AP访问缓存云实例，输入auth,可以正常访问
         # run master failover
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config, http_client)
         failover_num = random.randint(0, shard_count - 1)
         info_logger.info("[INFO] To stop the master container of shard_{0}".format(failover_num + 1))
@@ -57,7 +59,9 @@ class TestFailoverCluster:
             info_logger.info("Information of shard_{0} container is {1}".format(i + 1, shards[i]))
         # 通过AP访问缓存云实例，输入auth,可以正常访问
         # run master failover
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config, http_client)
         failover_num = random.randint(0, shard_count - 1)
         info_logger.info("[INFO] To stop the slave container of shard_{0}".format(failover_num + 1))
