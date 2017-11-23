@@ -33,7 +33,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] Information of slave container is {0}: [{1}]".format(slaveIp, slaveDocker))
         # 获取CFS的拓扑结构
         info_logger.info("[STEP5] Get topology information of instance from CFS")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         masterIp_cfs, masterDocker_cfs, slaveIp_cfs, slaveDocker_cfs = get_topology_of_instance_from_cfs_step(
             cfs_client, space_id)
         info_logger.info("[INFO] Information of master container is {0}: [{1}]".format(masterIp_cfs, masterDocker_cfs))
@@ -158,7 +160,9 @@ class TestSmokeCases:
         # 通过AP访问缓存云实例，执行set/get key
         # run master failover
         info_logger.info("[STEP3] Run failover for master container")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config, http_client)
         is_failover = run_failover_container_step(space_id, masterDocker, container, cfs_client, 2)
         assert is_failover is True, "[ERROR] Run master failover is failed"
@@ -190,7 +194,9 @@ class TestSmokeCases:
         # 通过AP访问缓存云实例，执行set/get key
         # run master failover
         info_logger.info("[STEP3] Run failover for slave container")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config, http_client)
         is_failover = run_failover_container_step(space_id, slaveDocker, container, cfs_client, 1)
         assert is_failover is True, "[ERROR] Run slave failover is failed"

@@ -48,7 +48,7 @@ class Cluster(object):
         data = {"spaceName": self.data_obj["spaceName"], "spaceType": self.data_obj["spaceType"],
                 "vpcId": self.data_obj["vpcId"], "subnetId": self.data_obj["subnetId"], "flavorId": self.data_obj["flavorId"],
                 "quantity": self.data_obj["quantity"], "remarks": self.data_obj["remarks"], "password": self.data_obj["password"],
-                "openStackInfo": self.data_obj["openStackInfo"], "slaves": self.data_obj["slaves"]}
+                "openStackInfo": self.data_obj["openStackInfo"], "slaves": self.data_obj["slaves"], "availableZone": self.data_obj["availableZone"]}
         create_args = CreateArgs(data)
         create_args.set_password(self.data_obj["password"])
         args_json = create_args.get_args_json()
@@ -198,5 +198,11 @@ class Cluster(object):
     # query config by flavorId
     def query_config_by_flavor_id(self, flavor_id):
         status, headers, res_data = self.httpClient.query_config_by_flavor_id(flavor_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # web 获取down az信息
+    def op_get_cluster_info(self):
+        status, headers, res_data = self.httpClient.op_get_cluster_info()
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data

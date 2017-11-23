@@ -1,5 +1,5 @@
 {
-  "spaceName":"jmiss_auto_test",
+  "spaceName":"jmiss_auto_test_stag_sq",
   "spaceType":"1",
   "zoneId":"0",
   "capacity":"2097152",
@@ -8,5 +8,5 @@
   "capacity_resize":"3145728",
   "capacity_reduce":"1048576",
   "password":"1qaz2WSX",
-  "availableZone":"az1,az2"
+  "availableZone":"stag_sq02,stag_sq03"
 }

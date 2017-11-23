@@ -56,7 +56,9 @@ class TestCreateInstance:
         info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp, slavePort)
         # 获取CFS的拓扑结构
         info_logger.info("[STEP4] Get topology information of instance from CFS")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         masterIp_cfs, masterPort_cfs, slaveIp_cfs, slavePort_cfs = get_topology_of_instance_from_cfs_step(cfs_client,
                                                                                                           space_id)
         info_logger.info("[INFO] Information of master container is %s:%s", masterIp_cfs, masterPort_cfs)

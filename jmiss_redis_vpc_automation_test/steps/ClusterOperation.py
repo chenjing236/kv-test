@@ -147,7 +147,7 @@ def run_failover_container_step(space_id, container_id, container, cfs_client, f
         assert False, "[ERROR] Cannot get topology information from cfs"
     epoch_origin = res_data["epoch"]
     # stop指定的container
-    container.delete_nova_docker(container_id)
+    container.stop_nova_docker(container_id)
     logger_info.info("[INFO] Success to stop container [{0}]".format(container_id))
     # 查询CFS的redis，查看epoch的值是否有变化
     res_data = cfs_client.get_meta(space_id)
@@ -194,8 +194,8 @@ def run_rebuild_repair_step(instance, space_id, container, cfs_client):
     # 获取原有epoch
     masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_from_cfs_step(cfs_client, space_id)
     # stop master and slave container
-    container.delete_nova_docker(masterDocker)
-    container.delete_nova_docker(slaveDocker)
+    container.stop_nova_docker(masterDocker)
+    container.stop_nova_docker(slaveDocker)
     # check space status = 101
     detail_info = get_detail_info_of_instance_step(instance, space_id)
     status = detail_info["status"]
@@ -328,3 +328,17 @@ def query_config_by_flavor_id_step(instance, flavor_id):
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, "[ERROR] It is failed to query config by flavorId, error message is {0}".format(msg)
     return res_data["attach"]
+
+
+# 通过web get_cluster_info接口查询当前主CFS
+def get_master_cfs_step(instance):
+    res_data = instance.op_get_cluster_info()
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of op_get_cluster_info is incorrect".format()
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get cluster op info, error message is {0}".format(msg)
+    cfs_host = res_data["attach"]["cfsUrl"]
+    if cfs_host is None or cfs_host is "":
+        assert False, "[ERROR] There is no useful cfs".format()
+    return cfs_host.replace('http://', '')

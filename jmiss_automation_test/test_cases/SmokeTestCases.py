@@ -29,7 +29,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp, slavePort)
         # 获取CFS的拓扑结构
         info_logger.info("[STEP4] Get topology information of instance from CFS")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         masterIp_cfs, masterPort_cfs, slaveIp_cfs, slavePort_cfs = get_topology_of_instance_from_cfs_step(cfs_client, space_id)
         info_logger.info("[INFO] Information of master container is %s:%s", masterIp_cfs, masterPort_cfs)
         info_logger.info("[INFO] Information of slave container is %s:%s", slaveIp_cfs, slavePort_cfs)
@@ -115,7 +117,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] It is successful to set key to the master of the instance %s, the capacity is correct", space_id)
         # 执行扩容操作
         info_logger.info("[STEP5] Resize the instance %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_resize"])
         status, capacity_new = resize_instance_step(instance, cfs_client, space_id, zoneId, capacity, config["retry_times"], int(config["wait_time"]))
@@ -161,7 +165,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] It is successful to set key to the master of the instance %s", space_id)
         # 执行缩容操作
         info_logger.info("[STEP5] Reduce the instance %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_reduce"])
         status, capacity_new = resize_instance_step(instance, cfs_client, space_id, zoneId, capacity,
@@ -206,7 +212,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] It is successful to set key to the master of the instance %s", space_id)
         # run master failover
         info_logger.info("[STEP4] Run failover for master container")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])
@@ -253,7 +261,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] It is successful to set key to the master of the instance %s", space_id)
         # run slave failover
         info_logger.info("[STEP4] Run failover for slave container")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])

@@ -11,7 +11,6 @@
   "mysql_user": "jimdb",
   "mysql_passwd": "jimdbtest",
   "mysql_db": "jmiss_redis_test_master",
-  "cfs_host": "172.19.29.24:6060",
   "cfs_sign_key":"std-jim-cfs",
   "ap_host": "172.19.29.34",
   "ap_port":6379,

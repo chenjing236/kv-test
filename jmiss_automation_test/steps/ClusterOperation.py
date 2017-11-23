@@ -116,11 +116,7 @@ def get_container_memory_size_step(container, masterIp, masterPort, slaveIp, sla
     return master_memory_size, slave_memory_size
 
 def set_acl_step(instance, space_id, ips):
-    ips.append("192.168.178.113")
-    ips.append("192.168.178.114")
-    ips.append("192.168.178.115")
-    ips.append("192.168.169.136")
-    ips.append("192.168.172.99")
+    ips.append("0.0.0.0")
     res_data = instance.set_acl(space_id, ips)
     if res_data is None or res_data is "":
         assert False, "[ERROR] Response of setting acl is incorrect for the instance {0}".format(space_id)
@@ -452,3 +448,17 @@ def change_topology_json_to_list(shard_count, topology):
         shard = {"masterIp": master_ip, "masterPort": master_port, "slaveIp": slave_ip, "slavePort": slave_port}
         shards.append(shard)
     return shards
+
+
+# 通过web get_cluster_info接口查询当前主CFS
+def get_master_cfs_step(instance):
+    res_data = instance.op_get_cluster_info()
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of op_get_cluster_info is incorrect".format()
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to get cluster op info, error message is {0}".format(msg)
+    cfs_host = res_data["attach"]["cfsUrl"]
+    if cfs_host is None or cfs_host is "":
+        assert False, "[ERROR] There is no useful cfs".format()
+    return cfs_host.replace('http://', '')

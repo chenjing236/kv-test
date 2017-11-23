@@ -34,7 +34,9 @@ class TestSmokeCasesOfCluster:
         # 获取CFS的拓扑结构
         info_logger.info("[STEP4] Get topology information of cluster from CFS")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         shards_cfs = get_topology_of_cluster_from_cfs_step(cfs_client, space_id)
         for i in range(0, shard_count):
             info_logger.info("[INFO] Information of shard_{0} container is {1}".format(i + 1, shards_cfs[i]))
@@ -125,7 +127,9 @@ class TestSmokeCasesOfCluster:
         info_logger.info("[INFO] It is successful to set the value by key from the cluster %s", space_id)
         # 执行扩容操作
         info_logger.info("[STEP6] Resize the cluster %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_resize"])
         status, capacity_new = resize_instance_step(cluster, cfs_client, space_id, zoneId, capacity,
@@ -177,7 +181,9 @@ class TestSmokeCasesOfCluster:
         info_logger.info("[INFO] It is successful to set the value by key from the cluster %s", space_id)
         # 执行缩容操作
         info_logger.info("[STEP6] Reduce the cluster %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_reduce"])
         status, capacity_new = resize_instance_step(cluster, cfs_client, space_id, zoneId, capacity,
@@ -227,7 +233,9 @@ class TestSmokeCasesOfCluster:
         # run master failover
         info_logger.info("[STEP5] Run failover for master container")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])
@@ -281,7 +289,9 @@ class TestSmokeCasesOfCluster:
         # run master failover
         info_logger.info("[STEP5] Run failover for master container")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])

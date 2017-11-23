@@ -35,6 +35,16 @@ class HttpClient(object):
         hc.close()
         return status, headers, res_data
 
+    def http_request_for_op(self, method, uri, data=None):
+        hc = httplib.HTTPConnection(self.host)
+        hc.request(method, "/{0}".format(uri), data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close()
+        return status, headers, res_data
+
     def http_request_for_nova_agent(self, nova_agent_host, method, uri, data=None):
         hc = httplib.HTTPConnection(nova_agent_host)
         hc.request(method, "/{0}".format(uri), data)
@@ -47,8 +57,8 @@ class HttpClient(object):
 
     def http_request_for_nova_docker(self, method, uri, nova_token, data=None):
         hc = httplib.HTTPConnection(self.nova_docker_host)
-        hc.request(method, "/v2.1/{0}/servers/{1}".format(self.tenant_id, uri), data,
-                   {"X-auth-Token": nova_token, "User-Agent": "python-novaclient", "X-OpenStack-Nova-API-Version": 2.5})
+        hc.request(method, "/v2.1/{0}/servers/{1}/action".format(self.tenant_id, uri), data,
+                   {"X-Auth-Token": nova_token, "Content-Type": "application/json"})
         res = hc.getresponse()
         status = res.status
         hc.close()
@@ -151,6 +161,12 @@ class HttpClient(object):
     def query_config_by_flavor_id(self, flavor_id):
         request_id = uuid_for_request_id()
         return self.http_request("GET", "flavordetail/{0}?requestId={1}".format(flavor_id, request_id))
+
+    # Jmiss 运维接口
+
+    # web查询down az状态
+    def op_get_cluster_info(self):
+        return self.http_request_for_op("GET", "op/get_cluster_info")
 
     # NOVA 接口
 

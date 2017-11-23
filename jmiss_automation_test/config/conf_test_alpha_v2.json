@@ -1,19 +1,18 @@
 {
   "version": "v2.0",
-  "host": "192.168.169.51",
-  "port": 80,
-  "pin": "64c8ddb08ad83c7b04fba541c3b085fd",
-  "auth_token": "mSW0o5UUG5dV7sMwr3rEsielXAvi7bQaFZlRzqufc/CgUBhREYtZUt4cQD86xdq2",
+  "host": "172.19.57.194:8090",
+  "port": 8090,
+  "pin": "242d9895529bf5ce45a672a3b8bfb212",
+  "auth_token": "2JcXAV7IuMl6muKmYyseUMT4hJaLMvkCpM1yiR/3DPXaqy8vi6f/Qo+3IZAbA4aT",
   "pin_backup": "dafd9d707849abe585a5db3a920d3af8",
   "auth_token_backup": "1F8w/nAIwK8q1Urw/eS8JYLC3AEIAkAtqhAJofH+ZZw=",
-  "mysql_host": "192.168.177.89",
+  "mysql_host": "192.168.177.87",
   "mysql_port": 3306,
   "mysql_user": "jimdb",
   "mysql_passwd": "jimdbtest",
-  "mysql_db": "jmiss_redis_test_master",
-  "cfs_host": "192.168.177.89:6060",
+  "mysql_db": "jmiss_redis_test_branch",
   "cfs_sign_key":"std-jim-cfs",
-  "ap_host": "192.168.177.89",
+  "ap_host": "172.19.57.41",
   "ap_port":5360,
   "docker_daemon_port":"2375",
   "docker_version":"1.19",
@@ -23,12 +22,12 @@
   "retry_getting_info_times":"30",
   "retry_times":"3",
   "wait_time": "5",
-  "cluster_cfg": {
-    "4": 4,
-    "16": 8,
-    "32": 8,
-    "64": 8,
-    "128": 16,
-    "256": 16
+  "cluster_cfg":{
+    "4":4,
+    "16":8,
+    "32":8,
+    "64":8,
+    "128":16,
+    "256":16
   }
 }

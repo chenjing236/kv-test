@@ -34,7 +34,9 @@ class TestCreateCluster:
             info_logger.info("Information of shard_{0} container is {1}".format(i + 1, shards[i]))
         # 获取CFS的拓扑结构
         info_logger.info("[STEP5] Get topology information of cluster from CFS")
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         shards_cfs = get_topology_of_cluster_from_cfs_step(cfs_client, space_id)
         for i in range(0, shard_count):
             info_logger.info("Information of shard_{0} container is {1}".format(i + 1, shards_cfs[i]))
