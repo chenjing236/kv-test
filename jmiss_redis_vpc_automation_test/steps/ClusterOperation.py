@@ -341,4 +341,4 @@ def get_master_cfs_step(instance):
     cfs_host = res_data["attach"]["cfsUrl"]
     if cfs_host is None or cfs_host is "":
         assert False, "[ERROR] There is no useful cfs".format()
-    return cfs_host
+    return cfs_host.replace('http://', '')
