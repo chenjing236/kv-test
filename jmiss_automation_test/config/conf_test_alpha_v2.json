@@ -1,6 +1,6 @@
 {
   "version": "v2.0",
-  "host": "172.19.57.194",
+  "host": "172.19.57.194:8090",
   "port": 8090,
   "pin": "242d9895529bf5ce45a672a3b8bfb212",
   "auth_token": "2JcXAV7IuMl6muKmYyseUMT4hJaLMvkCpM1yiR/3DPXaqy8vi6f/Qo+3IZAbA4aT",
