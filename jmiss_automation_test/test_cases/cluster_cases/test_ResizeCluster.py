@@ -40,7 +40,9 @@ class TestResizeCluster:
         info_logger.info("[INFO] It is successful to set the value by key from the cluster %s", space_id)
         # 执行扩容操作
         info_logger.info("[STEP6] Resize the cluster %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_resize"])
         status, capacity_new = resize_instance_step(cluster, cfs_client, space_id, zoneId, capacity,
@@ -91,7 +93,9 @@ class TestResizeCluster:
         info_logger.info("[INFO] It is successful to set the value by key from the cluster %s", space_id)
         # 执行缩容操作
         info_logger.info("[STEP6] Reduce the cluster %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_reduce"])
         status, capacity_new = resize_instance_step(cluster, cfs_client, space_id, zoneId, capacity,

@@ -117,7 +117,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] It is successful to set key to the master of the instance %s, the capacity is correct", space_id)
         # 执行扩容操作
         info_logger.info("[STEP5] Resize the instance %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_resize"])
         status, capacity_new = resize_instance_step(instance, cfs_client, space_id, zoneId, capacity, config["retry_times"], int(config["wait_time"]))
@@ -163,7 +165,9 @@ class TestSmokeCases:
         info_logger.info("[INFO] It is successful to set key to the master of the instance %s", space_id)
         # 执行缩容操作
         info_logger.info("[STEP5] Reduce the instance %s", space_id)
-        cfs_client = CFS(config)
+        cfs_host = get_master_cfs_step(instance)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config)
         zoneId = int(instance_data["zoneId"])
         capacity = int(instance_data["capacity_reduce"])
         status, capacity_new = resize_instance_step(instance, cfs_client, space_id, zoneId, capacity,
