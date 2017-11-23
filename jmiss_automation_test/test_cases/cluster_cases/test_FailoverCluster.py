@@ -40,7 +40,9 @@ class TestFailoverCluster:
         # run master failover
         info_logger.info("[STEP6] Run failover for master container")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])
@@ -94,7 +96,9 @@ class TestFailoverCluster:
         # run master failover
         info_logger.info("[STEP6] Run failover for master container")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])

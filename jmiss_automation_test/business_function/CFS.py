@@ -8,8 +8,8 @@ import logging
 logger_info = logging.getLogger(__name__)
 
 class CFS:
-    def __init__(self, conf_obj, capacity='16777216'):
-        self.cfs_host = conf_obj["cfs_host"]
+    def __init__(self, host, conf_obj, capacity='16777216'):
+        self.cfs_host = host
         self.sign_key = conf_obj["cfs_sign_key"]
         self.shard_count = conf_obj["cluster_cfg"][str(int(capacity) / 1024 / 1024)]
 

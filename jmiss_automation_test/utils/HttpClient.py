@@ -11,6 +11,10 @@ def uuid_for_request_id():
 
 
 # 缓存云HTTP API
+def to_json_string(args):
+    return json.dumps(args)
+
+
 class HttpClient(object):
     def __init__(self, host, md5_pin, auth_token, version):
         self.host = host
@@ -28,12 +32,19 @@ class HttpClient(object):
         hc.close()
         return status, headers, res_data
 
-    def to_json_string(self, args):
-        return json.dumps(args)
+    def http_request_for_op(self, method, uri, data=None):
+        hc = httplib.HTTPConnection(self.host)
+        hc.request(method, "/{0}".format(uri), data)
+        res = hc.getresponse()
+        status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
+        hc.close()
+        return status, headers, res_data
 
     # 创建缓存云实例 create
     def create_cluster(self, create_args):
-        data = self.to_json_string(create_args)
+        data = to_json_string(create_args)
         request_id = uuid_for_request_id()
         return self.http_request("POST", "clusters?requestId={0}".format(request_id), data)
 
@@ -128,5 +139,11 @@ class HttpClient(object):
     # rebuild clone
     def rebuild_clone(self, clone_args):
         request_id = uuid_for_request_id()
-        data = self.to_json_string(clone_args)
+        data = to_json_string(clone_args)
         return self.http_request("POST", "clone?requestId={0}".format(request_id), data)
+
+    # Jmiss 运维接口
+
+    # web查询down az状态
+    def op_get_cluster_info(self):
+        return self.http_request_for_op("GET", "op/get_cluster_info")

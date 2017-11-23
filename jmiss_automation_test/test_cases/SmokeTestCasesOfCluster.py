@@ -34,7 +34,9 @@ class TestSmokeCasesOfCluster:
         # 获取CFS的拓扑结构
         info_logger.info("[STEP4] Get topology information of cluster from CFS")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         shards_cfs = get_topology_of_cluster_from_cfs_step(cfs_client, space_id)
         for i in range(0, shard_count):
             info_logger.info("[INFO] Information of shard_{0} container is {1}".format(i + 1, shards_cfs[i]))
@@ -227,7 +229,9 @@ class TestSmokeCasesOfCluster:
         # run master failover
         info_logger.info("[STEP5] Run failover for master container")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])
@@ -281,7 +285,9 @@ class TestSmokeCasesOfCluster:
         # run master failover
         info_logger.info("[STEP5] Run failover for master container")
         capa = instance_data['capacity']
-        cfs_client = CFS(config, capa)
+        cfs_host = get_master_cfs_step(cluster)
+        info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
+        cfs_client = CFS(cfs_host, config, capa)
         container = Container(config)
         retry_times = int(config["retry_getting_topology_from_cfs"])
         wait_time = int(config["wait_time"])
