@@ -64,6 +64,24 @@ def get_operation_result_step(instance, space_id, operation_id):
     return True
 
 
+def set_acl_step(instance, space_id):
+    res_data = instance.set_acl(space_id)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of setting acl is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to set acl, error message is {0}".format(msg)
+
+
+def set_system_acl_step(instance, space_id, enable):
+    res_data = instance.set_system_acl(space_id, enable)
+    if res_data is None or res_data is "":
+        assert False, "[ERROR] Response of setting system acl is incorrect for the instance {0}".format(space_id)
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, "[ERROR] It is failed to set system acl, error message is {0}".format(msg)
+
+
 # 通过查询详情接口获取主从资源拓扑结构
 def get_topology_of_instance_step(instance, space_id):
     res_data = instance.get_instance_info(space_id)
