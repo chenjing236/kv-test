@@ -45,6 +45,10 @@ def created_instance(config, instance_data, http_client, request):
     info_logger.info("[INFO] Get creation result of the instance {0}".format(space_id))
     is_success = get_operation_result_step(instance, space_id, operation_id)
     assert is_success is True, "[INFO] Get the right operation result, create instance successfully"
+    # 设置资源acl
+    info_logger.info("[INFO] Set enable acl for the instance {0}".format(space_id))
+    set_acl_step(instance, space_id)
+    info_logger.info("[INFO] Set acl successfully!")
 
     def teardown():
         print "\n"

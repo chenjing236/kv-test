@@ -125,6 +125,18 @@ class HttpClient(object):
         request_id = uuid_for_request_id()
         return self.http_request("PUT", "updatemeta/{0}?requestId={1}".format(space_id, request_id), json.dumps(data))
 
+    # 设置访问规则 set acl allow
+    def set_acl(self, space_id):
+        acl = {"target": [space_id], "ips": [], "action": "allow"}
+        request_id = uuid_for_request_id()
+        return self.http_request("PUT", "acl?requestId={0}".format(request_id), json.dumps(acl))
+
+    # 设置系统级访问规则 set system acl
+    def set_system_acl(self, space_id, enable):
+        target = {"target": [space_id], "enable": enable}
+        request_id = uuid_for_request_id()
+        return self.http_request("PUT", "sysacl?requestId={0}".format(request_id), json.dumps(target))
+
     # 获取资源实时信息 realtime info
     def get_realtime_info(self, space_id):
         request_id = uuid_for_request_id()

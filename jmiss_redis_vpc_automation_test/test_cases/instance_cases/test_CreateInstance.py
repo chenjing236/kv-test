@@ -20,20 +20,24 @@ class TestCreateInstance:
         info_logger.info("[STEP2] Get creation result of the instance {0}".format(space_id))
         is_success = get_operation_result_step(instance, space_id, operation_id)
         assert is_success is True, "[INFO] Get the right operation result, create instance successfully"
+        # 设置资源acl
+        info_logger.info("[STEP3] Set enable acl for the instance {0}".format(space_id))
+        set_acl_step(instance, space_id)
+        info_logger.info("[INFO] Set acl successfully!")
         # 查看redis详情，验证缓存云实例状态，status=100创建成功
-        info_logger.info("[STEP3] Get detail info of the instance {0}".format(space_id))
+        info_logger.info("[STEP4] Get detail info of the instance {0}".format(space_id))
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         assert detail_info["status"] == 100, "[ERROR] The cluster status is not 100!"
         assert detail_info["zone"] != 'clsdocker', "[ERROR] The cluster zone is clsdocker!"
         info_logger.info("[INFO] Get the right detail info, the status of cluster {0} is 100".format(space_id))
         capacity = detail_info["capacity"]
         # 查看缓存云实例详情，获取拓扑结构
-        info_logger.info("[STEP4] Get topology information of instance")
+        info_logger.info("[STEP5] Get topology information of instance")
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         info_logger.info("[INFO] Information of master container is {0}: [{1}]".format(masterIp, masterDocker))
         info_logger.info("[INFO] Information of slave container is {0}: [{1}]".format(slaveIp, slaveDocker))
         # 获取CFS的拓扑结构
-        info_logger.info("[STEP5] Get topology information of instance from CFS")
+        info_logger.info("[STEP6] Get topology information of instance from CFS")
         cfs_host = get_master_cfs_step(instance)
         info_logger.info("[INFO] The master cfs is {0}".format(cfs_host))
         cfs_client = CFS(cfs_host, config)
@@ -45,7 +49,7 @@ class TestCreateInstance:
         assert slaveIp == slaveIp_cfs, "[ERROR] Ip of slave container is inconsistent"
         assert slaveDocker == slaveDocker_cfs, "[ERROR] Docker_id of slave container is inconsistent"
         # 获取container的大小，验证container的大小
-        info_logger.info("[STEP6] Get container info from nova agent")
+        info_logger.info("[STEP7] Get container info from nova agent")
         container = Container(config, http_client)
         mem_info_master = get_container_info_step(container, masterIp, masterDocker)
         mem_info_slave = get_container_info_step(container, slaveIp, slaveDocker)
@@ -53,5 +57,5 @@ class TestCreateInstance:
         assert mem_info_slave["total"] == capacity * 1024, "[ERROR] Memory size of slave container is inconsistent with request"
         info_logger.info("[INFO] Memory size of master and slave container is {0}".format(capacity))
         # 删除缓存云实例
-        info_logger.info("[STEP7] Delete the instance {0}".format(space_id))
+        info_logger.info("[STEP8] Delete the instance {0}".format(space_id))
         delete_instance_step(instance, space_id)
