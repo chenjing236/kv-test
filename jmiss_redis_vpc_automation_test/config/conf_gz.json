@@ -11,6 +11,6 @@
   "nova_token_host": "172.27.51.50:35357",
   "cfs_sign_key":"std-jim-cfs",
   "retry_getting_topology_from_cfs": 200,
-  "retry_getting_info_times": 120,
+  "retry_getting_info_times": 240,
   "wait_time": 5
 }
