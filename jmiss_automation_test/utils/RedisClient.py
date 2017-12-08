@@ -61,18 +61,18 @@ class RedisClient(object):
     def check_ap_access(self, ap_host, ap_port, passwd):
         try:
             cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             return False
             # assert False, "[ERROR] Cannot access to AP with the password {0}".format(passwd)
         print "[INFO] Set key:value {test_ap:test_ap_value}"
         try:
             cnt.set("test_ap", "test_ap_value")
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             return False
             # assert False, "[ERROR] Cannot set key: value with AP"
         try:
             value = cnt.get("test_ap")
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             return False
             # assert False, "[ERROR] Cannot get value by the key {0}".format("test_ap")
         assert value == "test_ap_value"
@@ -91,15 +91,15 @@ class RedisClient(object):
     def set_value_from_ap_by_key(self, ap_host, ap_port, passwd, key, value):
         try:
             cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             assert False, "[ERROR] Cannot access to AP with the password {0}".format(passwd)
         try:
             cnt.set(key, value)
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             assert False, "[ERROR] Cannot get value by the key {0}".format(key)
         try:
             value_get = cnt.get(key)
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             assert False, "[ERROR] Cannot get value by the key {0}".format("test_ap")
         assert value_get == value
         return key, value
@@ -107,11 +107,11 @@ class RedisClient(object):
     def get_value_from_ap_by_key(self, ap_host, ap_port, passwd, key):
         try:
             cnt = redis.StrictRedis(host=ap_host, port=ap_port, password=passwd)
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             assert False, "[ERROR] Cannot access to AP with the password {0}".format(passwd)
         try:
             value = cnt.get(key)
-        except redis.ConnectionError:
+        except redis.ConnectionError, redis.ResponseError:
             assert False, "[ERROR] Cannot get value by the key {0}".format(key)
         return value
 
