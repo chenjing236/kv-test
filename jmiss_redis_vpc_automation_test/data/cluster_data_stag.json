@@ -1,0 +1,15 @@
+{
+  "spaceName":"jmiss_auto_test_vpc",
+  "spaceType":"2",
+  "flavorId":"9ae4abed-5aa9-4699-99ca-57a2b6a9cf36",
+  "quantity":"1",
+  "remarks":"jmiss",
+  "flavorIdResize":"2fe3dfd9-df0e-4cb7-bf8a-ffb046c8894a",
+  "flavorIdReduce":"b0809786-b196-4508-aa06-aa5605f91ff7",
+  "password":"1qaz2WSX",
+  "vpcId":"vpc-yd0ta3blcq",
+  "subnetId":"subnet-vovwr4tacw",
+  "openStackInfo":"tenantId:3532393137313338326131373435636538303836616161333966646262303235;tenantName:4a616e65436c6f7564303037406a636c6f75642e636f6d;userId:3364303236303637376132623462623362343130616662376431633034396466;password:4a616e65436c6f7564303037406a636c6f75642e636f6d",
+  "slaves":"1",
+  "availableZone":"stag_sq02,stag_sq03"
+}

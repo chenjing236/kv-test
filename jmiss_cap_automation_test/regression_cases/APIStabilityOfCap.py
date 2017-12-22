@@ -48,16 +48,12 @@ class APIStabilityCase:
 
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
-        try:
-            time.sleep(5)  # 创建失败情况等待中间层回滚
-            if self.index != 0:
+        if self.index == 6:
+            try:
                 delete_redis_instance_step(self.redis_cap, self.resource_id)
-                # 如果删除执行成功，teardown时index还会加1，不准确
-                if self.index == 6:
-                    self.index += 1
-        except Exception as e:
-            # 删除前请求失败的情况
-            self.index = 6
+                self.index += 1
+            except Exception as e:
+                self.index = 6
         # self.index += 1
         i = 0
         while i < len(self.result):

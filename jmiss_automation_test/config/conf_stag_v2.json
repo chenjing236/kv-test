@@ -1,6 +1,6 @@
 {
   "version": "v2.0",
-  "host": "jmiss-redis-stag-sq.jcloud.com",
+  "host": "jmiss-redis-pre-sq.jcloud.com",
   "port": 80,
   "pin": "242d9895529bf5ce45a672a3b8bfb212",
   "auth_token": "OumNJtYzJhFRY4YTBSsW3VBGg+A/FfnZQ9tFESKGHilCdkuREoMt6LC49bUIXB0h",
