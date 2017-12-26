@@ -4,7 +4,7 @@
   "port": 80,
   "user": "jcloudiaas2",
   "pin": "cab6260cdc0734c940ddf719612c6614",
-  "auth_token": "953ClsHhMASQ8IF0zPx42z373fONP99gtArzzWDFl4OgI6eALaicucvMJZFrqNBS",
+  "auth_token": "953ClsHhMASQ8IF0zPx429CxAxd7NXtiEDDiTMEpsmZf9Lz7yOSO21A8SG/46X6X",
   "tenant_id": "43d0c3b7219046339e8f310ec5696e71",
   "nova_agent_port": "1024",
   "nova_docker_host": "172.19.4.51:8774",
