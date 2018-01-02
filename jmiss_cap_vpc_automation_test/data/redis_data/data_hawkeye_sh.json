@@ -1,0 +1,52 @@
+{
+    "redis_cluster_info":{
+      "spaceName":"hawkeye_auto_test_vpc",
+      "spaceType":"1",
+      "quantity":"1",
+      "remarks":"",
+      "password":"1qaz2WSX",
+      "itemType":"1",
+      "networkOperator":"2",
+      "chargeMode":"1",
+      "chargeMode_month":"3",
+      "chargeDuration":"1",
+      "chargeUnit":"3",
+      "promotionType":"1",
+      "masterAvailableZone":"cn-east-2a",
+      "slaverAvailableZone":"cn-east-2b",
+      "vpcId":"vpc-bikchv2x46",
+      "subnetId":"subnet-92nlbkw0ix",
+      "flavor":{
+        "memory":"2",
+        "cpu":"1",
+        "disk":"8",
+        "maxConn":"10000",
+        "net":"48"
+      },
+      "flavor_resize":{
+        "memory":"3",
+        "cpu":"1",
+        "disk":"12",
+        "maxConn":"10000",
+        "net":"48"
+      },
+      "flavor_reduce":{
+        "memory":"1",
+        "cpu":"1",
+        "disk":"4",
+        "maxConn":"10000",
+        "net":"48"
+      },
+      "source":"API"
+    },
+  "operation_data":{
+    "sourceAuth": "4beeffb694500d149761258d78682a4d",
+    "requestSource": "operation",
+    "resourceType": "cache"
+  },
+  "common_data":{
+    "dataCenter":"cn-east-2",
+    "user":"iaas-ops",
+	"account":"iaas-ops"
+  }
+}
