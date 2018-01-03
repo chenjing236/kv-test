@@ -14,8 +14,8 @@
       "promotionType":"1",
       "masterAvailableZone":"cn-north-1a",
       "slaverAvailableZone":"cn-north-1b",
-      "vpcId":"vpc-bikchv2x46",
-      "subnetId":"subnet-92nlbkw0ix",
+      "vpcId":"vpc-f1fzkazywh",
+      "subnetId":"subnet-j7lus95csx",
       "flavor":{
         "memory":"2",
         "cpu":"1",
