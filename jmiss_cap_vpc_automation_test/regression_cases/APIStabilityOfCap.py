@@ -3,6 +3,7 @@
 from BasicTestCase import *
 from utils.HttpClient import RedisCapClient, CapClient
 import time
+import sys
 
 logger_info = logging.getLogger(__name__)
 
@@ -124,8 +125,9 @@ class APIStabilityCase:
 
 
 def main():
+    region = sys.argv[1]
     conf_file = './config/redis_config/config_hawkeye.json'
-    instance_file = './data/redis_data/data_hawkeye_hb.json'
+    instance_file = './data/redis_data/data_hawkeye_{0}.json'.format(region)
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
