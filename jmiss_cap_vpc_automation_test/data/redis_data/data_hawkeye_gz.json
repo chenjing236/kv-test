@@ -1,6 +1,6 @@
 {
     "redis_cluster_info":{
-      "spaceName":"hawkeye_auto_test_vpc",
+      "spaceName":"hawkeye_test_vpc",
       "spaceType":"1",
       "quantity":"1",
       "remarks":"",
@@ -13,7 +13,7 @@
       "chargeUnit":"3",
       "promotionType":"1",
       "masterAvailableZone":"cn-south-1a",
-      "slaverAvailableZone":"cn-south-1b",
+      "slaverAvailableZone":"cn-south-1a",
       "vpcId":"vpc-uvf9vqhnkf",
       "subnetId":"subnet-1lzo1t6rno",
       "flavor":{

@@ -1,6 +1,6 @@
 {
     "redis_cluster_info":{
-      "spaceName":"hawkeye_auto_test_vpc",
+      "spaceName":"hawkeye_test_vpc",
       "spaceType":"1",
       "quantity":"1",
       "remarks":"",
