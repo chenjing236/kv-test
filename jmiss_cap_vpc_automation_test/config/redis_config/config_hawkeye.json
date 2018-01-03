@@ -1,0 +1,5 @@
+{
+  "host":"redis-vpc-biz.jcloud.com",
+  "retry_getting_info_times": 180,
+  "wait_time": 5
+}
