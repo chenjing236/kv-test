@@ -124,7 +124,7 @@ class APIStabilityCase:
 
 
 def main():
-    conf_file = './config/redis_config/config_hawkeye_hb.json'
+    conf_file = './config/redis_config/config_hawkeye.json'
     instance_file = './data/redis_data/data_hawkeye_hb.json'
     fd = open(conf_file, 'r')
     config = json.load(fd)
