@@ -24,9 +24,9 @@
         "net":"48"
       },
       "flavor_resize":{
-        "memory":"3",
+        "memory":"4",
         "cpu":"1",
-        "disk":"12",
+        "disk":"16",
         "maxConn":"10000",
         "net":"48"
       },
