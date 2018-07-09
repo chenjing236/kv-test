@@ -14,8 +14,8 @@
       "promotionType":"1",
       "masterAvailableZone":"cn-north-1a",
       "slaverAvailableZone":"cn-north-1b",
-      "vpcId":"vpc-f1fzkazywh",
-      "subnetId":"subnet-j7lus95csx",
+      "vpcId":"vpc-vx0g67kn5x",
+      "subnetId":"subnet-q9hs258ass",
       "flavor":{
         "memory":"2",
         "cpu":"1",
@@ -46,7 +46,7 @@
   },
   "common_data":{
     "dataCenter":"cn-north-1",
-    "user":"iaas-ops",
-	"account":"iaas-ops"
+    "user":"jcloudiaas2",
+	"account":"jcloudiaas2"
   }
 }
