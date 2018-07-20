@@ -10,6 +10,11 @@
   "nova_docker_host": "192.168.241.141:8774",
   "nova_token_host": "192.168.241.141:35357",
   "cfs_sign_key": "std-jim-cfs",
+  "mysql_host": "192.168.241.204",
+  "mysql_port": 3306,
+  "mysql_user": "jmiss",
+  "mysql_passwd": "jmiss",
+  "mysql_db": "jmiss_redis_test_alpha",
   "retry_getting_topology_from_cfs": 200,
   "retry_getting_info_times": 240,
   "wait_time": 5
