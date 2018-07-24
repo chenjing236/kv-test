@@ -35,4 +35,4 @@ class TestResetPassword:
         reset_password_step(cluster, space_id, password_default)
         # 设置redis免密，通过NLB访问缓存云实例
         accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id)
+        check_access_nlb_step(accesser, space_id, password_default)
