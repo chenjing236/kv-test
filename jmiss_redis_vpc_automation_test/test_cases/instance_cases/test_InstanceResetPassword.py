@@ -27,9 +27,10 @@ class TestResetPassword:
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password_new + password_new)
 
-        # # run reset password
-        # time.sleep(3)
-        # reset_password_step(instance, space_id, "")
-        # # 设置redis免密，通过NLB访问缓存云实例
-        # accesser = Accesser(config)
-        # check_access_nlb_step(accesser, space_id)
+        # run reset password
+        time.sleep(3)
+        # 待免密jmiss-web上线后，将下面参数password_default改为空字符串即可，此case为验证免密访问
+        reset_password_step(instance, space_id, password_default)
+        # 设置redis免密，通过NLB访问缓存云实例
+        accesser = Accesser(config)
+        check_access_nlb_step(accesser, space_id)
