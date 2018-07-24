@@ -7,8 +7,8 @@
   "flavorIdResize":"dbfd9d47-b29d-4e64-84a7-6c1e7cdccd38",
   "flavorIdReduce":"c72cb84e-af93-4e0e-b7f2-bcb09a51f9ef",
   "password":"1qaz2WSX",
-  "vpcId":"vpc-k6mfz9yprw",
-  "subnetId":"subnet-dppki7pq4k",
+  "vpcId":"vpc-b8fnovxxa0",
+  "subnetId":"subnet-zeyguozd17",
   "openStackInfo":"tenantId:3131323435336433633131333435613062656330336439333739663366326133;tenantName:6a636c6f75646961617332406a636c6f75642e636f6d;userId:6636366639333331353736343430306138623361353334303938623833633665;password:6a636c6f75646961617332406a636c6f75642e636f6d",
   "slaves":"1",
   "availableZone":"prod_sh01,prod_sh02"

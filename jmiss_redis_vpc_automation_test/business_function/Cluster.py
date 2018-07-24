@@ -1,12 +1,7 @@
 # coding:utf-8
-from Container import *
-from CFS import *
 import json
 import string
 import random
-import logging
-
-logger_info = logging.getLogger(__name__)
 
 
 # 创建缓存云实例API接口参数

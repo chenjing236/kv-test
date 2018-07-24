@@ -2,7 +2,7 @@
 # from utils.HttpClient import *
 import logging
 
-logger_info = logging.getLogger(__name__)
+info_logger = logging.getLogger(__name__)
 
 
 class Container:
