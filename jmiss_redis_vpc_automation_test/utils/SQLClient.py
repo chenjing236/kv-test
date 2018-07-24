@@ -19,7 +19,7 @@ class SQLClient(object):
         self.db = db
 
     def init_cursor(self):
-        self.conn = MySQLdb.connect(host=self.host, user=self.user, passwd=self.passwd, db=self.db, charset="utf8")
+        self.conn = MySQLdb.connect(host=self.host, port=self.port, user=self.user, passwd=self.passwd, db=self.db, charset="utf8")
         self.cursor = self.conn.cursor()
 
     def close_cursor(self):
