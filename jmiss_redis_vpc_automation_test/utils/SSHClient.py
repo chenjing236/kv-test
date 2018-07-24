@@ -2,11 +2,14 @@
 # coding:utf-8
 
 import paramiko
-from conftest import *
+import os
+import logging
+info_logger = logging.getLogger(__name__)
 
 
 class SSHClient(object):
-    def __init__(self, ssh_host, ssh_port=22, ssh_user="root", ssh_password=""):
+    def __init__(self, ssh_host, ssh_key=False, ssh_port=22, ssh_user="root", ssh_password=""):
+        self.ssh_key = ssh_key
         self.sshHost = ssh_host
         self.sshPort = ssh_port
         self.sshUser = ssh_user
@@ -15,7 +18,14 @@ class SSHClient(object):
 
     def init_client(self):
         self.ssh_redis.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_redis.connect(hostname=self.sshHost, port=self.sshPort, username=self.sshUser, password=self.password)
+        print self.ssh_key
+        if self.ssh_key is False:
+            self.ssh_redis.connect(hostname=self.sshHost, port=self.sshPort, username=self.sshUser, password=self.password)
+        # 测试环境用ssh_key登录，可以在办公网本地运行自动化用例，配置文件中ssh_key为true时可用
+        else:
+            privatekey = os.path.expanduser("./config/id_rsa")
+            key = paramiko.RSAKey.from_private_key_file(privatekey)
+            self.ssh_redis.connect(hostname=self.sshHost, username="root", pkey=key)
 
     def close_client(self):
         self.ssh_redis.close()
@@ -38,8 +48,7 @@ class SSHClient(object):
         err = stderr.readlines()
         self.close_client()
         if len(err) != 0:
-            info_logger.info("[ERROR] Failed to exec redis command, the error is {0}".format(err))
-            assert False
+            assert False, info_logger.error("[ERROR] Failed to exec redis command, the error is {0}".format(err))
         return result
 
     def redis_get_key(self, docker_id, ip, key, password=None):

@@ -15,6 +15,7 @@
   "mysql_user": "iaas_ops_ro",
   "mysql_passwd": "httznVWLvlUsC51UsjZk",
   "mysql_db": "jmiss_redis_vpc_prod_gz",
+  "ssh_key": false,
   "retry_getting_topology_from_cfs": 200,
   "retry_getting_info_times": 240,
   "wait_time": 5
