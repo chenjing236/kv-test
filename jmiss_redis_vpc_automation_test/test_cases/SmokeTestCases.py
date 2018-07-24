@@ -1,7 +1,5 @@
 # coding:utf-8
-from BasicTestCase import *
-
-info_logger = logging.getLogger(__name__)
+from conftest import *
 
 
 class TestSmokeCases:

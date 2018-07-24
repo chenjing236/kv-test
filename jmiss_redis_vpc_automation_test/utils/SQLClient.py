@@ -1,15 +1,14 @@
 #!/usr/bin/python
 # coding:utf-8
+from conftest import *
 import MySQLdb
-import json
+# import json
 import time
-
 import logging
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 
-info_logger = logging.getLogger(__name__)
 
 class SQLClient(object):
     def __init__(self, host, port, user, passwd, db):

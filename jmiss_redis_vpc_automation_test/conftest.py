@@ -1,10 +1,15 @@
+# coding=utf-8
 import pytest
-import json
-from utils.util import *
-import logging
+from utils.HttpClient import *
+from steps.ClusterOperation import *
+from steps.ContainerOperation import *
+from steps.AccessOperation import *
+import sys
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 from logging.handlers import TimedRotatingFileHandler
 
-logger_info = logging.getLogger(__name__)
+# info_logger = logging.getLogger(__name__)
 
 
 def pytest_addoption(parser):
@@ -24,6 +29,43 @@ def instance_data(request):
     file_path = request.config.getoption("data")
     data = json.load(open(file_path, 'r'))
     return data
+
+
+@pytest.fixture(scope="session")
+def created_instance(config, instance_data, http_client, request):
+    instance = Cluster(config, instance_data, http_client)
+    space_id, operation_id, password = create_instance_step(instance)
+    # 查看创建操作结果，验证创建成功
+    get_operation_result_step(instance, space_id, operation_id)
+    # 设置资源acl
+    set_acl_step(instance, space_id)
+
+    def teardown():
+        print "\n"
+        info_logger.info("[TEARDOWN] Delete the instance {0}".format(space_id))
+        instance.delete_instance(space_id)
+        time.sleep(15)
+
+    request.addfinalizer(teardown)
+    return space_id, instance, password
+
+
+@pytest.fixture(scope="session")
+def http_client(config):
+    http_cli = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"], config["tenant_id"], config["nova_docker_host"], config["nova_token_host"], config["user"])
+    return http_cli
+
+
+@pytest.fixture(scope="session")
+def docker_client(config):
+    docker_cli = Container(config)
+    return docker_cli
+
+
+@pytest.fixture(scope="session")
+def sql_client(config):
+    sql_cli = SQLClient(config["mysql_host"], config["mysql_port"], config["mysql_user"], config["mysql_passwd"], config["mysql_db"])
+    return sql_cli
 
 
 @pytest.fixture(scope="session", autouse=True)

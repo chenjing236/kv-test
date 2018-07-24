@@ -1,12 +1,10 @@
 # coding:utf-8
-# from utils.HttpClient import *
 from utils.SSHClient import *
 from utils.SQLClient import *
 
 
 class Accesser:
     def __init__(self, conf_obj):
-        #self.conf_obj = conf_obj
         self.sql_client = SQLClient(conf_obj["mysql_host"], conf_obj["mysql_port"], conf_obj["mysql_user"],
                                     conf_obj["mysql_passwd"], conf_obj["mysql_db"])
         self.ssh_client = None

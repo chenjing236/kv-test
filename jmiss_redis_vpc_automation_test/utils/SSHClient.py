@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # coding:utf-8
+
 import paramiko
-import logging
-info_logger = logging.getLogger(__name__)
+from conftest import *
 
 
 class SSHClient(object):
