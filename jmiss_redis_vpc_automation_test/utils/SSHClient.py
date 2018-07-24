@@ -18,7 +18,6 @@ class SSHClient(object):
 
     def init_client(self):
         self.ssh_redis.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        print self.ssh_key
         if self.ssh_key is False:
             self.ssh_redis.connect(hostname=self.sshHost, port=self.sshPort, username=self.sshUser, password=self.password)
         # 测试环境用ssh_key登录，可以在办公网本地运行自动化用例，配置文件中ssh_key为true时可用
