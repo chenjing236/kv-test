@@ -1,6 +1,5 @@
 # coding:utf-8
 from conftest import *
-from Tkinter import _flatten
 
 class TestSmokeCases:
 
@@ -219,7 +218,6 @@ class TestSmokeCases:
         info_logger.info("[SCENARIO] Start to run failover aproxy")
         # 创建缓存云实例，创建成功
         space_id, instance, password = created_instance
-        # space_id="redis-k7vmic2hmq"
         info_logger.info("space_id:" + space_id)
         # 获取旧ap
         sql_str = "select docker_id,overlay_ip from ap where space_id='{0}'".format(space_id)
@@ -238,7 +236,8 @@ class TestSmokeCases:
         docker_tuple_new = sql_client.exec_query_all(sql_str)
         assert docker_tuple[1][1] == docker_tuple_new[0][1]
         assert 2 == len(docker_tuple_new)
-        assert docker_id not in _flatten(docker_tuple_new)
+        docker_list = [j for i in docker_tuple_new for j in i]
+        assert docker_id not in docker_list
         info_logger.info("[INFO] Test aproxy failover successfully!")
 
     @pytest.mark.smoke
