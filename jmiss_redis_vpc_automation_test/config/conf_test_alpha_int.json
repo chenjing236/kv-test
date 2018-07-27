@@ -14,7 +14,7 @@
   "mysql_port": 3306,
   "mysql_user": "jmiss",
   "mysql_passwd": "jmiss",
-  "mysql_db": "jmiss_redis_test_alpha",
+  "mysql_db": "jmiss_redis_test_alpha_int",
   "ssh_key": true,
   "retry_getting_topology_from_cfs": 200,
   "retry_getting_info_times": 240,

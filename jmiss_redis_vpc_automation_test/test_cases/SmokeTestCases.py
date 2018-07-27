@@ -218,7 +218,6 @@ class TestSmokeCases:
         info_logger.info("[SCENARIO] Start to run failover aproxy")
         # 创建缓存云实例，创建成功
         space_id, instance, password = created_instance
-        info_logger.info("space_id:" + space_id)
         # 获取旧ap
         sql_str = "select docker_id,overlay_ip from ap where space_id='{0}'".format(space_id)
         docker_tuple = sql_client.exec_query_all(sql_str)
