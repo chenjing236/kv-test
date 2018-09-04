@@ -7,9 +7,9 @@
   "cache_resize_class": "redis.m1.medium.basic",
   "vpc_id": "vpc-ibwt3sqbaj",
   "subnet_id": "subnet-t5uebqtorv",
-  "master_az_id": "cn-north-1a",
-  "slaver_az_id": "cn-north-1b",
-  "region_id": "cn-north-1",
+  "master_az_id": "cn-south-1a",
+  "slaver_az_id": "cn-south-1a",
+  "region_id": "cn-south-1",
   "charge_duration": 1,
   "charge_mode": "prepaid_by_duration",
   "charge_unit": "month"

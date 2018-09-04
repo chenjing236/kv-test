@@ -2,6 +2,7 @@
 
 from steps.RedisOperationSteps import *
 import json
+import sys
 import logging
 import datetime
 
@@ -9,7 +10,8 @@ info_logger = logging.getLogger(__name__)
 
 
 def print_log(log):
-    print "[{0}] {1}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), log)
+    # print "[{0}] {1}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), log)
+    return
 
 
 class APIStabilityCase:
@@ -25,7 +27,6 @@ class APIStabilityCase:
         self.redis_cap = None
 
     def __del__(self):
-        # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
         if self.index == 6:
             try:
                 print_log("[STEP] Start to delete redis cluster {0}".format(self.space_id))
@@ -33,8 +34,8 @@ class APIStabilityCase:
                 self.index += 1
                 print_log("Delete redis cluster successfully!")
             except Exception as ee:
-                abc = "Exception", ":", ee
-                abc += 1
+                aaa = "Exception", ":", ee
+                aaa += 1
                 self.index = 6
         # self.index += 1
         i = 0
@@ -51,14 +52,13 @@ class APIStabilityCase:
             print "stab.redis.status:\"{0}\"".format(self.result_error[self.index])
 
     def run_smoke(self):
-        redis_cap = RedisCap(self.config, self.instance_data)
+        redis_cap = RedisCap(self.config, self.instance_data, Logger(FATAL))
         self.redis_cap = redis_cap
         # 清除残留redis实例
         print_log("[STEP] Clean up the rest redis clusters!")
-        filter_data = {"filters": [{"name": "cacheInstanceName", "values": [self.instance_data["cache_instance_name"]]},
+        filter_data = {"filters": [{"name": "cacheInstanceName", "values": [str(self.instance_data["cache_instance_name"])]},
                                    {"name": "cacheInstanceStatus", "values": ["running", "error"]}]}
         clusters = query_list_step(redis_cap, filter_data)
-        return
         if clusters["totalCount"] > 0:
             for cluster in clusters["cacheInstances"]:
                 print_log("Delete the redis cluster [{0}]".format(cluster["cacheInstanceId"]))
@@ -134,9 +134,9 @@ class APIStabilityCase:
 
 
 def main():
-    # region = sys.argv[1]
+    region = sys.argv[1]
     conf_file = './config/config_hawkeye.json'
-    instance_file = './data/data_hawkeye_hb.json'
+    instance_file = './data/data_hawkeye_{0}.json'.format(region)
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()

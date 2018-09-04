@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
+import base64
 from jdcloud_sdk.core.logger import *
 # import json
 from jdcloud_sdk.core.credential import Credential
 from jdcloud_sdk.core.config import Config
+from jdcloud_sdk.core.const import *
 from jdcloud_sdk.services.redis.client.RedisClient import RedisClient
 from jdcloud_sdk.services.redis.apis.CreateCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstanceRequest import *
@@ -15,23 +17,32 @@ from jdcloud_sdk.services.redis.apis.ModifyCacheInstanceAttributeRequest import 
 from jdcloud_sdk.services.redis.apis.DescribeInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeOrderStatusRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
+from jdcloud_sdk.services.redis.apis.ModifyUserQuotaRequest import *
+from jdcloud_sdk.services.redis.apis.ModifyInstanceClassRequest import *
 
 info_logger = logging.getLogger(__name__)
 
 
 # 缓存云Redis中间层类
-class RedisCap(object):
-    def __init__(self, config, instance_data):
+class RedisCap:
+    def __init__(self, config, instance_data, log_level=Logger(INFO)):
         credential = Credential(config["access_key"], config["secret_key"])
-        self.client = RedisClient(credential, Config(config["host"], 'http', 30), Logger(INFO))
-        # self.client = RedisClient(credential, Config('192.168.182.82:9010', 'http', 30), Logger(ERROR))
+        self.client = RedisClient(credential, Config(str(config["host"]), SCHEME_HTTP, 30), log_level)
+        self.op_client = RedisClient(credential, Config(str(config["host_internal"]), 'http', 30), log_level)
         self.instance_data = instance_data
         self.config = config
         self.region_id = instance_data["region_id"]
+        self.header = {'x-jdcloud-erp': base64.b64encode(config["erp"])}
 
     # 调用sdk执行请求
     def send_request(self, request):
         response = self.client.send(request)
+        assert response.error is None, info_logger.error("http request error!")
+        return response
+
+    # 调用sdk执行请求
+    def send_op_request(self, request):
+        response = self.op_client.send(request)
         assert response.error is None, info_logger.error("http request error!")
         return response
 
@@ -77,35 +88,20 @@ class RedisCap(object):
     # }
     # 返回request_id和列表结果
     def query_list(self, filter_data=None):
+        if filter_data is None:
+            filter_data = {}
         params = DescribeCacheInstancesParameters(self.region_id)
-        # print filter_data
-        # print filter_data["filters"]
-        # print json.dumps(filter_data["filters"])
         if "filters" in filter_data:
             params.setFilters(filter_data["filters"])
-        # if "pageNumber" in filter_data:
-        #     params.setPageNumber(4)
-        # if "pageSize" in filter_data:
-        #     params.setPageSize(5)
-        # if "sorts" in filter_data:
-        #     params.setSorts(filter_data["sorts"])
+        if "pageNumber" in filter_data:
+            params.setPageNumber(filter_data["pageNumber"])
+        if "pageSize" in filter_data:
+            params.setPageSize(filter_data["pageSize"])
+        if "sorts" in filter_data:
+            params.setSorts(filter_data["sorts"])
         request = DescribeCacheInstancesRequest(params)
         response = self.send_request(request)
         return response.request_id, response.result
-
-    # 查询订单状态，如创建、扩容等操作的当前状态
-    # 参数为查询操作的request_id
-    # 返回request_id，操作状态：success、fail、in_process
-    def query_order_status(self, request_id):
-        params = DescribeOrderStatusParameters(self.region_id, request_id)
-        request = DescribeOrderStatusRequest(params)
-        response = self.send_request(request)
-        if response.result["success"] == 1:
-            return response.request_id, 'success'
-        elif response.result["inProcess"] == 1:
-            return response.request_id, 'in_process'
-        else:
-            return response.request_id, 'fail'
 
     # 更新缓存云实例基本信息
     # 参数为space_id，要修改的name和description，name不能为空
@@ -163,3 +159,48 @@ class RedisCap(object):
         request = DescribeUserQuotaRequest(params)
         response = self.send_request(request)
         return response.request_id, response.result["quota"]["max"], response.result["quota"]["used"]
+
+    # ######################################################
+    # 运营内部接口
+    # ######################################################
+
+    # 查询订单状态，如创建、扩容等操作的当前状态
+    # 参数为查询操作的request_id
+    # 返回request_id，操作状态：success、fail、in_process
+    def query_order_status(self, request_id):
+        params = DescribeOrderStatusParameters(self.region_id, request_id)
+        request = DescribeOrderStatusRequest(params)
+        response = self.send_op_request(request)
+        if response.result["success"] == 1:
+            return response.request_id, 'success'
+        elif response.result["inProcess"] == 1:
+            return response.request_id, 'in_process'
+        else:
+            return response.request_id, 'fail'
+
+    # 运营删除云缓存实例（包年包月资源）
+    # 参数为space_id
+    # 返回request_id
+    def op_delete(self, space_id):
+        params = DeleteCacheInstanceParameters(self.region_id, space_id)
+        request = DeleteCacheInstanceRequest(params, self.header)
+        response = self.send_op_request(request)
+        return response.request_id
+
+    # 运营修改用户资源配额
+    # 参数为已使用配额used，配额总数quota
+    # 返回request_id
+    def modify_quota(self, used, quota):
+        params = ModifyUserQuotaParameters(self.region_id, used, quota)
+        request = ModifyUserQuotaRequest(params, self.header)
+        response = self.send_op_request(request)
+        return response.request_id
+
+    # 运营修改用户可见flavor
+    # 参数为规格代码instance_class，操作类型action_type：1可见，0无效，-1不可见
+    # 返回request_id
+    def modify_user_class(self, instance_class, action_type):
+        params = ModifyInstanceClassParameters(self.region_id, instance_class, action_type)
+        request = ModifyInstanceClassRequest(params, self.header)
+        response = self.send_op_request(request)
+        return response.request_id

@@ -2,8 +2,6 @@
 
 import time
 from business_function.RedisCap import *
-from business_function.RedisOperation import *
-
 
 # ########################
 # 用户操作接口
@@ -44,6 +42,8 @@ def query_detail_step(redis_cap, space_id):
 
 # 根据过滤条件查云缓存实例列表
 def query_list_step(redis_cap, filter_data=None):
+    if filter_data is None:
+        filter_data = {}
     request_id, redis_list = redis_cap.query_list(filter_data)
     info_logger.info("Query redis list successfully! request_id is [{0}]".format(request_id))
     return redis_list
