@@ -1,0 +1,16 @@
+{
+  "cache_instance_name": "hawkeye_openapi_test",
+  "cache_instance_description": "openapi_test",
+  "password": "1qaz2WSX",
+  "cache_instance_class": "redis.m1.small.basic",
+  "cache_reduce_class": "redis.m1.micro.basic",
+  "cache_resize_class": "redis.m1.medium.basic",
+  "vpc_id": "vpc-fl221zmwv7",
+  "subnet_id": "subnet-wor79d3m8u",
+  "master_az_id": "cn-east-2a",
+  "slaver_az_id": "cn-east-2b",
+  "region_id": "cn-east-2",
+  "charge_duration": 1,
+  "charge_mode": "prepaid_by_duration",
+  "charge_unit": "month"
+}
