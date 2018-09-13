@@ -3,6 +3,7 @@ import logging
 import base64
 from jdcloud_sdk.core.logger import *
 # import json
+import datetime
 from jdcloud_sdk.core.credential import Credential
 from jdcloud_sdk.core.config import Config
 from jdcloud_sdk.core.const import *
@@ -36,13 +37,19 @@ class RedisCap:
 
     # 调用sdk执行请求
     def send_request(self, request):
+        start_time = datetime.datetime.now()
         response = self.client.send(request)
+        end_time = datetime.datetime.now()
+        print "[TIME] Request exec time is {0} seconds".format((end_time - start_time).seconds)
         assert response.error is None, info_logger.error("http request error!")
         return response
 
     # 调用sdk执行请求
     def send_op_request(self, request):
+        start_time = datetime.datetime.now()
         response = self.op_client.send(request)
+        end_time = datetime.datetime.now()
+        print "[TIME] Request exec time is {0} seconds".format((end_time - start_time).seconds)
         assert response.error is None, info_logger.error("http request error!")
         return response
 

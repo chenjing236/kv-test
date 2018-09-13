@@ -4,13 +4,12 @@ from steps.RedisOperationSteps import *
 import json
 import sys
 import logging
-import datetime
 
 info_logger = logging.getLogger(__name__)
 
 
 def print_log(log):
-    # print "[{0}] {1}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), log)
+    print "[{0}] {1}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), log)
     return
 
 
@@ -52,7 +51,7 @@ class APIStabilityCase:
             print "stab.redis.status:\"{0}\"".format(self.result_error[self.index])
 
     def run_smoke(self):
-        redis_cap = RedisCap(self.config, self.instance_data, Logger(FATAL))
+        redis_cap = RedisCap(self.config, self.instance_data, Logger(INFO))
         self.redis_cap = redis_cap
         # 清除残留redis实例
         print_log("[STEP] Clean up the rest redis clusters!")
