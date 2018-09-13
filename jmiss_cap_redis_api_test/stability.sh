@@ -6,4 +6,6 @@ fi
 cd /export/Data/jmiss_auto_scripts/redis_stability_scripts_$1/JCacheTest/jmiss_cap_redis_api_test
 
 export PYTHONPATH=`pwd`:/export/Data/jmiss_auto_scripts/redis_stability_scripts_$1/jcloud-sdk-python/
-/usr/bin/python ./regression_cases/APIStabilityOfCap.py $1
+date=`date '+%Y%m%d-%H%M%S'`
+/usr/bin/python ./regression_cases/APIStabilityOfCap.py $1 > /export/Logs/redis_stability_test/redis_stability_$date.log 2>&1
+cat nohup.out | tail -n 8
