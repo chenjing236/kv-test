@@ -1,0 +1,9 @@
+{
+  "host": "192.168.182.82:9010",
+  "host_internal": "apigw-test.openapi.jdcloud.com",
+  "erp": "zhangpengyun",
+  "access_key": "4920C0EF7AEF74E87261FBC351E9C8D1",
+  "secret_key": "9763B1AE50A713B3D7A5AF4A97B060A0",
+  "retry_times": 180,
+  "wait_time": 5
+}

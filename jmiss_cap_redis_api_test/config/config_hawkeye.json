@@ -1,0 +1,9 @@
+{
+  "host": "redis.jdcloud-api.com",
+  "host_internal": "apigw-internal.cn-north-1.jcloudcs.com",
+  "erp": "zhangpengyun",
+  "access_key": "D7D351CD4CDA6C8B9D6CA39690626CC2",
+  "secret_key": "B75E8C06E050ED548650085F3D61B0F6",
+  "retry_times": 180,
+  "wait_time": 5
+}
