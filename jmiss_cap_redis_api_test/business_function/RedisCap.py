@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import base64
+import requests
 from jdcloud_sdk.core.logger import *
 # import json
 import datetime
@@ -38,18 +39,33 @@ class RedisCap:
     # 调用sdk执行请求
     def send_request(self, request):
         start_time = datetime.datetime.now()
-        response = self.client.send(request)
+        print "[TIME] Request start time is {0}".format(start_time)
+        for retry_times in range(1, self.config["http_retry_times"] + 1):
+            try:
+                response = self.client.send(request)
+                break
+            except requests.ConnectTimeout:
+                print "[Request Timeout] Retry [{0}] times failed, timeout 30 seconds".format(retry_times)
+        # print eee
         end_time = datetime.datetime.now()
-        print "[TIME] Request exec time is {0} seconds".format((end_time - start_time).seconds)
+        print "[TIME] Request exec time is {0} milliseconds".format((end_time - start_time).microseconds/1000)
+        assert 'response' in locals().keys()
         assert response.error is None, info_logger.error("http request error!")
         return response
 
     # 调用sdk执行请求
     def send_op_request(self, request):
         start_time = datetime.datetime.now()
-        response = self.op_client.send(request)
+        print "[TIME] Request start time is {0}".format(start_time)
+        for i in range(1, self.config["http_retry_times"] + 1):
+            try:
+                response = self.op_client.send(request)
+                break
+            except requests.ConnectTimeout:
+                print "[Request Timeout] Retry [{0}] times failed, timeout 30 seconds".format(i)
         end_time = datetime.datetime.now()
-        print "[TIME] Request exec time is {0} seconds".format((end_time - start_time).seconds)
+        print "[TIME] Request exec time is {0} milliseconds".format((end_time - start_time).microseconds/1000)
+        assert 'response' in locals().keys()
         assert response.error is None, info_logger.error("http request error!")
         return response
 

@@ -1,6 +1,6 @@
 {
-  "host": "apigw-pre.openapi.jdcloud.com",
-  "host_internal": "apigw-pre.openapi.jdcloud.com",
+  "host": "10.226.148.63:8000",
+  "host_internal": "10.226.148.63:8000",
   "erp": "zhangpengyun",
   "access_key": "B578F5B09D8DCB25FB2FE9F2615A17F9",
   "secret_key": "5DE097F815816529DF5AF7D1467508CF",
