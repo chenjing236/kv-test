@@ -15,6 +15,7 @@ class TestFlushInstance:
 
         except Exception, e:
             print e
+        assert resp.error is None
         assert resp is not None
         assert resp.result is None
 

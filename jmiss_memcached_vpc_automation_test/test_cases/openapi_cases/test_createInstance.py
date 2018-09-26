@@ -11,6 +11,7 @@ class TestCreateInstance:
     @pytest.mark.openapi
     def test_createInstanceWithPassword(self, create_instance, config):
         client, resp, instance_name, instance_id = create_instance
+
         assert resp.error is None
         assert instance_id is not None
 

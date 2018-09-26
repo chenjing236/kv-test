@@ -70,3 +70,15 @@ def sql_client(config):
                         config["mysql_db"])
     return sql_cli
 
+
+@pytest.fixture(scope="session", autouse=True)
+def logger():
+    info_logger = logging.getLogger()
+    info_logger.setLevel(logging.DEBUG)
+
+    failure_logger = logging.getLogger('failure')
+    failure_logger.setLevel(logging.WARNING)
+
+    stat_logger = logging.getLogger('stat')
+    stat_logger.setLevel(logging.INFO)
+

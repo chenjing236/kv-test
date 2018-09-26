@@ -92,7 +92,6 @@ def describeInstance(client, instance_id, instance_data, conf):
     header = getHeader(conf)
     check_data = instance_data["check_data"]
     exist_data = instance_data["exist_data"]
-    change_data = instance_data["change_data"]
     try:
         parameters = DescribeInstanceParameters(conf["region"], instance_id)
         request = DescribeInstanceRequest(parameters, header)
@@ -111,8 +110,6 @@ def describeInstance(client, instance_id, instance_data, conf):
         if k not in resp.result['instance']:
             print k,y
             assert False
-    for k, y in change_data.items():
-        assert resp.result['instance'][k] == y
 
 
 def describe(client, instance_id, conf):

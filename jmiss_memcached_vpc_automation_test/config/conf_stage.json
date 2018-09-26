@@ -1,0 +1,20 @@
+{
+  "gateway":"apigw-pre.openapi.jdcloud.com",
+  "access_key":"B578DBDA29B4BC57D49809C686A6C64E",
+  "secret_key":"E1F553336CC302653696C1B96B7CDA17",
+  "region":"cn-north-1",
+  "az":"cn-north-1b",
+  "vpc":"vpc-yd0ta3blcq",
+  "subnet":"subnet-vovwr4tacw",
+  "version": "1.5.8",
+  "user": "JaneCloud007",
+  "mysql_host": "stag-paas-m.mysql.jddb.jcloud.com",
+  "mysql_port": 3358,
+  "mysql_user": "jmiss_rw",
+  "mysql_passwd": "bwsTsW7U9WqZMm2RBea9",
+  "mysql_db": "jmiss_memcached_openapi",
+  "ssh_key": true,
+  "retry_getting_topology_from_cfs": 200,
+  "retry_getting_info_times": 240,
+  "wait_time": 5
+}
