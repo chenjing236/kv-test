@@ -13,4 +13,4 @@ cat /export/Logs/redis_stability_test/redis_stability_$date.log | tail -n 8
 # clean up old log
 today=`date '+%Y%m%d-%H%M%S' | awk -F'-' '{print $1}'`
 cd /export/Logs/redis_stability_test/
-ls | grep redis_stability*log | awk -v today=$today -F'-|_' '{if($3 < today-1) {print}}' | xargs \rm -f
+ls | awk -v today=$today -F'-|_' '{if($3 < today-1) {print}}' | xargs \rm -f
