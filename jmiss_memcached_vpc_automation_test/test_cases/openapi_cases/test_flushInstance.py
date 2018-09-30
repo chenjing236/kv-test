@@ -12,11 +12,10 @@ class TestFlushInstance:
             parameters = FlushInstanceParameters(config["region"], instance_id)
             request = FlushInstanceRequest(parameters, header)
             resp = client.send(request)
-
         except Exception, e:
             print e
-        assert resp.error is None
         assert resp is not None
+        assert resp.error is None
         assert resp.result is None
 
 

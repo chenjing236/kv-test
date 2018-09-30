@@ -8,7 +8,7 @@
             , "subnetId": "subnet-vovwr4tacw"
             , "vpcId": "vpc-yd0ta3blcq"
             , "mcAuth": true
-            ,"instanceClass": "MC-S-1C1G"
+            , "instanceClass": "MC-S-1C1G"
             , "instanceDescription": "desc"
         },
   "exist_data":{

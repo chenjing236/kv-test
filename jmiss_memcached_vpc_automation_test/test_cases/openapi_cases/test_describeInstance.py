@@ -14,9 +14,6 @@ class TestDescribeInstance:
     def test_describeInstanceNotFound(self, create_instance, instance_data, config):
         client, resp, instance_name, instance_id = create_instance
         resp = describe(client, "mc-xxxxxx", config)
-        # if resp is not None:
-        #     pr
-        # assert int(resp.error.code) == 404
         checkNotFound(resp)
 
 

@@ -8,6 +8,7 @@ from jdcloud_sdk.services.memcached.apis.CreateInstanceRequest import *
 from jdcloud_sdk.services.memcached.models.InstanceSpec import *
 from jdcloud_sdk.services.memcached.apis.DescribeInstanceRequest import *
 from jdcloud_sdk.services.memcached.apis.DescribeInstancesRequest import *
+from jdcloud_sdk.services.memcached.apis.DeleteInstanceRequest import *
 from jdcloud_sdk.services.charge.models.ChargeSpec import *
 from jdcloud_sdk.services.common.models.Sort import *
 from jdcloud_sdk.services.common.models.Filter import Filter
@@ -29,33 +30,13 @@ def setClient(conf):
 
 def getHeader(conf):
     request_id = "req-" + str(int(time.time()))
+    #测试环境header配置
     header = {'x-jdcloud-pin': str(conf["user"]), "x-jdcloud-request-id": request_id}
+    #线上internal header配置
+    if str(conf["header"]) == "erp":
+        header = {'x-jdcloud-erp': 'duhaixing'}
+
     return header
-
-@pytest.fixture(scope="session")
-def create_instance2(config):
-    client = setClient(config)
-    header = getHeader(config)
-    instance_id = None
-    resp = dict()
-    name = "auto_test_" + str(int(time.time()))
-    try:
-        charge = ChargeSpec('postpaid_by_duration', 'year', 1)
-        instance = InstanceSpec('MC-S-1C1G', 'single', config["az"],
-                                config["vpc"], config["subnet"], name,
-                                config["version"], True, charge, "desc", "12345678")
-        parameters = CreateInstanceParameters(config["region"], instance)
-        request = CreateInstanceRequest(parameters, header)
-        resp = client.send(request)
-    except Exception, e:
-        print e
-
-    if resp.error is None:
-        instance = query_instance_recurrent(100, 6, name, config)
-        if instance is not None:
-            instance_id = instance["instances"][0]["instanceId"]
-
-    return client, resp, name, instance_id
 
 
 def query_instance(name, conf):
@@ -63,7 +44,7 @@ def query_instance(name, conf):
     header = getHeader(conf)
     resp = None
     try:
-        parameters = DescribeInstancesParameters('cn-north-1')
+        parameters = DescribeInstancesParameters(conf["region"])
         filter1 = Filter('instanceName', name, 'eq')
         filter2 = Filter('instanceStatus', 'running')
         parameters.setFilters([filter1, filter2])
@@ -123,6 +104,16 @@ def describe(client, instance_id, conf):
         print e
 
     return resp
+
+def deleteInstance(client, instance_id, conf):
+    info_logger.info("[TEARDOWN] Delete the instance {0}".format(instance_id))
+    header = getHeader(conf)
+    try:
+        parameters = DeleteInstanceParameters(conf["region"], instance_id)
+        request = DeleteInstanceRequest(parameters, header)
+        resp = client.send(request)
+    except Exception, e:
+        print e
 
 
 def checkNotFound(resp):

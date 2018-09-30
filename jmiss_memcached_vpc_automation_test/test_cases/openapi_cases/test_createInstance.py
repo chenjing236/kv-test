@@ -11,7 +11,7 @@ class TestCreateInstance:
     @pytest.mark.openapi
     def test_createInstanceWithPassword(self, create_instance, config):
         client, resp, instance_name, instance_id = create_instance
-
+        assert instance_id is not None
         assert resp.error is None
         assert instance_id is not None
 
@@ -25,7 +25,7 @@ class TestCreateInstance:
             charge = ChargeSpec('postpaid_by_duration', 'year', 1)
             instance = InstanceSpec('MC-S-1C1G', 'single', config["az"],
                                     config["vpc"], config["subnet"], name,
-                                    config["version"], False, charge, "desc")
+                                    config["version"], False, "desc", None, charge)
             parameters = CreateInstanceParameters(config["region"], instance)
             request = CreateInstanceRequest(parameters, header)
             resp = client.send(request)
