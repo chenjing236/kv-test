@@ -54,6 +54,20 @@ def query_instance(name, conf):
         print e
     return resp
 
+def query_instance_by_name(name, conf):
+    client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        parameters = DescribeInstancesParameters(conf["region"])
+        filter1 = Filter('instanceName', name, 'eq')
+        parameters.setFilters([filter1])
+        request = DescribeInstancesRequest(parameters, header)
+        resp = client.send(request)
+    except Exception, e:
+        print e
+    return resp
+
 def query_instance_recurrent(wait_count, wait_time, instance_name, conf):
     instance = None
     while wait_count > 0:
@@ -61,7 +75,6 @@ def query_instance_recurrent(wait_count, wait_time, instance_name, conf):
         time.sleep(wait_time)
         resp = query_instance(instance_name, conf)
         if resp is not None and resp.result is not None:
-            print resp.result
             if resp.result["totalCount"] == 1:
                 instance = resp.result
                 break

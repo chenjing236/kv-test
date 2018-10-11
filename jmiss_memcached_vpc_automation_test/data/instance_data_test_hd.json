@@ -15,7 +15,7 @@
             "createTime": ""
             , "domain": ""
             , "instanceId": "mc"
-            , "usedMemoryMB": ""
+            , "usedMemoryByte": ""
             , "charge": ""
             , "instanceName": "auto_test"
         },

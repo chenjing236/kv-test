@@ -16,8 +16,8 @@ class TestCreateInstance:
         assert instance_id is not None
 
 
-    @pytest.mark.openapi
-    def test_createInstanceWithoutPassword(self, config):
+
+    def auto_createInstanceWithoutPassword(self, config):
         client = setClient(config)
         header = getHeader(config)
         name = "auto_test_" + str(int(time.time()))

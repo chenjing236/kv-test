@@ -14,8 +14,5 @@
   "mysql_user": "memcached_rw",
   "mysql_passwd": "9zWrFvPyT7DZs6ihxJMH",
   "mysql_db": "jmiss_memcached_openapi_prod_hb",
-  "ssh_key": true,
-  "retry_getting_topology_from_cfs": 200,
-  "retry_getting_info_times": 240,
-  "wait_time": 5
+  "ssh_key": true
 }

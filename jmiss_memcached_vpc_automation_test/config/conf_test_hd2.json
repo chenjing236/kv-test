@@ -1,0 +1,18 @@
+{
+  "gateway":"10.226.148.63:8000",
+  "access_key":"6996C51A54B8D05CB0A5A924F9A78629",
+  "secret_key":"14B63D66B94B81D25F8819244CE44E97",
+  "region":"cn-north-1",
+  "az":"cn-north-1b",
+  "vpc":"vpc-b7pmflge43",
+  "subnet":"subnet-mfylgx4vgx",
+  "version": "1.5.8",
+  "user": "jcloudiaas2",
+  "header": "req",
+  "mysql_host": "10.226.134.45",
+  "mysql_port": 3306,
+  "mysql_user": "root",
+  "mysql_passwd": "root",
+  "mysql_db": "jmiss_memcached_openapi",
+  "ssh_key": true
+}

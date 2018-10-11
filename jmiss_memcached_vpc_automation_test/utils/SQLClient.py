@@ -53,7 +53,6 @@ class SQLClient(object):
 
     def wait_for_expectation(self, sql, expectation, wait_time=3, times=20, position=0, allow_empty=True):
         for i in range(0, times):
-            print i
             result_tuple = self.exec_query_one(sql, allow_empty)
             if result_tuple[0] == "emptyResult":
                 info_logger.info("NO data in DB!")

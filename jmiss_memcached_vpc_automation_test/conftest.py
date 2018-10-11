@@ -35,7 +35,7 @@ def instance_data(request):
 
 
 @pytest.fixture(scope="session")
-def create_instance(config, request):
+def create_instance(config, instance_data, request):
     client = setClient(config)
     header = getHeader(config)
     instance_id = None
@@ -59,13 +59,20 @@ def create_instance(config, request):
 
     def teardown():
         print "\n"
-        deleteInstance(client, instance_id, config)
+        i_id = None
+        if instance_id is not None:
+            i_id = instance_id
+        else:
+            i_resp = query_instance_by_name(name, config)
+            if i_resp is not None and i_resp.result is not None:
+                if i_resp.result["totalCount"] == 1:
+                    i_id = i_resp.result["instances"][0]["instanceId"]
+        deleteInstance(client, i_id, config)
         time.sleep(15)
 
     request.addfinalizer(teardown)
 
     return client, resp, name, instance_id
-
 
 
 @pytest.fixture(scope="session")
