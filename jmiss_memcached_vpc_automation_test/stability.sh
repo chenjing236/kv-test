@@ -16,7 +16,7 @@ cases=(
 'modifyInstanceWithoutAuth Failed'
 'modifyInstanceSpec Failed'
 )
-re=`cat /export/Logs/mc_stability_test/mc_stability_$date.log:|grep -E 'PASSED|FAILED'`
+re=`cat /export/Logs/mc_stability_test/mc_stability_${date}.log|grep -E 'PASSED|FAILED'`
 i=0
 for ca in ${re[@]}; do
         if [[ $ca =~ 'PASSED' ]]; then
