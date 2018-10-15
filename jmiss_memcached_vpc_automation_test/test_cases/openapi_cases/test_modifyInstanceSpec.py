@@ -8,7 +8,7 @@ class TestModifyInstanceSpec:
     @pytest.mark.openapi
     def test_modifyInstanceSpec(self, create_instance, instance_data, config, sql_client):
         client, resp, instance_name, instance_id = create_instance
-        sql_str = "select status from mc_instance where instance_id='{0}'".format(instance_id)
+        sql_str = "select class from mc_instance where instance_id='{0}'".format(instance_id)
         header = getHeader(config)
         resp = None
         try:
@@ -23,8 +23,8 @@ class TestModifyInstanceSpec:
             print resp.error.message
             assert False
 
-        sql_client.wait_for_expectation(sql_str, "running", 6, 200)
-        resp = describe(client, instance_id, config)
-        if resp is not None:
-            assert resp.result["instance"]["instanceClass"] == instance_data["changedClass"]
+        sql_client.wait_for_expectation(sql_str, str(instance_data["changedClass"]), 6, 200)
+        # resp = describe(client, instance_id, config)
+        # if resp is not None:
+        #     assert resp.result["instance"]["instanceClass"] == instance_data["changedClass"]
 
