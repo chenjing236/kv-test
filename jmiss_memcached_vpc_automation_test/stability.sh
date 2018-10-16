@@ -22,6 +22,10 @@ for ca in ${re[@]}; do
         if [[ $ca =~ 'PASSED' ]]; then
                 echo "mc.${cases[$i]}.status:\"0\""
         else
+                if [ $i -eq 0 ]; then
+                    echo "mc.${cases[$i]}.status:failed"
+                    break
+                fi
                 echo "mc.${cases[$i]}.status:failed"
         fi
         ((i++))
