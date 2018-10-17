@@ -31,3 +31,8 @@ for ca in ${re[@]}; do
         ((i++))
 done
 
+#clean up old log
+cd /export/Logs/mc_stability_test
+day=`date -d "2 days ago" +%Y%m%d`
+ls *${day}*.log |xargs \rm -f
+
