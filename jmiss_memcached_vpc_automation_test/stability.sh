@@ -23,10 +23,10 @@ for ca in ${re[@]}; do
                 echo "mc.${cases[$i]}.status:\"0\""
         else
                 if [ $i -eq 0 ]; then
-                    echo "mc.${cases[$i]}.status:failed"
+                    echo "mc.${cases[$i]}.status:\"failed\""
                     break
                 fi
-                echo "mc.${cases[$i]}.status:failed"
+                echo "mc.${cases[$i]}.status:\"failed\""
         fi
         ((i++))
 done
