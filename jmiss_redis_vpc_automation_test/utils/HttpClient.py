@@ -46,7 +46,7 @@ class HttpClient(object):
 
     def http_request_for_jcs_agent(self, jcs_agent_host, method, action, data=None):
         hc = httplib.HTTPConnection(jcs_agent_host)
-        hc.request(method, "jvirt-jcs-eye?Action={0}".format(action), data,
+        hc.request(method, "/jvirt-jcs-eye?Action={0}".format(action), data,
                    {"Content-Type": "application/json", "Cache-Control": "no-cache"})
         res = hc.getresponse()
         status = res.status
@@ -57,7 +57,7 @@ class HttpClient(object):
 
     def http_request_for_jcs_docker(self, method, action, client_token, data=None):
         hc = httplib.HTTPConnection(self.jcs_docker_host)
-        hc.request(method, "api-server?Action={0}".format(action), data,
+        hc.request(method, "/api-server?Action={0}".format(action), data,
                    {"User-Id": self.tenant_id, "Content-Type": "application/json", "Client-Token": client_token})
         res = hc.getresponse()
         status = res.status
@@ -184,11 +184,11 @@ class HttpClient(object):
     # delete nova docker
     def delete_jcs_docker(self, container_id):
         client_token = uuid_for_request_id()
-        data = {"id": container_id}
+        data = {"instance_id": container_id}
         return self.http_request_for_jcs_docker("POST", "DeleteContainer", client_token, to_json_string(data))
 
     # stop nova docker
     def stop_jcs_docker(self, container_id):
         client_token = uuid_for_request_id()
-        data = {"id": container_id}
+        data = {"instance_id": container_id}
         return self.http_request_for_jcs_docker("POST", "StopContainer", client_token, to_json_string(data))

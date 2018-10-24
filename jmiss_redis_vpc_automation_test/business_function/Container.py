@@ -20,13 +20,13 @@ class Container:
     # delete jcs docker
     def delete_jcs_docker(self, container_id):
         status, headers, res_data = self.http_client.delete_jcs_docker(container_id)
-        assert status == 204, "[ERROR] HTTP Request of jcs docker is failed, response is {0}".format(status)
+        assert status == 200, "[ERROR] HTTP Request of jcs docker is failed, response is {0}".format(status)
         assert res_data["code"] == 0, "[ERROR] Delete container failed, msg is [{0}]".format(res_data["detail"])
         return True
 
     # stop jcs docker
     def stop_jcs_docker(self, container_id):
         status, headers, res_data = self.http_client.stop_jcs_docker(container_id)
-        assert status == 202, "[ERROR] HTTP Request of jcs docker is failed, status = {0}".format(status)
+        assert status == 200, "[ERROR] HTTP Request of jcs docker is failed, status = {0}".format(status)
         assert res_data["code"] == 0, "[ERROR] Stop container failed, msg is [{0}]".format(res_data["detail"])
         return True
