@@ -52,7 +52,7 @@ def created_instance(config, instance_data, http_client, request):
 
 @pytest.fixture(scope="session")
 def http_client(config):
-    http_cli = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"], config["tenant_id"], config["nova_docker_host"], config["nova_token_host"], config["user"])
+    http_cli = HttpClient(config["host"], config["pin"], config["auth_token"], config["version"], config["tenant_id"], config["jcs_docker_host"], config["user"])
     return http_cli
 
 
