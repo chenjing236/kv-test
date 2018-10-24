@@ -12,7 +12,7 @@ def get_container_info_step(container, jcs_agent_host, container_id):
         assert False, info_logger.error("Response of get_container_info is incorrect for the container {0}".format(container_id))
     assert res_data["data"]["state"] == "running", info_logger.error("The state of container[{0}] is not running, its state is {1}".format(container_id, res_data["data"]["state"]))
     info_logger.info("Memory size of container[{0}] is {1}".format(container_id, res_data["data"]["mem_total"]))
-    return res_data["data"]["mem_total"]
+    return res_data["data"]
 
 
 # 调用jcs接口删除jcs docker
