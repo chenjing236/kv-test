@@ -35,8 +35,8 @@ class TestCreateCluster:
             mem_info_slave = get_container_info_step(container, shards[i]["slaveIp"], shards[i]["slaveDocker"])
             info_logger.info("Memory size of shard_{0} master container is {1}".format(i + 1, mem_info_master))
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave))
-            assert mem_info_master["total"] == capacity * 1024 / shard_count, info_logger.error("Memory size of master container is inconsistent with request")
-            assert mem_info_slave["total"] == capacity * 1024 / shard_count, info_logger.error("Memory size of slave container is inconsistent with request")
+            assert mem_info_master["mem_total"] == capacity * 1024 / shard_count, info_logger.error("Memory size of master container is inconsistent with request")
+            assert mem_info_slave["mem_total"] == capacity * 1024 / shard_count, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password)
