@@ -1,0 +1,22 @@
+{
+  "version": "v3.0",
+  "host": "jmiss-redis-test-02-ite.jdcloud.com",
+  "port": 80,
+  "user": "jcloudiaas2",
+  "pin": "cab6260cdc0734c940ddf719612c6614",
+  "auth_token": "3eGAjUPELa6lEsutx7e4LiD346R5tSjFd83bg1x225w=",
+  "tenant_id": "b1adf43bb3054e1aa1f3ae956d4e591c",
+  "nova_agent_port": "1024",
+  "nova_docker_host": "10.226.136.226:8774",
+  "nova_token_host": "10.226.136.226:35357",
+  "cfs_sign_key": "std-jim-cfs",
+  "mysql_host": "10.226.135.5",
+  "mysql_port": 3306,
+  "mysql_user": "jmiss",
+  "mysql_passwd": "jmiss",
+  "mysql_db": "jmiss_redis_test_02",
+  "ssh_key": true,
+  "retry_getting_topology_from_cfs": 200,
+  "retry_getting_info_times": 240,
+  "wait_time": 5
+}
