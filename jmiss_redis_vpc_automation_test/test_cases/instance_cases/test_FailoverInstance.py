@@ -61,7 +61,7 @@ class TestFailoverCluster:
         docker_id = docker_tuple[0][0]
         # 删除ap
         container = Container(config, http_client)
-        container.delete_nova_docker(docker_id)
+        container.delete_jcs_docker(docker_id)
         # 等待failover
         sql_str = "select return_code FROM `scaler_task` WHERE space_id='{0}' \
                     and task_type=107 and task_id LIKE '{1}' order by id desc".format(space_id, "%" + docker_id)
