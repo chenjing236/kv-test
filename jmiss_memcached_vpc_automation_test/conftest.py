@@ -6,6 +6,7 @@ from jdcloud_sdk.services.memcached.client.MemcachedClient import *
 import time
 from utils.SQLClient import *
 import json
+import bmemcached
 import pytest
 import sys
 reload(sys)
@@ -73,6 +74,26 @@ def create_instance(config, instance_data, request):
     request.addfinalizer(teardown)
 
     return client, resp, name, instance_id
+
+
+@pytest.fixture(scope="session")
+def access_client(create_instance, config):
+    client, response, instance_name, instance_id = create_instance
+    conf = config
+    resp = describe(client, instance_id, conf)
+
+    mc = None
+
+    if resp is not None and  resp.error is None:
+        print resp.result
+        host = resp.result["instance"]["domain"]
+        address = host+":11211"
+        print address
+        print instance_id
+        mc = bmemcached.Client((address,), instance_id, '12345678', )
+        # mc = bmemcached.Client(('10.226.135.5:11213',), 'duhaixing@a04-r025-i135-5-6001198.jcloud.com', '12345678', )
+
+    return mc
 
 
 @pytest.fixture(scope="session")

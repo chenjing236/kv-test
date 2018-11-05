@@ -13,7 +13,6 @@ class TestCreateInstance:
         client, resp, instance_name, instance_id = create_instance
         assert instance_id is not None
         assert resp.error is None
-        assert instance_id is not None
 
 
 
