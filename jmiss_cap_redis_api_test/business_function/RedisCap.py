@@ -45,7 +45,7 @@ class RedisCap:
                 response = self.client.send(request)
                 break
             except requests.ConnectionError:
-                print "[Request Timeout] Retry [{0}] times failed, timeout 30 seconds".format(retry_times)
+                print "[Request Timeout] Retry [{0}] times failed, timeout 60 seconds".format(retry_times)
         # print eee
         end_time = datetime.datetime.now()
         print "[TIME] Request exec time is {0} milliseconds".format((end_time - start_time).microseconds/1000)
@@ -62,7 +62,7 @@ class RedisCap:
                 response = self.op_client.send(request)
                 break
             except requests.ConnectionError:
-                print "[Request Timeout] Retry [{0}] times failed, timeout 30 seconds".format(i)
+                print "[Request Timeout] Retry [{0}] times failed, timeout 60 seconds".format(i)
         end_time = datetime.datetime.now()
         print "[TIME] Request exec time is {0} milliseconds".format((end_time - start_time).microseconds/1000)
         assert 'response' in locals().keys()
