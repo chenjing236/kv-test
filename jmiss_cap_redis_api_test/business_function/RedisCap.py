@@ -29,8 +29,8 @@ info_logger = logging.getLogger(__name__)
 class RedisCap:
     def __init__(self, config, instance_data, log_level=Logger(INFO)):
         credential = Credential(config["access_key"], config["secret_key"])
-        self.client = RedisClient(credential, Config(str(config["host"]), SCHEME_HTTPS, 30), log_level)
-        self.op_client = RedisClient(credential, Config(str(config["host_internal"]), SCHEME_HTTP, 30), log_level)
+        self.client = RedisClient(credential, Config(str(config["host"]), SCHEME_HTTPS, 60), log_level)
+        self.op_client = RedisClient(credential, Config(str(config["host_internal"]), SCHEME_HTTP, 60), log_level)
         self.instance_data = instance_data
         self.config = config
         self.region_id = instance_data["region_id"]
