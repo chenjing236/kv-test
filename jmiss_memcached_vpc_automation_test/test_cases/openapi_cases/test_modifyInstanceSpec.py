@@ -12,8 +12,7 @@ class TestModifyInstanceSpec:
         header = getHeader(config)
         resp = None
         try:
-            parameters = ModifyInstanceSpecParameters(config["region"], instance_id)
-            parameters.setInstanceClass(str(instance_data["changedClass"]))
+            parameters = ModifyInstanceSpecParameters(config["region"], instance_id, str(instance_data["changedClass"]))
             request = ModifyInstanceSpecRequest(parameters, header)
             resp = client.send(request)
         except Exception, e:
