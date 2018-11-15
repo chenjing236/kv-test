@@ -193,7 +193,7 @@ def run_failover_container_step(space_id, container_id, container, cfs_client, f
         assert False, info_logger.error("Cannot get topology information from cfs")
     epoch_origin = res_data["epoch"]
     # stop指定的container
-    container.delete_jcs_docker(container_id)
+    container.stop_jcs_docker(container_id)
     info_logger.info("Success to delete container [{0}]".format(container_id))
     # 查询CFS的redis，查看epoch的值是否有变化
     res_data = cfs_client.get_meta(space_id)
