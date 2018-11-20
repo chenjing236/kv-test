@@ -1,0 +1,42 @@
+{
+  "gateway":"10.226.148.63:8000",
+  "access_key":"6996C51A54B8D05CB0A5A924F9A78629",
+  "secret_key":"14B63D66B94B81D25F8819244CE44E97",
+  "region":"cn-north-1",
+  "user": "jcloudiaas2",
+  "instance_password": "1qaz2WSX",
+  "header": "req",
+  "mysql_host": "10.226.134.45",
+  "mysql_port": 3306,
+  "mysql_user": "root",
+  "mysql_passwd": "root",
+  "mysql_db": "jmiss_memcached_openapi",
+  "ssh_key": true,
+  "instance": {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m1.micro.basic",
+      "cacheInstanceMemoryMB": 1024,
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"
+      },
+      "vpcId": "vpc-jn2lwcozii",
+      "subnetId": "subnet-kwj72yw5ri",
+      "port": 6379,
+      "auth": true
+  },
+  "exist_data": {
+      "cacheInstanceId": "",
+      "createTime": "",
+      "connectionDomain1": "",
+      "instanceVersion": ""
+  },
+  "change_data": {
+      "cacheInstanceId": "",
+      "createTime": "",
+      "connectionDomain": "",
+      "instanceVersion": ""
+  }
+}
