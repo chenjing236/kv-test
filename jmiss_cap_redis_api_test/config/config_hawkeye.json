@@ -1,5 +1,5 @@
 {
-  "host": "redis.jdcloud-api.com",
+  "host": "apigw-internal.cn-north-1.jcloudcs.com",
   "host_internal": "apigw-internal.cn-north-1.jcloudcs.com",
   "erp": "zhangpengyun",
   "access_key": "D7D351CD4CDA6C8B9D6CA39690626CC2",
