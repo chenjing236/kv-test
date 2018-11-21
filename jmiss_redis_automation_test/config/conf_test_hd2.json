@@ -26,17 +26,5 @@
       "subnetId": "subnet-kwj72yw5ri",
       "port": 6379,
       "auth": true
-  },
-  "exist_data": {
-      "cacheInstanceId": "",
-      "createTime": "",
-      "connectionDomain1": "",
-      "instanceVersion": ""
-  },
-  "change_data": {
-      "cacheInstanceId": "",
-      "createTime": "",
-      "connectionDomain": "",
-      "instanceVersion": ""
   }
 }

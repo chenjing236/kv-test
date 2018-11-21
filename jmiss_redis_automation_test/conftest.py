@@ -23,9 +23,13 @@ def loglevel(request):
 
 @pytest.fixture(scope="session", autouse=True)
 def config(request, loglevel):
+    #load config
     file_path = request.config.getoption("config")
     conf_obj = json.load(open(file_path, 'r'))
     conf_obj["logger_level"] = loglevel
+    #load data
+    data_obj =  json.load(open('./data/instance_data.json', 'r'))
+    conf_obj.update(data_obj)
     return conf_obj
 
 

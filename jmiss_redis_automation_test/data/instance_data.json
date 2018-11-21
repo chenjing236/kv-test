@@ -1,0 +1,26 @@
+{
+  "exist_data": {
+      "cacheInstanceId": ""
+      ,"createTime": ""
+      ,"connectionDomain1": ""
+      ,"instanceVersion": ""
+  },
+  "change_data": {
+      "cacheInstanceName": "redis_automation_test_new"
+      ,"cacheInstanceDescription": "desc_test_new"
+      ,"instance_password": "2qaz2WSX"
+      ,"cacheInstanceClass": "redis.m1.small.basic"
+  },
+  "instance_config": {
+    "maxmemory-policy": "volatile-lfu"
+    ,"hash-max-ziplist-entries": "511"
+    ,"hash-max-ziplist-value": "511"
+    ,"list-max-ziplist-size": "511"
+    ,"list-compress-depth": "511"
+    ,"set-max-intset-entries": "511"
+    ,"zset-max-ziplist-entries": "511"
+    ,"zset-max-ziplist-value": "511"
+    ,"slowlog-log-slower-than": "511"
+    ,"notify-keyspace-events": "KE"
+  }
+}
