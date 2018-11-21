@@ -24,6 +24,16 @@ def assertRespNotNone(resp):
     assert resp.error is None
     assert resp.result is not None
 
+##
+##[{"configName":"hash-max-ziplist-entries","configValue":"256"}]
+## vs
+## {"hash-max-ziplist-entries":"256"}
+##
+def listCompareJason(list_data, json_data, policy):
+    for item in list_data:
+        assert item[policy["key"]] in json_data
+        assert item[policy["value"]] == json_data[item[policy["key"]]]
+
 
 
 def validateResult(result, data):

@@ -4,11 +4,11 @@ from jmiss_redis_automation_test.steps.Valification import *
 
 
 
-class TestModifyInstanceConfig:
+class TestDescribeInstanceConfig:
 
 
     @pytest.mark.openapi
-    def test_modifyInstanceConfig(self, init_instance, config):
+    def test_describeInstanceConfig(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = set_config(config, instance_id, config["instance_config"], client)
         assertRespNotNone(resp)
