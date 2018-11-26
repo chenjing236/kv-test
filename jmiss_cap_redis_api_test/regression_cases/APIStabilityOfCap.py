@@ -28,6 +28,7 @@ class APIStabilityCase:
     def __del__(self):
         if self.index == 6:
             try:
+                time.sleep(60)  # 等待一分钟，避免计费超时
                 print_log("[STEP] Start to delete redis cluster {0}".format(self.space_id))
                 delete_step(self.redis_cap, self.space_id)
                 self.index += 1
