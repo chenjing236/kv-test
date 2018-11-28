@@ -22,7 +22,6 @@ def assertInstance(resp, instance_id):
 def assertRespNotNone(resp):
     assert resp is not None
     assert resp.error is None
-    assert resp.result is not None
 
 ##
 ##[{"configName":"hash-max-ziplist-entries","configValue":"256"}]
@@ -30,6 +29,8 @@ def assertRespNotNone(resp):
 ## {"hash-max-ziplist-entries":"256"}
 ##
 def listCompareJason(list_data, json_data, policy):
+    if len(list_data) == 0:
+        assert False
     for item in list_data:
         assert item[policy["key"]] in json_data
         assert item[policy["value"]] == json_data[item[policy["key"]]]
