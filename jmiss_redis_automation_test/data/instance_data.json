@@ -2,25 +2,133 @@
   "exist_data": {
       "cacheInstanceId": ""
       ,"createTime": ""
-      ,"connectionDomain1": ""
+      ,"connectionDomain": ""
       ,"instanceVersion": ""
   },
   "change_data": {
       "cacheInstanceName": "redis_automation_test_new"
       ,"cacheInstanceDescription": "desc_test_new"
-      ,"instance_password": "2qaz2WSX"
+      ,"instancePassword": "2qaz2WSX"
       ,"cacheInstanceClass": "redis.m1.small.basic"
   },
   "instance_config": {
-    "maxmemory-policy": "volatile-lfu"
-    ,"hash-max-ziplist-entries": "511"
+    "hash-max-ziplist-entries": "511"
     ,"hash-max-ziplist-value": "511"
-    ,"list-max-ziplist-size": "511"
-    ,"list-compress-depth": "511"
-    ,"set-max-intset-entries": "511"
-    ,"zset-max-ziplist-entries": "511"
-    ,"zset-max-ziplist-value": "511"
-    ,"slowlog-log-slower-than": "511"
-    ,"notify-keyspace-events": "KE"
+  },
+  "backup": {
+    "name": "autotest_backup"
+  },
+  "instanceClasses": [
+    {
+        "instanceClass": "redis.c1.2xlarge.basic",
+        "cpu": 16,
+        "memoryMB": 262144,
+        "diskGB": 1024,
+        "maxConnection": 160000,
+        "bandwidthMbps": 768
+    },
+    {
+        "instanceClass": "redis.c1.4xlarge.basic",
+        "cpu": 32,
+        "memoryMB": 524288,
+        "diskGB": 2048,
+        "maxConnection": 320000,
+        "bandwidthMbps": 1536
+    },
+    {
+        "instanceClass": "redis.c1.large.basic",
+        "cpu": 8,
+        "memoryMB": 65536,
+        "diskGB": 256,
+        "maxConnection": 80000,
+        "bandwidthMbps": 384
+    },
+    {
+        "instanceClass": "redis.c1.medium.basic",
+        "cpu": 8,
+        "memoryMB": 32768,
+        "diskGB": 128,
+        "maxConnection": 80000,
+        "bandwidthMbps": 384
+    },
+    {
+        "instanceClass": "redis.c1.small.basic",
+        "cpu": 8,
+        "memoryMB": 16384,
+        "diskGB": 64,
+        "maxConnection": 80000,
+        "bandwidthMbps": 384
+    },
+    {
+        "instanceClass": "redis.c1.xlarge.basic",
+        "cpu": 16,
+        "memoryMB": 131072,
+        "diskGB": 512,
+        "maxConnection": 160000,
+        "bandwidthMbps": 768
+    },
+    {
+        "instanceClass": "redis.m1.2xlarge.basic",
+        "cpu": 1,
+        "memoryMB": 32768,
+        "diskGB": 128,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    },
+    {
+        "instanceClass": "redis.m1.4xlarge.basic",
+        "cpu": 1,
+        "memoryMB": 65536,
+        "diskGB": 256,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    },
+    {
+        "instanceClass": "redis.m1.large.basic",
+        "cpu": 1,
+        "memoryMB": 8192,
+        "diskGB": 32,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    },
+    {
+        "instanceClass": "redis.m1.medium.basic",
+        "cpu": 1,
+        "memoryMB": 4096,
+        "diskGB": 16,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    },
+    {
+        "instanceClass": "redis.m1.micro.basic",
+        "cpu": 1,
+        "memoryMB": 1024,
+        "diskGB": 4,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    },
+    {
+        "instanceClass": "redis.m1.small.basic",
+        "cpu": 1,
+        "memoryMB": 2048,
+        "diskGB": 8,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    },
+    {
+        "instanceClass": "redis.m1.xlarge.basic",
+        "cpu": 1,
+        "memoryMB": 16384,
+        "diskGB": 64,
+        "maxConnection": 10000,
+        "bandwidthMbps": 48
+    }
+  ],
+  "classTotalCount": 13,
+  "quota": {
+      "max": 10,
+      "used": 1,
+      "name": "缓存 Redis"
   }
+
 }

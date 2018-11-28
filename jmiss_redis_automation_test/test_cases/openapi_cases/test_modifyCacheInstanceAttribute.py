@@ -12,5 +12,6 @@ class TestModifyInstanceAttribute:
         resp = reset_attribute(config, instance_id, config["change_data"]["cacheInstanceName"]
                                , config["change_data"]["cacheInstanceDescription"], client)
         assertRespNotNone(resp)
-        assert resp.result["data"][0]["cacheInstanceName"] == config["change_data"]["cacheInstanceName"]
-        assert resp.result["data"][0]["cacheInstanceName"] == config["change_data"]["cacheInstanceDescription"]
+        resp = query_instance(config, instance_id, client)
+        assert resp.result["cacheInstance"]["cacheInstanceName"] == config["change_data"]["cacheInstanceName"]
+        assert resp.result["cacheInstance"]["cacheInstanceDescription"] == config["change_data"]["cacheInstanceDescription"]

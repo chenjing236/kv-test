@@ -6,6 +6,10 @@ from jdcloud_sdk.services.redis.apis.DescribeInstanceConfigRequest import *
 from jdcloud_sdk.services.redis.apis.ResetCacheInstancePasswordRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyCacheInstanceAttributeRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyCacheInstanceClassRequest import *
+from jdcloud_sdk.services.redis.apis.ModifyInstanceClassRequest import *
+from jdcloud_sdk.services.redis.apis.ModifyUserQuotaRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeInstanceClassRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
 from jdcloud_sdk.services.redis.models.ConfigItem import *
 from jmiss_redis_automation_test.utils.SqlConst import *
 
@@ -20,7 +24,7 @@ def set_config(conf, instance_id, config_list, client=None):
     for k, v in config_list.items():
         instance_config.append(ConfigItem(k, v))
     try:
-        params = ModifyInstanceConfigParameters(conf["region"], instance_id, instance_config)
+        params = ModifyInstanceConfigParameters(str(conf["region"]), instance_id, instance_config)
         request = ModifyInstanceConfigRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -36,7 +40,7 @@ def get_config(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeInstanceConfigParameters(conf["region"], instance_id)
+        params = DescribeInstanceConfigParameters(str(conf["region"]), instance_id)
         request = DescribeInstanceConfigRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -52,7 +56,7 @@ def reset_password(conf, instance_id, password, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = ResetCacheInstancePasswordParameters(conf["region"], instance_id)
+        params = ResetCacheInstancePasswordParameters(str(conf["region"]), instance_id)
         params.setPassword(password)
         request = ResetCacheInstancePasswordRequest(params, header)
         resp = client_send(client, request)
@@ -69,7 +73,7 @@ def reset_attribute(conf, instance_id, name=None, desc=None, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = ModifyCacheInstanceAttributeParameters(conf["region"], instance_id)
+        params = ModifyCacheInstanceAttributeParameters(str(conf["region"]), instance_id)
         if name is not None:
             params.setCacheInstanceName(name)
         if desc is not None:
@@ -89,8 +93,72 @@ def reset_class(conf, instance_id, instance_class, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = ModifyCacheInstanceClassParameters(conf["region"], instance_id, instance_class)
+        params = ModifyCacheInstanceClassParameters(str(conf["region"]), instance_id, instance_class)
         request = ModifyCacheInstanceClassRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+#修改规格的可见性
+def reset_class_visibility(conf, class_id, type, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = ModifyInstanceClassParameters(str(conf["region"]), class_id, type)
+        request = ModifyInstanceClassRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+def query_class(conf, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeInstanceClassParameters(str(conf["region"]))
+        request = DescribeInstanceClassRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+#修改账户的缓存Redis配额
+def reset_quota(conf, quota, used, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = ModifyUserQuotaParameters(str(conf["region"]), used, quota)
+        request = ModifyUserQuotaRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+
+#查询账户的缓存Redis配额信息
+def query_quota(conf, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeUserQuotaParameters(str(conf["region"]))
+        request = DescribeUserQuotaRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e

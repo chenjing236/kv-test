@@ -11,6 +11,7 @@ from jdcloud_sdk.services.redis.apis.DeleteCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstancesRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceNamesRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeOrderStatusRequest import *
 from jdcloud_sdk.services.charge.models.ChargeSpec import *
 from jdcloud_sdk.services.common.models.Sort import *
 from jdcloud_sdk.services.common.models.Filter import Filter
@@ -60,13 +61,13 @@ def create_instance(conf):
                                           , conf["instance"]["cacheInstanceClass"]
                                           , azId, conf["instance_password"]
                                           , conf["instance"]["cacheInstanceDescription"])
-        params = CreateCacheInstanceParameters(conf["region"], cacheInstance)
+        params = CreateCacheInstanceParameters(str(conf["region"]), cacheInstance)
         charge = ChargeSpec('postpaid_by_duration', 'month', 1)
         params.setCharge(charge)
         req = CreateCacheInstanceRequest(params, header)
         resp = client_send(client, req)
         if resp.result is not None:
-            instance_id = resp.result["cacheInstanceId"]
+            instance_id = str(resp.result["cacheInstanceId"])
     except Exception, e:
         print e
     return client, resp, instance_id
@@ -78,7 +79,7 @@ def delete_instance(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DeleteCacheInstanceParameters(conf["region"], instance_id)
+        params = DeleteCacheInstanceParameters(str(conf["region"]), instance_id)
         request = DeleteCacheInstanceRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -93,7 +94,7 @@ def query_instance(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeCacheInstanceParameters(conf["region"], instance_id)
+        params = DescribeCacheInstanceParameters(str(conf["region"]), instance_id)
         request = DescribeCacheInstanceRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -108,12 +109,28 @@ def query_instance_by_id(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeCacheInstancesParameters(conf["region"])
-        filter_id = Filter('cacheInstanceId', instance_id, 'eq')
-        filter_name = Filter('cacheInstanceName', 'automation', 'eq')
-        filter_status = Filter('cacheInstanceStatus', 'running', 'eq')
+        params = DescribeCacheInstancesParameters(str(conf["region"]))
+        filter_id = Filter('cacheInstanceId', [instance_id])
+        filter_name = Filter('cacheInstanceName', ['automation'])
+        filter_status = Filter('cacheInstanceStatus', ['running'])
         params.setFilters([filter_id, filter_name, filter_status])
         request = DescribeCacheInstancesRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+#查询redis实例是否创建成功
+def query_order_status(conf, request_id, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeOrderStatusParameters(str(conf["region"]), request_id)
+        request = DescribeOrderStatusRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e
@@ -147,7 +164,7 @@ def query_instance_names(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeInstanceNamesParameters(conf["region"], instance_id)
+        params = DescribeInstanceNamesParameters(str(conf["region"]), instance_id)
         request = DescribeInstanceNamesRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:

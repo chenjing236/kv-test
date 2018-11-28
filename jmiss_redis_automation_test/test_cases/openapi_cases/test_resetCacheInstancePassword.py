@@ -10,6 +10,7 @@ class TestResetCacheInstancePassword:
     @pytest.mark.openapi
     def test_resetCacheInstancePassword(self, init_instance, config):
         client, resp, instance_id = init_instance
-        resp = reset_password(config, instance_id, config["change_data"]["instance_password"], client)
+        resp = query_instance(config, instance_id, client)
+        resp = reset_password(config, instance_id, config["change_data"]["instancePassword"], client)
         assertRespNotNone(resp)
 

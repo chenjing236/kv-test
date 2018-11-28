@@ -8,8 +8,6 @@ class TestDescribeInstances:
     @pytest.mark.openapi
     def test_describeCacheInstances(self, init_instance, config):
         client, resp, instance_id = init_instance
-        header = getHeader(config)
-
         resp = query_instance_by_id(config, instance_id, client)
         assertInstance(resp, instance_id)
 
