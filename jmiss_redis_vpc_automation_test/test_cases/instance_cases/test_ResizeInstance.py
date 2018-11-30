@@ -29,8 +29,8 @@ class TestResizeInstance:
         container = Container(config, http_client)
         mem_info_master = get_container_info_step(container, masterIp, masterDocker)
         mem_info_slave = get_container_info_step(container, slaveIp, slaveDocker)
-        assert mem_info_master["total"] == capacity, info_logger.error("Memory size of master container is inconsistent with request")
-        assert mem_info_slave["total"] == capacity, info_logger.error("Memory size of slave container is inconsistent with request")
+        assert mem_info_master["mem_total"] == capacity, info_logger.error("Memory size of master container is inconsistent with request")
+        assert mem_info_slave["mem_total"] == capacity, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password)
@@ -61,8 +61,8 @@ class TestResizeInstance:
         container = Container(config, http_client)
         mem_info_master = get_container_info_step(container, masterIp, masterDocker)
         mem_info_slave = get_container_info_step(container, slaveIp, slaveDocker)
-        assert mem_info_master["total"] == capacity, info_logger.error("Memory size of master container is inconsistent with request")
-        assert mem_info_slave["total"] == capacity, info_logger.error("Memory size of slave container is inconsistent with request")
+        assert mem_info_master["mem_total"] == capacity, info_logger.error("Memory size of master container is inconsistent with request")
+        assert mem_info_slave["mem_total"] == capacity, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password)

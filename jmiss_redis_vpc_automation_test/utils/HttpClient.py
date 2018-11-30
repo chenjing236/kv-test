@@ -15,14 +15,13 @@ def to_json_string(args):
 
 
 class HttpClient(object):
-    def __init__(self, host, md5_pin, auth_token, version, tenant_id, nova_docker_host, nova_token_host, user):
+    def __init__(self, host, md5_pin, auth_token, version, tenant_id, jcs_docker_host, user):
         self.host = host
         self.md5_pin = md5_pin
         self.auth_token = auth_token
         self.version = version
         self.tenant_id = tenant_id
-        self.nova_docker_host = nova_docker_host
-        self.nova_token_host = nova_token_host
+        self.jcs_docker_host = jcs_docker_host
         self.user = user
 
     def http_request(self, method, uri, data=None):
@@ -45,9 +44,10 @@ class HttpClient(object):
         hc.close()
         return status, headers, res_data
 
-    def http_request_for_nova_agent(self, nova_agent_host, method, uri, data=None):
-        hc = httplib.HTTPConnection(nova_agent_host)
-        hc.request(method, "/{0}".format(uri), data)
+    def http_request_for_jcs_agent(self, jcs_agent_host, method, action, data=None):
+        hc = httplib.HTTPConnection(jcs_agent_host)
+        hc.request(method, "/jvirt-jcs-eye?Action={0}".format(action), data,
+                   {"Content-Type": "application/json", "Cache-Control": "no-cache"})
         res = hc.getresponse()
         status = res.status
         res_data = json.loads(res.read())
@@ -55,23 +55,17 @@ class HttpClient(object):
         hc.close()
         return status, headers, res_data
 
-    def http_request_for_nova_docker(self, method, uri, nova_token, data=None):
-        hc = httplib.HTTPConnection(self.nova_docker_host)
-        hc.request(method, "/v2.1/{0}/servers/{1}".format(self.tenant_id, uri), data,
-                   {"X-Auth-Token": nova_token, "Content-Type": "application/json"})
+    def http_request_for_jcs_docker(self, method, action, client_token, data=None):
+        hc = httplib.HTTPConnection(self.jcs_docker_host)
+        hc.request(method, "/api-server?Action={0}".format(action), data,
+                   {"User-Id": self.tenant_id, "Content-Type": "application/json", "Client-Token": client_token})
         res = hc.getresponse()
         status = res.status
+        res_data = json.loads(res.read())
+        headers = res.getheaders()
         hc.close()
-        return status
+        return status, headers, res_data
 
-    def get_nova_token(self, data):
-        hc = httplib.HTTPConnection(self.nova_token_host)
-        hc.request("POST", "/v3/auth/tokens", to_json_string(data))
-        res = hc.getresponse()
-        status = res.status
-        x_subject_token = res.getheader('x-subject-token')
-        hc.close()
-        return status, x_subject_token
 
     # JMISS接口
 
@@ -183,13 +177,18 @@ class HttpClient(object):
     # NOVA 接口
 
     # get nova docker info
-    def get_container_info(self, nova_agent_host, container_id):
-        return self.http_request_for_nova_agent(nova_agent_host, "GET", "container/stats?name=nova-{0}".format(container_id))
+    def get_container_info(self, jcs_agent_host, container_id):
+        data = {"id": container_id}
+        return self.http_request_for_jcs_agent(jcs_agent_host, "POST", "DescribeContainer", to_json_string(data))
 
     # delete nova docker
-    def delete_nova_docker(self, container_id, nova_token):
-        return self.http_request_for_nova_docker("DELETE", container_id, nova_token)
+    def delete_jcs_docker(self, container_id):
+        client_token = uuid_for_request_id()
+        data = {"instance_id": container_id}
+        return self.http_request_for_jcs_docker("POST", "DeleteContainer", client_token, to_json_string(data))
 
     # stop nova docker
-    def stop_nova_docker(self, container_id, nova_token, data):
-        return self.http_request_for_nova_docker("POST", "{0}/action".format(container_id), nova_token, to_json_string(data))
+    def stop_jcs_docker(self, container_id):
+        client_token = uuid_for_request_id()
+        data = {"instance_id": container_id}
+        return self.http_request_for_jcs_docker("POST", "StopContainer", client_token, to_json_string(data))

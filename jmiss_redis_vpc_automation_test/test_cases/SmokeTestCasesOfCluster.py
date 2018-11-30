@@ -49,7 +49,7 @@ class TestSmokeCasesOfCluster:
             assert shards[i]["slaveIp"] == shards_cfs[i]["slaveIp"]
             assert shards[i]["slaveDocker"] == shards_cfs[i]["slaveDocker"]
         # 获取container的大小，验证container的大小
-        info_logger.info("[STEP7] Get container info from nova agent")
+        info_logger.info("[STEP7] Get container info from jcs agent")
         container = Container(config, http_client)
         for i in range(0, shard_count):
             mem_info_master = get_container_info_step(container, shards[i]["masterIp"], shards[i]["masterDocker"])

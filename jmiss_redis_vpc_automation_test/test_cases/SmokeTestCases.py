@@ -46,7 +46,7 @@ class TestSmokeCases:
         assert slaveIp == slaveIp_cfs, "[ERROR] Ip of slave container is inconsistent"
         assert slaveDocker == slaveDocker_cfs, "[ERROR] Docker_id of slave container is inconsistent"
         # 获取container的大小，验证container的大小
-        info_logger.info("[STEP7] Get container info from nova agent")
+        info_logger.info("[STEP7] Get container info from jcs agent")
         container = Container(config, http_client)
         mem_info_master = get_container_info_step(container, masterIp, masterDocker)
         mem_info_slave = get_container_info_step(container, slaveIp, slaveDocker)
@@ -224,7 +224,7 @@ class TestSmokeCases:
         docker_id = docker_tuple[0][0]
         # 删除ap
         container = Container(config, http_client)
-        container.delete_nova_docker(docker_id)
+        container.delete_jcs_docker(docker_id)
         info_logger.info("[INFO] Success to delete container [{0}]".format(docker_id))
         # 等待failover
         sql_str = "select return_code FROM `scaler_task` WHERE space_id='{0}' \
