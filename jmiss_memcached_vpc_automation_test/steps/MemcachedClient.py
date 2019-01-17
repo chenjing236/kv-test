@@ -31,7 +31,7 @@ def setClient(conf):
 def getHeader(conf):
     request_id = "req-" + str(int(time.time()))
     #测试环境header配置
-    header = {'x-jdcloud-pin': str(conf["user"]), "x-jdcloud-request-id": request_id}
+    header = {'x-jdcloud-pin': str(conf["user"])}
     #线上internal header配置
     if str(conf["header"]) == "erp":
         header = {'x-jdcloud-erp': 'duhaixing'}

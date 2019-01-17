@@ -5,7 +5,7 @@ from jmiss_redis_automation_test.steps.Valification import *
 
 class TestRestoreInstance:
 
-    @pytest.mark.openapi
+    @pytest.mark.todo
     def test_restoreInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = create_backup(config, instance_id, client)

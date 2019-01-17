@@ -16,7 +16,7 @@ class TestModifyInstanceConfig:
         query_instance_recurrent(200, 5, instance_id, config, client)
         resp = get_config(config, instance_id, client)
         assertRespNotNone(resp)
-        config_list = resp.result["configItems"]
+        config_list = resp.result["instanceConfig"]
         policy = {"key":"configName","value":"configValue"}
         listCompareJason(config_list, config["instance_config"], policy)
 

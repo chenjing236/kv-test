@@ -30,13 +30,14 @@ def setClient(conf):
     client = RedisClient(credential, gw_config, Logger(conf["logger_level"]))
     return client
 
-def getHeader(conf):
-    request_id = "req-" + str(int(time.time()))
+def getHeader(conf, isErp=False):
     #测试环境header配置
-    header = {'x-jdcloud-pin': str(conf["user"]), "x-jdcloud-request-id": request_id}
+    header = {'x-jdcloud-pin': str(conf["user"])}
     #线上internal header配置
     if str(conf["header"]) == "erp":
         header = {'x-jdcloud-erp': 'duhaixing'}
+    if isErp:
+        header = {'x-jdcloud-pin': str(conf["user"]), 'x-jdcloud-erp': 'duhaixing'}
     return header
 
 
@@ -60,7 +61,8 @@ def create_instance(conf):
                                           , conf["instance"]["cacheInstanceName"]
                                           , conf["instance"]["cacheInstanceClass"]
                                           , azId, conf["instance_password"]
-                                          , conf["instance"]["cacheInstanceDescription"])
+                                          , conf["instance"]["cacheInstanceDescription"]
+                                          , "4.0")
         params = CreateCacheInstanceParameters(str(conf["region"]), cacheInstance)
         charge = ChargeSpec('postpaid_by_duration', 'month', 1)
         params.setCharge(charge)

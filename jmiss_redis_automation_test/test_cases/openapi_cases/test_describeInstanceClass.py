@@ -10,7 +10,7 @@ class TestDescribeInstanceClass:
         client, resp, instance_id = init_instance
         resp = query_class(config, client)
         assertRespNotNone(resp)
-        assert resp.result["instanceClasses"] == config["instanceClasses"]
+        assert (resp.result["instanceClasses"]).sort() == (config["instanceClasses"]).sort()
         assert config["classTotalCount"] == resp.result["totalCount"]
 
 
