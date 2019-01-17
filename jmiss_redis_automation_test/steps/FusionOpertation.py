@@ -125,6 +125,7 @@ def query_class(conf, client=None):
     resp = None
     try:
         params = DescribeInstanceClassParameters(str(conf["region"]))
+        params.setRedisVersion(4.0)
         request = DescribeInstanceClassRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -137,7 +138,7 @@ def query_class(conf, client=None):
 def reset_quota(conf, quota, used, client=None):
     if client is None:
         client = setClient(conf)
-    header = getHeader(conf)
+    header = getHeader(conf, True)
     resp = None
     try:
         params = ModifyUserQuotaParameters(str(conf["region"]), used, quota)

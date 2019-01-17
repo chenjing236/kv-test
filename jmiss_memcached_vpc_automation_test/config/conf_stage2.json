@@ -1,5 +1,5 @@
 {
-  "gateway":"10.226.200.67:8000",
+  "gateway":"apigw-stag.openapi.jdcloud.com",
   "access_key":"B578DBDA29B4BC57D49809C686A6C64E",
   "secret_key":"E1F553336CC302653696C1B96B7CDA17",
   "region":"cn-north-1",

@@ -39,10 +39,12 @@ def init_instance(config, request):
 
     if resp.error is None and instance_id is not None:
         query_instance_recurrent(200, 5, instance_id, config, client)
-    else:
         config["request_id"] = resp.request_id
+    else:
+        config["request_id"] = ""
     def teardown():
         print "\n"
+        time.sleep(30)
         if instance_id is not None:
             delete_instance(config, instance_id, client)
 

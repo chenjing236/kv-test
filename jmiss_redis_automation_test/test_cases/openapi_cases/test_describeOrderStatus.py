@@ -8,10 +8,12 @@ class TestDescribeOrderStatus:
     @pytest.mark.openapi
     def test_describeOrderStatus(self, init_instance, config):
         client, resp, instance_id = init_instance
-        print "----------attention--------------"
-        print config["request_id"]
         resp = query_order_status(config, config["request_id"], client)
         assertRespNotNone(resp)
+        validateResult(resp.result, config["order_result"])
+        assert resp.result["resourceIds"][0] == instance_id
+        assert resp.result["total"] == 1
+        assert resp.result["success"] == 1
 
 
 
