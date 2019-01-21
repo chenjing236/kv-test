@@ -13,5 +13,6 @@ class TestModifyCacheInstanceClass:
         assertRespNotNone(resp)
         instance = query_instance_recurrent(200, 5, instance_id, config, client)
         assert instance["cacheInstanceClass"] == config["change_data"]["cacheInstanceClass"]
+        time.sleep(120)
 
 

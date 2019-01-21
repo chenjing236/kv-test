@@ -1,18 +1,30 @@
 {
-  "gateway":"10.226.200.67:8000",
+  "gateway":"apigw-stag.openapi.jdcloud.com",
   "access_key":"B578DBDA29B4BC57D49809C686A6C64E",
   "secret_key":"E1F553336CC302653696C1B96B7CDA17",
   "region":"cn-north-1",
-  "az":"cn-north-1a",
-  "vpc":"vpc-ikkgyth0ne",
-  "subnet":"subnet-14z4m6e2bu",
-  "version": "1.5.8",
   "user": "jcloudiaas2",
+  "instance_password": "1qaz2WSX",
   "header": "req",
   "mysql_host": "stag-sqnew02-m.mysql.jddb.jcloud.com",
   "mysql_port": 3358,
-  "mysql_user": "jm_mem_opapi_rw",
-  "mysql_passwd": "SZllVencgErRR0lAyTfw",
-  "mysql_db": "jmiss_memcached_openapi",
-  "ssh_key": true
+  "mysql_user": "redis40_opapi_rw",
+  "mysql_passwd": "Mufa3RwoVEryoxzuPL2r",
+  "mysql_db": "jmiss_redis40_openapi",
+  "ssh_key": true,
+  "instance": {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceMemoryMB": 1024,
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"
+      },
+      "vpcId": "vpc-ikkgyth0ne",
+      "subnetId": "subnet-14z4m6e2bu",
+      "port": 6379,
+      "auth": true
+  }
 }
