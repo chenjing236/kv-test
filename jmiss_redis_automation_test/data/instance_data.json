@@ -153,7 +153,6 @@
       "bandwidthMbps": 384
   }
   ],
-  "classTotalCount": 14,
   "quota": {
       "max": 20,
       "name": "缓存 Redis"
