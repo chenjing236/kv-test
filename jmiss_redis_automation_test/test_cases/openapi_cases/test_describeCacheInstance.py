@@ -4,6 +4,7 @@ from jmiss_redis_automation_test.steps.Valification import *
 class TestDescribeInstance:
 
     @pytest.mark.openapi
+    @pytest.mark.smoke
     def test_describeCacheInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_instance(config, instance_id, client)

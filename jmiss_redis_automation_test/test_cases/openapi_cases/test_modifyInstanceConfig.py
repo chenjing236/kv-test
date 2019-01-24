@@ -8,6 +8,7 @@ class TestModifyInstanceConfig:
 
 
     @pytest.mark.openapi
+    @pytest.mark.smoke
     def test_modifyInstanceConfig(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = set_config(config, instance_id, config["instance_config"], client)
