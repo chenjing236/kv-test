@@ -1,9 +1,14 @@
 #!/bin/bash
 
+#clean up old log
+cd /export/Logs/redis40_stability_test
+day=`date -d "2 days ago" +%Y%m%d`
+ls *${day}*.log |xargs \rm -f
+
 cd /export/Data/jmiss_auto_scripts/memcached_stability_scripts/JCacheTest/jmiss_redis_automation_test
 
 date=`date '+%Y%m%d-%H%M%S'`
-pytest --config ./config/conf_pro.json > /export/Logs/redis40_stability_test/redis40_stability_$date.log 2>&1
+pytest --config ./config/conf_pro.json -m smoke > /export/Logs/redis40_stability_test/redis40_stability_$date.log 2>&1
 
 cases=(
 'createInstance'
@@ -29,9 +34,3 @@ for ca in ${re[@]}; do
         fi
         ((i++))
 done
-
-#clean up old log
-cd /export/Logs/redis40_stability_test
-day=`date -d "2 days ago" +%Y%m%d`
-ls *${day}*.log |xargs \rm -f
-
