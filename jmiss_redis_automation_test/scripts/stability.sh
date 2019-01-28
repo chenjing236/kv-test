@@ -14,7 +14,6 @@ cases=(
 'createInstance'
 'describeInstance'
 'describeInstances'
-'modifyInstance'
 'modifyCacheInstanceAttribute'
 'modifyCacheInstanceClass'
 'modifyInstanceConfig'
@@ -27,7 +26,7 @@ for ca in ${re[@]}; do
                 echo "redis40.${cases[$i]}.status:\"0\""
         else
                 if [ $i -eq 0 ]; then
-                    echo "mc.${cases[$i]}.status:\"failed\""
+                    echo "redis40.${cases[$i]}.status:\"failed\""
                     break
                 fi
                 echo "redis40.${cases[$i]}.status:\"failed\""
