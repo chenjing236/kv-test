@@ -1,7 +1,7 @@
 {
   "gateway":"apigw-internal.cn-north-1.jcloudcs.com",
-  "access_key":"D7D351CD4CDA6C8B9D6CA39690626CC2",
-  "secret_key":"B75E8C06E050ED548650085F3D61B0F6",
+  "access_key":"7955849C631AF750CED115C9B1DBFFD9",
+  "secret_key":"933144010C984ABCB4CEE1C440D37977",
   "region":"cn-north-1",
   "az":"cn-north-1b",
   "vpc":"vpc-z5b6pym5rf",

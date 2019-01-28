@@ -2,8 +2,8 @@
   "host": "apigw-internal.cn-north-1.jcloudcs.com",
   "host_internal": "apigw-internal.cn-north-1.jcloudcs.com",
   "erp": "zhangpengyun",
-  "access_key": "D7D351CD4CDA6C8B9D6CA39690626CC2",
-  "secret_key": "B75E8C06E050ED548650085F3D61B0F6",
+  "access_key": "7955849C631AF750CED115C9B1DBFFD9",
+  "secret_key": "933144010C984ABCB4CEE1C440D37977",
   "retry_times": 180,
   "wait_time": 5,
   "http_retry_times": 3
