@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Cmd="curl -s -m 3 -X GET http://xb8avfbqa212.cn-north-1.jdcloud-api.net/api/memcached?action=heartbeat"
+Cmd="curl -s -m 10 -X GET http://xb8avfbqa212.cn-north-1.jdcloud-api.net/api/memcached?action=heartbeat"
 CheckString="Healthy"
 MaxTimes=3
 LogDir="/export/Logs/memcached_read_write"
@@ -24,15 +24,18 @@ function check()
         else
             writelog "${cmdResult}"
         fi
-        ((mcRertyTime++))
-        sleep 15
+        ((retryTime++))
+        sleep 10
     done
-    if [[ ${curlResult} =~ ${CheckString} && ${rertyTime} -lt ${MaxTimes} ]]; then
+    if [[ ${curlResult} =~ ${CheckString} && ${retryTime} -lt ${MaxTimes} ]]; then
         echo "status:\"0\""
-    elif [ ${rertyTime} -eq 3]; then
-        echo "status:\"-1\",desc: ${cmdResult}"
+        writelog "Heartbeat result: ${curlResult}"
+    elif [ ${retryTime} -eq 3]; then
+        echo "status:\"-1\",desc: Connection time out, error code: ${cmdResult}"
+        writelog "Connection time out, error code: ${cmdResult}"
     else
         echo "status:\"-1\",desc: ${curlResult}"
+        writelog "${curlResult}"
     fi
 }
 
@@ -46,4 +49,4 @@ function cleanLog()
 writelog "Heartbeat start"
 check
 cleanLog
-writelog "Heartbeat result: ${curlResult}"
+
