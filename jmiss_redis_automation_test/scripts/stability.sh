@@ -19,7 +19,7 @@ cases=(
 'modifyInstanceConfig'
 'resetCacheInstancePassword'
 )
-re=`cat /export/Logs/redis40_stability_test/redis40_stability_${date}.log|grep -E 'PASSED|FAILED'`
+re=`cat /export/Logs/redis40_stability_test/redis40_stability_${date}.log|grep -E 'PASSED|FAILED$'`
 i=0
 for ca in ${re[@]}; do
         if [[ $ca =~ 'PASSED' ]]; then
