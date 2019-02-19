@@ -34,7 +34,7 @@ def query_backups(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeBackupsParameters('cn-north-1', instance_id)
+        params = DescribeBackupsParameters(conf["region"], instance_id)
         request = DescribeBackupsRequest(params, header)
 
         resp = client_send(client, request)
@@ -50,7 +50,7 @@ def query_backup_policy(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeBackupPolicyParameters('cn-north-1', instance_id)
+        params = DescribeBackupPolicyParameters(conf["region"], instance_id)
         request = DescribeBackupPolicyRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -65,7 +65,7 @@ def reset_backup_policy(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = ModifyBackupPolicyParameters('cn-north-1', instance_id, "09:10Z-10:10Z", "Monday")
+        params = ModifyBackupPolicyParameters(conf["region"], instance_id, "09:10Z-10:10Z", "Monday")
         request = ModifyBackupPolicyRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
@@ -80,7 +80,7 @@ def restore_instance(conf, instance_id, base_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = RestoreInstanceParameters('cn-north-1', instance_id, base_id)
+        params = RestoreInstanceParameters(conf["region"], instance_id, base_id)
         request = RestoreInstanceRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
