@@ -1,7 +1,7 @@
 import pytest
 import requests
 import json
-from redis import StrictRedis
+# from redis import StrictRedis
 from jmiss_redis_automation_test.utils.SqlConst import *
 
 
@@ -18,10 +18,10 @@ class TestAccessRedis:
         assert instance_id is not None
         host = self.getInstanceNlb(instance_id)
         # client = StrictRedis(host=host, port=6379, db=0, password=config["instance_password"])
-        client = StrictRedis(host=host, port=6379, db=0)
-        assert client.set("test", "abc")
-        assert client.get("test") == "abc"
-        client.execute_command()
+        # client = StrictRedis(host=host, port=6379, db=0)
+        # assert client.set("test", "abc")
+        # assert client.get("test") == "abc"
+        # client.execute_command()
 
 
     def getInstanceNlb(sefl, instance_id):
