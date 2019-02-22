@@ -3,7 +3,7 @@ from jdcloud_sdk.services.memcached.apis.CreateInstanceRequest import *
 from jdcloud_sdk.services.memcached.models.InstanceSpec import *
 from jdcloud_sdk.services.charge.models.ChargeSpec import *
 from jmiss_memcached_vpc_automation_test.steps.MemcachedClient import *
-
+import time
 
 
 class TestCreateInstance:
@@ -13,6 +13,7 @@ class TestCreateInstance:
         client, resp, instance_name, instance_id = create_instance
         assert instance_id is not None
         assert resp.error is None
+        time.sleep(10)
 
 
 
