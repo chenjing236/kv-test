@@ -49,22 +49,23 @@ def client_send(client, req):
     return resp
 
 
-def create_instance(conf):
+def create_instance(conf, cacheInstanceClass=None, chargeMode='postpaid_by_duration', redisVersion='4.0'):
     client = setClient(conf)
     header = getHeader(conf)
     instance_id = None
     resp = None
     name = "auto_test_" + str(int(time.time()))
+    cacheInstanceClass = conf["instance"]["cacheInstanceClass"] if cacheInstanceClass is None else cacheInstanceClass
     try:
         azId = AzIdSpec(conf["instance"]["azId"]["master"], conf["instance"]["azId"]["slave"])
         cacheInstance = CacheInstanceSpec(conf["instance"]["vpcId"], conf["instance"]["subnetId"]
                                           , conf["instance"]["cacheInstanceName"]
-                                          , conf["instance"]["cacheInstanceClass"]
+                                          , cacheInstanceClass
                                           , azId, conf["instance_password"]
                                           , conf["instance"]["cacheInstanceDescription"]
-                                          , "4.0")
+                                          , redisVersion)
         params = CreateCacheInstanceParameters(str(conf["region"]), cacheInstance)
-        charge = ChargeSpec('postpaid_by_duration', 'month', 1)
+        charge = ChargeSpec(chargeMode, 'month', 1)
         params.setCharge(charge)
         req = CreateCacheInstanceRequest(params, header)
         resp = client_send(client, req)
@@ -72,6 +73,7 @@ def create_instance(conf):
             instance_id = str(resp.result["cacheInstanceId"])
     except Exception, e:
         print e
+        assert False
     return client, resp, instance_id
 
 
