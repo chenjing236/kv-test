@@ -23,7 +23,11 @@ class APIStabilityCase:
 
     def __del__(self):
         # print "[TEARDOWN] Delete the redis instance %s", self.resource_id
-        if self.index == 6:
+        # 创建前清除残留资源时，删除失败的情况，index = 7，设置为6，返回删除失败
+        if self.index == 7:
+            self.index = 6
+        # 正常进行删除的情况，删除成功后将index设置为7
+        elif self.index == 6:
             try:
                 delete_redis_instance_step(self.redis_cap, self.resource_id)
                 self.index += 1
@@ -49,6 +53,8 @@ class APIStabilityCase:
         self.redis_cap = redis_cap
         cap = Cap(self.config, self.instance_data, self.cap_http_client)
         # 清除残留redis实例
+        # 创建前清除残留资源时，删除失败的情况，index标记为7
+        self.index = 7
         clusters = query_filter_cache_clusters_step(redis_cap, {
             "filterName": self.instance_data["redis_cluster_info"]["spaceName"], "filterSpaceType": 1})
         # print clusters
@@ -56,6 +62,8 @@ class APIStabilityCase:
             for cluster in clusters:
                 delete_redis_instance_step(redis_cap, cluster["spaceId"])
                 time.sleep(2)
+        # 清除残留redis实例成功，index设置为0，开始稳定性流程
+        self.index = 0
         # 创建redis实例
         request_id_for_redis = create_redis_instance_step(redis_cap)
         # 查询订单状态
