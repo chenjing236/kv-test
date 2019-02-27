@@ -1,5 +1,0 @@
-{
-  "host":"192.168.177.88:1602",
-  "retry_getting_info_times": 30,
-  "wait_time": 5
-}
