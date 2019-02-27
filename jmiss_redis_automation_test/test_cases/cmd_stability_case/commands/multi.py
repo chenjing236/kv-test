@@ -18,15 +18,23 @@ def multi_exec_keys(host, port, db, password, sec):
             r.set('{stab_multi}key' + str(j), 'stab_multi_value' + str(j))
         # watch
         watch_num = random.randint(0, 50)
-        r.watch('{stab_multi}list' + str(watch_num))
-        r.watch('{stab_multi}key' + str(watch_num))
+        try:
+            r.watch('{stab_multi}list' + str(watch_num))
+            r.watch('{stab_multi}key' + str(watch_num))
+        except Exception, err:
+            print "【ERROR】DB {0} multi watch key error [{1}], i = {2}".format(db, err, i)
+            continue
         # multi
         p = r.pipeline()
         for j in range(50):
             if j == watch_num:
                 continue
-            p.rpop('{stab_multi}list' + str(j))
-            p.delete('{stab_multi}key' + str(j))
+            try:
+                p.rpop('{stab_multi}list' + str(j))
+                p.delete('{stab_multi}key' + str(j))
+            except Exception, err:
+                print "【ERROR】DB {0} multi rpop/del error [{1}], i = {2}".format(db, err, i)
+                continue
             time.sleep(0.01)
         try:
             p.execute()
