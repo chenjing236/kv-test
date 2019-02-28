@@ -40,6 +40,6 @@ def rpush_keys(host, port, db, password, sec):
         # rpop
         for j in range(50):
             if r.rpop('stab_rpush_list' + str(i)) != 'rpush_value' + str(j):
-                print "【ERROR】DB {0} rpop list [stab_rpush_list{1}] is not equal value [rpush_value{2}]".format(db, i, 49 - j)
+                print "【ERROR】DB {0} rpop list [stab_rpush_list{1}] is not equal value [rpush_value{2}]".format(db, i, j)
             time.sleep(0.01)
     print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), " - 【END】list test end, db number is {0}, run time is {1} sec".format(db, sec)

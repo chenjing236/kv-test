@@ -9,8 +9,13 @@ import sys
 
 # 截取线程地址，用于唯一标识线程
 def find_add(f):
-    regex = "0x[0-9a-f]{12}"
-    return re.search(regex, str(f)).group()
+    add = ''
+    try:
+        regex = "0x[0-9a-f]+\s+"
+        add = re.search(regex, str(f)).group()[0:-1]
+    except Exception, err:
+        print "【ERROR】run find_add error [{0}], pid is {1}".format(err, f)
+    return add
 
 
 class Stability:
@@ -36,12 +41,18 @@ class Stability:
         p_list = []
 
         for i in range(self.config['thread_num']):
+            if self.exec_times == 0:
+                break
             random_case = random.sample(cases, 1)[0]
             run_time = random.randint(self.config['runtime_start'], self.config['runtime_end'])
             future = executor.submit(self.run_command, random_case, db_num, run_time)
+            add = find_add(future)
+            # 获取地址失败，继续循环
+            if add == '':
+                continue
             db_num = (db_num + 1) % 256
             p_list.append(future)
-            f_list[find_add(future)] = db_num
+            f_list[add] = db_num
             self.exec_times -= 1
         while True:
             hello = wait(p_list, return_when='FIRST_COMPLETED', timeout=2)
@@ -71,6 +82,10 @@ class Stability:
             # 生成随机执行时长
             run_time = random.randint(self.config['runtime_start'], self.config['runtime_end'])
             future = executor.submit(self.run_command, random_case, db_num, run_time)
+            add = find_add(future)
+            # 获取地址失败，继续循环
+            if add == '':
+                continue
             # db_num到达255后，重新从0开始循环
             db_num = (db_num + 1) % 256
             # 当前被线程占用的db_num
@@ -79,7 +94,7 @@ class Stability:
             while db_num in db_arr:
                 db_num = (db_num + 1) % 256
             p_list.append(future)
-            f_list[find_add(future)] = db_num
+            f_list[add] = db_num
 
 
 def main():

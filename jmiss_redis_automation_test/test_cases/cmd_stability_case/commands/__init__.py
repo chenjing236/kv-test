@@ -8,7 +8,8 @@ cases = ['set_keys',
          'lpush_keys', 'rpush_keys',
          'sadd_keys', 'zadd_keys',
          'hset_keys',
-         'scan_keys'
+         'scan_keys',
+         'multi_exec_keys'
          ]
 
 # case execute times
