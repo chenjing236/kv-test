@@ -50,10 +50,12 @@ class Stability:
             # 获取地址失败，继续循环
             if add == '':
                 continue
-            db_num = (db_num + 1) % 256
             p_list.append(future)
             f_list[add] = db_num
             self.exec_times -= 1
+            # db_num ++
+            db_num = (db_num + 1) % 256
+
         while True:
             hello = wait(p_list, return_when='FIRST_COMPLETED', timeout=2)
             # hello[0]为已完成任务列表, 在f_list中删除已完成任务
@@ -86,15 +88,15 @@ class Stability:
             # 获取地址失败，继续循环
             if add == '':
                 continue
-            # db_num到达255后，重新从0开始循环
-            db_num = (db_num + 1) % 256
             # 当前被线程占用的db_num
             db_arr = f_list.values()
-            # 如果有未执行完的线程占用某db，则跳过这个db
+            # 如果有未执行完的线程占用此db，则跳过这个db
             while db_num in db_arr:
                 db_num = (db_num + 1) % 256
             p_list.append(future)
             f_list[add] = db_num
+            # db_num ++, 到达255后，重新从0开始循环
+            db_num = (db_num + 1) % 256
 
 
 def main():
