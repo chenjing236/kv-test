@@ -34,5 +34,8 @@ done
 #clean up old log
 cd /export/Logs/mc_stability_test
 day=`date -d "2 days ago" +%Y%m%d`
-ls *${day}*.log |xargs \rm -f
+if [ -f *${day}*.log ]; then
+        ls *${day}*.log |xargs \rm -f
+fi
+
 

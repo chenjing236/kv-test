@@ -3,7 +3,9 @@
 #clean up old log
 cd /export/Logs/redis40_stability_test
 day=`date -d "2 days ago" +%Y%m%d`
-ls *${day}*.log |xargs \rm -f
+if [ -f *${day}*.log ]; then
+        ls *${day}*.log |xargs \rm -f
+fi
 
 cd /export/Data/jmiss_auto_scripts/memcached_stability_scripts/JCacheTest/jmiss_redis_automation_test
 
