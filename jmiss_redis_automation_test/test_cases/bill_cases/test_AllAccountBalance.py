@@ -37,13 +37,16 @@ class TestAccountBalance:
 
     @pytest.mark.bill
     @pytest.mark.parametrize('flavor, bill, redis_version', instance_classes)
-    def test_calculateAccountBalance(self, config, flavor, bill, redis_version):
+    def test_allAccountBalance(self, config, flavor, bill, redis_version):
         url = "http://uc-inner-api-ite.jcloud.com/usercenter/getUser?pin=jcloudiaas2"
         before_account = get_account_balance(url, "stag")
         create_instance(config, flavor, "prepaid_by_duration", str(redis_version))
         time.sleep(3)
         after_account = get_account_balance(url, "stag")
         compare_balance(before_account, after_account, bill)
+
+
+
 
 
 

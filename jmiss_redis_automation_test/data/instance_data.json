@@ -21,6 +21,7 @@
     ,"zset-max-ziplist-entries": "511"
     ,"zset-max-ziplist-value": "511"
     ,"slowlog-log-slower-than": "511"
+    ,"notify-keyspace-events": "AKE"
   },
   "backup": {
     "name": "autotest_backup"

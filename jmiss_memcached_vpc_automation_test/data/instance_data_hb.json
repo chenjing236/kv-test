@@ -1,6 +1,6 @@
 {
   "check_data":{
-            "azId": "cn-north-1b"
+            "azId": "cn-north-1a"
             , "instanceStatus": "running"
             , "instanceType": "single"
             , "mcVersion": "1.5.8"

@@ -46,7 +46,7 @@ def create_instance(config, instance_data, request):
         charge = ChargeSpec('postpaid_by_duration', 'year', 1)
         instance = InstanceSpec('MC-S-1C1G', 'single', config["az"],
                                 config["vpc"], config["subnet"], name,
-                                config["version"], True, "desc", "12345678", charge)
+                                config["version"], True, "desc", "123456Aa", charge)
         parameters = CreateInstanceParameters(config["region"], instance)
         req = CreateInstanceRequest(parameters, header)
         resp = client.send(req)
@@ -54,7 +54,7 @@ def create_instance(config, instance_data, request):
         print e
 
     if resp.error is None:
-        instance = query_instance_recurrent(160, 6, name, config)
+        instance = query_instance_recurrent(160, 120, name, config)
         if instance is not None:
             instance_id = instance["instances"][0]["instanceId"]
 
@@ -90,7 +90,7 @@ def access_client(create_instance, config):
         address = host+":11211"
         print address
         print instance_id
-        mc = bmemcached.Client((address,), instance_id, '12345678', )
+        mc = bmemcached.Client((address,), instance_id, '123456Aa', )
         # mc = bmemcached.Client(('10.226.135.5:11213',), 'duhaixing@a04-r025-i135-5-6001198.jcloud.com', '12345678', )
 
     return mc

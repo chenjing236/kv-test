@@ -5,6 +5,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 from steps.InstanceOperation import *
+from steps.BillOperation import *
 
 from logging.handlers import TimedRotatingFileHandler
 
@@ -27,6 +28,9 @@ def config(request, loglevel):
     file_path = request.config.getoption("config")
     conf_obj = json.load(open(file_path, 'r'))
     conf_obj["logger_level"] = loglevel
+    #get account balance
+    before_account = get_account_balance(conf_obj["uc_url"], conf_obj["uc_token"])
+    conf_obj["before_account"] = before_account
     #load data
     data_obj =  json.load(open('./data/instance_data.json', 'r'))
     conf_obj.update(data_obj)
@@ -36,20 +40,21 @@ def config(request, loglevel):
 @pytest.fixture(scope="session")
 def init_instance(config, request):
     client, resp, instance_id = create_instance(config)
-
+    instance = None
     if resp.error is None and instance_id is not None:
-        query_instance_recurrent(200, 5, instance_id, config, client)
+        instance = query_instance_recurrent(200, 5, instance_id, config, client)
         config["request_id"] = resp.request_id
     else:
         config["request_id"] = ""
     def teardown():
         print "\n"
-        time.sleep(30)
+        time.sleep(300)
         if instance_id is not None:
             delete_instance(config, instance_id, client)
 
     request.addfinalizer(teardown)
-
+    if instance is None:
+        instance_id = None
     return client, resp, instance_id
 
 

@@ -12,6 +12,8 @@
   "mysql_passwd": "Mufa3RwoVEryoxzuPL2r",
   "mysql_db": "jmiss_redis40_openapi",
   "ssh_key": true,
+  "uc_url": "http://uc-inner-api-stag.jcloud.com/usercenter/getUser?pin=jcloudiaas2",
+  "token": "stag",
   "instance": {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",

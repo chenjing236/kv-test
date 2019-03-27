@@ -13,7 +13,7 @@ class TestCreateInstance:
         client, resp, instance_name, instance_id = create_instance
         assert instance_id is not None
         assert resp.error is None
-        time.sleep(10)
+        time.sleep(30)
 
 
 
@@ -33,6 +33,6 @@ class TestCreateInstance:
                 assert False
         except Exception, e:
             print e
-        instance = query_instance_recurrent(100, 6, name, config)
+        instance = query_instance_recurrent(160, 120, name, config)
 
 
