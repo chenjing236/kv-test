@@ -26,7 +26,11 @@ class APIStabilityCase:
         self.redis_cap = None
 
     def __del__(self):
-        if self.index == 6:
+        # 创建前清除残留资源时，删除失败的情况，index = 7，设置为6，返回删除失败
+        if self.index == 7:
+            self.index = 6
+        # 正常进行删除的情况，删除成功后将index设置为7
+        elif self.index == 6:
             try:
                 time.sleep(60)  # 等待一分钟，避免计费超时
                 print_log("[STEP] Start to delete redis cluster {0}".format(self.space_id))
@@ -55,6 +59,8 @@ class APIStabilityCase:
         redis_cap = RedisCap(self.config, self.instance_data, Logger(INFO))
         self.redis_cap = redis_cap
         # 清除残留redis实例
+        # 创建前清除残留资源时，删除失败的情况，index标记为7
+        self.index = 7
         print_log("[STEP] Clean up the rest redis clusters!")
         filter_data = {"filters": [{"name": "cacheInstanceName", "values": [str(self.instance_data["cache_instance_name"])]},
                                    {"name": "cacheInstanceStatus", "values": ["running", "error"]}]}
@@ -64,6 +70,8 @@ class APIStabilityCase:
                 print_log("Delete the redis cluster [{0}]".format(cluster["cacheInstanceId"]))
                 delete_step(redis_cap, cluster["cacheInstanceId"])
                 time.sleep(2)
+        # 清除残留redis实例成功，index设置为0，开始稳定性流程
+        self.index = 0
         # 创建redis实例
         print_log("[STEP] Start to create redis cluster!")
         space_id = create_step(redis_cap)
