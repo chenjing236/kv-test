@@ -30,13 +30,15 @@ class TestResizeCluster:
         shards = get_topology_of_cluster_step(cluster, space_id)
         shard_count = len(shards)
         container = Container(config, http_client)
+        # 资源预留内存，小于16G时预留1G，大于等于16G是预留2G
+        extra_mem = 1024 * 1024 * 1024 if capacity/shard_count < 16 * 1024 * 1024 * 1024 else 2 * 1024 * 1024 * 1024
         for i in range(0, shard_count):
             mem_info_master = get_container_info_step(container, shards[i]["masterIp"], shards[i]["masterDocker"])
             mem_info_slave = get_container_info_step(container, shards[i]["slaveIp"], shards[i]["slaveDocker"])
             info_logger.info("Memory size of shard_{0} master container is {1}".format(i + 1, mem_info_master["mem_total"]))
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
-            assert mem_info_master["mem_total"] == capacity / shard_count, info_logger.error("Memory size of master container is inconsistent with request")
-            assert mem_info_slave["mem_total"] == capacity / shard_count, info_logger.error("Memory size of slave container is inconsistent with request")
+            assert mem_info_master["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
+            assert mem_info_slave["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password)
@@ -66,13 +68,15 @@ class TestResizeCluster:
         shards = get_topology_of_cluster_step(cluster, space_id)
         shard_count = len(shards)
         container = Container(config, http_client)
+        # 资源预留内存，小于16G时预留1G，大于等于16G是预留2G
+        extra_mem = 1024 * 1024 * 1024 if capacity / shard_count < 16 * 1024 * 1024 * 1024 else 2 * 1024 * 1024 * 1024
         for i in range(0, shard_count):
             mem_info_master = get_container_info_step(container, shards[i]["masterIp"], shards[i]["masterDocker"])
             mem_info_slave = get_container_info_step(container, shards[i]["slaveIp"], shards[i]["slaveDocker"])
             info_logger.info("Memory size of shard_{0} master container is {1}".format(i + 1, mem_info_master["mem_total"]))
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
-            assert mem_info_master["mem_total"] == capacity / shard_count, info_logger.error("Memory size of master container is inconsistent with request")
-            assert mem_info_slave["mem_total"] == capacity / shard_count, info_logger.error("Memory size of slave container is inconsistent with request")
+            assert mem_info_master["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
+            assert mem_info_slave["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password)
