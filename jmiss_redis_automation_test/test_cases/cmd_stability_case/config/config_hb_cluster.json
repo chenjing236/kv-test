@@ -1,0 +1,9 @@
+{
+  "host": "redis-nxiu0zfoticp-proxy-nlb.jvessel-open-hb.jdcloud.com",
+  "port": 6379,
+  "password": "",
+  "thread_num": 50,
+  "runtime_start": 60,
+  "runtime_end": 1800,
+  "dbnum_start": 0
+}
