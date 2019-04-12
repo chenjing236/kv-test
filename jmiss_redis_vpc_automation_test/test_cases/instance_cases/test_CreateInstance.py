@@ -26,8 +26,11 @@ class TestCreateInstance:
         container = Container(config, http_client)
         mem_info_master = get_container_info_step(container, masterIp, masterDocker)
         mem_info_slave = get_container_info_step(container, slaveIp, slaveDocker)
-        assert mem_info_master["mem_total"] == capacity * 1024, info_logger.error("Memory size of master container is inconsistent with request")
-        assert mem_info_slave["mem_total"] == capacity * 1024, info_logger.error("Memory size of slave container is inconsistent with request")
+        # 资源预留内存，小于16G时预留1G，大于等于16G是预留2G
+        extra_mem = 1024*1024*1024 if capacity < 16*1024*1024 else 2*1024*1024*1024
+        # mem_total单位为byte，capacity单位为kb
+        assert mem_info_master["mem_total"] == capacity * 1024 + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
+        assert mem_info_slave["mem_total"] == capacity * 1024 + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
         accesser = Accesser(config)
         check_access_nlb_step(accesser, space_id, password)
