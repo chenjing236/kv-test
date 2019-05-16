@@ -14,11 +14,11 @@ def upgrade_ap_step(instance, space_id):
     return space_id
 
 
-# upgrade cluster ap
+# upgrade cluster redis
 def upgrade_redis_step(instance, space_id):
     print "\n"
     print "[STEP] Upgrade redis of cluster [{0}]".format(space_id)
-    res_data = instance.upgrade_instance_ap(space_id, instance.conf_obj["redis_image_tag"])
+    res_data = instance.upgrade_instance_redis(space_id, instance.conf_obj["redis_image_tag"])
     code = res_data["Code"]
     msg = json.dumps(res_data["Message"], ensure_ascii=False).encode("gbk")
     assert code == 0, "It is failed to upgrade cluster redis, error message is {0}".format(msg)
