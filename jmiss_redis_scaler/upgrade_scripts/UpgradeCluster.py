@@ -38,8 +38,8 @@ def upgrade_all_cluster_ap_and_redis():
     f = open("../config/space_id", 'r')
     space_id = f.readline().replace('\n', '')
     while space_id:
-        upgrade_ap_step(cluster, space_id)
-        get_operation_result_step(cluster, space_id)
+        # upgrade_ap_step(cluster, space_id)
+        # get_operation_result_step(cluster, space_id)
         upgrade_redis_step(cluster, space_id)
         get_operation_result_step(cluster, space_id)
         space_id = f.readline().replace('\n', '')
