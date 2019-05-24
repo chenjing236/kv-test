@@ -225,7 +225,7 @@ class Cluster(object):
 
     # create backup
     def create_backup(self, space_id):
-        status, headers, res_data = self.httpClient.craete_backup(space_id)
+        status, headers, res_data = self.httpClient.create_backup(space_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

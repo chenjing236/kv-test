@@ -173,7 +173,7 @@ class HttpClient(object):
     # modify instance config
     def modify_instance_config(self, space_id, data):
         request_id = uuid_for_request_id()
-        return self.http_request("PUT", "instanceConfig/{0}requestId={1}".format(space_id, request_id), to_json_string(data))
+        return self.http_request("PUT", "instanceConfig/{0}?requestId={1}".format(space_id, request_id), to_json_string(data))
 
     # query backup list
     def query_backup_list(self, space_id, base_id=None):
