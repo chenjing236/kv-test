@@ -67,7 +67,7 @@ class SSHClient(object):
             result, err = self.docker_exec_command(docker_id, command)
         if len(err) != 0:
             assert False, info_logger.error("[ERROR] Failed to exec redis command, the error is {0}".format(err))
-        return result, err
+        return result
 
     # vm/docker中ping redis域名，返回是否成功
     def ping_cluster_domain(self, domain, nlb_ip, docker_id=None):

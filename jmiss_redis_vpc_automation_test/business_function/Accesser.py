@@ -54,7 +54,7 @@ class Accesser:
         ap_docker_id = self.init_ssh_client(space_id)
         result = self.ssh_client.exec_redis_command(nlb_ip, "set {0} {1}".format(self.test_key, self.test_value), password, ap_docker_id)
         set_result = result[0].replace("\r", "").replace("\n", "")
-        result = self.ssh_client.exec_redis_command(ap_docker_id, nlb_ip, "get {0}".format(self.test_key), password)
+        result = self.ssh_client.exec_redis_command(nlb_ip, "get {0}".format(self.test_key), password, ap_docker_id)
         get_result = result[0].replace("\r", "").replace("\n", "")
         if set_result == "OK" and get_result == self.test_value:
             return True
