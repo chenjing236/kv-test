@@ -2,7 +2,7 @@
 from BasicTestCase import *
 
 
-class TestBackupInstance:
+class TestBackupCluster:
     @pytest.mark.test
     @pytest.mark.smoke
     @pytest.mark.regression

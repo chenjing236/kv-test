@@ -2,7 +2,7 @@
 from BasicTestCase import *
 
 
-class TestModifyInstanceConfig:
+class TestModifyClusterConfig:
     @pytest.mark.test
     @pytest.mark.smoke
     @pytest.mark.regression

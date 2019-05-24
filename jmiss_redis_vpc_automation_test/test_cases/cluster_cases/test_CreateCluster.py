@@ -30,7 +30,7 @@ class TestCreateCluster:
             assert shards[i]["slaveDocker"] == shards_cfs[i]["slaveDocker"]
         # 获取container的大小，验证container的大小
         container = Container(config, http_client)
-        # 资源预留内存，小于16G时预留1G，大于等于16G是预留2G
+        # 资源预留内存，小于16G时预留1G，大于等于16G时预留2G
         extra_mem = 1024 * 1024 * 1024 if capacity/shard_count < 16 * 1024 * 1024 else 2 * 1024 * 1024 * 1024
         for i in range(0, shard_count):
             mem_info_master = get_container_info_step(container, shards[i]["masterIp"], shards[i]["masterDocker"])
