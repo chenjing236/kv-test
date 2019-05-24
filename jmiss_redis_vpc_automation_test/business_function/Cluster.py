@@ -208,6 +208,37 @@ class Cluster(object):
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 
+    # todo: query instance config
+
+    # modify instance config
+    def modify_instance_config(self, space_id, propt):
+        data = {"propt": propt}
+        status, headers, res_data = self.httpClient.modify_instance_config(space_id, data)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # query backup list
+    def query_backup_list(self, space_id, base_id=None):
+        status, headers, res_data = self.httpClient.query_backup_list(space_id, base_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # create backup
+    def create_backup(self, space_id):
+        status, headers, res_data = self.httpClient.craete_backup(space_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # create restore
+    def create_store(self, space_id, base_id):
+        status, headers, res_data = self.httpClient.create_store(space_id, base_id)
+        assert status == 200, "[ERROR] HTTP Request is failed"
+        return res_data
+
+    # todo: query backup policy
+
+    # todo: modify backup policy
+
     # web 获取down az信息
     def op_get_cluster_info(self):
         status, headers, res_data = self.httpClient.op_get_cluster_info()

@@ -168,6 +168,45 @@ class HttpClient(object):
         request_id = uuid_for_request_id()
         return self.http_request("GET", "flavordetail/{0}?requestId={1}".format(flavor_id, request_id))
 
+    # todo: query instance config
+
+    # modify instance config
+    def modify_instance_config(self, space_id, data):
+        request_id = uuid_for_request_id()
+        return self.http_request("PUT", "instanceConfig/{0}requestId={1}".format(space_id, request_id), to_json_string(data))
+
+    # query backup list
+    def query_backup_list(self, space_id, base_id=None):
+        request_id = uuid_for_request_id()
+        if base_id is None:
+            return self.http_request("GET", "queryBackups/{0}?pageSize=10&pageNumber=1&requestId={1}".format(space_id, request_id))
+        else:
+            return self.http_request("GET", "queryBackups/{0}?baseId={1}&requestId={2}".format(space_id, base_id, request_id))
+
+    # create backup
+    def create_backup(self, space_id):
+        data = {"backupType": 1, "fileName": "jmiss_auto_test_backup", "instanceId": space_id}
+        request_id = uuid_for_request_id()
+        return self.http_request("POST", "backup?requestId={0}".format(request_id), to_json_string(data))
+
+    # create restore
+    def create_restore(self, space_id, base_id):
+        data = {"instanceId": space_id, "baseId": base_id}
+        request_id = uuid_for_request_id()
+        return self.http_request("POST", "restore?requestId={0}".format(request_id), to_json_string(data))
+
+    # query backup policy
+    def query_backup_policy(self, space_id):
+        request_id = uuid_for_request_id()
+        return self.http_request("GET", "describeBackupPolicy/{0}?requestId={1}".format(space_id, request_id))
+
+    # modify backup policy
+    def modify_backup_policy(self, space_id):
+        # todo：data变为传入参数
+        data = {"backupPeriod": "Monday", "backupTime": "06:00-07:00", "spaceId": "redis-"}
+        request_id = uuid_for_request_id()
+        return self.http_request("POST", "modifyBackupPolicy/{0}?requestId={1}".format(space_id, request_id), to_json_string(data))
+
     # Jmiss 运维接口
 
     # web查询down az状态

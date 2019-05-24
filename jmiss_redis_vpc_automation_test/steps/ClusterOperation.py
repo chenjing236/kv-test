@@ -383,6 +383,66 @@ def query_config_by_flavor_id_step(instance, flavor_id):
     return res_data["attach"]
 
 
+# modify instance config
+def modify_instance_config_step(instance, space_id, propt):
+    res_data = instance.modify_instance_config(space_id, propt)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error("Response of modify_instance_config is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to modify instance config, error message is {0}".format(msg))
+    operation_id = res_data["attach"]["operationId"]
+    # 获取操作结果，判断备份是否成功
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, info_logger.error("Get the right operation result, modify instance config failed")
+    return True
+
+
+# query backup list
+def query_backup_list_step(instance, space_id, base_id):
+    res_data = instance.query_backup_list(space_id, base_id)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error("Response of query_backup_list is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to query backup list, error message is {0}".format(msg))
+    backups = res_data["attach"]["backups"]
+    return backups
+
+
+# create backup
+def create_backup_step(instance, space_id):
+    res_data = instance.create_backup(space_id)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error(
+            "Response of create_backup is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to create backup, error message is {0}".format(msg))
+    operation_id = res_data["attach"]["operationId"]
+    # 获取操作结果，判断备份是否成功
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, info_logger.error("Get the right operation result, backup instance failed")
+    base_id = operation_id
+    return base_id
+
+
+# create store
+def create_restore_step(instance, space_id, base_id):
+    res_data = instance.create_restore(space_id, base_id)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error(
+            "Response of create_restore is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to createrestore, error message is {0}".format(msg))
+    operation_id = res_data["attach"]["operationId"]
+    # 获取操作结果，判断restore是否成功
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, info_logger.error("Get the right operation result, restore instance failed")
+    return True
+
+
 # 通过web get_cluster_info接口查询当前主CFS
 def get_master_cfs_step(instance):
     info_logger.info("[STEP] To get master cfs.")
