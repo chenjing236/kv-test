@@ -17,7 +17,7 @@ class TestBackupInstance:
         # 查询备份列表，验证备份执行成功
         backups = query_backup_list_step(instance, space_id, base_id)
         assert backups[0]["cacheInstanceId"] == space_id, info_logger.error("The spaceId [{0}] of backup list is wrong!".format(backups[0]["cacheInstanceId"]))
-        assert backups[0]["status"] == 2, info_logger.error("The status [{0}] of backup is wrong!".format(backups[0]["status"]))
+        assert backups[0]["backupStatus"] == 2, info_logger.error("The status [{0}] of backup is wrong!".format(backups[0]["status"]))
         assert backups[0]["baseId"] == base_id, info_logger.error("The base_id [{0}] of backup is wrong!".format(backups[0]["baseId"]))
         # todo: flush data
         # 使用备份文件进行恢复
