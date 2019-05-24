@@ -230,8 +230,8 @@ class Cluster(object):
         return res_data
 
     # create restore
-    def create_store(self, space_id, base_id):
-        status, headers, res_data = self.httpClient.create_store(space_id, base_id)
+    def create_restore(self, space_id, base_id):
+        status, headers, res_data = self.httpClient.create_restore(space_id, base_id)
         assert status == 200, "[ERROR] HTTP Request is failed"
         return res_data
 

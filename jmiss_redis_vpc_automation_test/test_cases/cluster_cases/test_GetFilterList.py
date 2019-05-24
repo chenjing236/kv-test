@@ -12,7 +12,7 @@ class TestGetFilterList:
         # 查看缓存云实例详细信息
         cluster_info = get_detail_info_of_instance_step(instance, space_id)
         # 根据过滤条件查询缓存云实例列表
-        attach = get_filter_clusters_step(instance, filterStatus=100, filterSpaceType=1)
+        attach = get_filter_clusters_step(instance, filterStatus=100, filterSpaceType=2)
         spaces = attach["spaces"]
         total = attach["total"]
         assert total == len(spaces) and spaces is not None, "Cluster list is none"

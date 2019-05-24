@@ -323,6 +323,7 @@ def get_filter_clusters_step(instance, filterName="", filterSpaceType="", filter
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to get clusters, error message is {0}".format(msg))
+    info_logger.info("[STEP] Get filter list information of instance successfully!")
     return res_data["attach"]
 
 
