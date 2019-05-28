@@ -8,7 +8,7 @@ class TestCreateInstance:
     @pytest.mark.regression
     def test_create_instance(self, config, created_instance, http_client):
         # 创建缓存云实例
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 查看redis详情，验证缓存云实例状态，status=100创建成功
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         capacity = detail_info["capacity"]
@@ -32,5 +32,4 @@ class TestCreateInstance:
         assert mem_info_master["mem_total"] == capacity * 1024 + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
         assert mem_info_slave["mem_total"] == capacity * 1024 + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
         # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)

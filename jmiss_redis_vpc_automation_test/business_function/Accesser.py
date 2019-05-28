@@ -17,6 +17,7 @@ class Accesser:
         self.access_type = conf_obj["access_type"]
         self.vm_host = conf_obj["vm_host"]
         self.vm_passwd = conf_obj["vm_passwd"]
+        self.conf_obj = conf_obj
 
     # 初始化ssh client
     def init_ssh_client(self, space_id):

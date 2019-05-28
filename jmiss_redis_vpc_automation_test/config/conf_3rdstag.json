@@ -17,5 +17,6 @@
   "ssh_key": false,
   "retry_getting_topology_from_cfs": 200,
   "retry_getting_info_times": 240,
+  "retry_ping_domain_times": 60,
   "wait_time": 5
 }

@@ -10,7 +10,7 @@ class TestCreateCluster:
     @pytest.mark.regression
     def test_create_cluster(self, config, created_instance, http_client):
         # 创建缓存云实例
-        space_id, cluster, password = created_instance
+        space_id, cluster, password, accesser = created_instance
         # 查看缓存云实例详细信息
         detail_info = get_detail_info_of_instance_step(cluster, space_id)
         assert detail_info["status"] == 100, info_logger.error("The cluster status is not 100!")
@@ -39,6 +39,5 @@ class TestCreateCluster:
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
             assert mem_info_master["mem_total"] == capacity * 1024 / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
             assert mem_info_slave["mem_total"] == capacity * 1024 / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
-        # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        # 验证通过domain访问实例
+        check_access_domain_step(accesser, space_id, password)

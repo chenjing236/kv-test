@@ -8,7 +8,7 @@ class TestUpdateMeta:
     def test_update_meta(self, created_instance):
         info_logger.info("[SCENARIO] Start to test update meta")
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 查看缓存云实例详细信息
         cluster_info = get_detail_info_of_instance_step(instance, space_id)
         name = cluster_info["name"]

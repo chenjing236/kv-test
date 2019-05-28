@@ -6,12 +6,11 @@ class TestBackupInstance:
     @pytest.mark.test
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_create_backup(self, config, created_instance):
+    def test_create_backup(self, created_instance):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)
         # 执行备份操作
         base_id = create_backup_step(instance, space_id)
         # 查询备份列表，验证备份执行成功
@@ -26,5 +25,4 @@ class TestBackupInstance:
         detail_info = get_detail_info_of_instance_step(instance, space_id)
         assert detail_info["status"] == 100, info_logger.error("The status of space [{0}] is wrong after restore!".format(space_id))
         # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)

@@ -8,12 +8,13 @@ class TestGetList:
     @pytest.mark.regression
     def test_get_redis_list(self, created_instance):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 查看缓存云实例详细信息
         cluster_info = get_detail_info_of_instance_step(instance, space_id)
         # 查看缓存云实例列表
         cluster_list = get_clusters_step(instance)
         assert cluster_list is not None, info_logger.error("Cluster list is none")
+        is_exist = False
         for c in cluster_list:
             assert c["status"] != 102, info_logger.error("There is a cluster which status equals 102 in the cluster list")
             if c["spaceId"] == space_id:

@@ -21,6 +21,7 @@ class SSHClient(object):
         # vm：用于线上或预发环境
         self.ssh_type = ssh_type
         self.ssh_redis = paramiko.SSHClient()
+        logging.getLogger("paramiko").setLevel(logging.WARNING)
 
     def init_client(self):
         self.ssh_redis.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -32,6 +33,8 @@ class SSHClient(object):
             privatekey = os.path.expanduser("./config/id_rsa")
             key = paramiko.RSAKey.from_private_key_file(privatekey)
             self.ssh_redis.connect(hostname=self.sshHost, username="root", pkey=key)
+        # 不输出paramiko info级别日志
+        # logging.getLogger("paramiko").setLevel(logging.WARNING)
 
     def close_client(self):
         self.ssh_redis.close()
@@ -71,7 +74,6 @@ class SSHClient(object):
 
     # vm/docker中ping redis域名，返回是否成功
     def ping_cluster_domain(self, domain, nlb_ip, docker_id=None):
-        print domain
         # ping命令，执行一次，超时时间为5秒
         if self.ssh_type == 'vm':
             result, err = self.vm_exec_command('ping ' + domain + ' -c 1 -W 5')

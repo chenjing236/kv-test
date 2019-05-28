@@ -8,7 +8,7 @@ class TestGetFilterList:
     @pytest.mark.regression
     def test_get_redis_list(self, created_instance):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 查看缓存云实例详细信息
         cluster_info = get_detail_info_of_instance_step(instance, space_id)
         # 根据过滤条件查询缓存云实例列表

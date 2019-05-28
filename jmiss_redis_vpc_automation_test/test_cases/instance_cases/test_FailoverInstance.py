@@ -7,12 +7,11 @@ class TestFailoverCluster:
     @pytest.mark.regression
     def test_failover_master(self, config, created_instance, http_client):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 获取拓扑结构
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         # 通过AP访问缓存云实例，执行set/get key
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)
         # run master failover
         cfs_host = get_master_cfs_step(instance)
         cfs_client = CFS(cfs_host, config)
@@ -23,19 +22,17 @@ class TestFailoverCluster:
         assert masterDocker != masterPort_cfs
         assert slaveDocker == slavePort_cfs
         # 通过AP访问缓存云实例，执行set/get key
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)
 
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_failover_slave(self, config, created_instance, http_client):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 获取拓扑结构
         masterIp, masterDocker, slaveIp, slaveDocker = get_topology_of_instance_step(instance, space_id)
         # 通过AP访问缓存云实例，执行set/get key
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)
         # run master failover
         cfs_host = get_master_cfs_step(instance)
         cfs_client = CFS(cfs_host, config)
@@ -47,14 +44,13 @@ class TestFailoverCluster:
         assert masterDocker == masterDocker_cfs
         assert slaveDocker != slaveDocker_cfs
         # 通过AP访问缓存云实例，执行set/get key
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)
 
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_failover_ap(self, config, created_instance, http_client, sql_client):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 获取旧ap
         sql_str = "select docker_id,overlay_ip from ap where space_id='{0}'".format(space_id)
         docker_tuple = sql_client.exec_query_all(sql_str)
@@ -73,5 +69,4 @@ class TestFailoverCluster:
         assert 2 == len(docker_tuple_new)
         docker_list = [j for i in docker_tuple_new for j in i]
         assert docker_id not in docker_list
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        check_access_domain_step(accesser, space_id, password)
