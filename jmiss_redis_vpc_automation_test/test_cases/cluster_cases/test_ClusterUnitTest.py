@@ -19,4 +19,4 @@ class TestUnitTest:
         # 将密码设置回创建时的密码，不影响其他用例的执行
         reset_password_step(cluster, space_id, password_default)
         # 设置redis免密，通过domain访问缓存云实例
-        check_access_domain_step(accesser, space_id)
+        check_access_domain_step(accesser, space_id, password_default)
