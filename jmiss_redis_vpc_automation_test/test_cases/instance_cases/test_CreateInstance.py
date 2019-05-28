@@ -6,7 +6,7 @@ class TestCreateInstance:
     # 创建单实例缓存云实例，通过查询接口验证创建缓存云实例的正确性
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_create_instance(self, config, created_instance, http_client):
+    def test_create_instance(self, config, created_instance, http_client, sql_client):
         # 创建缓存云实例
         space_id, instance, password, accesser = created_instance
         # 查看redis详情，验证缓存云实例状态，status=100创建成功
@@ -18,6 +18,7 @@ class TestCreateInstance:
         cfs_host = get_master_cfs_step(instance)
         cfs_client = CFS(cfs_host, config)
         masterIp_cfs, masterDocker_cfs, slaveIp_cfs, slaveDocker_cfs = get_topology_of_instance_from_cfs_step(cfs_client, space_id)
+        # 验证数据库与CFS中的拓扑结构相同
         assert masterIp == masterIp_cfs, info_logger.error("Ip of master container is inconsistent")
         assert masterDocker == masterDocker_cfs, info_logger.error("Docker_id of master container is inconsistent")
         assert slaveIp == slaveIp_cfs, info_logger.error("Ip of slave container is inconsistent")
@@ -31,5 +32,7 @@ class TestCreateInstance:
         # mem_total单位为byte，capacity单位为kb
         assert mem_info_master["mem_total"] == capacity * 1024 + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
         assert mem_info_slave["mem_total"] == capacity * 1024 + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
+        # 验证数据库中topology version与ap内存中一致
+        check_topology_verison_of_ap_step(container, sql_client, space_id)
         # 验证通过nlb访问实例
         check_access_domain_step(accesser, space_id, password)

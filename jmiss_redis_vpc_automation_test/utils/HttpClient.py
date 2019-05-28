@@ -44,10 +44,9 @@ class HttpClient(object):
         hc.close()
         return status, headers, res_data
 
-    def http_request_for_jcs_agent(self, jcs_agent_host, method, action, data=None):
-        hc = httplib.HTTPConnection(jcs_agent_host)
-        hc.request(method, "/jvirt-jcs-eye?Action={0}".format(action), data,
-                   {"Content-Type": "application/json", "Cache-Control": "no-cache"})
+    def http_request_for_agent(self, agent_host, method, uri, data=None):
+        hc = httplib.HTTPConnection(agent_host)
+        hc.request(method, "{0}".format(uri), data, {"Content-Type": "application/json", "Cache-Control": "no-cache"})
         res = hc.getresponse()
         status = res.status
         res_data = json.loads(res.read())
@@ -213,12 +212,18 @@ class HttpClient(object):
     def op_get_cluster_info(self):
         return self.http_request_for_op("GET", "op/get_cluster_info")
 
-    # NOVA 接口
+    # sagent 接口
+    def ping_ap_version(self, sagent_host, container_id, space_id):
+        return self.http_request_for_agent(sagent_host, "GET", "/pingAp?dockerId={0}&spaceId={1}".format(container_id, space_id))
+
+    # NOVA agent接口
 
     # get nova docker info
     def get_container_info(self, jcs_agent_host, container_id):
         data = {"id": container_id}
-        return self.http_request_for_jcs_agent(jcs_agent_host, "POST", "DescribeContainer", to_json_string(data))
+        return self.http_request_for_agent(jcs_agent_host, "POST", "/jvirt-jcs-eye?Action=DescribeContainer", to_json_string(data))
+
+    # NOVA 接口
 
     # delete nova docker
     def delete_jcs_docker(self, container_id):

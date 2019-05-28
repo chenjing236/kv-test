@@ -8,7 +8,7 @@ info_logger = logging.getLogger(__name__)
 class TestCreateCluster:
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_create_cluster(self, config, created_instance, http_client):
+    def test_create_cluster(self, config, created_instance, http_client, sql_client):
         # 创建缓存云实例
         space_id, cluster, password, accesser = created_instance
         # 查看缓存云实例详细信息
@@ -39,5 +39,7 @@ class TestCreateCluster:
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
             assert mem_info_master["mem_total"] == capacity * 1024 / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
             assert mem_info_slave["mem_total"] == capacity * 1024 / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
+        # 验证数据库中topology version与ap内存中一致
+        check_topology_verison_of_ap_step(container, sql_client, space_id)
         # 验证通过domain访问实例
         check_access_domain_step(accesser, space_id, password)
