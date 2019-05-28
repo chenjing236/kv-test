@@ -1,6 +1,6 @@
 {
   "version": "v3.0",
-  "host": "jmiss-redis-test-02-ite.jdcloud.com:8080",
+  "host": "jmiss-redis-test-02-ite.jdcloud.com",
   "port": 80,
   "user": "jcloudiaas2",
   "pin": "cab6260cdc0734c940ddf719612c6614",
