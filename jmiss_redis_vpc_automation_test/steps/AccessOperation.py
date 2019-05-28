@@ -55,7 +55,14 @@ def ping_domain_step(accesser, space_id):
     if result is not True:
         assert False, info_logger.error("Ping domain of instance is failed, error_msg = {0}".format(err))
     info_logger.info("Ping domain of instance successfully")
-    return True
+    return
 
 
-# 验证space通过nlb执行配置文件中所有命令的正确性
+# 验证通过域名执行redis unit test
+def exec_unit_test_step(accesser, space_id):
+    info_logger.info("[STEP] Start to exec redis unit test, space_id is [{0}]".format(space_id))
+    info_logger.info("Exec redis unit test may take a few minutes, please wait for a while...")
+    result = accesser.exec_unit_test(space_id)
+    assert result is True, info_logger.error("Run redis unit test failed, please check vm error log")
+    info_logger.info("Exec redis unit test successfully")
+    return

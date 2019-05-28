@@ -91,6 +91,24 @@ class SSHClient(object):
                         return True, None
         return False, result
 
+    # vm中执行redis unit test，docker中暂不支持执行
+    def exec_unit_test(self, ip, cluster_type):
+        if self.ssh_type == 'vm':
+            command = "sh /export/redis_unit_test/run {0} {1}".format(ip, cluster_type)
+            result, err = self.vm_exec_command(command)
+        else:
+            # 暂不支持在docker中执行unit test，当前跳过
+            return True
+        # unit test执行成功，返回值为0
+        if len(err) != 0:
+            print result, err
+            return False
+        if result[0] == "0\n":
+            return True
+        # unit test执行失败，返回值不为0
+        else:
+            return False
+
     # 在redis docker中执行访问命令
     # 使用exec_redis_command方法
     #

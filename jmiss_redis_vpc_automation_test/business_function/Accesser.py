@@ -121,4 +121,10 @@ class Accesser:
         return result, err
 
     # 在vm中执行proxy unit test脚本
-    # todo
+    def exec_unit_test(self, space_id):
+        result = self.sql_client.exec_query_one("select domain, cluster_type from space where space_id = '{0}'".format(space_id), False)
+        domain = result[0]
+        cluster_type = result[1]
+        self.init_ssh_client(space_id)
+        result = self.ssh_client.exec_unit_test(domain, cluster_type)
+        return result
