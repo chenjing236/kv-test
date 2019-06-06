@@ -1,0 +1,8 @@
+{
+  "region": "cn-east-2",
+  "host": "jredis-cn-east-2-prod-redis-t0tw0cqnai.jdcloud.com",
+  "port": 6379,
+  "password": "",
+  "exec_times": 100000,
+  "dbnum": 0
+}

@@ -30,7 +30,7 @@ class SSHClient(object):
                                    password=self.password)
         # 测试环境用ssh_key登录，可以在办公网本地运行自动化用例，配置文件中ssh_key为true时可用
         else:
-            privatekey = os.path.expanduser("./config/id_rsa")
+            privatekey = os.path.expanduser("../config/id_rsa")
             key = paramiko.RSAKey.from_private_key_file(privatekey)
             self.ssh_redis.connect(hostname=self.sshHost, username="root", pkey=key)
         # 不输出paramiko info级别日志

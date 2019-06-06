@@ -9,6 +9,16 @@ import hashlib
 import base64
 
 
+# 获取要写入redis资源的测试数据，分布在0-511 slots
+def get_key_slot_list():
+    file = open('../data/key_value_slot')
+    key_slot_list = []
+    for line in file.readlines():
+        curLine = line.strip().split(" ")
+        key_slot_list.append(curLine[0:2])
+    return key_slot_list
+
+
 def format_ip(addr):
     return str(ord(addr[0])) + '.' + \
            str(ord(addr[1])) + '.' + \

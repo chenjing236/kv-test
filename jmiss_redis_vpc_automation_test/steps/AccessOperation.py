@@ -1,7 +1,9 @@
 # coding:utf-8
 
 from business_function.Accesser import *
+from utils.util import get_key_slot_list
 import logging
+import json
 info_logger = logging.getLogger(__name__)
 
 
@@ -66,3 +68,21 @@ def exec_unit_test_step(accesser, space_id):
     assert result is True, info_logger.error("Run redis unit test failed, please check vm error log")
     info_logger.info("Exec redis unit test successfully")
     return
+
+
+# 通过域名写入测试数据，数据分布在0-511 slots上
+def insert_test_keys(accesser, space_id, password=None):
+    info_logger.info("[STEP] Start to insert redis test keys which include slot [0-511], space_id is [{0}]".format(space_id))
+    info_logger.info("Insert keys may take a few seconds, please wait for a while...")
+    key_slot_list = get_key_slot_list()
+    for key_slot in key_slot_list:
+        set_result = accesser.domain_exec_command(space_id, " -n 2 set {0} {1}".format(key_slot[0], key_slot[1]), password)
+        set_result = set_result[0].replace("\r", "").replace("\n", "")
+        assert set_result == "OK", info_logger.error("Set key value error! Err result is {0}".format(set_result))
+    info_logger.info("Exec redis unit test successfully")
+    return
+
+file_path = "../config/conf_test_02.json"
+conf_obj = json.load(open(file_path, 'r'))
+accesser = Accesser(conf_obj)
+insert_test_keys(accesser, "redis-uvn3wehsu7")

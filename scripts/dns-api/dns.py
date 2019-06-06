@@ -19,8 +19,8 @@ signStr = erp + "#" + businessId + "NP" + timeStr
 hmd5 = hashlib.md5()
 hmd5.update(signStr)
 sign = hmd5.hexdigest()
-url = "pre-temp-api.np.jdcloud.com"
-domain = "redis-test981llv.sq-stag.redis.jmiss.jdcloud.com"
+url = "api-np.jcloud.com"
+domain = "jredis-cn-north-1-prod-redis-test3sbnkp.jdcloud.com"
 print sign
 
 data_reserve = {"domain": domain,
@@ -30,7 +30,7 @@ data_reserve = {"domain": domain,
         "network": 1}
 
 data_resolution = {"domain": domain,
-                   "data": [{"type": "A", "records": ["192.168.0.124"]}]}
+                   "data": [{"type": "A", "records": ["10.207.67.216"]}]}
 
 domain_check = "curl -H \"\"Content-type:application/json\"\" -H \"appCode:{0}\" " \
        "-H \"erp:{1}\" -H \"timestamp:{2}\" -H \"sign:{3}\" " \

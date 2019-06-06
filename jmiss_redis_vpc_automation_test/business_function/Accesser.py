@@ -1,6 +1,7 @@
 # coding:utf-8
 from utils.SSHClient import *
 from utils.SQLClient import *
+import json
 
 
 class Accesser:
@@ -128,3 +129,20 @@ class Accesser:
         self.init_ssh_client(space_id)
         result = self.ssh_client.exec_unit_test(domain, cluster_type)
         return result
+
+    # 在vm中执行set(get)_test_keys脚本，给0-511 slot均写入数据
+    # cmd_type: get or set
+    def exec_slot_keys(self, space_id, cmd_type, password):
+        # 仅支持在云主机执行，测试环境docker不允许执行
+        if self.conf_obj["access_type"] == 'docker':
+            return True
+        result = self.sql_client.exec_query_one("select domain from space where space_id = '{0}'".format(space_id), False)
+        domain = result[0]
+        self.init_ssh_client(space_id)
+        result, err = self.ssh_client.vm_exec_command("sh /export/redis_slot_keys/{0}_keys.sh {1} {2}".format(cmd_type, domain, password))
+        print result, err
+        if result[0] == "0\n" and len(err) == 0:
+            return True
+        else:
+            info_logger.error("{0} slot keys failed, result is [{1}], err is [{2}]".format(cmd_type, result, err))
+            return False
