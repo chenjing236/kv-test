@@ -17,7 +17,7 @@ class TestResizeCluster:
         check_access_domain_step(accesser, space_id, password)
         # 执行扩容操作
         flavor_id_resize = instance_data["flavorIdResize"]
-        status, flavor_id_new = resize_instance_step(cluster, space_id, flavor_id_resize)
+        status, flavor_id_new = resize_instance_step(cluster, accesser, space_id, flavor_id_resize, password)
         # 验证扩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after resizing the cluster {0}".format(space_id))
         assert flavor_id_new == flavor_id_resize, info_logger.error("The flavor is incorrect after resizing the cluster {0}".format(space_id))
@@ -53,7 +53,7 @@ class TestResizeCluster:
         check_access_domain_step(accesser, space_id, password)
         # 执行缩容操作
         flavor_id_reduce = instance_data["flavorIdReduce"]
-        status, flavor_id_new = resize_instance_step(cluster, space_id, flavor_id_reduce)
+        status, flavor_id_new = resize_instance_step(cluster, accesser, space_id, flavor_id_reduce, password)
         # 验证缩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after reducing the cluster {0}".format(space_id))
         assert flavor_id_new == flavor_id_reduce, info_logger.error("The flavor is incorrect after reducing the cluster {0}".format(space_id))

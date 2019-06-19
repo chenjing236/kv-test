@@ -3,6 +3,7 @@ import time
 import logging
 from business_function.Cluster import *
 from ContainerOperation import *
+from AccessOperation import *
 from business_function.CFS import *
 
 info_logger = logging.getLogger(__name__)
@@ -45,7 +46,8 @@ def get_detail_info_of_instance_step(instance, space_id):
     return attach
 
 
-def get_operation_result_step(instance, space_id, operation_id):
+# check_keys: 用于扩容时，验证扩容过程中正确读取分布在不同slots上的数据
+def get_operation_result_step(instance, space_id, operation_id, check_keys=False, accesser=None, password=None):
     # 获取操作结果，判断对资源的操作是否成功
     info_logger.info("[STEP] Get creation result of the instance {0}".format(space_id))
     code = 1
@@ -64,6 +66,9 @@ def get_operation_result_step(instance, space_id, operation_id):
         info_logger.info("Response of [{0} times] getting operation result is [{1}]".format(count, attach["message"]))
         code = attach["code"]
         count += 1
+        # 扩容过程中读取分布在不同slots上的数据
+        if check_keys is True:
+            query_test_keys(accesser, space_id, password)
         time.sleep(wait_time)
     if count >= retry_times:
         assert False, info_logger.error("The operation of instance is failed")
@@ -158,13 +163,14 @@ def check_topology_verison_of_ap_step(container, sql_client, space_id):
     result = sql_client.exec_query_one(sql_str)
     topology = json.loads(result[0])
     topology_version = topology["version"]
-    sql_str = "select host_ip, docker_id from ap where space_id='{0}'".format(space_id)
-    result = sql_client.exec_query_all(sql_str)
-    for ap_host_ip, ap_docker_id in result:
-        ap_version = ping_ap_version_step(container, ap_host_ip, ap_docker_id, space_id)
-        assert ap_version == topology_version, \
-            info_logger.error("Topology version of ap and mysql is not same! "
-                              "Ap[{0}] version is [{1}], mysql version is [{2}]".format(ap_docker_id, ap_version, topology_version))
+    sql_str = "select host_ip, docker_id from ap where space_id='{0}' order by id desc".format(space_id)
+    result = sql_client.exec_query_one(sql_str)
+    ap_host_ip = result[0]
+    ap_docker_id = result[1]
+    ap_version = ping_ap_version_step(container, ap_host_ip, ap_docker_id, space_id)
+    assert ap_version == topology_version, \
+        info_logger.error("Topology version of ap and mysql is not same! "
+                            "Ap[{0}] version is [{1}], mysql version is [{2}]".format(ap_docker_id, ap_version, topology_version))
     info_logger.info("Check topology version of proxy and mysql successfully!")
     return True
 
@@ -182,9 +188,11 @@ def delete_instance_step(instance, space_id):
 
 
 # 对redis资源进行调整内存操作，包括扩容及缩容
-def resize_instance_step(instance, space_id, flavor_id):
+def resize_instance_step(instance, accesser, space_id, flavor_id, password=None):
     # 执行resize扩容操作
     info_logger.info("[STEP] Resize the instance {0}".format(space_id))
+    # 写入测试数据
+    insert_test_keys(accesser, space_id, password)
     res_data = instance.resize_instance(space_id, flavor_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
@@ -195,7 +203,7 @@ def resize_instance_step(instance, space_id, flavor_id):
         assert False, info_logger.error("Response of resizing an instance is incorrect")
     operation_id = attach["operationId"]
     # 获取操作结果，判断扩容是否成功
-    is_success = get_operation_result_step(instance, space_id, operation_id)
+    is_success = get_operation_result_step(instance, space_id, operation_id, True, accesser, password)
     assert is_success is True, info_logger.error("Get the right operation result, resize instance failed")
     # 获取capacity
     info_new = instance.get_instance_info(space_id)

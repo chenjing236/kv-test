@@ -15,7 +15,7 @@ class TestResizeInstance:
         check_access_domain_step(accesser, space_id, password)
         # 执行扩容操作
         flavor_id_resize = instance_data["flavorIdResize"]
-        status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_resize)
+        status, flavor_id_new = resize_instance_step(instance, accesser, space_id, flavor_id_resize, password)
         # 验证扩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after resizing the instance {0}".format(space_id))
         assert flavor_id_new == flavor_id_resize, info_logger.error("The flavor is incorrect after resizing the instance {0}".format(space_id))
@@ -47,7 +47,7 @@ class TestResizeInstance:
         check_access_domain_step(accesser, space_id, password)
         # 执行缩容操作
         flavor_id_reduce = instance_data["flavorIdReduce"]
-        status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_reduce)
+        status, flavor_id_new = resize_instance_step(instance, accesser, space_id, flavor_id_reduce, password)
         # 验证扩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after reducing the instance {0}".format(space_id))
         assert flavor_id_new == flavor_id_reduce, info_logger.error("The flavor is incorrect after reducing the instance {0}".format(space_id))
@@ -80,7 +80,7 @@ class TestResizeInstance:
         check_access_domain_step(accesser, space_id, password)
         # 执行扩容操作
         flavor_id_resize = instance_data["flavorIdResizeToCluster"]
-        status, flavor_id_new = resize_instance_step(instance, space_id, flavor_id_resize)
+        status, flavor_id_new = resize_instance_step(instance, accesser, space_id, flavor_id_resize, password)
         # 验证扩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after resizing the instance {0}".format(space_id))
         assert flavor_id_new == flavor_id_resize, info_logger.error("The flavor is incorrect after resizing the instance {0}".format(space_id))
