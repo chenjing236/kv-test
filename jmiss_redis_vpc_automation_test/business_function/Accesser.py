@@ -140,7 +140,6 @@ class Accesser:
         domain = result[0]
         self.init_ssh_client(space_id)
         result, err = self.ssh_client.vm_exec_command("sh /export/redis_slot_keys/{0}_keys.sh {1} \"{2}\"".format(cmd_type, domain, password))
-        print result, err
         if result[0] == "0\n" and len(err) == 0:
             return True
         else:

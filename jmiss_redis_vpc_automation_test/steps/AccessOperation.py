@@ -74,16 +74,14 @@ def insert_test_keys(accesser, space_id, password=None):
     info_logger.info("[STEP] Start to insert redis test keys which include slot [0-511], space_id is [{0}]".format(space_id))
     info_logger.info("Insert keys may take a few seconds, please wait for a while...")
     set_result = accesser.exec_slot_keys(space_id, "set", password)
-    assert set_result is True, info_logger.error("Set key value failed!")
+    assert set_result is True, info_logger.error("Insert redis test keys failed!")
     info_logger.info("Insert redis test keys successfully!")
     return
 
 
 # 通过域名读取测试数据，数据分布在0-511 slots上
 def query_test_keys(accesser, space_id, password=None):
-    info_logger.info("[STEP] Start to query redis test keys which include slot [0-511], space_id is [{0}]".format(space_id))
-    info_logger.info("Query keys may take a few seconds, please wait for a while...")
     get_result = accesser.exec_slot_keys(space_id, "get", password)
-    assert get_result is True, info_logger.error("Get key value failed!")
+    assert get_result is True, info_logger.error("Query redis test keys failed!")
     info_logger.info("Query redis test keys successfully!")
     return
