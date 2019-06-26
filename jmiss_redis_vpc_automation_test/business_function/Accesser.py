@@ -134,6 +134,8 @@ class Accesser:
     # cmd_type: get or set
     def exec_slot_keys(self, space_id, cmd_type, password=None):
         # 仅支持在云主机执行，测试环境docker不允许执行
+        # 暂时去掉，存在问题
+        return True
         if self.conf_obj["access_type"] == 'docker':
             return True
         result = self.sql_client.exec_query_one("select domain from space where space_id = '{0}'".format(space_id), False)
