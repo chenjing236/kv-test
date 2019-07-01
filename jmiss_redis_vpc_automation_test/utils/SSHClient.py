@@ -40,9 +40,9 @@ class SSHClient(object):
         self.ssh_redis.close()
 
     # 用于在云主机中执行shell命令
-    def vm_exec_command(self, command):
+    def vm_exec_command(self, command, timeout=None):
         self.init_client()
-        stdin, stdout, stderr = self.ssh_redis.exec_command(command)
+        stdin, stdout, stderr = self.ssh_redis.exec_command(command, timeout=timeout)
         result = stdout.readlines()
         err = stderr.readlines()
         self.close_client()
@@ -95,7 +95,7 @@ class SSHClient(object):
     def exec_unit_test(self, ip, cluster_type):
         if self.ssh_type == 'vm':
             command = "sh /export/redis_unit_test/run {0} {1}".format(ip, cluster_type)
-            result, err = self.vm_exec_command(command)
+            result, err = self.vm_exec_command(command, 240)
         else:
             # 暂不支持在docker中执行unit test，当前跳过
             return True
