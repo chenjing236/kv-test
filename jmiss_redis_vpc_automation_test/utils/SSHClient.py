@@ -42,8 +42,13 @@ class SSHClient(object):
     # 用于在云主机中执行shell命令
     def vm_exec_command(self, command, timeout=None):
         self.init_client()
-        stdin, stdout, stderr = self.ssh_redis.exec_command(command, timeout=timeout)
-        result = stdout.readlines()
+        stdin, stdout, stderr = self.ssh_redis.exec_command(command)
+        while True:
+            result = stdout.readlines()
+            print result
+            if stdout.channel.exit_status_ready():
+                break
+        # result = stdout.readlines()
         err = stderr.readlines()
         self.close_client()
         return result, err
@@ -95,7 +100,7 @@ class SSHClient(object):
     def exec_unit_test(self, ip, cluster_type):
         if self.ssh_type == 'vm':
             command = "sh /export/redis_unit_test/run {0} {1}".format(ip, cluster_type)
-            result, err = self.vm_exec_command(command, 240)
+            result, err = self.vm_exec_command(command)
         else:
             # 暂不支持在docker中执行unit test，当前跳过
             return True
@@ -103,7 +108,10 @@ class SSHClient(object):
         if len(err) != 0:
             print result, err
             return False
-        if result[0] == "0\n":
+        # 这里的`len(result) == 0`判断情况是因为paramiko.exec_command会偶现返回两行结果，第二行为空，结果如下
+        # [u'0\n']
+        # []
+        if result[0] == "0\n" or len(result) == 0:
             return True
         # unit test执行失败，返回值不为0
         else:
