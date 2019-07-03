@@ -43,11 +43,11 @@ class SSHClient(object):
     def vm_exec_command(self, command, timeout=None):
         self.init_client()
         stdin, stdout, stderr = self.ssh_redis.exec_command(command)
+        result = stdout.readlines()
         while True:
-            result = stdout.readlines()
-            print result
             if stdout.channel.exit_status_ready():
                 break
+            stdout.readlines()
         # result = stdout.readlines()
         err = stderr.readlines()
         self.close_client()
