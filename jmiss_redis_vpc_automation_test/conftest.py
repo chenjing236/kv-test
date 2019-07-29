@@ -34,11 +34,14 @@ def instance_data(request):
 @pytest.fixture(scope="session")
 def created_instance(config, instance_data, http_client, request):
     instance = Cluster(config, instance_data, http_client)
+    accesser = Accesser(config)
     space_id, operation_id, password = create_instance_step(instance)
     # 查看创建操作结果，验证创建成功
     get_operation_result_step(instance, space_id, operation_id)
     # 设置资源acl
     set_acl_step(instance, space_id)
+    # ping资源域名，验证正确解析
+    ping_domain_step(accesser, space_id)
 
     def teardown():
         print "\n"
@@ -47,7 +50,7 @@ def created_instance(config, instance_data, http_client, request):
         time.sleep(15)
 
     request.addfinalizer(teardown)
-    return space_id, instance, password
+    return space_id, instance, password, accesser
 
 
 @pytest.fixture(scope="session")

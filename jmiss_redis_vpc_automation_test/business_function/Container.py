@@ -10,6 +10,13 @@ class Container:
         self.conf_obj = conf_obj
         self.http_client = httpClient
 
+    # 通过sagent获取当前ap docker中topo version
+    def ping_ap_version(self, sagent_host, container_id, space_id):
+        status, headers, res_data = self.http_client.ping_ap_version(sagent_host + ":1025", container_id, space_id)
+        assert status == 200, "[ERROR] HTTP Request of sagent is failed, response is {0}".format(status)
+        assert res_data["code"] == 0, "[ERROR] Ping ap version failed, msg is [{0}]".format(res_data["message"])
+        return res_data
+
     # 获取container信息，通过nova agent
     def get_container_info(self, jcs_agent_host, container_id):
         status, headers, res_data = self.http_client.get_container_info(jcs_agent_host + ":" + self.conf_obj["jcs_agent_port"], container_id)

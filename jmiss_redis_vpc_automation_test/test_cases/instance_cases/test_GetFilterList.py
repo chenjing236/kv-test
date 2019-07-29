@@ -4,17 +4,19 @@ from BasicTestCase import *
 
 class TestGetFilterList:
     # 创建单实例缓存云实例，通过查询接口验证创建缓存云实例的正确性
+    @pytest.mark.smoke
     @pytest.mark.regression
     def test_get_redis_list(self, created_instance):
         # 创建缓存云实例，创建成功
-        space_id, instance, password = created_instance
+        space_id, instance, password, accesser = created_instance
         # 查看缓存云实例详细信息
         cluster_info = get_detail_info_of_instance_step(instance, space_id)
         # 根据过滤条件查询缓存云实例列表
-        attach = get_filter_clusters_step(instance)
+        attach = get_filter_clusters_step(instance, filterStatus=100, filterSpaceType=1)
         spaces = attach["spaces"]
         total = attach["total"]
         assert total == len(spaces) and spaces is not None, "Cluster list is none"
+        is_exist = False
         for c in spaces:
             assert c["status"] != 102, info_logger.error("There is a cluster which status equals 102 in the cluster list")
             if c["spaceId"] == space_id:

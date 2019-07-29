@@ -8,9 +8,9 @@ info_logger = logging.getLogger(__name__)
 class TestCreateCluster:
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_create_cluster(self, config, created_instance, http_client):
+    def test_create_cluster(self, config, created_instance, http_client, sql_client):
         # 创建缓存云实例
-        space_id, cluster, password = created_instance
+        space_id, cluster, password, accesser = created_instance
         # 查看缓存云实例详细信息
         detail_info = get_detail_info_of_instance_step(cluster, space_id)
         assert detail_info["status"] == 100, info_logger.error("The cluster status is not 100!")
@@ -30,7 +30,7 @@ class TestCreateCluster:
             assert shards[i]["slaveDocker"] == shards_cfs[i]["slaveDocker"]
         # 获取container的大小，验证container的大小
         container = Container(config, http_client)
-        # 资源预留内存，小于16G时预留1G，大于等于16G是预留2G
+        # 资源预留内存，小于16G时预留1G，大于等于16G时预留2G
         extra_mem = 1024 * 1024 * 1024 if capacity/shard_count < 16 * 1024 * 1024 else 2 * 1024 * 1024 * 1024
         for i in range(0, shard_count):
             mem_info_master = get_container_info_step(container, shards[i]["masterIp"], shards[i]["masterDocker"])
@@ -39,6 +39,7 @@ class TestCreateCluster:
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
             assert mem_info_master["mem_total"] == capacity * 1024 / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
             assert mem_info_slave["mem_total"] == capacity * 1024 / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
-        # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        # 验证数据库中topology version与ap内存中一致
+        check_topology_verison_of_ap_step(container, sql_client, space_id)
+        # 验证通过domain访问实例
+        check_access_domain_step(accesser, space_id, password)

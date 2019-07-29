@@ -9,16 +9,15 @@ class TestResizeCluster:
     @pytest.mark.regression
     def test_resize_cluster(self, config, instance_data, created_instance, http_client):
         # 创建缓存云实例，创建成功
-        space_id, cluster, password = created_instance
+        space_id, cluster, password, accesser = created_instance
         # 获取原有缓存云实例的capacity
         detail_info = get_detail_info_of_instance_step(cluster, space_id)
         flavor_id = detail_info["flavorId"]
-        # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        # 验证通过domain访问实例
+        check_access_domain_step(accesser, space_id, password)
         # 执行扩容操作
         flavor_id_resize = instance_data["flavorIdResize"]
-        status, flavor_id_new = resize_instance_step(cluster, space_id, flavor_id_resize)
+        status, flavor_id_new = resize_instance_step(cluster, accesser, space_id, flavor_id_resize, password)
         # 验证扩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after resizing the cluster {0}".format(space_id))
         assert flavor_id_new == flavor_id_resize, info_logger.error("The flavor is incorrect after resizing the cluster {0}".format(space_id))
@@ -39,24 +38,22 @@ class TestResizeCluster:
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
             assert mem_info_master["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
             assert mem_info_slave["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
-        # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        # 验证通过domain访问实例
+        check_access_domain_step(accesser, space_id, password)
 
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_reduce_cluster(self, config, instance_data, created_instance, http_client):
         # 创建缓存云实例，创建成功
-        space_id, cluster, password = created_instance
+        space_id, cluster, password, accesser = created_instance
         # 获取原有缓存云实例的capacity
         detail_info = get_detail_info_of_instance_step(cluster, space_id)
         flavor_id = detail_info["flavorId"]
-        # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        # 验证通过domain访问实例
+        check_access_domain_step(accesser, space_id, password)
         # 执行缩容操作
         flavor_id_reduce = instance_data["flavorIdReduce"]
-        status, flavor_id_new = resize_instance_step(cluster, space_id, flavor_id_reduce)
+        status, flavor_id_new = resize_instance_step(cluster, accesser, space_id, flavor_id_reduce, password)
         # 验证缩容操作后的规格
         assert flavor_id_new != flavor_id, info_logger.error("The flavor is incorrect after reducing the cluster {0}".format(space_id))
         assert flavor_id_new == flavor_id_reduce, info_logger.error("The flavor is incorrect after reducing the cluster {0}".format(space_id))
@@ -77,6 +74,5 @@ class TestResizeCluster:
             info_logger.info("Memory size of shard_{0} slave container is {1}".format(i + 1, mem_info_slave["mem_total"]))
             assert mem_info_master["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of master container is inconsistent with request")
             assert mem_info_slave["mem_total"] == capacity / shard_count + extra_mem, info_logger.error("Memory size of slave container is inconsistent with request")
-        # 验证通过nlb访问实例
-        accesser = Accesser(config)
-        check_access_nlb_step(accesser, space_id, password)
+        # 验证通过domain访问实例
+        check_access_domain_step(accesser, space_id, password)

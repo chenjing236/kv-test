@@ -92,7 +92,7 @@ class SQLClient(object):
                 info_logger.info("NO data in DB!")
             elif expectation == result_tuple[position]:
                 break
-            info_logger.info("Query DB {0} times!".format(i + 1))
+            # info_logger.info("Query DB {0} times!".format(i + 1))
             time.sleep(wait_time)
         else:
             info_logger.error("Failed to get the expectation of {0}".format(expectation))

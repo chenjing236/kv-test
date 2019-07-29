@@ -1,0 +1,8 @@
+{
+  "region": "cn-north-1",
+  "host": "redis-rcf43qgkix.cn-north-1.redis.jdcloud.com",
+  "port": 6379,
+  "password": "",
+  "exec_times": 100000,
+  "dbnum": 0
+}

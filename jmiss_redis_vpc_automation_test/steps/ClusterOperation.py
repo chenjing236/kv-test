@@ -2,7 +2,10 @@
 import time
 import logging
 from business_function.Cluster import *
+from ContainerOperation import *
+from AccessOperation import *
 from business_function.CFS import *
+
 info_logger = logging.getLogger(__name__)
 
 
@@ -30,18 +33,21 @@ def get_detail_info_of_instance_step(instance, space_id):
     res_data = instance.get_instance_info(space_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
-    assert code == 0, info_logger.error("It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg))
+    assert code == 0, info_logger.error(
+        "It is failed to get information of the instance {0}, error message is {1}".format(space_id, msg))
     attach = res_data["attach"]
     if attach is None or attach is "":
         info_logger.error("Response of getting detail information for the instance %s is incorrect", space_id)
-        assert False, info_logger.error("Response of getting detail information for the instance {0} is incorrect".format(space_id))
+        assert False, info_logger.error(
+            "Response of getting detail information for the instance {0} is incorrect".format(space_id))
     assert attach["status"] == 100, info_logger.error("The cluster status is not 100!")
     assert attach["zone"] != 'clsdocker', info_logger.error("The cluster zone is clsdocker!")
     info_logger.info("Get the right detail info, the status of cluster {0} is 100".format(space_id))
     return attach
 
 
-def get_operation_result_step(instance, space_id, operation_id):
+# check_keys: 用于扩容时，验证扩容过程中正确读取分布在不同slots上的数据
+def get_operation_result_step(instance, space_id, operation_id, check_keys=False, accesser=None, password=None):
     # 获取操作结果，判断对资源的操作是否成功
     info_logger.info("[STEP] Get creation result of the instance {0}".format(space_id))
     code = 1
@@ -60,6 +66,9 @@ def get_operation_result_step(instance, space_id, operation_id):
         info_logger.info("Response of [{0} times] getting operation result is [{1}]".format(count, attach["message"]))
         code = attach["code"]
         count += 1
+        # 扩容过程中读取分布在不同slots上的数据
+        if check_keys is True:
+            query_test_keys(accesser, space_id, password)
         time.sleep(wait_time)
     if count >= retry_times:
         assert False, info_logger.error("The operation of instance is failed")
@@ -83,7 +92,8 @@ def set_acl_step(instance, space_id):
 def set_system_acl_step(instance, space_id, enable):
     res_data = instance.set_system_acl(space_id, enable)
     if res_data is None or res_data is "":
-        assert False, info_logger.error("Response of setting system acl is incorrect for the instance {0}".format(space_id))
+        assert False, info_logger.error(
+            "Response of setting system acl is incorrect for the instance {0}".format(space_id))
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to set system acl, error message is {0}".format(msg))
@@ -146,21 +156,43 @@ def get_topology_of_cluster_from_cfs_step(cfs_client, space_id):
     return shards
 
 
+# 验证数据库中topology version与ap内存中一致
+def check_topology_verison_of_ap_step(container, sql_client, space_id):
+    info_logger.info("[STEP] Check topology version of proxy and mysql")
+    sql_str = "select current_topology from topology where space_id='{0}'".format(space_id)
+    result = sql_client.exec_query_one(sql_str)
+    topology = json.loads(result[0])
+    topology_version = topology["version"]
+    sql_str = "select host_ip, docker_id from ap where space_id='{0}' order by id desc".format(space_id)
+    result = sql_client.exec_query_one(sql_str)
+    ap_host_ip = result[0]
+    ap_docker_id = result[1]
+    ap_version = ping_ap_version_step(container, ap_host_ip, ap_docker_id, space_id)
+    assert ap_version == topology_version, \
+        info_logger.error("Topology version of ap and mysql is not same! "
+                            "Ap[{0}] version is [{1}], mysql version is [{2}]".format(ap_docker_id, ap_version, topology_version))
+    info_logger.info("Check topology version of proxy and mysql successfully!")
+    return True
+
+
 # 删除redis资源
 def delete_instance_step(instance, space_id):
     info_logger.info("[STEP] Delete the instance {0}".format(space_id))
     res_data = instance.delete_instance(space_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
-    assert code == 0, info_logger.error("It is failed to delete the instance {0}, error message is {1}".format(space_id, msg))
+    assert code == 0, info_logger.error(
+        "It is failed to delete the instance {0}, error message is {1}".format(space_id, msg))
     # 删除等待时间
     time.sleep(15)
 
 
 # 对redis资源进行调整内存操作，包括扩容及缩容
-def resize_instance_step(instance, space_id, flavor_id):
+def resize_instance_step(instance, accesser, space_id, flavor_id, password=None):
     # 执行resize扩容操作
     info_logger.info("[STEP] Resize the instance {0}".format(space_id))
+    # 写入测试数据
+    insert_test_keys(accesser, space_id, password)
     res_data = instance.resize_instance(space_id, flavor_id)
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
@@ -171,7 +203,7 @@ def resize_instance_step(instance, space_id, flavor_id):
         assert False, info_logger.error("Response of resizing an instance is incorrect")
     operation_id = attach["operationId"]
     # 获取操作结果，判断扩容是否成功
-    is_success = get_operation_result_step(instance, space_id, operation_id)
+    is_success = get_operation_result_step(instance, space_id, operation_id, True, accesser, password)
     assert is_success is True, info_logger.error("Get the right operation result, resize instance failed")
     # 获取capacity
     info_new = instance.get_instance_info(space_id)
@@ -182,7 +214,7 @@ def resize_instance_step(instance, space_id, flavor_id):
     return status, flavor_id_new
 
 
-# 对redis资源执行failover操作，包括主从版和集群版分片的主从资源
+# 对redis资源执行failover操作，包括主从版和集群版分片
 def run_failover_container_step(space_id, container_id, container, cfs_client, failover_type):
     info_logger.info("[STEP] Run failover for redis container")
     # 查询CFS的redis，查看epoch的值
@@ -215,6 +247,27 @@ def run_failover_container_step(space_id, container_id, container, cfs_client, f
     if count == retry_times:
         return False
     info_logger.info("It is successful to run redis failover")
+    return True
+
+
+# 对redis资源执行ap failover操作，包括主从版和集群版分片
+def run_ap_failover_step(container, space_id, sql_client):
+    sql_str = "select docker_id,overlay_ip from ap where space_id='{0}'".format(space_id)
+    result = sql_client.exec_query_all(sql_str)
+    ap_docker_id = result[0][0]
+    ap_num = len(result)
+    # 删除ap
+    container.stop_jcs_docker(ap_docker_id)
+    # 等待failover
+    sql_str = "select return_code FROM `scaler_task` WHERE space_id='{0}' \
+                        and task_type=107 and task_id LIKE '{1}' order by id desc".format(space_id, "%" + ap_docker_id)
+    sql_client.wait_for_expectation(sql_str, 0, 5, 120)
+    # 获取最新ap数据并进行验证
+    sql_str = "select docker_id,overlay_ip from ap where space_id='{0}'".format(space_id)
+    result = sql_client.exec_query_all(sql_str)
+    assert ap_num == len(result)
+    docker_list = [j for i in result for j in i]
+    assert ap_docker_id not in docker_list
     return True
 
 
@@ -261,7 +314,8 @@ def run_rebuild_repair_step(instance, space_id, container, cfs_client):
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     operation_id_repair = res_data["attach"]["operationId"]
-    assert code == 0, info_logger.error("It is failed to rebuild repair instance {0}, error message is {1}".format(space_id, msg))
+    assert code == 0, info_logger.error(
+        "It is failed to rebuild repair instance {0}, error message is {1}".format(space_id, msg))
     # 获取操作结果，判断repair是否成功
     get_operation_result_step(instance, space_id, operation_id_repair)
     info_logger.info("Run rebuild repair successfully")
@@ -323,6 +377,7 @@ def get_filter_clusters_step(instance, filterName="", filterSpaceType="", filter
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to get clusters, error message is {0}".format(msg))
+    info_logger.info("[STEP] Get filter list information of instance successfully!")
     return res_data["attach"]
 
 
@@ -342,7 +397,8 @@ def update_meta_step(instance, space_id, name, remarks):
 def get_realtime_info_step(instance, space_id):
     res_data = instance.get_realtime_info(space_id)
     if res_data is None or res_data is "":
-        assert False, info_logger.error("Response of get_realtime_info is incorrect for the instance {0}".format(space_id))
+        assert False, info_logger.error(
+            "Response of get_realtime_info is incorrect for the instance {0}".format(space_id))
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to get realtime info, error message is {0}".format(msg))
@@ -353,7 +409,8 @@ def get_realtime_info_step(instance, space_id):
 def get_resource_info_step(instance, space_id, period="15m", frequency="3m"):
     res_data = instance.get_resource_info(space_id, period, frequency)
     if res_data is None or res_data is "":
-        assert False, info_logger.error("Response of get_resource_info is incorrect for the instance {0}".format(space_id))
+        assert False, info_logger.error(
+            "Response of get_resource_info is incorrect for the instance {0}".format(space_id))
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to get resource info, error message is {0}".format(msg))
@@ -365,7 +422,8 @@ def query_flavor_id_by_config_step(instance, cpu, memory, disk, max_connections,
     flavor = {"cpu": cpu, "memory": memory, "disk": disk, "max_connections": max_connections, "net": net}
     res_data = instance.query_flavor_id_by_config(flavor)
     if res_data is None or res_data is "":
-        assert False, info_logger.error("Response of query_flavor_id_by_config is incorrect for the flavor {0}".format(flavor))
+        assert False, info_logger.error(
+            "Response of query_flavor_id_by_config is incorrect for the flavor {0}".format(flavor))
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to query flavorId by config, error message is {0}".format(msg))
@@ -376,11 +434,82 @@ def query_flavor_id_by_config_step(instance, cpu, memory, disk, max_connections,
 def query_config_by_flavor_id_step(instance, flavor_id):
     res_data = instance.query_config_by_flavor_id(flavor_id)
     if res_data is None or res_data is "":
-        assert False, info_logger.error("Response of query_config_by_flavor_id is incorrect for the flavor [{0}]".format(flavor_id))
+        assert False, info_logger.error(
+            "Response of query_config_by_flavor_id is incorrect for the flavor [{0}]".format(flavor_id))
     code = res_data["code"]
     msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
     assert code == 0, info_logger.error("It is failed to query config by flavorId, error message is {0}".format(msg))
     return res_data["attach"]
+
+
+# modify instance config
+def modify_instance_config_step(instance, space_id, propt):
+    info_logger.info("[STEP] Start modify instance config")
+    res_data = instance.modify_instance_config(space_id, propt)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error(
+            "Response of modify_instance_config is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to modify instance config, error message is {0}".format(msg))
+    operation_id = res_data["attach"]["operationId"]
+    # 获取操作结果，判断备份是否成功
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, info_logger.error("Get the right operation result, modify instance config failed")
+    info_logger.info("[STEP] Modify instance config successfully")
+    return True
+
+
+# query backup list
+def query_backup_list_step(instance, space_id, base_id):
+    info_logger.info("[STEP] Start query backup list")
+    res_data = instance.query_backup_list(space_id, base_id)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error(
+            "Response of query_backup_list is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to query backup list, error message is {0}".format(msg))
+    backups = res_data["attach"]["backups"]
+    info_logger.info("[STEP] Query backup list successfully!")
+    return backups
+
+
+# create backup
+def create_backup_step(instance, space_id):
+    info_logger.info("[STEP] Start backup instance step")
+    res_data = instance.create_backup(space_id)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error(
+            "Response of create_backup is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to create backup, error message is {0}".format(msg))
+    operation_id = res_data["attach"]["operationId"]
+    # 获取操作结果，判断备份是否成功
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, info_logger.error("Get the right operation result, backup instance failed")
+    base_id = operation_id
+    info_logger.info("[STEP] Backup instance successfully!")
+    return base_id
+
+
+# create store
+def create_restore_step(instance, space_id, base_id):
+    info_logger.info("[STEP] Start restore instance step")
+    res_data = instance.create_restore(space_id, base_id)
+    if res_data is None or res_data is "":
+        assert False, info_logger.error(
+            "Response of create_restore is incorrect for the instance [{0}]".format(space_id))
+    code = res_data["code"]
+    msg = json.dumps(res_data["msg"], ensure_ascii=False).encode("gbk")
+    assert code == 0, info_logger.error("It is failed to create restore, error message is {0}".format(msg))
+    operation_id = res_data["attach"]["operationId"]
+    # 获取操作结果，判断restore是否成功
+    is_success = get_operation_result_step(instance, space_id, operation_id)
+    assert is_success is True, info_logger.error("Get the right operation result, restore instance failed")
+    info_logger.info("[STEP] Restore instance successfully!")
+    return True
 
 
 # 通过web get_cluster_info接口查询当前主CFS
