@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /export/Data/jmiss_auto_scripts/memcached_stability_scripts/JCacheTest/jmiss_memcached_vpc_automation_test
+cd /export/Data/jmiss_auto_scripts/memcached_stability_scripts/kv-test/jmiss_memcached_vpc_automation_test
 
 date=`date '+%Y%m%d-%H%M%S'`
 pytest ./test_cases/openapi_cases -s -v -m openapi --config ./config/conf_hb.json --data ./data/instance_data_hb.json > /export/Logs/mc_stability_test/mc_stability_$date.log 2>&1
