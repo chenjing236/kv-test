@@ -11,6 +11,7 @@ class TestCreateInstance:
         client, resp, instance_id = init_instance
         assert instance_id is not None
         assertRespNotNone(resp)
+        time.sleep(150)
 
 
 
