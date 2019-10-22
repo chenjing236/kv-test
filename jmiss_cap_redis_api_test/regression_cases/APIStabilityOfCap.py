@@ -151,7 +151,7 @@ class APIStabilityCase:
 def main():
     region = sys.argv[1]
     conf_file = './config/config_hawkeye.json'
-    instance_file = './data/data_hawkeye_hb.json'.format(region)
+    instance_file = './data/data_hawkeye_{0}.json'.format(region)
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
