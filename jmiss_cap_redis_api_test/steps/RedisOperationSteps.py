@@ -56,6 +56,13 @@ def update_meta_step(redis_cap, space_id, name=None, description=None):
     return
 
 
+# 修改资源自动备份策略
+def modify_backup_policy_step(redis_cap, space_id, backupTime, backupPeriod):
+    request_id = redis_cap.modify_backup_policy(space_id, backupTime, backupPeriod)
+    info_logger.info("Modify backup policy successfully! request_id is [{0}]".format(request_id))
+    return
+
+
 # 删除redis实例
 def delete_step(redis_cap, space_id):
     request_id = redis_cap.delete(space_id)

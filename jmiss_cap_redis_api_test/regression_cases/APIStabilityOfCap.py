@@ -140,11 +140,18 @@ class APIStabilityCase:
         self.index += 1
         print_log("Reduce redis cluster successfully!")
 
+        # 修改资源自动备份策略，防止备份中资源被删除
+        time1 = (datetime.datetime.now() - datetime.timedelta(hours=2)).strftime('%H:00')
+        time2 = (datetime.datetime.now() - datetime.timedelta(hours=1)).strftime('%H:00')
+        backup_time = time1 + "-" + time2 + " +0800"
+        backup_period = "Monday"
+        modify_backup_policy_step(redis_cap, space_id, backup_time, backup_period)
+
 
 def main():
     region = sys.argv[1]
     conf_file = './config/config_hawkeye.json'
-    instance_file = './data/data_hawkeye_{0}.json'.format(region)
+    instance_file = './data/data_hawkeye_hb.json'.format(region)
     fd = open(conf_file, 'r')
     config = json.load(fd)
     fd.close()
