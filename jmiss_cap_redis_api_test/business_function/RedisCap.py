@@ -21,6 +21,7 @@ from jdcloud_sdk.services.redis.apis.DescribeOrderStatusRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyUserQuotaRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyInstanceClassRequest import *
+from jdcloud_sdk.services.redis.apis.ModifyBackupPolicyRequest import *
 
 info_logger = logging.getLogger(__name__)
 
@@ -182,6 +183,15 @@ class RedisCap:
         request = DescribeUserQuotaRequest(params)
         response = self.send_request(request)
         return response.request_id, response.result["quota"]["max"], response.result["quota"]["used"]
+
+    # 修改资源自动备份策略，包括自动备份周期和时间
+    # 参数为space_id，backupTime，backupPeriod
+    # 返回request_id
+    def modify_backup_policy(self, space_id, backupTime, backupPeriod):
+        params = ModifyBackupPolicyParameters(self.region_id, space_id, backupTime, backupPeriod)
+        request = ModifyBackupPolicyRequest(params)
+        response = self.send_request(request)
+        return response.request_id
 
     # ######################################################
     # 运营内部接口
