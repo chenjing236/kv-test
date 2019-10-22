@@ -146,6 +146,7 @@ class APIStabilityCase:
         backup_time = time1 + "-" + time2 + " +0800"
         backup_period = "Monday"
         modify_backup_policy_step(redis_cap, space_id, backup_time, backup_period)
+        time.sleep(5)
 
 
 def main():
