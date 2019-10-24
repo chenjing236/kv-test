@@ -5,7 +5,7 @@
   "user": "jcloudiaas2",
   "pin": "cab6260cdc0734c940ddf719612c6614",
   "auth_token": "3eGAjUPELa6lEsutx7e4LiD346R5tSjFd83bg1x225w=",
-  "tenant_id": "b1adf43bb3054e1aa1f3ae956d4e591c",
+  "tenant_id": "0f89a38da04740edafaa316616ac9735",
   "jcs_agent_port": "8900",
   "jcs_docker_host": "10.226.136.226:8778",
   "cfs_sign_key": "std-jim-cfs",
