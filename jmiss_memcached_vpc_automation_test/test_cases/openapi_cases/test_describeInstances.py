@@ -2,7 +2,7 @@ import pytest
 from jdcloud_sdk.services.memcached.apis.DescribeInstancesRequest import *
 from jdcloud_sdk.services.common.models.Sort import *
 from jdcloud_sdk.services.common.models.Filter import Filter
-from jmiss_memcached_vpc_automation_test.steps.MemcachedClient import *
+from steps.MemcachedClient import *
 
 
 

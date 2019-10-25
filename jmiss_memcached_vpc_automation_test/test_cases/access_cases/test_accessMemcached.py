@@ -1,5 +1,5 @@
 import pytest
-from jmiss_memcached_vpc_automation_test.steps.MemcachedClient import *
+from steps.MemcachedClient import *
 import redis
 
 
