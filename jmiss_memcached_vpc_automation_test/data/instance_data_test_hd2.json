@@ -5,8 +5,8 @@
             , "instanceType": "single"
             , "mcVersion": "1.5.8"
             , "port": 11211
-            , "subnetId": "subnet-mfylgx4vgx"
-            , "vpcId": "vpc-b7pmflge43"
+            , "subnetId": "subnet-wrknlwuwld"
+            , "vpcId": "vpc-cy5ihg6oqg"
             , "mcAuth": true
             , "instanceClass": "MC-S-1C1G"
             , "instanceDescription": "desc"
