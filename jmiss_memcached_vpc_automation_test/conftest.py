@@ -11,7 +11,7 @@ import pytest
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-from jmiss_memcached_vpc_automation_test.steps.MemcachedClient import *
+from steps.MemcachedClient import *
 from logging.handlers import TimedRotatingFileHandler
 
 
