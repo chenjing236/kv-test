@@ -6,7 +6,7 @@ from jdcloud_sdk.services.memcached.client.MemcachedClient import *
 import time
 from utils.SQLClient import *
 import json
-import bmemcached
+# import bmemcached
 import pytest
 import sys
 reload(sys)
@@ -90,7 +90,7 @@ def access_client(create_instance, config):
         address = host+":11211"
         print address
         print instance_id
-        mc = bmemcached.Client((address,), instance_id, '123456Aa', )
+        # mc = bmemcached.Client((address,), instance_id, '123456Aa', )
         # mc = bmemcached.Client(('10.226.135.5:11213',), 'duhaixing@a04-r025-i135-5-6001198.jcloud.com', '12345678', )
 
     return mc
