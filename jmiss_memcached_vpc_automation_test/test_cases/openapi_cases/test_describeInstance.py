@@ -1,6 +1,6 @@
 import pytest
 from jdcloud_sdk.services.memcached.apis.DescribeInstanceRequest import *
-from steps.MemcachedOperation import *
+from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 
 
 class TestDescribeInstance:
