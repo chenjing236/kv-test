@@ -1,6 +1,6 @@
 import pytest
 from jdcloud_sdk.services.memcached.apis.FlushInstanceRequest import *
-from steps.MemcachedClient import *
+from steps.MemcachedOperation import *
 
 class TestFlushInstance:
 

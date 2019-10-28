@@ -11,7 +11,7 @@ import pytest
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-from steps.MemcachedClient import *
+from steps.MemcachedOperation import *
 from logging.handlers import TimedRotatingFileHandler
 
 

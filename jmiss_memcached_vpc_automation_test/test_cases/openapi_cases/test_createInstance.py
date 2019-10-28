@@ -2,7 +2,7 @@ import pytest
 from jdcloud_sdk.services.memcached.apis.CreateInstanceRequest import *
 from jdcloud_sdk.services.memcached.models.InstanceSpec import *
 from jdcloud_sdk.services.charge.models.ChargeSpec import *
-from steps.MemcachedClient import *
+from steps.MemcachedOperation import *
 import time
 
 

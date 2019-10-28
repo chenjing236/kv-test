@@ -1,5 +1,5 @@
 import pytest
-from steps.MemcachedClient import *
+from steps.MemcachedOperation import *
 import redis
 
 

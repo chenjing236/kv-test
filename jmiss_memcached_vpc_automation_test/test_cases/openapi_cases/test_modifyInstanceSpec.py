@@ -1,5 +1,5 @@
 from jdcloud_sdk.services.memcached.apis.ModifyInstanceSpecRequest import *
-from steps.MemcachedClient import *
+from steps.MemcachedOperation import *
 
 
 

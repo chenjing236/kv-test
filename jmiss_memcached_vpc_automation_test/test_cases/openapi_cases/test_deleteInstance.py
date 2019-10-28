@@ -1,6 +1,6 @@
 import pytest
 from jdcloud_sdk.services.memcached.apis.DeleteInstanceRequest import *
-from steps.MemcachedClient import *
+from steps.MemcachedOperation import *
 
 
 
