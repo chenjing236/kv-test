@@ -34,10 +34,9 @@ def getHeader(conf, isErp=False):
     #测试环境header配置
     header = {'x-jdcloud-pin': str(conf["user"])}
     #线上internal header配置
-    if str(conf["header"]) == "erp":
-        header = {'x-jdcloud-erp': 'duhaixing'}
-    if isErp:
+    if str(conf["header"]) == "erp" or isErp:
         header = {'x-jdcloud-pin': str(conf["user"]), 'x-jdcloud-erp': 'duhaixing'}
+
     return header
 
 

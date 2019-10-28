@@ -14,6 +14,7 @@
   "ssh_key": true,
   "uc_url": "http://uc-inner-api-ite.jcloud.com/usercenter/getUser?pin=jcloudiaas2",
   "uc_token": "stag",
+  "classTotalCount": 14,
   "instance": {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",

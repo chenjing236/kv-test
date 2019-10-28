@@ -156,7 +156,7 @@
   ],
   "quota": {
       "max": 20,
-      "name": "缓存 Redis"
+      "name": "缓存Redis"
   },
   "order_result": {
       "total": 1,

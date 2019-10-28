@@ -65,7 +65,7 @@ def reset_backup_policy(conf, instance_id, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = ModifyBackupPolicyParameters(conf["region"], instance_id, "09:10Z-10:10Z", "Monday")
+        params = ModifyBackupPolicyParameters(conf["region"], instance_id, "18:30-18:30 +0800", "Monday")
         request = ModifyBackupPolicyRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
