@@ -71,7 +71,7 @@ def create_instance(config, instance_data, request):
         deleteInstance(client, i_id, config)
         time.sleep(15)
 
-    request.addfinalizer(teardown)
+    # request.addfinalizer(teardown)
 
     return client, resp, name, instance_id
 

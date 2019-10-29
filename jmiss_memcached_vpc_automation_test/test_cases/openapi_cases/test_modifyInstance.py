@@ -5,7 +5,7 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 
 class TestModifyInstance:
 
-
+    @pytest.mark.smoke
     @pytest.mark.openapi
     def test_modifyInstance(self, create_instance, instance_data, config):
         client, resp, instance_name, instance_id = create_instance
@@ -25,6 +25,7 @@ class TestModifyInstance:
             validateResult(response.result["instance"], instance_data["changed_data"])
         else:
             assert False
+
 
     @pytest.mark.openapi
     def test_modifyInstanceWithoutAuth(self, create_instance, instance_data, config, sql_client):

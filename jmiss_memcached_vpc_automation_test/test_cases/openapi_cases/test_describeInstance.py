@@ -5,10 +5,12 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 
 class TestDescribeInstance:
 
+    @pytest.mark.smoke
     @pytest.mark.openapi
     def test_describeInstance(self, create_instance, instance_data, config):
         client, resp, instance_name, instance_id = create_instance
         describeInstance(client, instance_id, instance_data, config)
+
 
     @pytest.mark.openapi
     def test_describeInstanceNotFound(self, create_instance, instance_data, config):

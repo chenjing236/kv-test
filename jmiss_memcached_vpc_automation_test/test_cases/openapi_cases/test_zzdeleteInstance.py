@@ -6,20 +6,18 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 
 class TestDeleteInstance:
 
-
-
-    # @pytest.mark.openapi
-    def auto_deleteInstance(self, create_instance, config):
+    @pytest.mark.smoke
+    @pytest.mark.openapi
+    def test_deleteInstance(self, create_instance, config):
         client, resp, instance_name, instance_id = create_instance
         header = getHeader(config)
         try:
-            parameters = DeleteInstanceParameters('cn-north-1',"xx")
+            parameters = DeleteInstanceParameters(config["region"], instance_id)
             request = DeleteInstanceRequest(parameters, header)
+            time.sleep(150)
             resp = client.send(request)
             if resp.error is not None:
-                print resp.error.code, resp.error.message
-            print "------------deleteInstances--------------"
-            print resp.result
+                assert False
         except Exception, e:
             print e
 
