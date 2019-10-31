@@ -12,7 +12,7 @@
   "mysql_passwd": "U5U6zH4cWInVm1mYXZXK",
   "mysql_db": "jmiss_redis40_openapi",
   "ssh_key": true,
-  "classTotalCount": 12,
+  "classTotalCount": 14,
   "instance": {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",
