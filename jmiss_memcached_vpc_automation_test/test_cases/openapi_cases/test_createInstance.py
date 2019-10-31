@@ -10,6 +10,7 @@ class TestCreateInstance:
 
 
     @pytest.mark.smoke
+    @pytest.mark.regression
     @pytest.mark.openapi
     def test_createInstanceWithPassword(self, create_instance, config):
         client, resp, instance_name, instance_id = create_instance

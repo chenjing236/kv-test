@@ -5,6 +5,7 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 class TestFlushInstance:
 
     @pytest.mark.smoke
+    @pytest.mark.regression
     @pytest.mark.openapi
     def test_flushInstance(self, create_instance, instance_data, config):
         client, resp, instance_name, instance_id = create_instance
@@ -21,6 +22,7 @@ class TestFlushInstance:
 
 
     @pytest.mark.openapi
+    @pytest.mark.regression
     def test_flushInstanceNotFound(self, create_instance, instance_data, config):
         client, resp, instance_name, instance_id = create_instance
         header = getHeader(config)

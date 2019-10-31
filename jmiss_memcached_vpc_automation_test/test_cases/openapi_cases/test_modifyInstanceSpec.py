@@ -5,7 +5,6 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 
 class TestModifyInstanceSpec:
 
-    @pytest.mark.todo
     @pytest.mark.openapi
     def test_modifyInstanceSpec(self, create_instance, instance_data, config, sql_client):
         client, resp, instance_name, instance_id = create_instance

@@ -9,6 +9,7 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 class TestDescribeInstances:
 
     @pytest.mark.smoke
+    @pytest.mark.regression
     @pytest.mark.openapi
     def test_describeInstances(self, create_instance, instance_data, config):
         client, resp, instance_name, instance_id = create_instance
