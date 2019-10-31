@@ -154,10 +154,6 @@
       "bandwidthMbps": 384
   }
   ],
-  "quota": {
-      "max": 20,
-      "name": "缓存Redis"
-  },
   "order_result": {
       "total": 1,
       "success": 1,

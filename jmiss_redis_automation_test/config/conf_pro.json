@@ -13,6 +13,10 @@
   "mysql_db": "jmiss_redis40_openapi",
   "ssh_key": true,
   "classTotalCount": 14,
+  "quota": {
+      "max": 30,
+      "name": "缓存Redis"
+  },
   "instance": {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",

@@ -15,6 +15,10 @@
   "uc_url": "http://uc-inner-api-ite.jcloud.com/usercenter/getUser?pin=jcloudiaas2",
   "uc_token": "stag",
   "classTotalCount": 14,
+  "quota": {
+      "max": 20,
+      "name": "缓存Redis"
+  },
   "instance": {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",
