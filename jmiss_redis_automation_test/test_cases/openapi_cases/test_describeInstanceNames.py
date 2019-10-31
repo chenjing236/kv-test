@@ -5,6 +5,7 @@ from jmiss_redis_automation_test.steps.Valification import *
 class TestDescribeInstanceNames:
 
     @pytest.mark.openapi
+    @pytest.mark.regression
     def test_describeInstanceNames(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_instance_names(config, instance_id, client)

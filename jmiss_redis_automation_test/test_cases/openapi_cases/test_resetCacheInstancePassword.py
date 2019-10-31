@@ -9,6 +9,7 @@ class TestResetCacheInstancePassword:
 
     @pytest.mark.openapi
     @pytest.mark.smoke
+    @pytest.mark.regression
     def test_resetCacheInstancePassword(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = reset_password(config, instance_id, config["change_data"]["instancePassword"], client)

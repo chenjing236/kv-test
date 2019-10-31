@@ -5,6 +5,7 @@ class TestDescribeInstance:
 
     @pytest.mark.openapi
     @pytest.mark.smoke
+    @pytest.mark.regression
     def test_describeCacheInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_instance(config, instance_id, client)
@@ -13,6 +14,7 @@ class TestDescribeInstance:
         existResult(resp.result["cacheInstance"], config["exist_data"])
 
     @pytest.mark.openapi
+    @pytest.mark.regression
     def test_describeCacheInstanceNotFound(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_instance(config, "redis-xxxxxx", client)

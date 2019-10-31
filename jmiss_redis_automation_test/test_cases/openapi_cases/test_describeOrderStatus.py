@@ -6,6 +6,7 @@ from jmiss_redis_automation_test.steps.Valification import *
 class TestDescribeOrderStatus:
 
     @pytest.mark.openapi
+    @pytest.mark.regression
     def test_describeOrderStatus(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_order_status(config, config["request_id"], client)
