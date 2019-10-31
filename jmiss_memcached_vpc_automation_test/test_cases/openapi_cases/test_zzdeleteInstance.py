@@ -8,6 +8,7 @@ class TestDeleteInstance:
 
     @pytest.mark.smoke
     @pytest.mark.openapi
+    @pytest.mark.regression
     def test_deleteInstance(self, create_instance, config):
         client, resp, instance_name, instance_id = create_instance
         header = getHeader(config)
