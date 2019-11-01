@@ -1,0 +1,22 @@
+{
+  "version": "v3.0",
+  "host": "10.160.194.19:8080",
+  "port": "8080",
+  "user": "jcloudiaas2",
+  "pin": "cab6260cdc0734c940ddf719612c6614",
+  "auth_token": "953ClsHhMASQ8IF0zPx420K62O10+Egwj5McXDln5efTBVaC1+ZI0PVJq0l/UBuO",
+  "tenant_id": "c1c116f156294a0e92e15a25a5725917",
+  "jcs_agent_port": "8900",
+  "jcs_docker_host": "http://jcs-api.cn-east-9.jdcloud.com",
+  "cfs_sign_key":"std-jim-cfs",
+  "mysql_host": "sq-ipv6paas-m.mysql.jddb.jcloud.com",
+  "mysql_port": 3358,
+  "mysql_user": "redis_vpc_rw",
+  "mysql_passwd": "0HmzODBjwkwVHgJ9Peym",
+  "mysql_db": "jmiss_redis_vpc_3rdstag_sq",
+  "ssh_key": false,
+  "retry_getting_topology_from_cfs": 200,
+  "retry_getting_info_times": 240,
+  "retry_ping_domain_times": 60,
+  "wait_time": 5
+}
