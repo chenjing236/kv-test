@@ -85,7 +85,7 @@ def created_instance(config, instance_data, request):
 
 
 @pytest.fixture(scope="class")
-def created_cluster(config, instance_data, request, get_create_params):
+def created_cluster(config, instance_data, request):
     redis_cap = RedisCap(config, instance_data)
     # instance = Cluster(config, instance_data, http_client)
     accesser = Accesser(config)
