@@ -33,27 +33,27 @@ def instance_data(request):
     return data
 
 
-@pytest.fixture(scope="function")
-def get_create_params(instance_data):
-    create_params = {
-        "cacheInstanceName": instance_data["cache_instance_name"],
-        "cacheInstanceDescription": instance_data["cache_instance_description"],
-        "password": instance_data["password"],
-        "cacheInstanceClass": instance_data["cache_instance_class"],
-        "vpcId": instance_data["vpc_id"],
-        "subnetId": instance_data["subnet_id"],
-        "azId": {
-            "master": instance_data["master_az_id"],
-            "slave": instance_data["slaver_az_id"]
-        },
-        "redisVersion": "2.8"
-    }
-    charge_params = {
-        "chargeDuration": instance_data["charge_duration"],
-        "chargeMode": instance_data["charge_mode"],
-        "chargeUnit": instance_data["charge_unit"]
-    }
-    return create_params, charge_params
+# @pytest.fixture(scope="function")
+# def get_create_params(instance_data):
+#     create_params = {
+#         "cacheInstanceName": instance_data["cache_instance_name"],
+#         "cacheInstanceDescription": instance_data["cache_instance_description"],
+#         "password": instance_data["password"],
+#         "cacheInstanceClass": instance_data["cache_instance_class"],
+#         "vpcId": instance_data["vpc_id"],
+#         "subnetId": instance_data["subnet_id"],
+#         "azId": {
+#             "master": instance_data["master_az_id"],
+#             "slave": instance_data["slaver_az_id"]
+#         },
+#         "redisVersion": "2.8"
+#     }
+#     charge_params = {
+#         "chargeDuration": instance_data["charge_duration"],
+#         "chargeMode": instance_data["charge_mode"],
+#         "chargeUnit": instance_data["charge_unit"]
+#     }
+#     return create_params, charge_params
 
 
 @pytest.fixture(scope="session")
@@ -85,7 +85,7 @@ def created_instance(config, instance_data, request):
 
 
 @pytest.fixture(scope="class")
-def created_cluster(config, instance_data, request):
+def created_cluster(config, instance_data, request, get_create_params):
     redis_cap = RedisCap(config, instance_data)
     # instance = Cluster(config, instance_data, http_client)
     accesser = Accesser(config)

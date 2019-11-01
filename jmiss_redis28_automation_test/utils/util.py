@@ -91,6 +91,29 @@ def get_md5_pwd(password):
     return pwd_base64
 
 
+# 拼接创建参数
+def get_create_params(instance_data):
+    create_params = {
+        "cacheInstanceName": instance_data["cache_instance_name"],
+        "cacheInstanceDescription": instance_data["cache_instance_description"],
+        "password": instance_data["password"],
+        "cacheInstanceClass": instance_data["cache_instance_class"],
+        "vpcId": instance_data["vpc_id"],
+        "subnetId": instance_data["subnet_id"],
+        "azId": {
+            "master": instance_data["master_az_id"],
+            "slave": instance_data["slaver_az_id"]
+        },
+        "redisVersion": "2.8"
+    }
+    charge_params = {
+        "chargeDuration": instance_data["charge_duration"],
+        "chargeMode": instance_data["charge_mode"],
+        "chargeUnit": instance_data["charge_unit"]
+    }
+    return create_params, charge_params
+
+
 # 生成随机密码
 def set_password(password):
     # 数字与大小写字母

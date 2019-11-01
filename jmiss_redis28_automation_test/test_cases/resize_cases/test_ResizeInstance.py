@@ -95,11 +95,11 @@ class TestResizeInstance:
 
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_resize_ms_to_cluster(self, config, instance_data, http_client, get_create_params):
+    def test_resize_ms_to_cluster(self, config, instance_data, http_client):
         # 创建缓存云实例
         redis_cap = RedisCap(config, instance_data)
         # instance = Cluster(config, instance_data, http_client)
-        create_params, charge_params = get_create_params
+        create_params, charge_params = get_create_params(instance_data)
         create_params["cacheInstanceClass"] = instance_data["cache_instance_class"]
         # 默认创建按配置计费的资源
         space_id, error = create_step(redis_cap, create_params, None)
