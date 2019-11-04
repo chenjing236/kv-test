@@ -11,15 +11,15 @@ class Accesser:
     # docker：表示使用ap docker进行数据访问验证
     # vm：表示通过云主机进行数据访问验证
     def __init__(self, conf_obj):
-        self.sql_client = SQLClient(conf_obj["mysql_host"], conf_obj["mysql_port"], conf_obj["mysql_user"],
-                                    conf_obj["mysql_passwd"], conf_obj["mysql_db"])
-        self.ssh_client = None
-        self.ssh_key = conf_obj["ssh_key"]
-        self.test_key = "key"
-        self.test_value = "value"
-        self.access_type = conf_obj["access_type"]
-        self.vm_host = conf_obj["vm_host"]
-        self.vm_passwd = conf_obj["vm_passwd"]
+        # self.sql_client = SQLClient(conf_obj["mysql_host"], conf_obj["mysql_port"], conf_obj["mysql_user"],
+        #                             conf_obj["mysql_passwd"], conf_obj["mysql_db"])
+        # self.ssh_client = None
+        # self.ssh_key = conf_obj["ssh_key"]
+        # self.test_key = "key"
+        # self.test_value = "value"
+        # self.access_type = conf_obj["access_type"]
+        # self.vm_host = conf_obj["vm_host"]
+        # self.vm_passwd = conf_obj["vm_passwd"]
         self.conf_obj = conf_obj
 
     # 初始化ssh client
