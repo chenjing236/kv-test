@@ -19,6 +19,15 @@ def pytest_addoption(parser):
     parser.addoption("--data", action="store", default="instance_data.json", help="data file path")
 
 
+@pytest.fixture(scope="function", autouse=True)
+def log_return(request):
+    print
+
+    def teardown():
+        print
+    request.addfinalizer(teardown)
+
+
 @pytest.fixture(scope="session", autouse=True)
 def config(request):
     file_path = request.config.getoption("config")

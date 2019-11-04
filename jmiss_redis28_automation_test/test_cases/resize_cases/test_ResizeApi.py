@@ -45,6 +45,7 @@ class TestResizeApi:
         # 扩容缓存云实例
         space_id, redis_cap, password, accesser = created_instance
         instance = Cluster(config, instance_data, http_client)
+        # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
         scaler_client = Scaler(scaler_host)
         scaler_modify_space_step(scaler_client, space_id, 1, status=101)
@@ -61,6 +62,7 @@ class TestResizeApi:
         # 扩容缓存云实例
         space_id, redis_cap, password, accesser = created_instance
         instance = Cluster(config, instance_data, http_client)
+        # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
         scaler_client = Scaler(scaler_host)
         scaler_modify_space_step(scaler_client, space_id, 1, status=200)
@@ -77,6 +79,7 @@ class TestResizeApi:
         # 扩容缓存云实例
         space_id, redis_cap, password, accesser = created_instance
         instance = Cluster(config, instance_data, http_client)
+        # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
         scaler_client = Scaler(scaler_host)
         scaler_modify_space_step(scaler_client, space_id, 1, status=300)
@@ -93,6 +96,7 @@ class TestResizeApi:
         # 扩容缓存云实例
         space_id, redis_cap, password, accesser = created_instance
         instance = Cluster(config, instance_data, http_client)
+        # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
         scaler_client = Scaler(scaler_host)
         scaler_modify_space_step(scaler_client, space_id, 1, status=600)
@@ -111,6 +115,7 @@ class TestResizeApi:
         # 扩容缓存云实例
         space_id, redis_cap, password, accesser = created_instance
         instance = Cluster(config, instance_data, http_client)
+        # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
         scaler_client = Scaler(scaler_host)
         scaler_modify_space_step(scaler_client, space_id, 1, status=800)

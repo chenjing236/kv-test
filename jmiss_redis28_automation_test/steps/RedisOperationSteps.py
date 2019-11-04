@@ -154,7 +154,7 @@ def update_meta_step(redis_cap, space_id, name=None, description=None):
 def reset_password_step(redis_cap, space_id, password):
     request_id, error = redis_cap.reset_password(space_id, password)
     if error is None:
-        info_logger.info("Reset password successfully! request_id [{0}]".format(request_id))
+        info_logger.info("Reset password to \"{0}\" successfully! request_id [{1}]".format(password, request_id))
     else:
         info_logger.info("Reset password failed! request_id [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
     return error
