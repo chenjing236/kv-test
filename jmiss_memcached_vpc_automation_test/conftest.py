@@ -1,13 +1,7 @@
 # coding=utf-8
-from jdcloud_sdk.core.credential import Credential
-from jdcloud_sdk.core.config import Config
-from jdcloud_sdk.core.const import SCHEME_HTTP
-from jdcloud_sdk.services.memcached.client.MemcachedClient import *
-import time
 from utils.SQLClient import *
 import json
 # import bmemcached
-import pytest
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
