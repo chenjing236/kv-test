@@ -84,7 +84,7 @@ def created_instance(config, instance_data, request):
     return space_id, redis_cap, password, accesser
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def created_cluster(config, instance_data, request):
     redis_cap = RedisCap(config, instance_data)
     # instance = Cluster(config, instance_data, http_client)
