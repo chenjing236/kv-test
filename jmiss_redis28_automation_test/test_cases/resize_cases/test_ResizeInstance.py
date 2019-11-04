@@ -141,8 +141,4 @@ class TestResizeInstance:
         # ping_domain_step(accesser, space_id)
         # check_access_domain_step(accesser, space_id, password)
 
-        # 删除实例
-        delete_step(redis_cap, space_id)
-        time.sleep(5)
-
     # todo: resize_cluster_to_ms

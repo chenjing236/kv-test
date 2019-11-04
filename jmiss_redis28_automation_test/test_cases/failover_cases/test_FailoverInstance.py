@@ -26,7 +26,7 @@ class TestFailoverInstance:
         assert masterDocker != masterPort_cfs
         assert slaveDocker == slavePort_cfs
         # 通过domain访问缓存云实例，执行set/get key
-        check_access_domain_step(accesser, space_id, password)
+        # check_access_domain_step(accesser, space_id, password)
 
     @pytest.mark.smoke
     @pytest.mark.regression
@@ -49,7 +49,7 @@ class TestFailoverInstance:
         assert masterDocker == masterPort_cfs
         assert slaveDocker != slavePort_cfs
         # 通过domain访问缓存云实例，执行set/get key
-        check_access_domain_step(accesser, space_id, password)
+        # check_access_domain_step(accesser, space_id, password)
 
     @pytest.mark.smoke
     @pytest.mark.regression
