@@ -140,6 +140,18 @@ def query_backup_list_step(redis_cap, space_id, filter_data=None):
     return total_count, backup_list, error
 
 
+# 根据base_id获取备份文件临时下载链接
+def query_download_url_step(redis_cap, space_id, base_id):
+    request_id, result, error = redis_cap.query_download_url(space_id, base_id)
+    download_urls = []
+    if error is None:
+        download_urls = result["downloadUrls"]
+        info_logger.info("Query redis backup download url successfully! request_id is [{0}]".format(request_id))
+    else:
+        info_logger.info("Query redis backup download url failed! request_id is [{0}], error message [{1}, {2}, {3}]".format(request_id,error.code,error.status, error.message))
+    return download_urls, error
+
+
 # 更新缓存云实例基本信息
 def update_meta_step(redis_cap, space_id, name=None, description=None):
     request_id, error = redis_cap.update_meta(space_id, name, description)

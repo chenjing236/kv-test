@@ -194,7 +194,8 @@ class RedisCap:
     # 参数为space_id，base_id
     # 返回request_id和详情结果
     def query_download_url(self, space_id, base_id):
-        params = DescribeDownloadUrlParameters(self.region_id, space_id, base_id)
+        # base_id必须为str类型，从接口中读出的参数均为unicode类型，需要转换下
+        params = DescribeDownloadUrlParameters(self.region_id, space_id, str(base_id))
         request = DescribeDownloadUrlRequest(params)
         response = self.send_request(request)
         return response.request_id, response.result, response.error
