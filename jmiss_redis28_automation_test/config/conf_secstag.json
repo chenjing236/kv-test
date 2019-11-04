@@ -1,6 +1,6 @@
 {
   "web_host": "jmiss-redis-sq-stag.jdcloud.com",
-  "cap_host": "apigw-pre.openapi.jdcloud.com",
+  "cap_host": "apigw-stag.openapi.jdcloud.com",
   "access_key": "B578F5B09D8DCB25FB2FE9F2615A17F9",
   "secret_key": "5DE097F815816529DF5AF7D1467508CF",
   "erp": "zhangpengyun",
