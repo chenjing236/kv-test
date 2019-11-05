@@ -148,7 +148,7 @@ def query_download_url_step(redis_cap, space_id, base_id):
         download_urls = result["downloadUrls"]
         info_logger.info("Query redis backup download url successfully! request_id is [{0}]".format(request_id))
     else:
-        info_logger.info("Query redis backup download url failed! request_id is [{0}], error message [{1}, {2}, {3}]".format(request_id,error.code,error.status, error.message))
+        info_logger.info("Query redis backup download url failed! request_id is [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
     return download_urls, error
 
 
@@ -190,15 +190,30 @@ def query_config_step(redis_cap, space_id):
         config_list = result["instanceConfig"]
         info_logger.info("Query config list successfully! request_id [{1}]".format(space_id, request_id))
     else:
-        info_logger.info("Query config list failed! request_id [{1}], error message [{2}, {3}, {4}]".format(space_id, request_id, error.code, error.status, error.message))
+        info_logger.info("Query config list failed! request_id [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
     return config_list, error
 
 
 # 修改资源自动备份策略
 def modify_backup_policy_step(redis_cap, space_id, backupTime, backupPeriod):
-    request_id = redis_cap.modify_backup_policy(space_id, backupTime, backupPeriod)
-    info_logger.info("Modify backup policy successfully! request_id is [{0}]".format(request_id))
-    return
+    request_id, error = redis_cap.modify_backup_policy(space_id, backupTime, backupPeriod)
+    if error is None:
+        info_logger.info("Modify backup policy successfully! request_id is [{0}]".format(request_id))
+    else:
+        info_logger.info("Modify backup policy failed! request_id is [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
+    return error
+
+
+# 查询备份策略
+def query_backup_policy_step(redis_cap, space_id):
+    request_id, result, error = redis_cap.query_backup_policy(space_id)
+    backup_policy = {}
+    if error is None:
+        backup_policy = result
+        info_logger.info("Query backup policy successfully! request_id [{1}]".format(space_id, request_id))
+    else:
+        info_logger.info("Query backup policy failed! request_id [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
+    return backup_policy, error
 
 
 # 删除redis实例
@@ -237,16 +252,28 @@ def restore_step(redis_cap, space_id, base_id):
 
 # 查询flavor列表
 def query_flavor_step(redis_cap):
-    request_id, flavor_list = redis_cap.query_flavor()
-    info_logger.info("Query instance class successfully! request_id is [{0}]".format(request_id))
-    return flavor_list
+    request_id, result, error = redis_cap.query_flavor()
+    flavor_list = []
+    if error is None:
+        flavor_list = result["instanceClasses"]
+        info_logger.info("Query instance class successfully! request_id is [{0}]".format(request_id))
+    else:
+        info_logger.info("Query instance class failed! request_id is [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
+    return flavor_list, error
 
 
 # 查询当前配额使用情况
 def query_quota_step(redis_cap):
-    request_id, quota, used = redis_cap.query_quota()
-    info_logger.info("Query user quota successfully! request_id is [{0}], quota = {1}, used = {2}".format(request_id, quota, used))
-    return quota, used
+    request_id, result, error = redis_cap.query_quota()
+    quota = 0
+    used = 0
+    if error is None:
+        quota = result["quota"]["max"]
+        used = result["quota"]["used"]
+        info_logger.info("Query user quota successfully! request_id is [{0}], quota = {1}, used = {2}".format(request_id, quota, used))
+    else:
+        info_logger.info("Query user quota failed! request_id is [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
+    return quota, used, error
 
 
 # #####################

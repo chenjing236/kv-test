@@ -267,12 +267,12 @@ class RedisCap:
         params = DescribeUserQuotaParameters(self.region_id)
         request = DescribeUserQuotaRequest(params)
         response = self.send_request(request)
-        return response.request_id, response.result["quota"]["max"], response.result["quota"]["used"]
+        return response.request_id, response.result, response.error
 
     # 修改资源备份策略
     # 参数为space_id，要修改的backup_time, backup_period
     # 返回request_id
-    def update_badkup_policy(self, space_id, backup_time, backup_period):
+    def modify_backup_policy(self, space_id, backup_time, backup_period):
         params = ModifyBackupPolicyParameters(self.region_id, space_id, backup_time, backup_period)
         request = ModifyBackupPolicyRequest(params)
         response = self.send_request(request)
