@@ -6,6 +6,7 @@ from jmiss_memcached_vpc_automation_test.steps.MemcachedOperation import *
 class TestModifyInstanceSpec:
 
     @pytest.mark.openapi
+    @pytest.mark.regression
     def test_modifyInstanceSpec(self, create_instance, instance_data, config, sql_client):
         client, resp, instance_name, instance_id = create_instance
         sql_str = "select class from mc_instance where instance_id='{0}'".format(instance_id)
