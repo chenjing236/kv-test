@@ -1,0 +1,18 @@
+{
+  "gateway":"apigw-internal.cn-north-1.jcloudcs.com",
+  "access_key":"7955849C631AF750CED115C9B1DBFFD9",
+  "secret_key":"933144010C984ABCB4CEE1C440D37977",
+  "region":"cn-north-1",
+  "az":"cn-north-1a",
+  "vpc":"vpc-z5b6pym5rf",
+  "subnet":"subnet-gcy2340ib3",
+  "version": "1.5.8",
+  "user": "jcloudiaas2",
+  "header": "erp",
+  "mysql_host": "m2916m.mysql.jddb.jcloud.com",
+  "mysql_port": 3358,
+  "mysql_user": "memcached_rw",
+  "mysql_passwd": "9zWrFvPyT7DZs6ihxJMH",
+  "mysql_db": "jmiss_memcached_openapi_prod_hb",
+  "ssh_key": true
+}
