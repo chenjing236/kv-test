@@ -1,0 +1,23 @@
+{
+  "web_host": "jmiss-redis-sq-stag.jdcloud.com",
+  "cap_host": "apigw-stag.openapi.jdcloud.com",
+  "access_key": "B578F5B09D8DCB25FB2FE9F2615A17F9",
+  "secret_key": "5DE097F815816529DF5AF7D1467508CF",
+  "erp": "zhangpengyun",
+  "pin": "jcloudiaas2",
+  "md5_pin": "cab6260cdc0734c940ddf719612c6614",
+  "auth_token": "yo9jzKXKFjvl9RFdiV4NNAZhKaOrnkhGQkxPTIPUCPVgZJ2zHQVP5yrLhnC+D4aQ",
+  "tenant_id": "93ffb16f0a4b486d834d461b8093788e",
+  "jcs_agent_port": "8900",
+  "jcs_docker_host": "api.jcs.cn-stag-2.jdcloud.com",
+  "cfs_sign_key": "std-jim-cfs",
+  "access_type": "vm",
+  "vm_host": "10.226.233.118",
+  "vm_passwd": "Zhangpengyun1",
+  "ssh_key": false,
+  "retry_failover_wait_times": 200,
+  "retry_getting_info_times": 240,
+  "retry_ping_domain_times": 60,
+  "retry_query_order_status_times": 180,
+  "wait_time": 5
+}

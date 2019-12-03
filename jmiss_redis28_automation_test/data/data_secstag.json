@@ -1,0 +1,20 @@
+{
+  "cache_instance_name": "jmiss28_auto_test_vpc",
+  "cache_instance_description": "jmiss",
+  "password": "1qaz2WSX",
+  "cache_instance_class": "redis.m1.small.basic",
+  "cache_instance_class_reduce": "redis.m1.micro.basic",
+  "cache_instance_class_resize": "redis.m1.medium.basic",
+  "cache_cluster_class": "redis.c1.medium.basic",
+  "cache_cluster_class_reduce": "redis.c1.small.basic",
+  "cache_cluster_class_resize": "redis.c1.large.basic",
+  "vpc_id": "vpc-r8dpjoaiky",
+  "subnet_id": "subnet-rp0n1uuna6",
+  "master_az_id": "cn-north-1a",
+  "slaver_az_id": "cn-north-1b",
+  "region_id": "cn-north-1",
+  "charge_duration": 1,
+  "charge_mode": "prepaid_by_duration",
+  "charge_unit": "month",
+  "deleted_space": "redis-uefs00cfo3"
+}
