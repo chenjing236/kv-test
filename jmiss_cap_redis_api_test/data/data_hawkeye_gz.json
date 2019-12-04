@@ -8,7 +8,7 @@
   "vpc_id": "vpc-ibwt3sqbaj",
   "subnet_id": "subnet-t5uebqtorv",
   "master_az_id": "cn-south-1a",
-  "slaver_az_id": "cn-south-1a",
+  "slaver_az_id": "cn-south-1b",
   "region_id": "cn-south-1",
   "charge_duration": 1,
   "charge_mode": "prepaid_by_duration",
