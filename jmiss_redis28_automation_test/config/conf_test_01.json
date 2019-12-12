@@ -3,6 +3,7 @@
   "cap_host": "10.226.148.63:8000",
   "access_key": "B578F5B09D8DCB25FB2FE9F2615A17F9",
   "secret_key": "5DE097F815816529DF5AF7D1467508CF",
+  "ark_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlWZXJzaW9uIjoicnNhdjMiLCJwcm9kdWN0IjoiIiwic2VydmljZU5hbWUiOiJqbWlzcy1yZWRpcy1zYWdlbnQtamNsb3VkLWlhYXMiLCJncm91cCI6IiIsImlwIjoiMTAuMjI2LjEzMi4xNzUiLCJpbnN0YW5jZU5hbWUiOiIwLmptaXNzLXJlZGlzLXNhZ2VudC1qY2xvdWQtaWFhcyIsImV4cCI6MTYwNzU3MDk2NiwiaWF0IjoxNTc2MDM1MDA0fQ.YKaru_SV4LB-SMAicUXwlmKnvtozWjJ-whGbAuwTg9a8XQlbHdXZmPvyK7BaL9F7QrMN4ZnE921GCk2nFj5_qlTt2eWnizTBR78MtMZzMOa-8PvN3b50k2dXqenJMAZUSZcjZwPqn9fquBpo0BofgR0pkDYaj1I4gddCUbJFvas",
   "erp": "zhangpengyun",
   "pin": "jcloudiaas2",
   "md5_pin": "cab6260cdc0734c940ddf719612c6614",
