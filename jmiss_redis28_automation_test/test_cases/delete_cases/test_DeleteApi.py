@@ -30,7 +30,7 @@ class TestDeleteApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=200)
         # 删除资源
         error = delete_step(redis_cap, space_id)
@@ -46,7 +46,7 @@ class TestDeleteApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=300)
         # 删除资源
         error = delete_step(redis_cap, space_id)
@@ -62,7 +62,7 @@ class TestDeleteApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=600)
         # 删除资源
         error = delete_step(redis_cap, space_id)
