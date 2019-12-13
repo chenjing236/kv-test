@@ -12,7 +12,7 @@ from business_function.RedisCap import *
 def query_order_status_step(redis_cap, order_request_id):
     status = 'in_process'
     count = 1
-    while status == 'in_process' and count < redis_cap.config["retry_query_order_status_times"]:
+    while status == 'in_process' and count < redis_cap.config["retry_times"]:
         request_id, status = redis_cap.query_order_status(order_request_id)
         info_logger.info("Retry {0} get order status of instance. The status is [{1}]".format(count, status))
         count += 1
