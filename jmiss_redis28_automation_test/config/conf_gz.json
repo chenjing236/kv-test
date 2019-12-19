@@ -3,7 +3,7 @@
   "cap_host": "apigw-internal.cn-north-1.jcloudcs.com",
   "access_key": "7955849C631AF750CED115C9B1DBFFD9",
   "secret_key": "933144010C984ABCB4CEE1C440D37977",
-  "ark_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlWZXJzaW9uIjoicnNhdjIiLCJwcm9kdWN0IjoiIiwic2VydmljZU5hbWUiOiJybS1yZWRpcy1wYWFzIiwiZ3JvdXAiOiIiLCJpcCI6IiIsImluc3RhbmNlTmFtZSI6IiIsImV4cCI6MTU3NjM5ODY1NSwiaWF0IjoxNTc2MTM5NDU1fQ.HKSIc0uEwscFF2bJ9KTtnHBcsS-g1Zjhep7ntHfk2PTOopY7zmeRBdVRDskG7YO6l-ILyufq76brkkwbOiLpO09VX2hAyWCyQ_q05TL4iUiGtL5LSijocpm2nfYsDeVhWmyD3P78Iy9GL690njyD7A3t0IeCtDP-fdEiDkKxukM",
+  "ark_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlWZXJzaW9uIjoicnNhdjIiLCJwcm9kdWN0IjoiIiwic2VydmljZU5hbWUiOiJwdXNoZXItcmVkaXMtcGFhcyIsImdyb3VwIjoiIiwiaXAiOiIiLCJpbnN0YW5jZU5hbWUiOiIiLCJleHAiOjE1NzY3NTI5MzUsImlhdCI6MTU3NjczODUzNX0.JnaVsZOoJmf-vTV7rKpmVGsFDgMK9UjQHt6piJAtpHJS_dqsaGqLAH5pBwFqCsipwPsCb5qe5swKuODyuXlGpBtqk4pu9ImWoLEiJnBrwaL4ne9dCi44DolgAdxmi4jxcWyxvgJGDbBaD0A0uYI0XDdJjC1t4WwpxnijRDf-6dI",
   "erp": "zhangpengyun",
   "pin": "jcloudiaas2",
   "md5_pin": "cab6260cdc0734c940ddf719612c6614",
