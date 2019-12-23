@@ -15,10 +15,12 @@ class CFS:
     def __init__(self, host, conf_obj):
         self.cfs_host = host
         self.sign_key = conf_obj["cfs_sign_key"]
+        self.ark_token = conf_obj["ark_token"]
 
     def http_request(self, method, uri, data=None, headers=None):
         if headers is None:
             headers = {}
+        headers["authtoken"] = self.ark_token
         hc = httplib.HTTPConnection(self.cfs_host)
         hc.request(method, uri, data, headers)
         res = hc.getresponse()

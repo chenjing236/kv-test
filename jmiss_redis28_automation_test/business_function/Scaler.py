@@ -8,12 +8,14 @@ info_logger = logging.getLogger(__name__)
 
 
 class Scaler:
-    def __init__(self, host):
+    def __init__(self, host, conf_obj):
         self.scaler_host = host
+        self.ark_token = conf_obj["ark_token"]
 
     def http_request(self, method, uri, data=None):
+        headers = {"Content-Type": "application/json", "authtoken": self.ark_token}
         hc = httplib.HTTPConnection(self.scaler_host)
-        hc.request(method, uri, data, {"Content-Type": "application/json"})
+        hc.request(method, uri, data, headers)
         res = hc.getresponse()
         status = res.status
         data = res.read()

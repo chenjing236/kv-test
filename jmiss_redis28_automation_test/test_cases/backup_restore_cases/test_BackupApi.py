@@ -48,7 +48,7 @@ class TestBackupApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=101)
         # 执行备份操作
         file_name = "backup"
@@ -65,7 +65,7 @@ class TestBackupApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=200)
         # 执行备份操作
         file_name = "backup"
@@ -82,7 +82,7 @@ class TestBackupApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=300)
         # 执行备份操作
         file_name = "backup"
@@ -99,7 +99,7 @@ class TestBackupApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=600)
         # 执行备份操作
         file_name = "backup"
@@ -116,7 +116,7 @@ class TestBackupApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=800)
         # 执行备份操作
         file_name = "backup"

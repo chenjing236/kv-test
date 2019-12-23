@@ -47,7 +47,7 @@ class TestResizeApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=101)
         cache_instance_class_resize = instance_data["cache_instance_class_resize"]
         error = resize_step(redis_cap, space_id, cache_instance_class_resize)
@@ -64,7 +64,7 @@ class TestResizeApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=200)
         cache_instance_class_resize = instance_data["cache_instance_class_resize"]
         error = resize_step(redis_cap, space_id, cache_instance_class_resize)
@@ -81,7 +81,7 @@ class TestResizeApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=300)
         cache_instance_class_resize = instance_data["cache_instance_class_resize"]
         error = resize_step(redis_cap, space_id, cache_instance_class_resize)
@@ -98,7 +98,7 @@ class TestResizeApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=600)
         cache_instance_class_resize = instance_data["cache_instance_class_resize"]
         error = resize_step(redis_cap, space_id, cache_instance_class_resize)
@@ -117,7 +117,7 @@ class TestResizeApi:
         instance = Cluster(config, instance_data, http_client)
         # 修改资源状态
         scaler_host = get_master_server_step(instance, "scaler")
-        scaler_client = Scaler(scaler_host)
+        scaler_client = Scaler(scaler_host, config)
         scaler_modify_space_step(scaler_client, space_id, 1, status=800)
         cache_instance_class_resize = instance_data["cache_instance_class_resize"]
         error = resize_step(redis_cap, space_id, cache_instance_class_resize)
