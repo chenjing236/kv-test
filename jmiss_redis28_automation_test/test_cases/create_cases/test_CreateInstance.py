@@ -100,7 +100,7 @@ class TestCreateInstance:
                 assert charge["chargeMode"] == "prepaid_by_duration"
                 assert charge["chargeStatus"] == "normal"
                 break
-            time.sleep(5)
+            time.sleep(config["wait_time"])
 
         # 删除实例
         delete_step(redis_cap, space_id, 1)
