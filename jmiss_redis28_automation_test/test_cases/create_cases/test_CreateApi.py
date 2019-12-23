@@ -242,8 +242,8 @@ class TestCreateApi:
         create_params, charge_params = get_create_params(instance_data)
         create_params["azId"]["master"] = "error"
         space_id, error = create_step(redis_cap, create_params, None)
-        assert error.code == 404
-        assert error.status == "NOT_FOUND"
+        assert error.code == 400
+        assert error.status == "INVALID_ARGUMENT"
         info_logger.info("Test create master-slave instance with error az_id successfully!")
 
     @pytest.mark.regression
