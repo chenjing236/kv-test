@@ -89,13 +89,18 @@ class TestCreateInstance:
         create_params, charge_params = get_create_params(instance_data)
         space_id, error = create_step(redis_cap, create_params, charge_params)
         # 查看redis详情，验证缓存云实例状态，status=running, 验证基本信息正确
-        cluster_detail, error = query_detail_step(redis_cap, space_id)
-        assert cluster_detail["cacheInstanceStatus"] == "running"
-        # assert cluster_detail["auth"] is True
-        # assert cluster_detail["cacheInstanceType"] == 'master-slave'
-        charge = cluster_detail["charge"]
-        assert charge["chargeMode"] == "prepaid_by_duration"
-        assert charge["chargeStatus"] == "normal"
+        # 重试三次，因为可能会查不到计费信息
+        for i in range(3):
+            cluster_detail, error = query_detail_step(redis_cap, space_id)
+            assert cluster_detail["cacheInstanceStatus"] == "running"
+            # assert cluster_detail["auth"] is True
+            # assert cluster_detail["cacheInstanceType"] == 'master-slave'
+            if "charge" in cluster_detail:
+                charge = cluster_detail["charge"]
+                assert charge["chargeMode"] == "prepaid_by_duration"
+                assert charge["chargeStatus"] == "normal"
+                break
+            time.sleep(5)
 
         # 删除实例
         delete_step(redis_cap, space_id, 1)
