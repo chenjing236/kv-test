@@ -2,6 +2,7 @@
 import logging
 import base64
 import requests
+import time
 from jdcloud_sdk.core.logger import *
 # import json
 import datetime
@@ -46,7 +47,8 @@ class RedisCap:
                 response = self.client.send(request)
                 break
             except requests.ConnectionError:
-                print "[Request Timeout] Retry [{0}] times failed, timeout 60 seconds".format(retry_times)
+                print "[Request connection err] Retry [{0}] times failed".format(retry_times)
+                time.sleep(self.config["wait_time"])
         # print eee
         end_time = datetime.datetime.now()
         print "[TIME] Request exec time is {0} milliseconds".format((end_time - start_time).microseconds/1000)
