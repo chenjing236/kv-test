@@ -31,6 +31,8 @@ def query_order_status_step(redis_cap, order_request_id):
 def query_space_status_step(redis_cap, space_id):
     status = ""
     count = 1
+    # 开始查询之前增加等待时间，防止scaler还未改变资源状态
+    time.sleep(redis_cap.config["wait_time"])
     while status != 'running' and count < redis_cap.config["retry_query_order_status_times"]:
         cluster_detail, error = query_detail_step(redis_cap, space_id)
         assert error is None
