@@ -177,8 +177,8 @@ def modify_config_step(redis_cap, space_id, redis_config):
     request_id, error = redis_cap.modify_config(space_id, redis_config)
     if error is None:
         info_logger.info("Modify config request submitted! request_id [{0}]".format(request_id))
-        query_order_status_step(redis_cap, request_id)
-        info_logger.info("Modify config successfully! The space_id is [{0}]".format(space_id))
+        time.sleep(10)
+        # info_logger.info("Modify config successfully! The space_id is [{0}]".format(space_id))
     else:
         info_logger.info("Modify config failed! request_id [{0}], error message [{1}, {2}, {3}]".format(request_id, error.code, error.status, error.message))
     return error
