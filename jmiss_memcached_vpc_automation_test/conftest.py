@@ -40,7 +40,7 @@ def create_instance(config, instance_data, request):
         charge = ChargeSpec('postpaid_by_duration', 'year', 1)
         instance = InstanceSpec('MC-S-1C1G', 'single', config["az"],
                                 config["vpc"], config["subnet"], name,
-                                config["version"], True, "desc", "123456Aa", charge)
+                                config["version"], True, "desc", "123456Aa", charge=charge)
         parameters = CreateInstanceParameters(config["region"], instance)
         req = CreateInstanceRequest(parameters, header)
         resp = client.send(req)
