@@ -26,7 +26,7 @@
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "azId": {
-          "master": "cn-north-1a",
+          "master": "cn-north-1b",
           "slave": "cn-north-1b"
       },
       "vpcId": "vpc-cy5ihg6oqg",
