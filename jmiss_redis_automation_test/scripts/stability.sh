@@ -10,7 +10,7 @@ fi
 cd /export/Data/jmiss_auto_scripts/memcached_stability_scripts/kv-test/jmiss_redis_automation_test
 
 date=`date '+%Y%m%d-%H%M%S'`
-pytest --config ./config/conf_pro.json -m smoke > /export/Logs/redis40_stability_test/redis40_stability_$date.log 2>&1
+pytest -x --config ./config/conf_pro.json -m smoke > /export/Logs/redis40_stability_test/redis40_stability_$date.log 2>&1
 
 cases=(
 'createInstance'
