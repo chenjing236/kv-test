@@ -38,9 +38,10 @@ def create_instance(config, instance_data, request):
     name = "auto_test_" + str(int(time.time()))
     try:
         charge = ChargeSpec('postpaid_by_duration', 'year', 1)
-        instance = InstanceSpec('MC-S-1C1G', 'single', config["az"],
-                                config["vpc"], config["subnet"], name,
-                                config["version"], True, "desc", "123456Aa", charge=charge)
+        instance = InstanceSpec(instanceClass='MC-S-1C1G', instanceType='single', azId=config["az"],
+                                vpcId=config["vpc"], subnetId=config["subnet"], instanceName=name,
+                                mcVersion=config["version"], mcAuth=True, instanceDescription="desc", mcPswd="123456Aa",
+                                mcNumber=1, charge=charge, ipVersion=None)
         parameters = CreateInstanceParameters(config["region"], instance)
         req = CreateInstanceRequest(parameters, header)
         resp = client.send(req)
