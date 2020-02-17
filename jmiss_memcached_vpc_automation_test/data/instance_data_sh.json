@@ -10,6 +10,7 @@
             , "mcAuth": true
             , "instanceClass": "MC-S-1C1G"
             , "instanceDescription": "desc"
+            , "mcNumber": 1
         },
   "exist_data":{
             "createTime": ""
