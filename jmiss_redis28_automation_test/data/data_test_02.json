@@ -10,7 +10,7 @@
   "cache_cluster_class_resize": "redis.c1.large.basic",
   "vpc_id": "vpc-kae197kc2x",
   "subnet_id": "subnet-ijz681ob81",
-  "master_az_id": "cn-north-1a",
+  "master_az_id": "cn-north-1b",
   "slaver_az_id": "cn-north-1b",
   "region_id": "cn-north-1",
   "charge_duration": 1,
