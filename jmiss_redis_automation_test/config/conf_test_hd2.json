@@ -29,8 +29,8 @@
           "master": "cn-north-1b",
           "slave": "cn-north-1b"
       },
-      "vpcId": "vpc-cy5ihg6oqg",
-      "subnetId": "subnet-wrknlwuwld",
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81",
       "port": 6379,
       "auth": true
   }
