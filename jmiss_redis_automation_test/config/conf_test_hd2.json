@@ -33,5 +33,14 @@
       "subnetId": "subnet-ijz681ob81",
       "port": 6379,
       "auth": true
+  },
+  "maintain": {
+      "admin": {
+          "host": "100.77.154.88",
+          "port": 18811,
+          "region": "cn-north-1",
+          "instanceid": "redis-kxrqurck0xlb",
+          "requestid": "117"
+      }
   }
 }

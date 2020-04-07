@@ -4,6 +4,7 @@
 import httplib
 import json
 import uuid
+import requests
 
 
 def uuid_for_request_id():
@@ -72,6 +73,26 @@ class HttpClient(object):
         x_subject_token = res.getheader('x-subject-token')
         hc.close()
         return status, x_subject_token
+
+    @staticmethod
+    def admin_request(config, path):
+        host = str(config["maintain"]["admin"]["host"])
+        port = str(config["maintain"]["admin"]["port"])
+        region = str(config["maintain"]["admin"]["region"])
+        instanceid = str(config["maintain"]["admin"]["instanceid"])
+        requestid = str(config["maintain"]["admin"]["requestid"])
+
+        url = 'http://' + host + ':' + str(port) + path
+        headers = {"accept": "application/json",
+                   "JVESSEL-Params":
+                       '{\"region\":\"%s\",\"instanceId\":\"%s\",\"requestId\":\"%s\"}' %
+                       (region, instanceid, requestid)}
+
+        r = requests.get(url, headers=headers, verify=True)
+        data = r.text
+        print data
+
+        return r
 
     # JMISS接口
 

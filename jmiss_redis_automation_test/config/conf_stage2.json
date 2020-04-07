@@ -33,5 +33,14 @@
       "subnetId": "subnet-14z4m6e2bu",
       "port": 6379,
       "auth": true
+  },
+   "maintain": {
+       "admin": {
+           "host": "jvessel-matrix-stag2.jdcloud.com",
+           "port": 18811,
+           "region": "cn-north-1",
+           "instanceid": "redis-kxrqurck0xlb",
+           "requestid": "117"
+      }
   }
 }
