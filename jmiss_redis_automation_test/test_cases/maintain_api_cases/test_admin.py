@@ -41,7 +41,6 @@ class TestAdminApi:
         check_topo_response = r.json()
         assert check_topo_response[u'code'] is 0
         assert len(check_topo_response[u'data']['admin']['shards']) != 0
-        assert len(check_topo_response[u'data']['admin']['slots']) != 0
 
     @pytest.mark.admin
     def test_check_shard_role(self, config):
