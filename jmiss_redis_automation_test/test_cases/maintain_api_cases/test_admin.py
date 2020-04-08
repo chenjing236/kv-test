@@ -12,7 +12,7 @@ class TestAdminApi:
         r = HttpClient.admin_request(config, '/getProxyTopo')
         proxy_topo_response = r.json()
         assert proxy_topo_response[u'code'] is 0
-        assert proxy_topo_response[u'data']['is_same'] is True
+        assert proxy_topo_response[u'message'] == "All proxy topology are same"
 
     @pytest.mark.admin
     def test_get_all_status(self, config):
@@ -40,8 +40,8 @@ class TestAdminApi:
         r = HttpClient.admin_request(config, '/checkTopo')
         check_topo_response = r.json()
         assert check_topo_response[u'code'] is 0
-        if check_topo_response[u'data']['is_same'] == "True":
-            assert check_topo_response[u'data']['detail'] == ""
+        assert len(check_topo_response[u'data']['admin']['shards']) != 0
+        assert len(check_topo_response[u'data']['admin']['proxy']) != 0
 
     @pytest.mark.admin
     def test_check_shard_role(self, config):
@@ -51,9 +51,7 @@ class TestAdminApi:
         r = HttpClient.admin_request(config, '/checkShardRole')
         shard_role_response = r.json()
         assert shard_role_response[u'code'] is 0
-        if shard_role_response[u'data']['is_same'] == "True":
-            assert shard_role_response[u'data']['detail'] == ""
-            assert len(shard_role_response[u'data']['extra_info']) == 0
+        assert len(shard_role_response[u'data']) == 0
 
     @pytest.mark.admin
     def test_check_configs(self, config):
@@ -63,8 +61,7 @@ class TestAdminApi:
         r = HttpClient.admin_request(config, '/checkConfigs')
         check_config_response = r.json()
         assert check_config_response[u'code'] is 0
-        assert check_config_response[u'data']['is_same'] is True
-        assert check_config_response[u'data']['extra_info']['admin'] != ""
+        assert check_config_response[u'data']['admin'] != ""
 
     @pytest.mark.admin
     def test_get_slot(self, config):
