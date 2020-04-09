@@ -31,5 +31,14 @@
       "subnetId": "subnet-gcy2340ib3",
       "port": 6379,
       "auth": true
+  },
+   "maintain": {
+       "admin": {
+           "host": "jvessel-api.jdcloud.com",
+           "port": 18811,
+           "region": "cn-north-1",
+           "instanceid": "redis-kxrqurck0xlb",
+           "requestid": "117"
+      }
   }
 }
