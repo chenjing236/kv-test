@@ -55,3 +55,16 @@ def get_slave_aof_enabled(instanceId,config):
     data = {"type":"config","commands":"info persistence"}
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/redis",data)
     return re.findall("aof_enabled:(.*?)\r\n",resp["result"]["slaves"])
+
+
+def check_redis_params(instanceId,config,excepted,getConfigFunc):
+    results=getConfigFunc(instanceId, config)
+    for result in results:
+        if excepted!=result:
+            return False
+
+# get_slots\get_master_slaves\get_master_slaves需要调用
+# excepted需要是一个list
+def check_redis_slots_params(instanceId,config,excepted,getConfigFunc):
+    results = getConfigFunc(instanceId, config)
+    return sorted(results["result"]["masters"]==sorted(excepted))

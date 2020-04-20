@@ -3,7 +3,6 @@
 
 from jmiss_redis_automation_test.utils.HttpClient import *
 
-
 def get_side(instanceId,config):
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"GET","/getSpace")
     return resp["data"]["side"]
@@ -69,3 +68,4 @@ def get_backup_list(instanceId,config):
 
 def check_admin_params(instanceId,config,excepted,getConfigFunc):
     return excepted==getConfigFunc(instanceId,config)
+
