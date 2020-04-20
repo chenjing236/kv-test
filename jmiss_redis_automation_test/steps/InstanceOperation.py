@@ -21,7 +21,6 @@ import logging
 from jdcloud_sdk.core.logger import *
 info_logger = logging.getLogger(__name__)
 
-
 def setClient(conf):
     access_key = str(conf["access_key"])
     secret_key = str(conf["secret_key"])
@@ -46,7 +45,6 @@ def client_send(client, req):
     end_time = time.time()
     print "[TIME] Request exec time is {0} seconds".format((end_time - start_time))
     return resp
-
 
 def create_instance(conf, cacheInstanceClass=None, chargeMode='postpaid_by_duration', redisVersion='4.0'):
     client = setClient(conf)

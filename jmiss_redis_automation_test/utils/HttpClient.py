@@ -214,3 +214,27 @@ class HttpClient(object):
     # stop nova docker
     def stop_nova_docker(self, container_id, nova_token, data):
         return self.http_request_for_nova_docker("POST", "{0}/action".format(container_id), nova_token, to_json_string(data))
+
+
+    # 京舰UnderlayEntry
+
+    @staticmethod
+    def underlayEntry(config,instance_id,method,path,body=None):
+        hc = httplib.HTTPConnection(config["jvessel"]["underlayentry_url"])
+
+        jvesselHeaders = {"requestId": uuid_for_request_id() ,
+                   "region": config["region"],
+                   "instanceId":instance_id,
+                   }
+        jvesselHeadersByte=to_json_string(jvesselHeaders)
+        headers={"jvesselHeaders":jvesselHeadersByte}
+
+        hc.request(method,path,to_json_string(body),headers=headers)
+        resp = hc.getresponse()
+        status = resp.status
+        resp_data = json.loads(resp.read())
+        hc.close()
+        return status, headers, resp_data
+
+
+
