@@ -152,7 +152,7 @@
       "diskGB": 320,
       "maxConnection": 80000,
       "bandwidthMbps": 384
-  }
+  }:
   ],
   "order_result": {
       "total": 1,
@@ -160,5 +160,4 @@
       "fail": 0,
       "inProcess": 0
   }
-
 }

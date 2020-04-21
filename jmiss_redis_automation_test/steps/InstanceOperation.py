@@ -46,7 +46,9 @@ def client_send(client, req):
     print "[TIME] Request exec time is {0} seconds".format((end_time - start_time))
     return resp
 
-def create_instance(conf, cacheInstanceClass=None, chargeMode='postpaid_by_duration', redisVersion='4.0'):
+
+def create_instance(conf, cacheInstanceClass=None, chargeMode='postpaid_by_duration', redisVersion='4.0',
+                    ipv6On=None, shardNumber=None):
     client = setClient(conf)
     header = getHeader(conf)
     instance_id = None
@@ -60,7 +62,9 @@ def create_instance(conf, cacheInstanceClass=None, chargeMode='postpaid_by_durat
                                           , cacheInstanceClass
                                           , azId, conf["instance_password"]
                                           , conf["instance"]["cacheInstanceDescription"]
-                                          , redisVersion)
+                                          , redisVersion
+                                          , ipv6On
+                                          , shardNumber)
         params = CreateCacheInstanceParameters(str(conf["region"]), cacheInstance)
         charge = ChargeSpec(chargeMode, 'month', 1)
         params.setCharge(charge)

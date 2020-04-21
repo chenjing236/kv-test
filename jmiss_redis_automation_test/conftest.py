@@ -14,6 +14,7 @@ from logging.handlers import TimedRotatingFileHandler
 def pytest_addoption(parser):
     parser.addoption("--config", action="store", default="./config/conf_test_hd2.json", help="test config file path")
     parser.addoption("--loglevel", action="store", default=3, help="FATAL:0 ERROR:1")
+    parser.addoption("--data", action="store", default="./data/instance_data.json", help="data file path")
 
 
 #FATAL = 0 ERROR = 1 WARN = 2 INFO = 3
@@ -35,6 +36,12 @@ def config(request, loglevel):
     data_obj =  json.load(open('./data/instance_data.json', 'r'))
     conf_obj.update(data_obj)
     return conf_obj
+
+@pytest.fixture(scope="function")
+def instance_data(request):
+    file_path = request.config.getoption("data")
+    data = json.load(open(file_path, 'r'))
+    return data
 
 
 @pytest.fixture(scope="session")
