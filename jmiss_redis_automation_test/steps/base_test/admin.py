@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 # coding:utf-8
 
 from jmiss_redis_automation_test.utils.HttpClient import *

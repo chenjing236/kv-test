@@ -18,14 +18,15 @@ def get_flow_control(instanceId,config):
 
 def check_topo(instanceId,config):
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"GET","/checkTopo")
-    return resp["code"]["firstStart"]
+    return resp["code"]
 
 def get_password(instanceId,config):
     result=[]
     data = {"type": "config","commands":"shardsinfo"}
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/proxy",data)
     for r in resp["result"]:
-        for passwd in re.findall("\"password\":\"(.*?)\"", r):
+        passwds=re.findall("\"password\":\"(.*?)\"", r)
+        for passwd in passwds:
             result.append(passwd)
     return result
 

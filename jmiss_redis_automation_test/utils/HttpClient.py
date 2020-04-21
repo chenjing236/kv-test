@@ -222,13 +222,12 @@ class HttpClient(object):
     def underlayEntry(config,instance_id,method,path,body=None):
         hc = httplib.HTTPConnection(config["jvessel"]["underlayentry_url"])
 
-        jvesselHeaders = {"requestId": uuid_for_request_id() ,
+        jvesselHeaders = {"requestId": str(uuid_for_request_id()) ,
                    "region": config["region"],
                    "instanceId":instance_id,
                    }
         jvesselHeadersByte=to_json_string(jvesselHeaders)
-        headers={"jvesselHeaders":jvesselHeadersByte}
-
+        headers={"JVESSEL-Params":jvesselHeadersByte}
         hc.request(method,path,to_json_string(body),headers=headers)
         resp = hc.getresponse()
         status = resp.status

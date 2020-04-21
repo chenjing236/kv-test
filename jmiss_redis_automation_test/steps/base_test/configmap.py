@@ -38,3 +38,21 @@ def get_config_param(instanceId,config):
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/getConfigmap",data)
     return resp["data"]
 
+def get_env_max_mem(instanceId,config):
+    data = {"key":"envMaxMem"}
+    _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/getConfigmap",data)
+    return resp["data"]
+
+def get_is_firststart(instanceId,config):
+    data = {"key":"IsFirstStart"}
+    _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/getConfigmap",data)
+    return resp["data"]
+
+def get_passwdord(instanceId,config):
+    data = {"key":"password_key"}
+    _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/getConfigmap",data)
+    return resp["data"]
+
+def check_configmap_params(instanceId,config,excepted,getConfigFunc):
+    return excepted==getConfigFunc(instanceId,config)
+

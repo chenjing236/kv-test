@@ -32,29 +32,29 @@ def get_maxmemory_policy(instanceId,config):
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/redis",data)
     return re.findall("maxmemory_policy:(.*?)\r\n",resp)
 
-# 返回一个list
+# 返回一个ip port
 def get_master_slaves(instanceId,config):
     data = {"type":"config","commands":"info replication"}
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/redis",data)
-    return re.findall("slave(.*?)\r\n",resp["result"]["masters"])
+    return re.findall("slave0:ip=(.*?),port",resp["result"]["masters"][0]),re.findall(",port=(.*?),state",resp["result"]["masters"][0])
 
 # 返回一个list
 def get_master_aof_enabled(instanceId,config):
     data = {"type":"config","commands":"info persistence"}
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/redis",data)
-    return re.findall("aof_enabled:(.*?)\r\n",resp["result"]["masters"])
+    return re.findall("aof_enabled:(.*?)\r\n",resp["result"]["masters"][0])
 
 # 返回两个个list
 def get_slave_master(instanceId,config):
     data = {"type":"config","commands":"info replication"}
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/redis",data)
-    return re.findall("master_host:(.*?)\r\n",resp["result"]["slaves"]),re.findall("master_port:(.*?)\r\n",resp["result"]["slaves"])
+    return re.findall("master_host:(.*?)\r\n",resp["result"]["slaves"][0]),re.findall("master_port:(.*?)\r\n",resp["result"]["slaves"][0])
 
 # 返回一个list
 def get_slave_aof_enabled(instanceId,config):
     data = {"type":"config","commands":"info persistence"}
     _,_,resp=HttpClient.underlayEntry(config,instanceId,"POST","/config/redis",data)
-    return re.findall("aof_enabled:(.*?)\r\n",resp["result"]["slaves"])
+    return re.findall("aof_enabled:(.*?)\r\n",resp["result"]["slaves"][0])
 
 
 def check_redis_params(instanceId,config,excepted,getConfigFunc):
@@ -65,6 +65,6 @@ def check_redis_params(instanceId,config,excepted,getConfigFunc):
 
 # get_slots\get_master_slaves\get_master_slaves需要调用
 # excepted需要是一个list
-def check_redis_slots_params(instanceId,config,excepted,getConfigFunc):
+def check_redis_list(instanceId,config,excepted,getConfigFunc):
     results = getConfigFunc(instanceId, config)
     return sorted(results["result"]["masters"]==sorted(excepted))

@@ -44,8 +44,8 @@
       }
   },
   "jvessel": {
-      "url": "http://100.77.154.88:18810",
-      "underlayentry_url": "http://10.226.134.46:18811",
+      "url": "100.77.154.88:18810",
+      "underlayentry_url": "10.226.134.46:18811",
       "source_type": "paas-jmiss-test"
   }
 }
