@@ -9,6 +9,7 @@ class TestModifyCacheInstanceClass:
     @pytest.mark.openapi
     @pytest.mark.smoke
     @pytest.mark.regression
+    @pytest.mark.cjdebug
     def test_modifyCacheInstanceClass(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = reset_class(config, instance_id, config["change_data"]["cacheInstanceClass"], client)
