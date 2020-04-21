@@ -1,0 +1,42 @@
+{
+  "create_specified": [
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"
+      },
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81"
+    },
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.small.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"
+      },
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81"
+    },
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.medium.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"git
+      },
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81"
+
+    }
+  ]
+}
