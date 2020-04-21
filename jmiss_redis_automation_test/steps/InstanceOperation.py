@@ -47,7 +47,7 @@ def client_send(client, req):
     return resp
 
 
-def create_instance(conf, cacheInstanceClass=None, chargeMode='postpaid_by_duration', redisVersion='4.0',
+def create_instance(conf, data=None, cacheInstanceClass=None, chargeMode='postpaid_by_duration', redisVersion='4.0',
                     ipv6On=None, shardNumber=None):
     client = setClient(conf)
     header = getHeader(conf)
