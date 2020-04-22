@@ -3,7 +3,7 @@
 
 from time import sleep
 from jmiss_redis_automation_test.steps.FailoverOperation import *
-from jmiss_redis_automation_test.steps.base_test.MultiTest import *
+from jmiss_redis_automation_test.steps.base_test.MultiCheck import *
 from jmiss_redis_automation_test.steps.base_test.admin import *
 
 def test_admin_failover(init_instance, config, expected_data):

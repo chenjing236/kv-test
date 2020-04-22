@@ -3,7 +3,7 @@
 
 from time import sleep
 from jmiss_redis_automation_test.steps.FailoverOperation import *
-from jmiss_redis_automation_test.steps.base_test.MultiTest import check_admin_proxy_configmap
+from jmiss_redis_automation_test.steps.base_test.MultiCheck import check_admin_proxy_configmap
 from jmiss_redis_automation_test.steps.base_test.admin import *
 from jmiss_redis_automation_test.steps.base_test.proxy import *
 from jmiss_redis_automation_test.steps.base_test.configmap import *
