@@ -12,6 +12,7 @@ logger_info = logging.getLogger(__name__)
 def pytest_addoption(parser):
     parser.addoption("--config", action="store", default="./config/config_test.json", help="test config file path")
     parser.addoption("--data", action="store", default="./data/data_test.json", help="data file path")
+    parser.addoption("--expectedConfig", action="store", default="./data/expected_data.json", help="instance excepted config")
 
 
 # 获取环境配置信息
@@ -28,6 +29,13 @@ def instance_data(request):
     file_path = request.config.getoption("data")
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
+
+# 获取对应规格实例的期望参数
+@pytest.fixture(scope="session", autouse=True)
+def expected_data(request):
+    file_path = request.config.getoption("expectedConfig")
+    expected_obj = json.load(open(file_path, 'r'))
+    return expected_obj
 
 
 # 日志

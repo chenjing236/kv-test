@@ -20,7 +20,7 @@ def trigger_admin_failover(config,instanceId,region):
         return status
 
 def trigger_proxy_failover(config,instanceId,region,id,changeIp=0):
-        body=generate_failover_body(instanceId,region,str(instanceId)+"admin-"+str(id),"proxy",changeIp)
+        body=generate_failover_body(instanceId,region,str(instanceId)+"proxy-"+str(id),"proxy",changeIp)
         status,_=HttpClient.jvesselInterface(config,"POST","/template/service_instance",body)
         return status
 
