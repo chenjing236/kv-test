@@ -28,10 +28,10 @@ def get_max_connection(instanceId, config):
 def get_flow_control(instanceId, config):
     pass
 
-
+# 返回True表示成功
 def check_topo(instanceId, config):
-    _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/checkTopo")
-    return resp["code"]
+    _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getProxyTopo")
+    return not resp["code"] and resp["message"]=="All proxy topology are same"
 
 
 def get_password(instanceId, config):

@@ -6,7 +6,7 @@ from jmiss_redis_automation_test.utils.HttpClient import *
 
 
 class admimParam(object):
-    def __init__(self, side, current_rs_type, next_rs_type, is_first_start, topo, password, max_memory, space_status,
+    def __init__(self, side, current_rs_type, next_rs_type, is_first_start, topo=None, password, max_memory, space_status,
                  failovering_num, shard_status, config_param, admin_flavor, auto_backup_timer, backup_list):
         self.side = side
         self.current_rs_type = current_rs_type
