@@ -19,6 +19,7 @@ import time
 import pytest
 import logging
 from jdcloud_sdk.core.logger import *
+from base_test.MultiCheck import *
 info_logger = logging.getLogger(__name__)
 
 def setClient(conf):
@@ -75,6 +76,55 @@ def create_instance(conf, data=None, cacheInstanceClass=None, chargeMode='postpa
     except Exception, e:
         print e
         assert False
+    return client, resp, instance_id
+
+
+def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', redisVersion='4.0',
+                    ipv6On=None, shardNumber=None):
+    client = setClient(conf)
+    header = getHeader(conf)
+    instance_id = None
+    resp = None
+    name = "auto_test_" + str(int(time.time()))
+    shardNumber = data["shardNumber"] if shardNumber is None else shardNumber
+    try:
+        azId = AzIdSpec(data["azId"]["master"], data["azId"]["slave"])
+        cacheInstance = CacheInstanceSpec(data["vpcId"], data["subnetId"]
+                                          , data["cacheInstanceName"]
+                                          , data["cacheInstanceClass"]
+                                          , azId, conf["instance_password"]
+                                          , conf["instance"]["cacheInstanceDescription"]
+                                          , redisVersion
+                                          , ipv6On
+                                          , shardNumber)
+        params = CreateCacheInstanceParameters(str(conf["region"]), cacheInstance)
+        charge = ChargeSpec(chargeMode, 'month', 1)
+        params.setCharge(charge)
+        req = CreateCacheInstanceRequest(params, header)
+        resp = client_send(client, req)
+        if resp.result is not None:
+            instance_id = str(resp.result["cacheInstanceId"])
+    except Exception, e:
+        print e
+        assert False
+    return client, resp, instance_id
+
+
+def create_validate_instance(config, instance_data):
+    client, resp, instance_id = create_instance(config, instance_data)
+    instance = None
+    if resp.error is None and instance_id is not None:
+        instance = query_instance_recurrent(200, 5, instance_id, config, client)
+        config["request_id"] = resp.request_id
+    else:
+        config["request_id"] = ""
+
+    assert instance_id is not None
+    time.sleep(150)
+
+    # base validation
+    check_admin_proxy_redis_configmap(instance_id, config, instance_data["cacheInstanceClass"])
+
     return client, resp, instance_id
 
 

@@ -15,26 +15,24 @@ class TestCreateInstance:
         assertRespNotNone(resp)
         time.sleep(150)
 
-    @pytest.mark.openapi
     @pytest.mark.intergration
-    @pytest.mark.regression
-    def test_specified_createCacheInstance(self, config, instance_data):
-        instances = instance_data["create_specified"]
+    def test_specified_standard_createCacheInstance(self, config, instance_data):
+        instances = instance_data["create_shardard_specified"]
+        print("Standard instances count is %s" % len(instances))
         for i in range(len(instances)):
-            client, resp, instance_id = create_instance(config, instances[i])
-            instance = None
-            if resp.error is None and instance_id is not None:
-                instance = query_instance_recurrent(200, 5, instance_id, config, client)
-                config["request_id"] = resp.request_id
-            else:
-                config["request_id"] = ""
-
-            assert instance_id is not None
-            assertRespNotNone(resp)
-            time.sleep(150)
+            client, _, instance_id = create_validate_instance(config, instances[i])
 
             if instance_id is not None:
                 delete_instance(config, instance_id, client)
 
+    @pytest.mark.intergration
+    def test_specified_cluster_createCacheInstance(self, config, instance_data):
+        instances = instance_data["create_cluster_specified"]
+        print("Cluster instances count is %s" % len(instances))
+        for i in range(len(instances)):
+            client, _, instance_id = create_validate_instance(config, instances[i])
+
+            if instance_id is not None:
+                delete_instance(config, instance_id, client)
 
 

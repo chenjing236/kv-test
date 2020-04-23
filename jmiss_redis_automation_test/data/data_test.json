@@ -1,5 +1,5 @@
 {
-  "create_specified": [
+  "create_standard_specified": [
     {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",
@@ -8,10 +8,11 @@
       "instance_password": "1qaz2WSX",
       "azId": {
           "master": "cn-north-1a",
-          "slave": "cn-north-1a"
+          "slave": "cn-north-1b"
       },
-      "vpcId": "vpc-5herfti1t7",
-      "subnetId": "subnet-jnq7q6p5dn"
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81",
+      "shardNumber": 1
     },
     {
       "cacheInstanceName": "redis_automation_test",
@@ -20,10 +21,40 @@
       "cacheInstanceDescription": "desc_test",
       "azId": {
           "master": "cn-north-1a",
-          "slave": "cn-north-1a"
+          "slave": "cn-north-1b"
       },
-      "vpcId": "vpc-5herfti1t7",
-      "subnetId": "subnet-jnq7q6p5dn"
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81",
+      "shardNumber": 1
+    }
+  ],
+  "create_cluster_specified": [
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.micro.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"
+      },
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81",
+      "shardNumber": 2
+    },
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.small.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-north-1a",
+          "slave": "cn-north-1b"
+      },
+      "vpcId": "vpc-kae197kc2x",
+      "subnetId": "subnet-ijz681ob81",
+      "shardNumber": 4
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-"create_specified": [
+"create_standard_specified": [
     {
       "cacheInstanceName": "redis_automation_test",
       "cacheInstanceClass": "redis.m.micro.basic",
@@ -36,7 +36,6 @@
       },
       "vpcId": "vpc-z5b6pym5rf",
       "subnetId": "subnet-gcy2340ib3"
-
     }
 ]
 }
