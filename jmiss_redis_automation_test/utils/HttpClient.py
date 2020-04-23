@@ -235,5 +235,15 @@ class HttpClient(object):
         hc.close()
         return status, headers, resp_data
 
+    @staticmethod
+    def jvesselInterface(config, method, path, body=None):
+        hc = httplib.HTTPConnection(config["jvessel"]["url"])
+        hc.request(method, path, to_json_string(body))
+        resp = hc.getresponse()
+        status = resp.status
+        resp_data = json.loads(resp.read())
+        hc.close()
+        return status, resp_data
+
 
 

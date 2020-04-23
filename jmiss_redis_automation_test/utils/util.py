@@ -7,6 +7,7 @@ import sys, os
 import platform
 import hashlib
 import base64
+import random
 
 
 def format_ip(addr):
@@ -75,3 +76,7 @@ def get_md5_pwd(password):
     pwd_md5 = m.digest()
     pwd_base64 = base64.b64encode(pwd_md5)
     return pwd_base64
+
+def get_shard_id(total, num):
+    select_list = range(0, total)
+    return random.sample(select_list, num)
