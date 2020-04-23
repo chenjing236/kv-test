@@ -2,7 +2,7 @@
   "create_standard_specified": [
     {
       "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceClass": "redis.s.micro.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "instance_password": "1qaz2WSX",
@@ -16,7 +16,7 @@
     },
     {
       "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.m.small.basic",
+      "cacheInstanceClass": "redis.s.small.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "azId": {

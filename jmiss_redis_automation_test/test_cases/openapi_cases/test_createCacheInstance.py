@@ -15,9 +15,9 @@ class TestCreateInstance:
         assertRespNotNone(resp)
         time.sleep(150)
 
-    @pytest.mark.intergration
+    #@pytest.mark.intergration
     def test_specified_standard_createCacheInstance(self, config, instance_data):
-        instances = instance_data["create_shardard_specified"]
+        instances = instance_data["create_standard_specified"]
         print("Standard instances count is %s" % len(instances))
         for i in range(len(instances)):
             client, _, instance_id = create_validate_instance(config, instances[i])

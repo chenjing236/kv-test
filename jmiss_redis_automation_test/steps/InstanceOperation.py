@@ -111,7 +111,7 @@ def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', red
 
 
 def create_validate_instance(config, instance_data):
-    client, resp, instance_id = create_instance(config, instance_data)
+    client, resp, instance_id = create_instance_with_data(config, instance_data)
     instance = None
     if resp.error is None and instance_id is not None:
         instance = query_instance_recurrent(200, 5, instance_id, config, client)
