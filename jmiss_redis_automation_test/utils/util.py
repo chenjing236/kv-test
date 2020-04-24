@@ -2,7 +2,6 @@
 import socket
 import array
 import struct
-import fcntl
 import sys, os
 import platform
 import hashlib
@@ -16,7 +15,7 @@ def format_ip(addr):
            str(ord(addr[2])) + '.' + \
            str(ord(addr[3]))
 
-
+'''
 def all_interfaces():
     max_possible = 128  # arbitrary. raise if needed.
     bytes = max_possible * 32
@@ -58,7 +57,7 @@ def get_local_ip():
     elif ip_192 is not None:
         local_ip = ip_192
     return local_ip
-
+'''
 
 # 获取当前文件的绝对路径
 def cur_file_dir():
@@ -80,3 +79,10 @@ def get_md5_pwd(password):
 def get_shard_id(total, num):
     select_list = range(0, total)
     return random.sample(select_list, num)
+
+def get_excepted_slots(shardNum):
+    result=[]
+    avgSlot=16384/shardNum
+    for i in range(0,shardNum):
+        result.append(str(i*avgSlot)+" "+str((i+1)*avgSlot-1))
+    return result

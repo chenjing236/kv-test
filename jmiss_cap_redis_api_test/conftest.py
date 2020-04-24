@@ -30,13 +30,6 @@ def instance_data(request):
     data_obj = json.load(open(file_path, 'r'))
     return data_obj
 
-# 获取对应规格实例的期望参数
-@pytest.fixture(scope="session", autouse=True)
-def expected_data(request):
-    file_path = request.config.getoption("expectedConfig")
-    expected_obj = json.load(open(file_path, 'r'))
-    return expected_obj
-
 
 # 日志
 @pytest.fixture(scope="session", autouse=True)

@@ -2,27 +2,36 @@
 # coding:utf-8
 
 from time import sleep
+
+import pytest
+
 from jmiss_redis_automation_test.steps.FailoverOperation import *
+from jmiss_redis_automation_test.steps.InstanceOperation import create_validate_instance
 from jmiss_redis_automation_test.steps.base_test.MultiCheck import *
 from jmiss_redis_automation_test.steps.base_test.admin import *
 
-def test_admin_failover(init_instance, config, expected_data):
-    try:
-        client, resp, instanceId = init_instance
 
-        oldRunTime = get_admin_running_time(instanceId, config)
+class TestAdminFailover():
 
-        status = trigger_admin_failover(config, instanceId, config["region"])
-        assert status == 200
+    @pytest.mark.failover
+    def test_admin_failover(self, config,instance_data, expected_data):
+        try:
+            instances = instance_data["create_cluster_specified"]
+            client, _, instanceId = create_validate_instance(config, instances[0],expected_data)
 
-        for i in range(0, 120):
-            newRunTime = get_admin_running_time(instanceId.config)
-            if newRunTime != oldRunTime:
-                break
-            sleep(1)
+            oldRunTime = get_admin_running_time(instanceId, config)
 
-        assert check_admin_proxy_redis_configmap(expected_data[flavor_id])
+            status = trigger_admin_failover(config, instanceId, config["region"])
+            assert status == 200
+
+            for i in range(0, 120):
+                newRunTime = get_admin_running_time(instanceId.config)
+                if newRunTime != oldRunTime:
+                    break
+                sleep(1)
+
+            assert check_admin_proxy_redis_configmap(expected_data[instances[0]["cacheInstanceClass"]],instance_data["shardNumber"])
 
 
-    except ValueError as e:
-        print ("except", e)
+        except ValueError as e:
+            print ("except", e)

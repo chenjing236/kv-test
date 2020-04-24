@@ -110,7 +110,7 @@ def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', red
     return client, resp, instance_id
 
 
-def create_validate_instance(config, instance_data):
+def create_validate_instance(config, instance_data,expected_data):
     client, resp, instance_id = create_instance_with_data(config, instance_data)
     instance = None
     if resp.error is None and instance_id is not None:
@@ -120,10 +120,10 @@ def create_validate_instance(config, instance_data):
         config["request_id"] = ""
 
     assert instance_id is not None
-    time.sleep(150)
+    time.sleep(1)
 
     # base validation
-    check_admin_proxy_redis_configmap(instance_id, config, instance_data["cacheInstanceClass"])
+    check_admin_proxy_redis_configmap(instance_id, config, expected_data[str(instance_data["cacheInstanceClass"])],instance_data["shardNumber"])
 
     return client, resp, instance_id
 
