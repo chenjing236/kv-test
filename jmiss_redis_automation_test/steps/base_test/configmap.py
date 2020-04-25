@@ -83,7 +83,7 @@ def check_configmap_param(instanceId, config, excepted, getConfigFunc):
 
 def check_all_configmap(instanceId, config, excepted):
     '''
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["topo"], get_topo)
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.topo, get_topo)
     if isCurrect:
         raise ValueError("check topo error,excepted.topo=%s,actual topo=%s" % excepted.topo, actual)
 
@@ -91,30 +91,36 @@ def check_all_configmap(instanceId, config, excepted):
     if isCurrect:
         raise ValueError("check proxys error,excepted.proxys=%s,actual proxys=%s" % excepted.proxys, actual)
     '''
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["space_status"], get_status)
-    if isCurrect:
-        raise ValueError("check status error,excepted.space_status=%s,actual status=%s" % (excepted["space_status"], actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["side"], get_side)
-    if isCurrect:
-        raise ValueError("check side error,excepted.side=%s,actual side=%s" % (excepted["side"], actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["current_rs_type"], get_current_rs_type)
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.space_status, get_status)
     if isCurrect:
         raise ValueError(
-            "check current_rs_type error,excepted.current_rs_type=%s,actual current_rs_type=%s" % (excepted["current_rs_type"],actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["next_rs_type"], get_next_rs_type)
+            "check status error,excepted.space_status=%s,actual status=%s" % (excepted.space_status, actual))
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.side, get_side)
+    if isCurrect:
+        raise ValueError("check side error,excepted.side=%s,actual side=%s" % (excepted.side, actual))
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.current_rs_type, get_current_rs_type)
     if isCurrect:
         raise ValueError(
-            "check next_rs_type error,excepted.next_rs_type=%s,actual next_rs_type=%s" % (excepted["next_rs_type"], actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["config_param"], get_config_param)
+            "check current_rs_type error,excepted.current_rs_type=%s,actual current_rs_type=%s" % (
+            excepted.current_rs_type, actual))
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.next_rs_type, get_next_rs_type)
     if isCurrect:
         raise ValueError(
-            "check config_param error,excepted.config_param=%s,actual config_param=%s" % (excepted["config_param"], actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["redis_maxmemory"], get_env_max_mem)
-    if isCurrect:
-        raise ValueError("check env_max_mem error,excepted.env_max_mem=%s,actual env_max_mem=%s" % (excepted["redis_maxmemory"], actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted["is_first_start"], get_is_firststart)
+            "check next_rs_type error,excepted.next_rs_type=%s,actual next_rs_type=%s" % (
+            excepted.next_rs_type, actual))
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.config_param, get_config_param)
     if isCurrect:
         raise ValueError(
-            "check is_firststart error,excepted.is_first_start=%s,actual is_first_start=%s" % (excepted["is_first_start"],actual))
+            "check config_param error,excepted.config_param=%s,actual config_param=%s" % (
+            excepted.config_param, actual))
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.max_memory, get_env_max_mem)
+    if isCurrect:
+        raise ValueError(
+            "check env_max_mem error,excepted.env_max_mem=%s,actual env_max_mem=%s" % (excepted.max_memory, actual))
+    isCurrect, actual = check_configmap_param(instanceId, config, excepted.is_first_start, get_is_firststart)
+    if isCurrect:
+        raise ValueError(
+            "check is_firststart error,excepted.is_first_start=%s,actual is_first_start=%s" % (
+            excepted.is_first_start, actual))
 
     return True
