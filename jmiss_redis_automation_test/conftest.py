@@ -35,8 +35,8 @@ def config(request, loglevel):
     # before_account = get_account_balance(conf_obj["uc_url"], conf_obj["uc_token"])
     # conf_obj["before_account"] = before_account
     #load data
-    #data_obj =  json.load(open('./data/instance_data.json', 'r'))
-    #conf_obj.update(data_obj)
+    data_obj =  json.load(open('./data/instance_data.json', 'r'))
+    conf_obj.update(data_obj)
     return conf_obj
 
 @pytest.fixture(scope="function")
