@@ -86,20 +86,28 @@ def reset_attribute(conf, instance_id, name=None, desc=None, client=None):
     return resp
 
 
-#
-def reset_class(conf, instance_id, instance_class, client=None):
+# Modify cache instance by instance class and shardNumber
+def reset_class(conf, instance_id, instance_class, client=None, shardNumber=None):
     if client is None:
         client = setClient(conf)
     header = getHeader(conf)
     resp = None
     try:
         params = ModifyCacheInstanceClassParameters(str(conf["region"]), instance_id, instance_class)
+        if shardNumber is not None:
+            params.setShardNumber(shardNumber)
         request = ModifyCacheInstanceClassRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e
 
     return resp
+
+
+def reset_validate_class(conf, instance_id, instance_class, client=None, shardNumber=None):
+    resp = reset_class(conf, instance_id, instance_class, client, shardNumber)
+    instance = query_instance_recurrent(300, 6, instance_id, conf, client)
+    assert instance["cacheInstanceClass"] == instance_class
 
 
 #修改规格的可见性
