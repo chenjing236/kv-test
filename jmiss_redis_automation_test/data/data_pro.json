@@ -31,7 +31,7 @@
   "create_cluster_specified": [
     {
       "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.s.micro.basic",
+      "cacheInstanceClass": "redis.s.large.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "instance_password": "1qaz2WSX",
@@ -41,11 +41,11 @@
       },
       "vpcId": "vpc-z5b6pym5rf",
       "subnetId": "subnet-gcy2340ib3",
-      "shardNumber": 2
+      "shardNumber": 4
     },
     {
       "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.s.small.basic",
+      "cacheInstanceClass": "redis.s.xlarge.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "azId": {
@@ -77,7 +77,7 @@
   "modify_cluster_instance":
   {
      "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.s.micro.basic",
+      "cacheInstanceClass": "redis.s.small.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "instance_password": "1qaz2WSX",
@@ -87,9 +87,9 @@
       },
       "vpcId": "vpc-z5b6pym5rf",
       "subnetId": "subnet-gcy2340ib3",
-      "shardNumber": 2,
-      "target_cacheInstanceClass": "redis.s.small.basic",
-      "target_shardNumber": 1
+      "shardNumber": 4,
+      "target_cacheInstanceClass": "redis.s.medium.basic",
+      "target_shardNumber": 4
   },
   "modify_standard_to_cluster_instance":
    {
@@ -106,12 +106,12 @@
       "subnetId": "subnet-gcy2340ib3",
       "shardNumber": 1,
       "target_cacheInstanceClass": "redis.s.small.basic",
-      "target_shardNumber": 2
+      "target_shardNumber": 4
    },
   "modify_cluster_to_standard_instance":
    {
       "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.s.micro.basic",
+      "cacheInstanceClass": "redis.s.small.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "instance_password": "1qaz2WSX",
@@ -120,8 +120,8 @@
           "slave": "cn-north-1b"
       },
       "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3:",
-      "shardNumber": 2,
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 4,
       "target_cacheInstanceClass": "redis.s.small.basic",
       "target_shardNumber": 1
    }
