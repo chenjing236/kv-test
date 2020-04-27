@@ -20,6 +20,8 @@ import pytest
 import logging
 from jdcloud_sdk.core.logger import *
 from base_test.MultiCheck import *
+from jmiss_redis_automation_test.steps.base_test.baseCheckPoint import baseCheckPoint
+
 info_logger = logging.getLogger(__name__)
 
 def setClient(conf):
@@ -120,10 +122,12 @@ def create_validate_instance(config, instance_data,expected_data):
         config["request_id"] = ""
 
     assert instance_id is not None
-    time.sleep(1)
+    time.sleep(150)
 
     # base validation
-    check_admin_proxy_redis_configmap(instance_id, config, expected_data[str(instance_data["cacheInstanceClass"])],instance_data["shardNumber"])
+    expected_object = baseCheckPoint(expected_data[instance_data["cacheInstanceClass"]])
+
+    check_admin_proxy_redis_configmap(instance_id, config, expected_object, instance_data["shardNumber"])
 
     return client, resp, instance_id
 

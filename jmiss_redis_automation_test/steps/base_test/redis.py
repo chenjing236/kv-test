@@ -15,7 +15,7 @@ def get_redis_flavor(instanceId, config):
 
 
 # 返回一个list
-def get_redis_maxmemory(instanceId, config):
+def get_max_memory(instanceId, config):
     data = {"type": "config", "commands": "info memory"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/config/redis", data)
     findResult=re.findall(r"maxmemory:(.*?)\\r\\nmax", json.dumps(resp["result"]))
@@ -101,52 +101,62 @@ def check_redis_list(instanceId, config, excepted, getConfigFunc):
 
 
 def check_all_redis(instanceId, config, excepted,shardNum):
-    isCurrect, actual = check_redis_param(instanceId, config, excepted["redis_flavor"], get_redis_flavor)
+    isCurrect, actual = check_redis_param(instanceId, config, excepted.redis_flavor, get_redis_flavor)
     if isCurrect:
         raise ValueError(
-            "check redis_flavor error,excepted.redis_flavor=%s,actual redis_flavor=%s" % (excepted["redis_flavor"], actual))
-    isCurrect, actual = check_redis_param(instanceId, config, excepted["redis_maxmemory"], get_redis_maxmemory)
+            "check redis_flavor error,excepted.redis_flavor=%s,actual redis_flavor=%s" % (
+            excepted.redis_flavor, actual))
+    isCurrect, actual = check_redis_param(instanceId, config, excepted.max_memory, get_max_memory)
     if isCurrect:
         raise ValueError(
-            "check redis_maxmemory error,excepted.redis_maxmemory=%s,actual redis_maxmemory=%s" % (excepted["redis_maxmemory"],actual))
-    isCurrect, actual = check_redis_param(instanceId, config, excepted["repl_backlog_size"], get_repl_backlog_size)
+            "check max_memory error,excepted.max_memory=%s,actual max_memory=%s" % (excepted.max_memory, actual))
+    isCurrect, actual = check_redis_param(instanceId, config, excepted.repl_backlog_size, get_repl_backlog_size)
     if isCurrect:
         raise ValueError(
-            "check repl_backlog_size error,excepted.repl_backlog_size=%s,actual repl_backlog_size=%s" % (excepted["repl_backlog_size"],actual))
+            "check repl_backlog_size error,excepted.repl_backlog_size=%s,actual repl_backlog_size=%s" % (
+            excepted.repl_backlog_size, actual))
     isCurrect, actual = check_redis_list(instanceId, config, get_excepted_slots(shardNum), get_slots)
     if isCurrect:
-        raise ValueError("check slots error,excepted.slots=%s,actual slots=%s" % (excepted["slots"], actual))
-    isCurrect, actual = check_redis_param(instanceId, config, excepted["maxmemory_policy"], get_maxmemory_policy)
+        raise ValueError("check slots error,excepted.slots=%s,actual slots=%s" % (excepted.slots, actual))
+    isCurrect, actual = check_redis_param(instanceId, config, excepted.maxmemory_policy, get_maxmemory_policy)
     if isCurrect:
         raise ValueError(
-            "check maxmemory_policy error,excepted.maxmemory_policy=%s,actual maxmemory_policy=%s" % (excepted["maxmemory_policy"],actual))
+            "check maxmemory_policy error,excepted.maxmemory_policy=%s,actual maxmemory_policy=%s" % (
+            excepted.maxmemory_policy, actual))
     '''
-    isCurrect, actual = check_redis_list(instanceId, config, excepted["master_slaves"], get_master_slaves)
+    isCurrect, actual = check_redis_list(instanceId, config, excepted.master_slaves, get_master_slaves)
     if isCurrect:
         raise ValueError(
-            "check master_slaves error,excepted.master_slaves=%s,actual master_slaves=%s" % (excepted["master_slaves"],actual))
+            "check master_slaves error,excepted.master_slaves=%s,actual master_slaves=%s" % (excepted.master_slaves,actual))
     '''
-    isCurrect, actual = check_redis_param(instanceId, config, excepted["master_aof_enabled"], get_master_aof_enabled)
+    isCurrect, actual = check_redis_param(instanceId, config, excepted.master_aof_enabled, get_master_aof_enabled)
     if isCurrect:
         raise ValueError(
-            "check master_aof_enabled error,excepted.master_aof_enabled=%s,actual master_aof_enabled=%s" % (excepted["master_aof_enabled"],actual))
+            "check master_aof_enabled error,excepted.master_aof_enabled=%s,actual master_aof_enabled=%s" % (
+            excepted.master_aof_enabled, actual))
     '''
-    isCurrect, actual = check_redis_list(instanceId, config, excepted["slave_master"], get_slave_master)
+    isCurrect, actual = check_redis_list(instanceId, config, excepted.slave_master, get_slave_master)
     if isCurrect:
         raise ValueError(
-            "check slave_master error,excepted.slave_master=%s,actual slave_master=%s" % (excepted["slave_master"], actual))
+            "check slave_master error,excepted.slave_master=%s,actual slave_master=%s" % (excepted.slave_master, actual))
     '''
-    isCurrect, actual = check_redis_param(instanceId, config, excepted["slave_aof_enabled"], get_slave_aof_enabled)
+    isCurrect, actual = check_redis_param(instanceId, config, excepted.slave_aof_enabled, get_slave_aof_enabled)
     if isCurrect:
         raise ValueError(
-            "check slave_aof_enabled error,excepted.slave_aof_enabled=%s,actual slave_aof_enabled=%s" % (excepted["slave_aof_enabled"],actual))
+            "check slave_aof_enabled error,excepted.slave_aof_enabled=%s,actual slave_aof_enabled=%s" % (
+            excepted.slave_aof_enabled, actual))
     return True
 
 
-def get_redis_running_time(instanceId, config, docker_name):
+def get_redis_running_time(instanceId, config, replicasetName,docker_name):
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getSpace")
-    return resp["data"]["meta_inst"]["data"]["replicaset"][docker_name]["containers"][docker_name + "-0"][
+    return resp["data"]["meta_inst"]["data"]["replicaset"][replicasetName]["containers"][docker_name][
         "running_time"]
+
+def get_redis_ip(instanceId, config, replicasetName,docker_name):
+    _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getSpace")
+    return resp["data"]["meta_inst"]["data"]["replicaset"][replicasetName]["containers"][docker_name][
+        "ip"]
 
 
 def get_redis_num(instanceId, config, current_rs_type):
