@@ -217,7 +217,6 @@ class HttpClient(object):
 
 
     # 京舰UnderlayEntry
-
     @staticmethod
     def underlayEntry(config,instance_id,method,path,body=None):
         hc = httplib.HTTPConnection(config["jvessel"]["underlayentry_url"])

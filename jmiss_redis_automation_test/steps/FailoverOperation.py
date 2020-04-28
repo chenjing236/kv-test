@@ -31,3 +31,14 @@ def trigger_redis_failover(config, instanceId, region, docker_name, changeIp=0):
     body = generate_failover_body(instanceId, region, docker_name, "redis", changeIp)
     status, _ = HttpClient.jvesselInterface(config, "POST", "/template/service_instance", body)
     return status
+
+def trigger_docker_failover(type,config, instanceId,region, id=0,docker_name=None,changeIp=0):
+    result=None
+    if type=="admin":
+        result=trigger_admin_failover(config,instanceId,region)
+    elif type=="proxy":
+        result=trigger_proxy_failover(config,instanceId,region,id,changeIp)
+    elif type=="redis":
+        result=trigger_redis_failover(config,instanceId,region,docker_name,changeIp)
+    return result
+

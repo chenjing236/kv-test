@@ -62,7 +62,6 @@ def get_shard_status(instanceId, config):
     return findResult[0]
 
 
-
 def get_config_param(instanceId, config):
     data = {"key": "configs"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/getConfigmap", data)
@@ -118,15 +117,14 @@ def check_all_admin(instanceId, config, excepted):
         raise ValueError(
             "check is_first_start error,exceptedis_first_start=%s,actual is_first_start=%s" % (
             excepted.is_first_start, actual))
-
+    '''
     isCurrect, actual = check_admin_param(instanceId, config, excepted.topo, check_topo)
     if isCurrect:
         raise ValueError("check topo error,excepted.topo=%s,actual topo=%s" % (excepted.topo, actual))
-
     isCurrect, actual = check_admin_param(instanceId, config, excepted.password, get_password)
     if isCurrect:
         raise ValueError("check password error,excepted.password=%s,actual password=%s" % (excepted.password, actual))
-    '''
+
     isCurrect, actual = check_admin_param(instanceId, config, excepted.max_memory, get_max_mempory)
     if isCurrect:
         raise ValueError("check max_memory error,excepted.max_memory=%s,actual max_memory=%s" % (excepted.max_memory,actual))
@@ -174,6 +172,7 @@ def check_all_admin(instanceId, config, excepted):
 
     return True
 
-def get_admin_running_time(instanceId, config):
+def get_docker_running_time(config,instanceId,replicasetName,docker_name):
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getSpace")
-    return resp["data"]["meta_inst"]["data"]["replicaset"][str(instanceId)+"-admin"]["containers"][str(instanceId)+"-admin-0"]["running_time"]
+    return resp["data"]["meta_inst"]["data"]["replicaset"][replicasetName]["containers"][docker_name][
+        "running_time"]

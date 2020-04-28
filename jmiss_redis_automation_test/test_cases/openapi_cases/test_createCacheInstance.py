@@ -20,7 +20,9 @@ class TestCreateInstance:
         instances = instance_data["create_standard_specified"]
         print("Standard instances count is %s" % len(instances))
         for i in range(len(instances)):
-            client, _, instance_id = create_validate_instance(config, instances[i],expected_data)
+            expected_object = baseCheckPoint(expected_data[instances[i]["cacheInstanceClass"]],
+                                             instances[i]["instance_password"])
+            client, _, instance_id = create_validate_instance(config, instances[i],expected_object)
 
             if instance_id is not None:
                 delete_instance(config, instance_id, client)
@@ -30,7 +32,9 @@ class TestCreateInstance:
         instances = instance_data["create_cluster_specified"]
         print("Cluster instances count is %s" % len(instances))
         for i in range(len(instances)):
-            client, _, instance_id = create_validate_instance(config, instances[i],expected_data)
+            expected_object = baseCheckPoint(expected_data[instances[i]["cacheInstanceClass"]],
+                                             instances[i]["instance_password"])
+            client, _, instance_id = create_validate_instance(config, instances[i],expected_object)
 
             if instance_id is not None:
                 delete_instance(config, instance_id, client)

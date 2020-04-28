@@ -27,7 +27,6 @@ def check_topo(instanceId, config):
 
 
 def get_password(instanceId, config):
-    result = []
     data = {"type": "config", "commands": "shardsinfo"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/config/proxy", data)
 
@@ -56,7 +55,6 @@ def check_all_proxy(instanceId, config, excepted):
     if isCurrect:
         raise ValueError(
             "check flow_control error,excepted.flow_control=%s,actual flow_control=%s" % (excepted.flow_control, actual))
-    '''
     isCurrect, actual = check_proxy_param(instanceId, config, excepted.topo, check_topo)
     if isCurrect:
         raise ValueError("check topo error,excepted.topo=%s,actual topo=%s" % (excepted.topo, actual))
@@ -64,13 +62,9 @@ def check_all_proxy(instanceId, config, excepted):
     if isCurrect:
         raise ValueError(
             "check password error,excepted.password=%s,actual password=%s" % (excepted.password, actual))
+    '''
+
     return True
-
-
-def get_proxy_running_time(instanceId, config, id):
-    _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getSpace")
-    return resp["data"]["meta_inst"]["data"]["replicaset"][str(instanceId) + "-proxy"]["containers"][
-        str(instanceId) + "-proxy-" + str(id)]["running_time"]
 
 def get_proxy_ip(instanceId, config, id):
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getSpace")

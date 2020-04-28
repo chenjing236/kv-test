@@ -5,21 +5,6 @@ import re
 from jmiss_redis_automation_test.utils.HttpClient import *
 
 
-class configMapParam(object):
-    def __init__(self, topo, proxys, status, side, current_rs_type, next_rs_type, config_param, env_max_mem,
-                 is_firststart, password):
-        self.topo = topo
-        self.proxys = proxys
-        self.status = status
-        self.side = side
-        self.current_rs_type = current_rs_type
-        self.next_rs_type = next_rs_type
-        self.config_param = config_param
-        self.env_max_mem = env_max_mem
-        self.is_firststart = is_firststart
-        self.password = password
-
-
 def get_topo(instanceId, config):
     data = {"key": "topo"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/getConfigmap", data)
@@ -124,3 +109,8 @@ def check_all_configmap(instanceId, config, excepted):
             excepted.is_first_start, actual))
 
     return True
+
+def get_job(instanceId, config,jobId):
+    data = {"key": jobId}
+    _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/getConfigmap", data)
+    return resp

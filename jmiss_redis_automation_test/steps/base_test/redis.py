@@ -110,11 +110,13 @@ def check_all_redis(instanceId, config, excepted,shardNum):
     if isCurrect:
         raise ValueError(
             "check max_memory error,excepted.max_memory=%s,actual max_memory=%s" % (excepted.max_memory, actual))
+    '''
     isCurrect, actual = check_redis_param(instanceId, config, excepted.repl_backlog_size, get_repl_backlog_size)
     if isCurrect:
         raise ValueError(
             "check repl_backlog_size error,excepted.repl_backlog_size=%s,actual repl_backlog_size=%s" % (
             excepted.repl_backlog_size, actual))
+    '''
     isCurrect, actual = check_redis_list(instanceId, config, get_excepted_slots(shardNum), get_slots)
     if isCurrect:
         raise ValueError("check slots error,excepted.slots=%s,actual slots=%s" % (excepted.slots, actual))

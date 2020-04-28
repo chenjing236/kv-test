@@ -112,7 +112,7 @@ def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', red
     return client, resp, instance_id
 
 
-def create_validate_instance(config, instance_data,expected_data):
+def create_validate_instance(config, instance_data,expected_object):
     client, resp, instance_id = create_instance_with_data(config, instance_data)
     instance = None
     if resp.error is None and instance_id is not None:
@@ -122,10 +122,7 @@ def create_validate_instance(config, instance_data,expected_data):
         config["request_id"] = ""
 
     assert instance_id is not None
-    time.sleep(150)
-
-    # base validation
-    expected_object = baseCheckPoint(expected_data[instance_data["cacheInstanceClass"]])
+    time.sleep(1)
 
     check_admin_proxy_redis_configmap(instance_id, config, expected_object, instance_data["shardNumber"])
 
@@ -230,5 +227,20 @@ def query_instance_names(conf, instance_id, client=None):
         print e
 
     return resp
+
+def wait_docker_run_time_change(config, instanceId,oldRunTime,replicasetName,dockerName):
+    for i in range(0, 1200):
+        try:
+            newRunTime = get_docker_running_time(config,instanceId, replicasetName, dockerName)
+            if newRunTime != oldRunTime:
+                print ("docker %s failover finished,oldRunTime=%s,newRunTime=%s" % (dockerName,oldRunTime, newRunTime))
+                return True
+        except ValueError as e:
+            print("except:", e)
+        except KeyError as e:
+            print("except:", e)
+        finally:
+            time.sleep(1)
+    return False
 
 
