@@ -194,7 +194,11 @@ def send_web_command(conf,instance_id,region_id,command,client=None,token=""):
     return resp
 
 # 去除括号中的内容
-def proc_web_command_result(result):
-    result = re.sub(u"\\(.*?\\)", "", result)
-    result = re.sub("\"", "", result)
+def proc_web_command_result(resps):
+    result=[]
+    for resp in resps:
+        resp = re.sub(u"\\(.*?\\)|(.*?)\\) ", "", resp)
+        resp = re.sub("\"", "", resp)
+        resp = re.sub(" ", "", resp)
+        result.append(resp)
     return result
