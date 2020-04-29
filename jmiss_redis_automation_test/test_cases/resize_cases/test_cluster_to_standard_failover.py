@@ -18,10 +18,10 @@ from jmiss_redis_automation_test.steps.base_test.redis import get_redis_num
 from jmiss_redis_automation_test.utils.util import get_shard_id
 
 
-class TestStandardToStandardFailover:
+class TestClusterToStandardFailover:
     # 1个源端master failover
     def test_source_master_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
@@ -69,7 +69,7 @@ class TestStandardToStandardFailover:
 
     # 1个源端slave failover
     def test_source_slave_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
@@ -117,7 +117,7 @@ class TestStandardToStandardFailover:
         assert check_admin_proxy_redis_configmap(instanceId,config,expected_object,shard_num)
     # 1个proxy failover
     def test_proxy_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
@@ -162,7 +162,7 @@ class TestStandardToStandardFailover:
 
     # 1个目的端master failover
     def test_target_master_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
@@ -211,7 +211,7 @@ class TestStandardToStandardFailover:
 
     # 1个目的端slave failover
     def test_target_slave_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
@@ -260,7 +260,7 @@ class TestStandardToStandardFailover:
 
     # 1个proxy和1个源端master failover
     def test_source_master_and_proxy_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
@@ -319,7 +319,7 @@ class TestStandardToStandardFailover:
 
     # 1个proxy和1个目的端master failover
     def test_target_master_and_proxy_failover(self, config, instance_data, expected_data):
-        instance = instance_data["modify_standard_instance"]
+        instance = instance_data["modify_cluster_to_standard_instance"]
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])

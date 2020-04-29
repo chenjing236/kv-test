@@ -82,7 +82,11 @@ def get_auto_backup_timer(instanceId, config):
 def get_backup_list(instanceId, config):
     data = {"key": "backupmap"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getConfigmap", data)
-    return resp["data"]
+    result=[]
+    tmp = json.loads(resp["data"])
+    for key in tmp:
+        result.append(str(key))
+    return result
 
 
 def check_admin_param(instanceId, config, excepted, getConfigFunc):

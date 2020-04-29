@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # coding:utf-8
+from jdcloud_sdk.services.redis.apis.ExecuteCommandRequest import ExecuteCommandRequest, ExecuteCommandParameters
+
 from InstanceOperation import *
 from jdcloud_sdk.services.redis.apis.ModifyInstanceConfigRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceConfigRequest import *
@@ -174,4 +176,25 @@ def query_quota(conf, client=None):
 
     return resp
 
-#
+# 发送webCommand
+def send_web_command(conf,instance_id,region_id,command,client=None,token=""):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    header["webCommandtoken"]=token
+    resp = None
+    try:
+        params=ExecuteCommandParameters(region_id,instance_id,command)
+        params.setVersion("4.0")
+        request=ExecuteCommandRequest(params,header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+# 去除括号中的内容
+def proc_web_command_result(result):
+    result = re.sub(u"\\(.*?\\)", "", result)
+    result = re.sub("\"", "", result)
+    return result

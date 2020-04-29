@@ -90,7 +90,7 @@ def get_excepted_slots(shardNum):
         result.append(str(i*avgSlot)+" "+str((i+1)*avgSlot-1))
     return result
 
-def get_repl_backlog_size(shardMaxMemory):
+def get_excepted_repl_backlog_size(shardMaxMemory):
     repl_backlog_size=shardMaxMemory/20
     if repl_backlog_size>1073741824:
         repl_backlog_size=1073741824
