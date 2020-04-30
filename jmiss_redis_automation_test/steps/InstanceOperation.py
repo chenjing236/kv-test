@@ -7,6 +7,7 @@ from jdcloud_sdk.services.redis.client.RedisClient import RedisClient
 from jdcloud_sdk.services.redis.models.AzIdSpec import *
 from jdcloud_sdk.services.redis.models.CacheInstanceSpec import *
 from jdcloud_sdk.services.redis.apis.CreateCacheInstanceRequest import *
+from jdcloud_sdk.services.redis.apis.CreateCacheInstanceNoBillRequest import *
 from jdcloud_sdk.services.redis.apis.DeleteCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstancesRequest import *
@@ -111,6 +112,33 @@ def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', red
         assert False
     return client, resp, instance_id
 
+
+def create_instance_nobill(conf, data, redisVersion='4.0', ipv6On=None, shardNumber=None):
+    client = setClient(conf)
+    header = getHeader(conf)
+    instance_id = None
+    resp = None
+    name = "auto_test_" + str(int(time.time()))
+    shardNumber = data["shardNumber"] if shardNumber is None else shardNumber
+    try:
+        azId = AzIdSpec(data["azId"]["master"], data["azId"]["slave"])
+        cacheInstance = CacheInstanceSpec(data["vpcId"], data["subnetId"]
+                                          , data["cacheInstanceName"]
+                                          , data["cacheInstanceClass"]
+                                          , azId, conf["instance_password"]
+                                          , conf["instance"]["cacheInstanceDescription"]
+                                          , redisVersion
+                                          , ipv6On
+                                          , shardNumber)
+        params = CreateCacheInstanceNoBillParameters(str(conf["region"]), cacheInstance)
+        req = CreateCacheInstanceNoBillRequest(params, header)
+        resp = client_send(client, req)
+        if resp.result is not None:
+            instance_id = str(resp.result["cacheInstanceId"])
+    except Exception, e:
+        print e
+        assert False
+    return client, resp, instance_id
 
 def create_validate_instance(config, instance_data,expected_object):
     client, resp, instance_id = create_instance_with_data(config, instance_data)
