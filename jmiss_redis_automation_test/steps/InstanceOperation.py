@@ -127,7 +127,7 @@ def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', red
 
 def create_instance_nobill(conf, data, redisVersion='4.0', ipv6On=None, shardNumber=None):
     client = setClient(conf)
-    header = getHeader(conf)
+    header = getHeader_with_token(conf)
     instance_id = None
     resp = None
     name = "auto_test_" + str(int(time.time()))
