@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # coding:utf-8
 from collections import OrderedDict
+from time import sleep
 
-from jmiss_redis_automation_test.steps.FusionOpertation import send_web_command, proc_web_command_result
+from jmiss_redis_automation_test.steps.FusionOpertation import send_web_command, proc_web_command_result, \
+    find_resp_error
 from jmiss_redis_automation_test.steps.InstanceOperation import setClient
 from jmiss_redis_automation_test.steps.Valification import assertRespNotNone
 
@@ -22,8 +24,66 @@ class WebCommand():
     def runCommand(self):
         resp = send_web_command(self.conf, self.instance_id, self.region, self.command, self.client, self.token)
         assertRespNotNone(resp)
+        if self.excepted_resp == None:
+            return find_resp_error(resp.result["commandResult"])
         result = proc_web_command_result(resp.result["commandResult"])
         return sorted(result) == sorted(self.excepted_resp)
+
+    def checkAllCommand(self):
+        for (cmd, excepted_resp) in typeKeyCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeStringCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeHashCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeListCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeSetCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeZsetCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeConnectionCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeServerCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeScriptingCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeGeoCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
 
 
 typeKeyCommand = OrderedDict([("SET test_key test_key", ["OK"]),
@@ -35,17 +95,17 @@ typeKeyCommand = OrderedDict([("SET test_key test_key", ["OK"]),
                               ("PERSIST test_key", ["1"]),
                               ("PEXPIRE test_key 1000000", ["1"]),
                               ("PEXPIREAT test_key 2524579200000", ["1"]),
-                              # "PTTL test_key", None,
+                              ("PTTL test_key", None),
                               # "RESTORE test_key 0 \x00\xc0{\a\x00\xb7\xd0\x86\x12\b\xb0\xb2\xa3", "OK",
                               ("LPUSH today_cost 30 1.5 10 8", ["4"]),
                               ("SORT today_cost", ["1.5", "8", "10", "30"]),
-                              # "TTL test_key", None,
+                              ("TTL test_key", None),
                               ("TYPE test_key", ["string"]),
                               ("DEL test_key", ["1"]),
-                              # "SCAN 0", "",
+                              ("SCAN 0", None),
                               ("SET test_key1 test_key1", ["OK"]),
                               ("OBJECT REFCOUNT test_key1", ["1"]),
-                             # ("OBJECT IDLETIME test_key1", ["0"]),
+                              ("OBJECT IDLETIME test_key1", None),
                               ("OBJECT ENCODING test_key1", ["embstr"]),
                               ("TOUCH test_key1", ["1"]),
                               ("UNLINK test_key1", ["1"]),
@@ -87,8 +147,8 @@ typeHashCommand = OrderedDict([("HMSET test_hash_key hlc 100", ["OK"]),
                                ("HMGET test_hash_key hlc", ["250.89999999999999999"]),
                                ("HSET test_hash_key redis redis", ["1"]),
                                ("HSETNX test_hash_key test1 test1", ["1"]),
-                               ("HVALS test_hash_key", ["250.89999999999999999","redis","test1"]),
-                               # "HSCAN test_hash_key 0", [""]),
+                               ("HVALS test_hash_key", ["250.89999999999999999", "redis", "test1"]),
+                               ("HSCAN test_hash_key 0", None),
                                ("HSTRLEN test_hash_key hlc", ["21"]),
                                ("HDEL test_hash_key hlc", ["1"])
                                ])
@@ -112,10 +172,10 @@ typeSetCommand = OrderedDict([("SADD test_set_key hlc1 hlc2 hlc3", ["3"]),
                               ("SCARD test_set_key", ["3"]),
                               ("SISMEMBER test_set_key hlc1", ["1"]),
                               ("SMEMBERS test_set_key ", ["hlc2", "hlc1", "hlc3"]),
-                              #("SPOP test_set_key", ["hlc2"]),
-                              #("SRANDMEMBER test_set_key", ["hlc1"]),
                               ("SREM test_set_key hlc1", ["1"]),
-                              # "SSCAN test_set_key 0", [""]
+                              ("SPOP test_set_key", None),
+                              ("SRANDMEMBER test_set_key", None),
+                              ("SSCAN test_set_key 0", None)
                               ])
 
 typeZsetCommand = OrderedDict([("ZADD test_zset_key 1 hlc1 2 hlc2 3 hlc3 4 hlc4 5 hlc5 6 hlc6", ["6"]),
@@ -132,7 +192,7 @@ typeZsetCommand = OrderedDict([("ZADD test_zset_key 1 hlc1 2 hlc2 3 hlc3 4 hlc4 
                                ("ZREVRANGEBYSCORE test_zset_key 10 0", ["hlc5", "hlc4", "hlc2"]),
                                ("ZREVRANK test_zset_key hlc4", ["1"]),
                                ("ZSCORE test_zset_key hlc4", ["4"]),
-                               # "ZSCAN test_zset_key 0", [""],
+                               ("ZSCAN test_zset_key 0", None),
                                ("ZADD myzset 0 aaaa 0 b 0 c 0 d 0 e", ["5"]),
                                ("ZRANGEBYLEX myzset [alpha [omega", ["b", "c", "d", "e"]),
                                ("ZLEXCOUNT myzset - +", ["5"]),
@@ -151,20 +211,21 @@ typeServerCommand = OrderedDict([("FLUSHDB", ["OK"]),
                                  ("FLUSHALL", ["OK"]),
                                  ("CONFIG GET zset-max-ziplist-entries", ["zset-max-ziplist-entries", "128"]),
                                  ("CONFIG GET slowlog-log-slower-than", ["slowlog-log-slower-than", "10000"]),
-                                 # "INFO"
+                                 ("INFO", None),
                                  ("DBSIZE", ["0"]),
-                                 # RANDOMKEY
+                                 ("RANDOMKEY", None),
                                  ("SET testServer_key 123", ["OK"]),
                                  ("MEMORY USAGE testServer_key", ["58"]),
-                                 # LATENCY
+                                 ("LATENCY HISTORY command", None)
                                  ])
 
 typeScriptingCommand = OrderedDict([("EVAL \"return redis.call('set',KEYS[1],'bar')\" 1 foo", ["OK"]),
-                                    (u"SCRIPT LOAD \"return 'hello moto'\"",["232fd51614574cf0867b83d384a5e898cfd24e5a"]),
+                                    (u"SCRIPT LOAD \"return 'hello moto'\"",
+                                     ["232fd51614574cf0867b83d384a5e898cfd24e5a"]),
                                     ("EVALSHA \"232fd51614574cf0867b83d384a5e898cfd24e5a\" 0", ["hellomoto"]),
                                     ("SCRIPT EXISTS 232fd51614574cf0867b83d384a5e898cfd24e5a", ["1"]),
                                     ("SCRIPT FLUSH", ["OK"]),
-                                    # ("SCRIPT KILL", [""]),
+                                    ("SCRIPT KILL", ["NOTBUSYNoscriptsinexecutionrightnow."]),
                                     ])
 
 typeHyperLogLogCommand = OrderedDict([("PFADD databases \"Redis\" \"MongoDB\" \"MySQL\"", ["1"]),

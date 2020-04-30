@@ -15,7 +15,7 @@ class TestWebCommand:
 
     @pytest.mark.webCommand
     def test_web_command(self, config, instance_data, expected_data):
-        instances = instance_data["create_cluster_specified"]
+        instances = instance_data["create_standard_specified"]
 
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],
                                          instances[0]["instance_password"])
@@ -25,60 +25,6 @@ class TestWebCommand:
 
         token=resp.result["token"]
 
-        object=WebCommand(config,instanceId,config["region"],token)
-
-        for (cmd, excepted_resp) in typeKeyCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeStringCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeHashCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeListCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeSetCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeZsetCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeConnectionCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeServerCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeScriptingCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
-
-        for (cmd, excepted_resp) in typeGeoCommand.items():
-            object.set_command_exceptedResp(cmd,excepted_resp)
-            assert object.runCommand()
-            sleep(0.1)
+        object = WebCommand(config, instanceId, config["region"], token)
+        object.checkAllCommand()
 

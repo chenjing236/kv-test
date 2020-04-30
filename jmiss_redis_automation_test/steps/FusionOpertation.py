@@ -202,3 +202,11 @@ def proc_web_command_result(resps):
         resp = re.sub(" ", "", resp)
         result.append(resp)
     return result
+
+def find_resp_error(resps):
+    for resp in resps:
+        pos=str.find("(error)",resp)
+        if pos>=0:
+            return False
+
+    return True
