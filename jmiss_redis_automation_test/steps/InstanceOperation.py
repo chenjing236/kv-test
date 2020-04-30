@@ -150,7 +150,7 @@ def create_validate_instance(config, instance_data,expected_object):
         config["request_id"] = ""
 
     assert instance_id is not None
-    time.sleep(1)
+    time.sleep(30)
 
     check_admin_proxy_redis_configmap(instance_id, config, expected_object, instance_data["shardNumber"])
 

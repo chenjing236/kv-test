@@ -6,7 +6,13 @@ class TestCreateBackup:
 
     @pytest.mark.openapi
     @pytest.mark.backup
-    def test_createBackup(self, config, instance_data, expected_data):
+    def test_createBackup(self, init_instance, config):
+        client, resp, instance_id = init_instance
+        resp = create_backup(config, instance_id, client)
+        assertRespNotNone(resp)
+
+
+    def test_create_Backup(self, config, instance_data, expected_data):
         instances = instance_data["create_cluster_specified"]
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],
                                          instances[0]["instance_password"])

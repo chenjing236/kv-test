@@ -5,7 +5,7 @@ import re
 
 from jmiss_redis_automation_test.steps.base_test.admin import get_current_rs_type
 from jmiss_redis_automation_test.utils.HttpClient import *
-from jmiss_redis_automation_test.utils.util import get_excepted_slots
+from jmiss_redis_automation_test.utils.util import get_excepted_slots, get_excepted_repl_backlog_size
 
 
 def get_redis_flavor(instanceId, config):
@@ -60,7 +60,6 @@ def get_master_slaves(instanceId, config):
                                                                                      resp["result"]["masters"])
 
 
-
 def get_master_aof_enabled(instanceId, config):
     data = {"type": "config", "commands": "info persistence"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/config/redis", data)
@@ -111,7 +110,7 @@ def check_all_redis(instanceId, config, excepted,shardNum):
         raise ValueError(
             "check max_memory error,excepted.max_memory=%s,actual max_memory=%s" % (excepted.max_memory, actual))
     '''
-    isCurrect, actual = check_redis_param(instanceId, config, excepted.repl_backlog_size, get_repl_backlog_size)
+    isCurrect, actual = check_redis_param(instanceId, config, get_excepted_repl_backlog_size(excepted.max_memory), get_repl_backlog_size)
     if isCurrect:
         raise ValueError(
             "check repl_backlog_size error,excepted.repl_backlog_size=%s,actual repl_backlog_size=%s" % (
