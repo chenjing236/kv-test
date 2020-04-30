@@ -170,10 +170,10 @@ def create_validate_instance(config, instance_data,expected_object):
     return client, resp, instance_id
 
 
-def delete_instance(conf, instance_id, client=None, token=False):
+def delete_instance(conf, instance_id, client=None, token=None):
     if client is None:
         client = setClient(conf)
-    if not token:
+    if token is None:
         header = getHeader(conf)
     else:
         header = getHeader_with_token(conf)
@@ -188,28 +188,14 @@ def delete_instance(conf, instance_id, client=None, token=False):
     return resp
 
 
-def query_instance(conf, instance_id, client=None, token=False):
+def query_instance(conf, instance_id, client=None, token=None):
     if client is None:
         client = setClient(conf)
-    if not token:
+    print("token is %s" % token)
+    if token is None:
         header = getHeader(conf)
     else:
         header = getHeader_with_token(conf)
-    resp = None
-    try:
-        params = DescribeCacheInstanceParameters(str(conf["region"]), instance_id)
-        request = DescribeCacheInstanceRequest(params, header)
-        resp = client_send(client, request)
-    except Exception, e:
-        print e
-
-    return resp
-
-
-def query_instance_with_token(conf, instance_id, client=None):
-    if client is None:
-        client = setClient(conf)
-    header = getHeader_with_token(conf)
     resp = None
     try:
         params = DescribeCacheInstanceParameters(str(conf["region"]), instance_id)
@@ -260,9 +246,10 @@ def query_order_status(conf, request_id, client=None):
 def query_instance_by_name(name, conf):
     pass
 
-def query_instance_recurrent(wait_count, wait_time, instance_id, conf, client=None, token=False):
+def query_instance_recurrent(wait_count, wait_time, instance_id, conf, client=None, token=None):
     if client is None:
         client = setClient(conf)
+    print("Token is %s" % token)
     instance = None
     while wait_count > 0:
         print "---"+str(wait_count)+"---"

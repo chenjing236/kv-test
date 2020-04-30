@@ -33,17 +33,17 @@ class TestWebCommand:
         instance = instance_data["create_standard_specified"][0]
         client, resp, instance_id = create_instance_nobill(config, instance)
 
-        instance = None
+        '''instance = None
         if resp.error is None and instance_id is not None:
             instance = query_instance_recurrent(200, 5, instance_id, config, client, token=True)
             config["request_id"] = resp.request_id
         else:
-            config["request_id"] = ""
+            config["request_id"] = ""'''
 
         assert instance_id is not None
-        time.sleep(1)
+        time.sleep(120)
 
-        resp = send_web_command(config, instance_id, config["region"], "auth " + instance_id["instance_password"])
+        resp = send_web_command(config, instance_id, config["region"], "auth " + instance["instance_password"])
 
         token = resp.result["token"]
 
@@ -51,5 +51,5 @@ class TestWebCommand:
         object.checkAllCommand()
 
         if instance_id is not None:
-            delete_instance(config, instance_id, client)
+            delete_instance(config, instance_id, client, token=True)
 
