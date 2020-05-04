@@ -94,6 +94,26 @@ class HttpClient(object):
 
         return r
 
+    # 中间层接口
+    def middle_sell_request(config, enable):
+        host = str(config["maintain"]["middle"]["host"])
+        port = str(config["maintain"]["middle"]["port"])
+        path = str(config["maintain"]["middle"]["path"])
+        pin = str(config["maintain"]["middle"]["pin"])
+        region = str(config["maintain"]["middle"]["region"])
+        az = str(config["maintain"]["middle"]["az"])
+        memoryGB = config["maintain"]["middle"]["memoryGB"]
+
+        url = 'http://' + host + ':' + str(port) + path
+        headers = {"accept": "application/json"}
+        data = {'region': region, 'paz': az, 'pin': pin, 'redisVersion': '4.0', "memoryGB": memoryGB, "enable": enable}
+        r = requests.post(url, data=data, headers=headers, verify=True)
+        res_data = r.text
+        print res_data
+
+        return r
+
+
     # JMISS接口
 
     # 创建缓存云实例 create

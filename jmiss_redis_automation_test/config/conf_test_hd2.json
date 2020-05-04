@@ -41,6 +41,15 @@
           "region": "cn-north-1",
           "instanceid": "redis-kxrqurck0xlb",
           "requestid": "117"
+      },
+      "middle": {
+          "host": "10.226.202.217",
+          "port": 8080,
+          "path": "/v1/az",
+          "pin": "jcloudiaas2",
+          "region": "cn-north-1",
+          "az": ["az1"],
+          "memoryGB": 32
       }
   },
   "jvessel": {

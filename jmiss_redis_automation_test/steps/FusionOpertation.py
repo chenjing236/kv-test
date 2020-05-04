@@ -12,6 +12,7 @@ from jdcloud_sdk.services.redis.apis.ModifyInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyUserQuotaRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeSpecConfigRequest import *
 from jdcloud_sdk.services.redis.models.ConfigItem import *
 from jmiss_redis_automation_test.utils.SqlConst import *
 
@@ -137,6 +138,21 @@ def query_class(conf, client=None):
         params = DescribeInstanceClassParameters(str(conf["region"]))
         params.setRedisVersion(4.0)
         request = DescribeInstanceClassRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+def query_spec_conifg(conf, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeSpecConfigParameters(str(conf["region"]))
+        request = DescribeSpecConfigRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e
