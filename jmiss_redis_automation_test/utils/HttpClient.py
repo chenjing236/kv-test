@@ -5,6 +5,7 @@ import httplib
 import json
 import uuid
 import requests
+import subprocess
 
 
 def uuid_for_request_id():
@@ -95,23 +96,35 @@ class HttpClient(object):
         return r
 
     # 中间层接口
+    @staticmethod
     def middle_sell_request(config, enable):
         host = str(config["maintain"]["middle"]["host"])
         port = str(config["maintain"]["middle"]["port"])
         path = str(config["maintain"]["middle"]["path"])
         pin = str(config["maintain"]["middle"]["pin"])
         region = str(config["maintain"]["middle"]["region"])
-        az = str(config["maintain"]["middle"]["az"])
+        #az = config["maintain"]["middle"]["az"])
         memoryGB = config["maintain"]["middle"]["memoryGB"]
 
         url = 'http://' + host + ':' + str(port) + path
         headers = {"accept": "application/json"}
-        data = {'region': region, 'paz': az, 'pin': pin, 'redisVersion': '4.0', "memoryGB": memoryGB, "enable": enable}
+        az = ['az1']
+        version = '4.0'
+        data = {'region': region, 'paz': az, 'pin': pin, 'redisVersion': version, 'memoryGB': memoryGB, 'enable': enable}
         r = requests.post(url, data=data, headers=headers, verify=True)
         res_data = r.text
         print res_data
 
         return r
+
+    @staticmethod
+    def middle_sell_request_curl(config, enable):
+        if enable is False:
+            cmd = 'curl -v -i -X POST "http://10.226.149.100:8080/v1/az" -d\'{"region":"cn-north-1","paz":["az1"],"pin":"jcloudiaas2","redisVersion":"4.0","memoryGB":32,"enable":false}\''
+        if enable is True:
+            cmd = 'curl -v -i -X POST "http://10.226.149.100:8080/v1/az" -d\'{"region":"cn-north-1","paz":["az1"],"pin":"jcloudiaas2","redisVersion":"4.0","memoryGB":32,"enable":true}\'' 
+        print cmd
+        child = subprocess.call(cmd, shell=True)
 
 
     # JMISS接口
