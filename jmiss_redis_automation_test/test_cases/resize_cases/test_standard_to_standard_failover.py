@@ -1,13 +1,17 @@
 #!/bin/python
 # coding:utf-8
+import threading
+import uuid
 from time import sleep
 
 import pytest
 
 from jmiss_redis_automation_test.steps.FailoverOperation import trigger_docker_failover
-from jmiss_redis_automation_test.steps.FusionOpertation import reset_class
+from jmiss_redis_automation_test.steps.FusionOpertation import reset_class, send_web_command
 from jmiss_redis_automation_test.steps.InstanceOperation import create_validate_instance, wait_docker_run_time_change
 from jmiss_redis_automation_test.steps.Valification import assertRespNotNone
+from jmiss_redis_automation_test.steps.WebCommand import WebCommand
+from jmiss_redis_automation_test.steps.WriteData import write_data
 from jmiss_redis_automation_test.steps.base_test.MultiCheck import check_admin_proxy_redis_configmap, \
     get_docker_running_time
 from jmiss_redis_automation_test.steps.base_test.admin import get_current_rs_type, get_space_status, get_next_rs_type
@@ -375,3 +379,58 @@ class TestStandardToStandardFailover:
             sleep(1)
 
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, shard_num)
+
+    #变配过程中测试所有的命令
+    @pytest.mark.blpop
+    def test_all_command(self,config, instance_data, expected_data):
+        instance = instance_data["modify_standard_instance"]
+
+        expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
+                                         instance["instance_password"])
+        client, _, instanceId = create_validate_instance(config, instance, expected_object)
+
+        write_data(config,instanceId,1024*1024*1024*0.8,instance["instance_password"])
+
+        shard_num = instance["target_shardNumber"]
+        resp = reset_class(config, instanceId, instance["target_cacheInstanceClass"], client, shard_num)
+        assertRespNotNone(resp)
+
+        expected_object = baseCheckPoint(expected_data[instance["target_cacheInstanceClass"]],
+                                         instance["instance_password"])
+        expected_object.side = 1
+        expected_object.current_rs_type = "b"
+        expected_object.next_rs_type = "a"
+
+        # 等待spaceStatus变为DoingCopyfrom
+        '''
+        for i in range(0, 1200):
+            resp_status = get_space_status(instanceId, config)
+            if resp_status == "DoingCopyfrom":
+                break
+            sleep(1)
+        '''
+        resp = send_web_command(config, instanceId, config["region"], "auth " + instance["instance_password"])
+        token = resp.result["token"]
+        object = WebCommand(config, instanceId, config["region"], token)
+
+        # threading.Thread(target=send_web_command,args=(config,instanceId,config["region"],"blpop " + str(uuid.uuid1())+" 300", None,token))
+        t = threading.Thread(target=object.runAllForeverCommand())
+        t.setDaemon(True)
+        t.start()
+
+        sleep(10)
+        for i in range(0, 3600):
+            if get_space_status(instanceId, config) == "Running":
+                break
+            sleep(1)
+
+        t.join(10)
+
+        assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, shard_num)
+
+
+
+
+
+
+

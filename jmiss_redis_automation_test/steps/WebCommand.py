@@ -21,7 +21,7 @@ class WebCommand():
         self.command = command
         self.excepted_resp = excepted_resp
 
-    def runCommand(self):
+    def runCommandAndCheckResp(self):
         resp = send_web_command(self.conf, self.instance_id, self.region, self.command, self.client, self.token)
         assertRespNotNone(resp)
         if self.excepted_resp == None:
@@ -29,60 +29,121 @@ class WebCommand():
         result = proc_web_command_result(resp.result["commandResult"])
         return sorted(result) == sorted(self.excepted_resp)
 
+    def runCommand(self):
+        resp = send_web_command(self.conf, self.instance_id, self.region, self.command, self.client, self.token)
+        assertRespNotNone(resp)
+
+    def runAllForeverCommand(self):
+        while True:
+            for (cmd, excepted_resp) in typeKeyCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
+
+                for (cmd, excepted_resp) in typeStringCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeHashCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeListCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeSetCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeZsetCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeConnectionCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeServerCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeScriptingCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
+                for (cmd, excepted_resp) in typeGeoCommand.items():
+                    self.set_command_exceptedResp(cmd, excepted_resp)
+                    assert self.runCommand()
+                    sleep(0.1)
+
     def checkAllCommand(self):
         for (cmd, excepted_resp) in typeKeyCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeStringCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeHashCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeListCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeSetCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeZsetCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeConnectionCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeServerCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeScriptingCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
         for (cmd, excepted_resp) in typeGeoCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
-            assert self.runCommand()
+            assert self.runCommandAndCheckResp()
             sleep(0.1)
 
 
@@ -165,7 +226,11 @@ typeListCommand = OrderedDict([("LPUSH test_list_key hlc hlc1 hlc2", ["3"]),
                                ("LTRIM test_list_key 1 -1", ["OK"]),
                                ("RPOP test_list_key", ["hlc"]),
                                ("RPUSH test_list_key test3", ["3"]),
-                               ("RPUSHX test_list_key test4", ["4"])
+                               ("RPUSHX test_list_key test4", ["4"]),
+                               ("BLPOP test_list_key 180",None),
+                               ("BRPOP test_list_key 180",None),
+                               ("BRPOPLPUSH test_list_key test_list_key1 180",None),
+                               ("BLPOP test_list_key2 180",None),
                                ])
 
 typeSetCommand = OrderedDict([("SADD test_set_key hlc1 hlc2 hlc3", ["3"]),
