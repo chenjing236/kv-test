@@ -4,9 +4,8 @@ from time import sleep
 
 import pytest
 
-from jmiss_redis_automation_test.steps.InstanceOperation import create_validate_instance
 from jmiss_redis_automation_test.steps.WebCommand import *
-from jmiss_redis_automation_test.steps.base_test.baseCheckPoint import baseCheckPoint
+from jmiss_redis_automation_test.steps.InstanceOperation import *
 
 
 class TestWebCommand:
@@ -24,4 +23,29 @@ class TestWebCommand:
         token=resp.result["token"]
         object = WebCommand(config, instanceId, config["region"], token)
         object.checkAllCommand()
+
+    @pytest.mark.createnobill
+    def test_cli_createInstanceNobill(self, config, instance_data, expected_data):
+        instance = instance_data["create_standard_specified"][0]
+        client, resp, instance_id = create_instance_nobill(config, instance)
+
+        '''instance = None
+        if resp.error is None and instance_id is not None:
+            instance = query_instance_recurrent(200, 5, instance_id, config, client, token=True)
+            config["request_id"] = resp.request_id
+        else:
+            config["request_id"] = ""'''
+
+        assert instance_id is not None
+        time.sleep(120)
+
+        resp = send_web_command(config, instance_id, config["region"], "auth " + instance["instance_password"])
+
+        token = resp.result["token"]
+
+        object = WebCommand(config, instance_id, config["region"], token)
+        object.checkAllCommand()
+
+        if instance_id is not None:
+            delete_instance(config, instance_id, client, token=True)
 

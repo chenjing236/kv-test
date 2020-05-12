@@ -12,6 +12,8 @@ from jdcloud_sdk.services.redis.apis.ModifyInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyUserQuotaRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeSpecConfigRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeSlowLogRequest import *
 from jdcloud_sdk.services.redis.models.ConfigItem import *
 from jmiss_redis_automation_test.utils.SqlConst import *
 
@@ -144,6 +146,21 @@ def query_class(conf, client=None):
     return resp
 
 
+def query_spec_conifg(conf, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeSpecConfigParameters(str(conf["region"]))
+        request = DescribeSpecConfigRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
 #修改账户的缓存Redis配额
 def reset_quota(conf, quota, used, client=None):
     if client is None:
@@ -160,7 +177,6 @@ def reset_quota(conf, quota, used, client=None):
     return resp
 
 
-
 #查询账户的缓存Redis配额信息
 def query_quota(conf, client=None):
     if client is None:
@@ -175,6 +191,22 @@ def query_quota(conf, client=None):
         print e
 
     return resp
+
+
+def query_slow_log(conf, instance_id, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeSlowLogParameters(str(conf["region"]), instance_id)
+        request = DescribeSlowLogRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
 
 # 发送webCommand
 def send_web_command(conf,instance_id,region_id,command,client=None,token=""):

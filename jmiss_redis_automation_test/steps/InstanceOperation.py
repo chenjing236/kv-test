@@ -7,6 +7,7 @@ from jdcloud_sdk.services.redis.client.RedisClient import RedisClient
 from jdcloud_sdk.services.redis.models.AzIdSpec import *
 from jdcloud_sdk.services.redis.models.CacheInstanceSpec import *
 from jdcloud_sdk.services.redis.apis.CreateCacheInstanceRequest import *
+from jdcloud_sdk.services.redis.apis.CreateCacheInstanceNoBillRequest import *
 from jdcloud_sdk.services.redis.apis.DeleteCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstancesRequest import *
@@ -38,6 +39,18 @@ def getHeader(conf, isErp=False):
     #线上internal header配置
     if str(conf["header"]) == "erp" or isErp:
         header = {'x-jdcloud-pin': str(conf["user"]), 'x-jdcloud-erp': 'duhaixing'}
+
+    return header
+
+def getHeader_with_token(conf, isErp=False):
+    #测试环境header配置
+    header = {'x-jdcloud-pin': str(conf["user"]),
+              'x-jdcloud-redis-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJpb3QiLCJleHAiOjI1MjQ1NzkyMDAsImlhdCI6MTU4Nzg3MDM5MCwiaXNzIjoicmVkaXMiLCJzdWIiOiJiaWxsIn0.4m-dXMtFMbxgUaInvHTIVbOZDi1wyjTXy2hF1XkKDhw'}
+    #线上internal header配置
+    if str(conf["header"]) == "erp" or isErp:
+        header = {'x-jdcloud-pin': str(conf["user"]),
+                  'x-jdcloud-erp': 'duhaixing',
+                  'x-jdcloud-redis-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJpb3QiLCJleHAiOjI1MjQ1NzkyMDAsImlhdCI6MTU4Nzg3MDM5MCwiaXNzIjoicmVkaXMiLCJzdWIiOiJiaWxsIn0.4m-dXMtFMbxgUaInvHTIVbOZDi1wyjTXy2hF1XkKDhw'}
 
     return header
 
@@ -112,6 +125,34 @@ def create_instance_with_data(conf, data, chargeMode='postpaid_by_duration', red
     return client, resp, instance_id
 
 
+def create_instance_nobill(conf, data, redisVersion='4.0', ipv6On=None, shardNumber=None):
+    client = setClient(conf)
+    header = getHeader_with_token(conf)
+    instance_id = None
+    resp = None
+    name = "auto_test_" + str(int(time.time()))
+    shardNumber = data["shardNumber"] if shardNumber is None else shardNumber
+    try:
+        azId = AzIdSpec(data["azId"]["master"], data["azId"]["slave"])
+        cacheInstance = CacheInstanceSpec(data["vpcId"], data["subnetId"]
+                                          , data["cacheInstanceName"]
+                                          , data["cacheInstanceClass"]
+                                          , azId, conf["instance_password"]
+                                          , conf["instance"]["cacheInstanceDescription"]
+                                          , redisVersion
+                                          , ipv6On
+                                          , shardNumber)
+        params = CreateCacheInstanceNoBillParameters(str(conf["region"]), cacheInstance)
+        req = CreateCacheInstanceNoBillRequest(params, header)
+        resp = client_send(client, req)
+        if resp.result is not None:
+            instance_id = str(resp.result["cacheInstanceId"])
+    except Exception, e:
+        print e
+        assert False
+    return client, resp, instance_id
+
+
 def create_validate_instance(config, instance_data,expected_object):
     client, resp, instance_id = create_instance_with_data(config, instance_data)
     instance = None
@@ -129,10 +170,13 @@ def create_validate_instance(config, instance_data,expected_object):
     return client, resp, instance_id
 
 
-def delete_instance(conf, instance_id, client=None):
+def delete_instance(conf, instance_id, client=None, token=None):
     if client is None:
         client = setClient(conf)
-    header = getHeader(conf)
+    if token is None:
+        header = getHeader(conf)
+    else:
+        header = getHeader_with_token(conf)
     resp = None
     try:
         params = DeleteCacheInstanceParameters(str(conf["region"]), instance_id)
@@ -144,10 +188,14 @@ def delete_instance(conf, instance_id, client=None):
     return resp
 
 
-def query_instance(conf, instance_id, client=None):
+def query_instance(conf, instance_id, client=None, token=None):
     if client is None:
         client = setClient(conf)
-    header = getHeader(conf)
+    print("token is %s" % token)
+    if token is None:
+        header = getHeader(conf)
+    else:
+        header = getHeader_with_token(conf)
     resp = None
     try:
         params = DescribeCacheInstanceParameters(str(conf["region"]), instance_id)
@@ -198,14 +246,15 @@ def query_order_status(conf, request_id, client=None):
 def query_instance_by_name(name, conf):
     pass
 
-def query_instance_recurrent(wait_count, wait_time, instance_id, conf, client=None):
+def query_instance_recurrent(wait_count, wait_time, instance_id, conf, client=None, token=None):
     if client is None:
         client = setClient(conf)
+    print("Token is %s" % token)
     instance = None
     while wait_count > 0:
         print "---"+str(wait_count)+"---"
         time.sleep(wait_time)
-        resp = query_instance(conf, instance_id, client)
+        resp = query_instance(conf, instance_id, client, token)
         if resp is not None and resp.result is not None:
             if resp.result["cacheInstance"]["cacheInstanceStatus"] == "running":
                 instance = resp.result["cacheInstance"]

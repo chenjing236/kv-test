@@ -124,5 +124,44 @@
       "shardNumber": 2,
       "target_cacheInstanceClass": "redis.s.small.basic",
       "target_shardNumber": 1
-   }
+   },
+  "specs": [
+    {
+      "instanceClass": "redis.s.micro.middle"
+    },
+    {
+      "instanceClass": "redis.s.micro.basic"
+    },
+    {
+      "instanceClass": "redis.s.small.middle"
+    },
+    {
+      "instanceClass": "redis.s.small.basic"
+    },
+    {
+      "instanceClass": "redis.s.medium.middle"
+    },
+    {
+      "instanceClass": "redis.s.medium.basic"
+    },
+    {
+      "instanceClass": "redis.s.large.middle"
+    },
+    {
+      "instanceClass": "redis.s.large.basic"
+    },
+    {
+      "instanceClass": "redis.s.xlarge.middle"
+    },
+    {
+      "instanceClass": "redis.s.xlarge.basic"
+    },
+    {
+      "instanceClass": "redis.s.2xlarge.basic"
+    },
+    {
+      "instanceClass": "redis.s.2xlarge.middle"
+    }
+  ]
+
 }
