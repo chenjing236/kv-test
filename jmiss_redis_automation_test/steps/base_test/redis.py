@@ -24,7 +24,6 @@ def get_max_memory(instanceId, config):
     return findResult[0]
 
 
-# 返回一个list
 def get_repl_backlog_size(instanceId, config):
     data = {"type": "config", "commands": "info replication"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/config/redis", data)
@@ -42,13 +41,19 @@ def get_slots(instanceId, config):
     return resp["result"]["masters"]
 
 
-# 返回一个list
 def get_maxmemory_policy(instanceId, config):
     data = {"type": "config", "commands": "info memory"}
     _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/config/redis", data)
     findResult=re.findall(r"maxmemory_policy:(.*?)\\r\\n", json.dumps(resp))
     if len(set(findResult))!=1:
         raise ValueError("maxmemory_policy is not same or find failed,%s" % findResult)
+    return findResult[0]
+
+
+def get_used_memory(instanceId, config):
+    data = {"type": "config", "commands": "info memory"}
+    _, _, resp = HttpClient.underlayEntry(config, instanceId, "POST", "/config/redis", data)
+    findResult=re.findall(r"used_memory:(.*?)\\r\\n", json.dumps(resp))
     return findResult[0]
 
 
@@ -109,13 +114,13 @@ def check_all_redis(instanceId, config, excepted,shardNum):
     if isCurrect:
         raise ValueError(
             "check max_memory error,excepted.max_memory=%s,actual max_memory=%s" % (excepted.max_memory, actual))
-    '''
+
     isCurrect, actual = check_redis_param(instanceId, config, get_excepted_repl_backlog_size(excepted.max_memory), get_repl_backlog_size)
     if isCurrect:
         raise ValueError(
             "check repl_backlog_size error,excepted.repl_backlog_size=%s,actual repl_backlog_size=%s" % (
             excepted.repl_backlog_size, actual))
-    '''
+
     isCurrect, actual = check_redis_list(instanceId, config, get_excepted_slots(shardNum), get_slots)
     if isCurrect:
         raise ValueError("check slots error,excepted.slots=%s,actual slots=%s" % (excepted.slots, actual))

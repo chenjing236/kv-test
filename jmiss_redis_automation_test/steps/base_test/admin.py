@@ -34,8 +34,8 @@ def check_topo(instanceId, config):
 
 
 def get_password(instanceId, config):
-    _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/getSpace")
-    return resp["data"]["topo"]["password"]
+    _, _, resp = HttpClient.underlayEntry(config, instanceId, "GET", "/config/admin")
+    return resp["result"]["password"]
 
 
 # 目前还不返回maxMem
@@ -121,18 +121,19 @@ def check_all_admin(instanceId, config, excepted):
         raise ValueError(
             "check is_first_start error,exceptedis_first_start=%s,actual is_first_start=%s" % (
             excepted.is_first_start, actual))
-    '''
+
     isCurrect, actual = check_admin_param(instanceId, config, excepted.topo, check_topo)
     if isCurrect:
         raise ValueError("check topo error,excepted.topo=%s,actual topo=%s" % (excepted.topo, actual))
-    isCurrect, actual = check_admin_param(instanceId, config, excepted.password, get_password)
-    if isCurrect:
-        raise ValueError("check password error,excepted.password=%s,actual password=%s" % (excepted.password, actual))
-
+    '''
     isCurrect, actual = check_admin_param(instanceId, config, excepted.max_memory, get_max_mempory)
     if isCurrect:
         raise ValueError("check max_memory error,excepted.max_memory=%s,actual max_memory=%s" % (excepted.max_memory,actual))
     '''
+    isCurrect, actual = check_admin_param(instanceId, config, excepted.password, get_password)
+    if isCurrect:
+        raise ValueError("check password error,excepted.password=%s,actual password=%s" % (excepted.password, actual))
+
     isCurrect, actual = check_admin_param(instanceId, config, excepted.space_status, get_space_status)
     if isCurrect:
         raise ValueError(
