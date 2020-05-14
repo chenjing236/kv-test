@@ -32,6 +32,63 @@ class WebCommand():
     def runCommand(self):
         resp = send_web_command(self.conf, self.instance_id, self.region, self.command, self.client, self.token)
         assertRespNotNone(resp)
+        return True
+
+    def runAllCommand(self):
+        for (cmd, excepted_resp) in typeKeyCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeStringCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeHashCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeListCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeSetCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeZsetCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeConnectionCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeServerCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeScriptingCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
+
+        for (cmd, excepted_resp) in typeGeoCommand.items():
+            self.set_command_exceptedResp(cmd, excepted_resp)
+            assert self.runCommand()
+            sleep(0.1)
 
     def runAllForeverCommand(self):
         while True:
@@ -40,57 +97,57 @@ class WebCommand():
                 assert self.runCommand()
                 sleep(0.1)
 
-                for (cmd, excepted_resp) in typeStringCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeStringCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeHashCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeHashCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeListCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeListCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeSetCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeSetCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeZsetCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeZsetCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeConnectionCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeConnectionCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeServerCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeServerCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeScriptingCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeScriptingCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-                for (cmd, excepted_resp) in typeGeoCommand.items():
-                    self.set_command_exceptedResp(cmd, excepted_resp)
-                    assert self.runCommand()
-                    sleep(0.1)
+            for (cmd, excepted_resp) in typeGeoCommand.items():
+                self.set_command_exceptedResp(cmd, excepted_resp)
+                assert self.runCommand()
+                sleep(0.1)
 
-    def checkAllCommand(self):
+    def checkAllCommandAndResp(self):
         for (cmd, excepted_resp) in typeKeyCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommandAndCheckResp()
@@ -227,10 +284,10 @@ typeListCommand = OrderedDict([("LPUSH test_list_key hlc hlc1 hlc2", ["3"]),
                                ("RPOP test_list_key", ["hlc"]),
                                ("RPUSH test_list_key test3", ["3"]),
                                ("RPUSHX test_list_key test4", ["4"]),
-                               ("BLPOP test_list_key 180",None),
-                               ("BRPOP test_list_key 180",None),
-                               ("BRPOPLPUSH test_list_key test_list_key1 180",None),
-                               ("BLPOP test_list_key2 180",None),
+                               # ("BLPOP test_list_key 180", None),
+                               # ("BRPOP test_list_key 180", None),
+                               # ("BRPOPLPUSH test_list_key test_list_key1 180", None),
+                               # ("BLPOP test_list_key2 180", None),
                                ])
 
 typeSetCommand = OrderedDict([("SADD test_set_key hlc1 hlc2 hlc3", ["3"]),

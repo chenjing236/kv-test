@@ -14,15 +14,15 @@ class TestWebCommand:
     def test_web_command(self, config, instance_data, expected_data):
         instances = instance_data["create_standard_specified"]
 
-        expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],
-                                         instances[0]["instance_password"])
+        expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],instances[0]["instance_password"])
         client, _, instanceId = create_validate_instance(config, instances[0], expected_object)
 
         resp=send_web_command(config,instanceId,config["region"],"auth "+instances[0]["instance_password"])
-
         token=resp.result["token"]
         object = WebCommand(config, instanceId, config["region"], token)
         object.checkAllCommand()
+
+        assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, 1)
 
     @pytest.mark.createnobill
     def test_cli_createInstanceNobill(self, config, instance_data, expected_data):

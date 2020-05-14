@@ -61,7 +61,7 @@ class TestStandardToStandardFailover:
 
         # 手动调用任务恢复接口
         print(
-            "please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+            "please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0,3600):
@@ -110,7 +110,7 @@ class TestStandardToStandardFailover:
 
         # 手动调用任务恢复接口
         print(
-            "please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+            "please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0,3600):
@@ -154,7 +154,7 @@ class TestStandardToStandardFailover:
 
         assert wait_docker_run_time_change(config,instanceId,oldRunTime,replicasetName,dockerName)
         print(
-            "please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+            "please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0,3600):
@@ -202,7 +202,7 @@ class TestStandardToStandardFailover:
         assert wait_docker_run_time_change(config, instanceId, oldRunTime, replicasetName, dockerName)
 
         # 手动调用任务恢复接口
-        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0,3600):
@@ -251,7 +251,7 @@ class TestStandardToStandardFailover:
         assert wait_docker_run_time_change(config, instanceId, oldRunTime, replicasetName, dockerName)
 
         # 手动调用任务恢复接口
-        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0,3600):
@@ -311,7 +311,7 @@ class TestStandardToStandardFailover:
         assert wait_docker_run_time_change(config, instanceId, proxyOldRunTime, proxyReplicasetName, proxyDockerName)
 
         # 手动调用任务恢复接口
-        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0, 3600):
@@ -370,7 +370,7 @@ class TestStandardToStandardFailover:
         assert wait_docker_run_time_change(config, instanceId, proxyOldRunTime, proxyReplicasetName, proxyDockerName)
 
         # 手动调用任务恢复接口
-        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":"",\"isRollback\":false}'")
+        print("please run recover task interface.For example:curl http://127.0.0.1:1818/reloadTask -d '{\"taskId\":\"$taskId\",\"isRollback\":false}'")
 
         sleep(10)
         for i in range(0, 3600):
@@ -381,7 +381,6 @@ class TestStandardToStandardFailover:
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, shard_num)
 
     #变配过程中测试所有的命令
-    @pytest.mark.blpop
     def test_all_command(self,config, instance_data, expected_data):
         instance = instance_data["modify_standard_instance"]
 

@@ -26,11 +26,11 @@ def write_data(config, instance_Id, mem_count, passwd):
 
     while usedMem <= mem_count:
         string_data(config, instance_Id, token, client)
-        print("memeory is used %s MB" % (usedMem / 1024))
+        print("memeory is used %s MB" % (usedMem / 1024 /1024))
         usedMem = int(get_used_memory(instance_Id, config))
         sleep(0.1)
 
-    print("Data has write %s MB" % (usedMem / 1024))
+    print("Data has write %s MB" % (usedMem / 1024 / 1024))
 
 
 def string_data(config, instance_Id, token, client=None):
