@@ -49,3 +49,14 @@ class TestWebCommand:
         if instance_id is not None:
             delete_instance(config, instance_id, client, token=True)
 
+    @pytest.mark.specwebcli
+    def test_specified_instance_webcli(self, config, instance_data, expected_data):
+        resp = send_web_command(config, "redis-pl9nmstkrd5h", config["region"], "auth " + "1qaz2WSX")
+
+        token = resp.result["token"]
+
+        object = WebCommand(config, "redis-pl9nmstkrd5h", config["region"], token)
+        object.checkAllCommand()
+
+
+
