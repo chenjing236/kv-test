@@ -44,8 +44,8 @@
       }
   },
   "jvessel": {
-      "url": "http://jvessel-matrix-stag2.jdcloud.com:18810",
-      "underlayentry_url": "http://jvessel-matrix-stag2.jdcloud.com:18811",
+      "url": "jvessel-matrix-stag2.jdcloud.com:18810",
+      "underlayentry_url": "jvessel-matrix-stag2.jdcloud.com:18811",
       "source_type": "paas-jvessel"
   }
 }
