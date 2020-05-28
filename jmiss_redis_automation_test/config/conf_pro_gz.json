@@ -1,0 +1,49 @@
+{
+  "gateway":"apigw-internal.cn-north-1.jcloudcs.com",
+  "access_key":"7955849C631AF750CED115C9B1DBFFD9",
+  "secret_key":"933144010C984ABCB4CEE1C440D37977",
+  "region":"cn-south-1",
+  "user": "jcloudiaas2",
+  "instance_password": "1qaz2WSX",
+  "header": "req",
+  "mysql_host": "m2916m.mysql.jddb.jcloud.com",
+  "mysql_port": 3358,
+  "mysql_user": "redis40openap_rw",
+  "mysql_passwd": "U5U6zH4cWInVm1mYXZXK",
+  "mysql_db": "jmiss_redis40_openapi",
+  "ssh_key": true,
+  "classTotalCount": 14,
+  "quota": {
+      "max": 30,
+      "name": "缓存Redis"
+  },
+  "instance": {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceMemoryMB": 1024,
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-south-1b",
+          "slave": "cn-south-1c"
+      },
+      "vpcId": "vpc-ibwt3sqbaj",
+      "subnetId": "subnet-t5uebqtorv",
+      "port": 6379,
+      "auth": true
+  },
+   "maintain": {
+       "admin": {
+           "host": "jvessel-api.jdcloud.com",
+           "port": 18811,
+           "region": "cn-north-1",
+           "instanceid": "redis-kxrqurck0xlb",
+           "requestid": "117"
+      }
+  },
+  "jvessel": {
+      "url": "jvessel-api.jdcloud.com:18810",
+      "underlayentry_url": "jvessel-api.jdcloud.com:18811",
+      "source_type": "paas-jvessel"
+  }
+}
