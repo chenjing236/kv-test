@@ -88,6 +88,7 @@ class TestRedisFailover:
                                                  instances[0]["shardNumber"])
 
     # 单个master发生failover，原地启动
+    @pytest.mark.redisFailover
     def test_redis_master_failover_local(self, instance_data, config, expected_data):
         instances = instance_data["create_cluster_specified"]
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],
@@ -106,6 +107,7 @@ class TestRedisFailover:
         assert wait_docker_run_time_change(config, instanceId, oldRunTime, replicasetName, dockerName)
 
         sleep(30)
+
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object,
                                                  instances[0]["shardNumber"])
 

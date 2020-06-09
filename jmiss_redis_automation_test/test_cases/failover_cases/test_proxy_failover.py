@@ -34,7 +34,6 @@ class TestProxyFailover:
         assert check_admin_proxy_configmap(instanceId,config,expected_object)
 
     # 单个proxy发生failover，换机器启动
-    @pytest.mark.proxyFailover
     def test_proxy_failover_notLocal(self, config,instance_data, expected_data):
         instances = instance_data["create_cluster_specified"]
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],

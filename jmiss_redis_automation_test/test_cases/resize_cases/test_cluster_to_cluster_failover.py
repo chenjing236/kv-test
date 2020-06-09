@@ -19,6 +19,38 @@ from jmiss_redis_automation_test.utils.util import get_shard_id
 
 
 class TestClusterToClusterFailover:
+    def test_normal_resize(self, config, instance_data, expected_data):
+        instance = instance_data["modify_cluster_instance"]
+
+        expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
+                                         instance["instance_password"])
+        client, _, instanceId = create_validate_instance(config, instance, expected_object)
+
+        shard_num=instance["target_shardNumber"]
+        resp = reset_class(config, instanceId, instance["target_cacheInstanceClass"], client,shard_num)
+        assertRespNotNone(resp)
+
+        expected_object = baseCheckPoint(expected_data[instance["target_cacheInstanceClass"]],instance["instance_password"])
+        expected_object.side=1
+        expected_object.current_rs_type="b"
+        expected_object.next_rs_type="a"
+        sleep(60)
+
+        # 等待resize开始
+        for i in range(0,600):
+            resp_get_job=get_job(instanceId,config,str(resp.request_id))
+            if resp_get_job["code"]==0:
+                break
+            sleep(1)
+
+        sleep(10)
+        for i in range(0,3600):
+            if get_space_status(instanceId,config) == "Running":
+                break
+            sleep(1)
+
+        assert check_admin_proxy_redis_configmap(instanceId,config,expected_object,shard_num)
+
     # 1个源端master failover
     def test_source_master_failover(self, config, instance_data, expected_data):
         instance = instance_data["modify_cluster_instance"]

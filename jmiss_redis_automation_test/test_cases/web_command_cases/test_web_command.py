@@ -18,11 +18,10 @@ class TestWebCommand:
         client, _, instanceId = create_validate_instance(config, instances[0], expected_object)
 
         resp=send_web_command(config,instanceId,config["region"],"auth "+instances[0]["instance_password"])
+
         token=resp.result["token"]
         object = WebCommand(config, instanceId, config["region"], token)
-        object.checkAllCommand()
-
-        assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, 1)
+        object.runAllCommand()
 
     @pytest.mark.createnobill
     def test_cli_createInstanceNobill(self, config, instance_data, expected_data):

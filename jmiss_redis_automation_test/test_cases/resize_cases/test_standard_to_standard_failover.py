@@ -383,7 +383,7 @@ class TestStandardToStandardFailover:
     #变配过程中测试所有的命令
     def test_all_command(self,config, instance_data, expected_data):
         instance = instance_data["modify_standard_instance"]
-
+    
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
         client, _, instanceId = create_validate_instance(config, instance, expected_object)
@@ -391,7 +391,8 @@ class TestStandardToStandardFailover:
         write_data(config,instanceId,1024*1024*1024*0.8,instance["instance_password"])
 
         shard_num = instance["target_shardNumber"]
-        resp = reset_class(config, instanceId, instance["target_cacheInstanceClass"], client, shard_num)
+
+        resp = reset_class(config, instanceId, instance["target_cacheInstanceClass"], client=None, shardNumber=shard_num)
         assertRespNotNone(resp)
 
         expected_object = baseCheckPoint(expected_data[instance["target_cacheInstanceClass"]],
@@ -412,10 +413,10 @@ class TestStandardToStandardFailover:
         token = resp.result["token"]
         object = WebCommand(config, instanceId, config["region"], token)
 
-        # threading.Thread(target=send_web_command,args=(config,instanceId,config["region"],"blpop " + str(uuid.uuid1())+" 300", None,token))
-        t = threading.Thread(target=object.runAllForeverCommand())
-        t.setDaemon(True)
-        t.start()
+        threading.Thread(target=send_web_command,args=(config,instanceId,config["region"],"blpop " + str(uuid.uuid1())+" 300", None,token))
+        #t = threading.Thread(target=object.runAllForeverCommand())
+        #t.setDaemon(True)
+        #t.start()
 
         sleep(10)
         for i in range(0, 3600):
@@ -423,7 +424,7 @@ class TestStandardToStandardFailover:
                 break
             sleep(1)
 
-        t.join(10)
+        #t.join(10)
 
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, shard_num)
 
