@@ -9,6 +9,7 @@ class TestModifyInstanceAttribute:
     @pytest.mark.openapi
     @pytest.mark.smoke
     @pytest.mark.regression
+    @pytest.mark.stability
     def test_modifyCacheInstanceAttribute(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = reset_attribute(config, instance_id, config["change_data"]["cacheInstanceName"]

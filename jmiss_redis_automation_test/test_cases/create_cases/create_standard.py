@@ -22,3 +22,4 @@ class TestCreateStandardIntergration:
 
             if instance_id is not None:
                 delete_instance(config, instance_id, client)
+

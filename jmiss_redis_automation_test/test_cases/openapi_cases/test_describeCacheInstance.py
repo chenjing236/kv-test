@@ -6,6 +6,7 @@ class TestDescribeInstance:
     @pytest.mark.openapi
     @pytest.mark.smoke
     @pytest.mark.regression
+    @pytest.mark.stability
     def test_describeCacheInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_instance(config, instance_id, client)

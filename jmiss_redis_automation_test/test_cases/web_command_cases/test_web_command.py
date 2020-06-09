@@ -11,6 +11,7 @@ from jmiss_redis_automation_test.steps.InstanceOperation import *
 class TestWebCommand:
 
     @pytest.mark.webCommand
+    @pytest.mark.stability
     def test_web_command(self, config, instance_data, expected_data):
         instances = instance_data["create_standard_specified"]
 
@@ -24,6 +25,7 @@ class TestWebCommand:
 
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, 1)
 
+    @pytest.mark.webCommand
     @pytest.mark.createnobill
     def test_cli_createInstanceNobill(self, config, instance_data, expected_data):
         instance = instance_data["create_standard_specified"][0]
@@ -49,6 +51,7 @@ class TestWebCommand:
         if instance_id is not None:
             delete_instance(config, instance_id, client, token=True)
 
+    @pytest.mark.webCommand
     @pytest.mark.specwebcli
     def test_specified_instance_webcli(self, config, instance_data, expected_data):
         resp = send_web_command(config, "redis-pl9nmstkrd5h", config["region"], "auth " + "1qaz2WSX")
