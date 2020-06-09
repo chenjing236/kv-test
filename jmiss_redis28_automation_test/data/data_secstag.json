@@ -11,7 +11,7 @@
   "vpc_id": "vpc-r8dpjoaiky",
   "subnet_id": "subnet-rp0n1uuna6",
   "master_az_id": "cn-north-1c",
-  "slaver_az_id": "cn-north-1b",
+  "slaver_az_id": "cn-north-1a",
   "region_id": "cn-north-1",
   "charge_duration": 1,
   "charge_mode": "prepaid_by_duration",
