@@ -38,57 +38,57 @@ class WebCommand():
         for (cmd, excepted_resp) in typeKeyCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeStringCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeHashCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeListCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeSetCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeZsetCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeConnectionCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeServerCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeScriptingCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeHyperLogLogCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
         for (cmd, excepted_resp) in typeGeoCommand.items():
             self.set_command_exceptedResp(cmd, excepted_resp)
             assert self.runCommand()
-            sleep(0.1)
+            sleep(1)
 
     def runAllForeverCommand(self):
         while True:

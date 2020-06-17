@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+from jdcloud_sdk.services.redis.apis.CreateCacheAnalysisRequest import *
 from jdcloud_sdk.services.redis.apis.ExecuteCommandRequest import ExecuteCommandRequest, ExecuteCommandParameters
 
 from InstanceOperation import *
@@ -242,3 +243,17 @@ def find_resp_error(resps):
             return False
 
     return True
+
+def create_cache_analysis(conf, instance_id, expected_object, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = CreateCacheAnalysisParameters(str(conf["region"]), instance_id)
+        request = CreateCacheAnalysisRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp

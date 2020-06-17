@@ -21,6 +21,23 @@ class TestModifyInstanceConfig:
         policy = {"key":"configName","value":"configValue"}
         listCompareJason(config_list, config["instance_config"], policy)
 
+
+    @pytest.mark.config
+    def test_modify_instance_config(self, config, instance_data, expected_data):
+        instances = instance_data["create_standard_specified"]
+        expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],
+                                         instances[0]["instance_password"])
+        client, _, instance_id = create_validate_instance(config, instances[0], expected_object)
+
+        configs={"maxmemory-policy":"allkeys-lfu"}
+
+        resp = set_config(config, instance_id, configs, client)
+        assertRespNotNone(resp)
+        expected_object.maxmemory_policy="allkeys-lfu"
+        expected_object.config_param="{\"maxmemory-policy\":\"allkeys-lfu\"}"
+
+        assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, instances[0]["shardNumber"])
+
     @pytest.mark.stability
     @pytest.mark.cjtestdebug617
     def test_modifyInstanceConfig_basecheck(self, config, instance_data, expected_data):
@@ -56,6 +73,4 @@ class TestModifyInstanceConfig:
         #assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, 1)
         if instance_id is not None:
             delete_instance(config, instance_id, client)
-
-
 

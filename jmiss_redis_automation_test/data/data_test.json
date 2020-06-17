@@ -2,7 +2,7 @@
   "create_standard_specified": [
     {
       "cacheInstanceName": "redis_automation_test",
-      "cacheInstanceClass": "redis.s.micro.basic",
+      "cacheInstanceClass": "redis.m.micro.basic",
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "instance_password": "1qaz2WSX",
@@ -87,9 +87,9 @@
       },
       "vpcId": "vpc-kae197kc2x",
       "subnetId": "subnet-ijz681ob81",
-      "shardNumber": 2,
+      "shardNumber": 4,
       "target_cacheInstanceClass": "redis.s.small.basic",
-      "target_shardNumber": 1
+      "target_shardNumber": 4
   },
   "modify_standard_to_cluster_instance":
    {
@@ -122,7 +122,7 @@
       "vpcId": "vpc-kae197kc2x",
       "subnetId": "subnet-ijz681ob81",
       "shardNumber": 2,
-      "target_cacheInstanceClass": "redis.s.small.basic",
+      "target_cacheInstanceClass": "redis.m.micro.basic",
       "target_shardNumber": 1
    },
   "specs": [
