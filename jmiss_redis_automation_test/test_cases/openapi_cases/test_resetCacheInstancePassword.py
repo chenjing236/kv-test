@@ -24,11 +24,13 @@ class TestResetCacheInstancePassword:
 
         resp = reset_password(config, instance_id, config["change_data"]["instancePassword"], client)
 
-        expected_object = baseCheckPoint(expected_data[instance["target_cacheInstanceClass"]],
-                                         instance["instance_password"])
-        resp = send_web_command(config, instance_id, config["region"], "auth " + instance["instance_password"])
+        expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]], config["change_data"]["instancePassword"])
+        resp = send_web_command(config, instance_id, config["region"], "auth " + config["change_data"]["instancePassword"])
         token = resp.result["token"]
         object = WebCommand(config, instance_id, config["region"], token)
-        object.checkAllCommand()
+        object.runAllCommand()
 
-        assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, instance["target_shardNumber"])
+        assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, 1)
+
+	if instance_id is not None:
+            delete_instance(config, instance_id, client)

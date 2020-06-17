@@ -13,17 +13,21 @@ class TestWebCommand:
     @pytest.mark.webCommand
     @pytest.mark.stability
     def test_web_command(self, config, instance_data, expected_data):
-        instances = instance_data["create_standard_specified"]
+        instance = instance_data["create_standard_specified"][0]
 
-        expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],instances[0]["instance_password"])
-        client, _, instanceId = create_validate_instance(config, instances[0], expected_object)
+        expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],instance["instance_password"])
+        expected_object.backup_list = []
+        client, _, instanceId = create_validate_instance(config, instance, expected_object)
 
-        resp=send_web_command(config,instanceId,config["region"],"auth "+instances[0]["instance_password"])
+        resp=send_web_command(config,instanceId,config["region"],"auth "+instance["instance_password"])
         token=resp.result["token"]
         object = WebCommand(config, instanceId, config["region"], token)
-        object.checkAllCommand()
+        object.runAllCommand()
 
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, 1)
+       
+        if instanceId is not None:
+            delete_instance(config, instanceId, client)
 
     @pytest.mark.webCommand
     @pytest.mark.createnobill

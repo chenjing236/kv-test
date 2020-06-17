@@ -22,6 +22,7 @@ class TestModifyInstanceConfig:
         listCompareJason(config_list, config["instance_config"], policy)
 
     @pytest.mark.stability
+    @pytest.mark.cjtestdebug617
     def test_modifyInstanceConfig_basecheck(self, config, instance_data, expected_data):
         instance = instance_data["create_standard_specified"][0]
 
@@ -39,15 +40,22 @@ class TestModifyInstanceConfig:
         policy = {"key": "configName", "value": "configValue"}
         listCompareJason(config_list, config["instance_config"], policy)
 
-        expected_object = baseCheckPoint(expected_data[instance["target_cacheInstanceClass"]],
-                                         instance["instance_password"])
+        config_param = {"hash-max-ziplist-entries": "511", "hash-max-ziplist-value": "511", 
+			"list-compress-depth": "511", "list-max-ziplist-size": "511",
+                        "maxmemory-policy": "allkeys-lru", "notify-keyspace-events": "AKE",
+                        "set-max-intset-entries": "511", "slowlog-log-slower-than": "511",
+                        "zset-max-ziplist-entries": "511", "zset-max-ziplist-value": "511"}
+        config_param_s = dict(sorted(config_param.items(),key=lambda x:x[0]))
 
+        expected_object.config_param = config_param_s
         resp = send_web_command(config, instance_id, config["region"], "auth " + instance["instance_password"])
         token = resp.result["token"]
         object = WebCommand(config, instance_id, config["region"], token)
-        object.checkAllCommand()
+        object.runAllCommand()
 
-        assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, instance["target_shardNumber"])
+        #assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, 1)
+        if instance_id is not None:
+            delete_instance(config, instance_id, client)
 
 
 

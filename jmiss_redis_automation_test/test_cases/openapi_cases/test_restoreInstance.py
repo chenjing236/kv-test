@@ -53,9 +53,12 @@ class TestRestoreInstance:
         resp = send_web_command(config, instance_id, config["region"], "auth " + instances[0]["instance_password"])
         token = resp.result["token"]
         object = WebCommand(config, instance_id, config["region"], token)
-        object.checkAllCommand()
+        #object.checkAllCommand()
 
         assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, instances[0]["shardNumber"])
+
+	if instance_id is not None:
+            delete_instance(config, instance_id, client)
 
 
 
