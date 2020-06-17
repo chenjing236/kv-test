@@ -39,6 +39,7 @@ class TestModifyInstanceConfig:
         assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, instances[0]["shardNumber"])
 
     @pytest.mark.stability
+    @pytest.mark.cjtestdebug617
     def test_modifyInstanceConfig_basecheck(self, config, instance_data, expected_data):
         instance = instance_data["create_standard_specified"][0]
 
