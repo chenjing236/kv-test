@@ -44,6 +44,7 @@ class TestModifyInstanceConfig:
 
         expected_object = baseCheckPoint(expected_data[instance["cacheInstanceClass"]],
                                          instance["instance_password"])
+        expected_object.backup_list = []
         client, _, instance_id = create_validate_instance(config, instance, expected_object)
 
         resp = set_config(config, instance_id, config["instance_config"], client)
