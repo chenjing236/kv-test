@@ -40,5 +40,10 @@
            "instanceid": "redis-kxrqurck0xlb",
            "requestid": "117"
       }
+  },
+  "jvessel": {
+      "url": "jvessel-api.jdcloud.com:18810",
+      "underlayentry_url": "jvessel-api.jdcloud.com:18811",
+      "source_type": "paas-jvessel"
   }
 }

@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # coding:utf-8
+from jdcloud_sdk.services.redis.apis.CreateCacheAnalysisRequest import *
+from jdcloud_sdk.services.redis.apis.ExecuteCommandRequest import ExecuteCommandRequest, ExecuteCommandParameters
+
 from InstanceOperation import *
 from jdcloud_sdk.services.redis.apis.ModifyInstanceConfigRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceConfigRequest import *
@@ -10,6 +13,8 @@ from jdcloud_sdk.services.redis.apis.ModifyInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.ModifyUserQuotaRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeSpecConfigRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeSlowLogRequest import *
 from jdcloud_sdk.services.redis.models.ConfigItem import *
 from jmiss_redis_automation_test.utils.SqlConst import *
 
@@ -86,20 +91,28 @@ def reset_attribute(conf, instance_id, name=None, desc=None, client=None):
     return resp
 
 
-#
-def reset_class(conf, instance_id, instance_class, client=None):
+# Modify cache instance by instance class and shardNumber
+def reset_class(conf, instance_id, instance_class, client=None, shardNumber=None):
     if client is None:
         client = setClient(conf)
     header = getHeader(conf)
     resp = None
     try:
         params = ModifyCacheInstanceClassParameters(str(conf["region"]), instance_id, instance_class)
+        if shardNumber is not None:
+            params.setShardNumber(shardNumber)
         request = ModifyCacheInstanceClassRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e
 
     return resp
+
+
+def reset_validate_class(conf, instance_id, instance_class, client=None, shardNumber=None):
+    resp = reset_class(conf, instance_id, instance_class, client, shardNumber)
+    instance = query_instance_recurrent(300, 6, instance_id, conf, client)
+    assert instance["cacheInstanceClass"] == instance_class
 
 
 #修改规格的可见性
@@ -134,6 +147,21 @@ def query_class(conf, client=None):
     return resp
 
 
+def query_spec_conifg(conf, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeSpecConfigParameters(str(conf["region"]))
+        request = DescribeSpecConfigRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
 #修改账户的缓存Redis配额
 def reset_quota(conf, quota, used, client=None):
     if client is None:
@@ -150,7 +178,6 @@ def reset_quota(conf, quota, used, client=None):
     return resp
 
 
-
 #查询账户的缓存Redis配额信息
 def query_quota(conf, client=None):
     if client is None:
@@ -160,6 +187,71 @@ def query_quota(conf, client=None):
     try:
         params = DescribeUserQuotaParameters(str(conf["region"]))
         request = DescribeUserQuotaRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+def query_slow_log(conf, instance_id, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeSlowLogParameters(str(conf["region"]), instance_id)
+        request = DescribeSlowLogRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+# 发送webCommand
+def send_web_command(conf,instance_id,region_id,command,client=None,token=""):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    header["webCommandtoken"]=token
+    resp = None
+    try:
+        params=ExecuteCommandParameters(region_id,instance_id,command)
+        params.setVersion("4.0")
+        request=ExecuteCommandRequest(params,header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+# 去除括号中的内容
+def proc_web_command_result(resps):
+    result=[]
+    for resp in resps:
+        resp = re.sub(u"\\(.*?\\)|(.*?)\\) ", "", resp)
+        resp = re.sub("\"", "", resp)
+        resp = re.sub(" ", "", resp)
+        result.append(resp)
+    return result
+
+def find_resp_error(resps):
+    for resp in resps:
+        pos=str.find("(error)",resp)
+        if pos>=0:
+            return False
+
+    return True
+
+def create_cache_analysis(conf, instance_id, expected_object, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = CreateCacheAnalysisParameters(str(conf["region"]), instance_id)
+        request = CreateCacheAnalysisRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e

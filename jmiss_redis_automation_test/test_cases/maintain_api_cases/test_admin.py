@@ -77,3 +77,4 @@ class TestAdminApi:
 
 if __name__ =="__main__":
     pytest.main(['test_admin.py', '-s'])
+

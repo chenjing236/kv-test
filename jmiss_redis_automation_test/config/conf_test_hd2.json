@@ -26,11 +26,11 @@
       "cacheInstanceStatus": "running",
       "cacheInstanceDescription": "desc_test",
       "azId": {
-          "master": "cn-north-1b",
-          "slave": "cn-north-1b"
+          "master": "cn-north-1a",
+          "slave": "cn-north-1a"
       },
-      "vpcId": "vpc-kae197kc2x",
-      "subnetId": "subnet-ijz681ob81",
+      "vpcId": "vpc-5herfti1t7",
+      "subnetId": "subnet-jnq7q6p5dn",
       "port": 6379,
       "auth": true
   },
@@ -41,6 +41,20 @@
           "region": "cn-north-1",
           "instanceid": "redis-kxrqurck0xlb",
           "requestid": "117"
+      },
+      "middle": {
+          "host": "10.226.149.100",
+          "port": 8080,
+          "path": "/v1/az",
+          "pin": "jcloudiaas2",
+          "region": "cn-north-1",
+          "az": ["az1"],
+          "memoryGB": 32
       }
+  },
+  "jvessel": {
+      "url": "100.77.154.88:18810",
+      "underlayentry_url": "100.77.154.88:18811",
+      "source_type": "paas-jmiss-test"
   }
 }

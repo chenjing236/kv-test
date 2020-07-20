@@ -2,11 +2,11 @@
 import socket
 import array
 import struct
-import fcntl
 import sys, os
 import platform
 import hashlib
 import base64
+import random
 
 
 def format_ip(addr):
@@ -15,7 +15,7 @@ def format_ip(addr):
            str(ord(addr[2])) + '.' + \
            str(ord(addr[3]))
 
-
+'''
 def all_interfaces():
     max_possible = 128  # arbitrary. raise if needed.
     bytes = max_possible * 32
@@ -57,7 +57,7 @@ def get_local_ip():
     elif ip_192 is not None:
         local_ip = ip_192
     return local_ip
-
+'''
 
 # 获取当前文件的绝对路径
 def cur_file_dir():
@@ -75,3 +75,23 @@ def get_md5_pwd(password):
     pwd_md5 = m.digest()
     pwd_base64 = base64.b64encode(pwd_md5)
     return pwd_base64
+
+def get_sha256_pwd(password):
+    return hashlib.sha256(password).hexdigest()
+
+def get_shard_id(total, num):
+    select_list = range(0, total)
+    return random.sample(select_list, num)
+
+def get_excepted_slots(shardNum):
+    result=[]
+    avgSlot=16384/shardNum
+    for i in range(0,shardNum):
+        result.append(str(i*avgSlot)+" "+str((i+1)*avgSlot-1))
+    return result
+
+def get_excepted_repl_backlog_size(shardMaxMemory):
+    repl_backlog_size=shardMaxMemory/20
+    if repl_backlog_size>1073741824:
+        repl_backlog_size=1073741824
+    return repl_backlog_size

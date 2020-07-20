@@ -12,6 +12,7 @@ logger_info = logging.getLogger(__name__)
 def pytest_addoption(parser):
     parser.addoption("--config", action="store", default="./config/config_test.json", help="test config file path")
     parser.addoption("--data", action="store", default="./data/data_test.json", help="data file path")
+    parser.addoption("--expectedConfig", action="store", default="./data/expected_data.json", help="instance excepted config")
 
 
 # 获取环境配置信息

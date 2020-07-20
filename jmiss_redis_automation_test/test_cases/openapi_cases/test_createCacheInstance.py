@@ -8,12 +8,10 @@ class TestCreateInstance:
     @pytest.mark.openapi
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_createCacheInstance(self, init_instance, config):
+    def test_createCacheInstance(self, init_instance, config,expected_data):
         client, resp, instance_id = init_instance
         assert instance_id is not None
         assertRespNotNone(resp)
-        time.sleep(150)
-
-
+        time.sleep(15)
 
 

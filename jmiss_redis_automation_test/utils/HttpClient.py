@@ -5,6 +5,7 @@ import httplib
 import json
 import uuid
 import requests
+import subprocess
 
 
 def uuid_for_request_id():
@@ -93,6 +94,38 @@ class HttpClient(object):
         print data
 
         return r
+
+    # 中间层接口
+    @staticmethod
+    def middle_sell_request(config, enable):
+        host = str(config["maintain"]["middle"]["host"])
+        port = str(config["maintain"]["middle"]["port"])
+        path = str(config["maintain"]["middle"]["path"])
+        pin = str(config["maintain"]["middle"]["pin"])
+        region = str(config["maintain"]["middle"]["region"])
+        #az = config["maintain"]["middle"]["az"])
+        memoryGB = config["maintain"]["middle"]["memoryGB"]
+
+        url = 'http://' + host + ':' + str(port) + path
+        headers = {"accept": "application/json"}
+        az = ['az1']
+        version = '4.0'
+        data = {'region': region, 'paz': az, 'pin': pin, 'redisVersion': version, 'memoryGB': memoryGB, 'enable': enable}
+        r = requests.post(url, data=data, headers=headers, verify=True)
+        res_data = r.text
+        print res_data
+
+        return r
+
+    @staticmethod
+    def middle_sell_request_curl(config, enable):
+        if enable is False:
+            cmd = 'curl -v -i -X POST "http://10.226.149.100:8080/v1/az" -d\'{"region":"cn-north-1","paz":["az1"],"pin":"jcloudiaas2","redisVersion":"4.0","memoryGB":32,"enable":false}\''
+        if enable is True:
+            cmd = 'curl -v -i -X POST "http://10.226.149.100:8080/v1/az" -d\'{"region":"cn-north-1","paz":["az1"],"pin":"jcloudiaas2","redisVersion":"4.0","memoryGB":32,"enable":true}\'' 
+        print cmd
+        child = subprocess.call(cmd, shell=True)
+
 
     # JMISS接口
 
@@ -214,3 +247,35 @@ class HttpClient(object):
     # stop nova docker
     def stop_nova_docker(self, container_id, nova_token, data):
         return self.http_request_for_nova_docker("POST", "{0}/action".format(container_id), nova_token, to_json_string(data))
+
+
+    # 京舰UnderlayEntry
+    @staticmethod
+    def underlayEntry(config,instance_id,method,path,body=None):
+        hc = httplib.HTTPConnection(config["jvessel"]["underlayentry_url"])
+
+        jvesselHeaders = {"requestId": str(uuid_for_request_id()) ,
+                   "region": config["region"],
+                   "instanceId":instance_id,
+                   }
+        jvesselHeadersByte=to_json_string(jvesselHeaders)
+        headers={"JVESSEL-Params":jvesselHeadersByte}
+        hc.request(method,path,to_json_string(body),headers=headers)
+        resp = hc.getresponse()
+        status = resp.status
+        resp_data = json.loads(resp.read())
+        hc.close()
+        return status, headers, resp_data
+
+    @staticmethod
+    def jvesselInterface(config, method, path, body=None):
+        hc = httplib.HTTPConnection(config["jvessel"]["url"])
+        hc.request(method, path, to_json_string(body))
+        resp = hc.getresponse()
+        status = resp.status
+        resp_data = json.loads(resp.read())
+        hc.close()
+        return status, resp_data
+
+
+
