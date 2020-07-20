@@ -4,9 +4,6 @@ from jmiss_redis_automation_test.steps.Valification import *
 
 class TestDescribeSpecConfig:
 
-    @pytest.mark.openapi
-    @pytest.mark.regression
-    @pytest.mark.cjdebug
     def test_describe_spec_config(self, config, instance_data):
         resp = query_spec_conifg(config)
         assertRespNotNone(resp)
