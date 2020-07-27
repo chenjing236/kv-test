@@ -7,6 +7,7 @@ class TestCreateBackup:
 
     @pytest.mark.openapi
     @pytest.mark.backup
+    @pytest.mark.regression
     def test_createBackup(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = create_backup(config, instance_id, client)
@@ -23,8 +24,8 @@ class TestCreateBackup:
         assertRespNotNone(resp)
 
         assert check_backup(config, instance_id, str(resp.result["baseId"]), client) == True
-	baseId = str(resp.result["baseId"])
-	expected_object.backup_list = [baseId]
+        baseId = str(resp.result["baseId"])
+        expected_object.backup_list = [baseId]
         resp = send_web_command(config, instance_id, config["region"], "auth " + instance["instance_password"])
         token = resp.result["token"]
         object = WebCommand(config, instance_id, config["region"], token)
@@ -32,5 +33,5 @@ class TestCreateBackup:
 
         assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, 1)
 
-	if instance_id is not None:
+        if instance_id is not None:
             delete_instance(config, instance_id, client)

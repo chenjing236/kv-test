@@ -12,6 +12,7 @@ class TestWebCommand:
 
     @pytest.mark.webCommand
     @pytest.mark.stability
+    @pytest.mark.regression
     def test_web_command(self, config, instance_data, expected_data):
         instance = instance_data["create_standard_specified"][0]
 
