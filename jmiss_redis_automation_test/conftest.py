@@ -17,6 +17,7 @@ def pytest_addoption(parser):
     parser.addoption("--data", action="store", default="./data/instance_data.json", help="data file path")
     parser.addoption("--expectedConfig", action="store", default="./data/expected_data.json",
                      help="instance excepted config")
+    parser.addoption("--instance", action="store", help="instance_id")    
 
 
 #FATAL = 0 ERROR = 1 WARN = 2 INFO = 3
@@ -53,6 +54,10 @@ def expected_data(request):
     expected_obj = json.load(open(file_path, 'r'))
     return expected_obj
 
+@pytest.fixture(scope="session", autouse=True)
+def instance_id(request):
+    instance_id = request.config.getoption("instance")
+    return instance_id
 
 @pytest.fixture(scope="session")
 def init_instance(config, request):

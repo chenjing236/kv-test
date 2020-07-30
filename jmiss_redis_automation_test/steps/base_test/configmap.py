@@ -93,11 +93,11 @@ def check_all_configmap(instanceId, config, excepted):
         raise ValueError(
             "check next_rs_type error,excepted.next_rs_type=%s,actual next_rs_type=%s" % (
             excepted.next_rs_type, actual))
-    isCurrect, actual = check_configmap_param(instanceId, config, excepted.config_param, get_config_param)
+    '''isCurrect, actual = check_configmap_param(instanceId, config, excepted.config_param, get_config_param)
     if isCurrect:
         raise ValueError(
             "check config_param error,excepted.config_param=%s,actual config_param=%s" % (
-            excepted.config_param, actual))
+            excepted.config_param, actual))'''
     isCurrect, actual = check_configmap_param(instanceId, config, excepted.max_memory, get_env_max_mem)
     if isCurrect:
         raise ValueError(

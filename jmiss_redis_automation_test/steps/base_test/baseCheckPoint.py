@@ -10,7 +10,7 @@ class baseCheckPoint():
         self.next_rs_type = expected_data["next_rs_type"]
         self.is_first_start = expected_data["is_first_start"]
         self.topo = expected_data["topo"]
-        self.password = get_sha256_pwd(password)
+        self.password = password
         self.max_memory = expected_data["max_memory"]
         self.space_status = expected_data["space_status"]
         self.failovering_num = expected_data["failovering_num"]

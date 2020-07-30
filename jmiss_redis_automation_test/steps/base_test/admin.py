@@ -152,11 +152,11 @@ def check_all_admin(instanceId, config, excepted):
             "check shard_status error,excepted.shard_status=%s,actual shard_status=%s" % (
             excepted.shard_status, actual))
 
-    isCurrect, actual = check_admin_param(instanceId, config, excepted.config_param, get_config_param)
+    '''isCurrect, actual = check_admin_param(instanceId, config, excepted.config_param, get_config_param)
     if isCurrect:
         raise ValueError(
             "check config_param error,excepted.config_param=%s,actual config_param=%s" % (
-            excepted.config_param, actual))
+            excepted.config_param, actual))'''
 
     isCurrect, actual = check_admin_param(instanceId, config, excepted.admin_flavor, get_admin_flavor)
     if isCurrect:
@@ -170,10 +170,10 @@ def check_all_admin(instanceId, config, excepted):
             "check auto_backup_timer error,excepted.auto_backup_timer=%s,actual auto_backup_timer=%s" % (
             excepted.auto_backup_timer, actual))
 
-    isCurrect, actual = check_admin_param(instanceId, config, excepted.backup_list, get_backup_list)
+    '''isCurrect, actual = check_admin_param(instanceId, config, excepted.backup_list, get_backup_list)
     if isCurrect:
         raise ValueError(
-            "check backup_list error,excepted.backup_list=%s,actual backup_list=%s" % (excepted.backup_list, actual))
+            "check backup_list error,excepted.backup_list=%s,actual backup_list=%s" % (excepted.backup_list, actual))'''
 
     return True
 
