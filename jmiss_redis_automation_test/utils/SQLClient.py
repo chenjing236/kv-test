@@ -37,7 +37,8 @@ class SQLClient(object):
         else:
             self.close_cursor()
             info_logger.error("Failed to get results of sql:{0}".format(sql))
-            assert False
+            #assert False
+            result_tuple = None
         return result_tuple
 
     def exec_query_all(self, sql):
@@ -48,7 +49,8 @@ class SQLClient(object):
         else:
             self.close_cursor()
             info_logger.error("Failed to get results of sql:{0}".format(sql))
-            assert False
+            #assert False
+            result_tuple = None
         return result_tuple
 
     def wait_for_expectation(self, sql, expectation, wait_time=3, times=20, position=0, allow_empty=True):
