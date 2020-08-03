@@ -13,6 +13,7 @@ from jdcloud_sdk.services.redis.apis.DescribeCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstancesRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceNamesRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeOrderStatusRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeInternalSpecRequest import *
 from jdcloud_sdk.services.charge.models.ChargeSpec import *
 from jdcloud_sdk.services.common.models.Sort import *
 from jdcloud_sdk.services.common.models.Filter import Filter
@@ -242,9 +243,38 @@ def query_order_status(conf, request_id, client=None):
     return resp
 
 
-
 def query_instance_by_name(name, conf):
     pass
+
+
+def query_internal_spec(conf, instance_id, client=None):
+    if client is None:
+        client = setClient(conf)
+    else:
+        header = getHeader_with_token(conf)
+    resp = None
+    try:
+        params = DescribeInternalSpecParameters(str(conf["region"]), instance_id)
+        request = DescribeInternalSpecRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+def query_internal_specs(conf, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeInternalSpecsParameters(str(conf["region"]))
+        request = DescribeInternalSpecsRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
 
 def query_instance_recurrent(wait_count, wait_time, instance_id, conf, client=None, token=None):
     if client is None:

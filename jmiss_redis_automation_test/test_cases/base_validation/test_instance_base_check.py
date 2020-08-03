@@ -50,15 +50,17 @@ class TestInstanceBasecheck:
                      "and status!='deleting'group by flavor_class order by flavor_class"
         flavors = sql_conn.exec_query_all(flavor_sql)
         for flavor in flavors:
+            print("=================================================")
             print('flavor class is %s' % flavor[0])
 
-            #if flavor[0] in "redis.m.micro.basic":
-            sql = "select instance_id, password from instance where status!='deleted' and status!='error'" \
-                  "and status!='deleting' and region_id='%s' and flavor_class='%s';" % (region, flavor[0])
-            print("sql is %s" % sql)
-            instances = sql_conn.exec_query_all(sql)
-            if instances is not None:
-               for instance in instances:
-                   password = instance[1]
-                   print('instance is %s, password is %s' % (instance[0], password))
-                   self.__check_basic_validation(config, expected_data, instance[0], password, flavor)
+            if flavor[0] not in "redis.m.medium.basic":
+                sql = "select instance_id, password from instance where status!='deleted' and status!='error'" \
+                      "and status!='deleting' and region_id='%s' and flavor_class='%s';" % (region, flavor[0])
+                #print("sql is %s" % sql)
+                instances = sql_conn.exec_query_all(sql)
+                if instances is not None:
+                    for instance in instances:
+                        password = instance[1]
+                        print('instance is %s, password is %s' % (instance[0], password))
+                        #if str(instance[0]) not in 'redis-gri0m4a6ty7o':
+                        self.__check_basic_validation(config, expected_data, instance[0], password, flavor)
