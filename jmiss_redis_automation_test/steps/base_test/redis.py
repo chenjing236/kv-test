@@ -123,7 +123,7 @@ def check_all_redis(instanceId, config, excepted,shardNum):
 
     isCurrect, actual = check_redis_list(instanceId, config, get_excepted_slots(shardNum), get_slots)
     if isCurrect:
-        raise ValueError("check slots error,excepted.slots=%s,actual slots=%s" % (excepted.slots, actual))
+        raise ValueError("check slots error,excepted.slots=%s,actual slots=%s" % (str(get_excepted_slots(shardNum)), actual))
     isCurrect, actual = check_redis_param(instanceId, config, excepted.maxmemory_policy, get_maxmemory_policy)
     if isCurrect:
         raise ValueError(
