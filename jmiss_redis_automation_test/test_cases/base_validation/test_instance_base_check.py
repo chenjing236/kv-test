@@ -4,6 +4,8 @@ from jmiss_redis_automation_test.steps.Valification import *
 from jmiss_redis_automation_test.utils.SQLClient import *
 
 class TestInstanceBasecheck:
+    exclude_list = ['redis-5tybx86d7nzg']
+
     def __get_sql_conn(self, config):
         sql_conn = SQLClient(config["mysql_host"], config["mysql_port"], config["mysql_user"],
                              config["mysql_passwd"], config["mysql_db"])
@@ -27,6 +29,12 @@ class TestInstanceBasecheck:
 
         return result
 
+    def __check_exclude_instance(self, instance_id):
+        for i in range(len(self.exclude_list)):
+            if self.exclude_list[i] in instance_id:
+                return True
+        return False
+ 
     @pytest.mark.basecheck
     def test_standard_base_check(self, config, instance_data, expected_data, instance_id):
         instance_id = instance_id
@@ -53,14 +61,14 @@ class TestInstanceBasecheck:
             print("=================================================")
             print('flavor class is %s' % flavor[0])
 
-            if flavor[0] not in "redis.m.medium.basic":
-                sql = "select instance_id, password from instance where status!='deleted' and status!='error'" \
-                      "and status!='deleting' and region_id='%s' and flavor_class='%s';" % (region, flavor[0])
-                #print("sql is %s" % sql)
-                instances = sql_conn.exec_query_all(sql)
-                if instances is not None:
-                    for instance in instances:
-                        password = instance[1]
-                        print('instance is %s, password is %s' % (instance[0], password))
-                        #if str(instance[0]) not in 'redis-gri0m4a6ty7o':
+            #if flavor[0] not in "redis.m.medium.basic":
+            sql = "select instance_id, password from instance where status!='deleted' and status!='error'" \
+                  "and status!='deleting' and region_id='%s' and flavor_class='%s';" % (region, flavor[0])
+            #print("sql is %s" % sql)
+            instances = sql_conn.exec_query_all(sql)
+            if instances is not None:
+                for instance in instances:
+                    password = instance[1]
+                    print('instance is %s, password is %s' % (instance[0], password))
+                    if self.__check_exclude_instance(instance[0]) is False:
                         self.__check_basic_validation(config, expected_data, instance[0], password, flavor)
