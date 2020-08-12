@@ -15,6 +15,8 @@ from jdcloud_sdk.services.redis.apis.DescribeInstanceClassRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeUserQuotaRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeSpecConfigRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeSlowLogRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeClientListRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeClientIpDetailRequest import *
 from jdcloud_sdk.services.redis.models.ConfigItem import *
 from jmiss_redis_automation_test.utils.SqlConst import *
 
@@ -202,6 +204,36 @@ def query_slow_log(conf, instance_id, client=None):
     try:
         params = DescribeSlowLogParameters(str(conf["region"]), instance_id)
         request = DescribeSlowLogRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+def query_client_list(conf, instance_id, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeClientListParameters(str(conf["region"]), instance_id)
+        request = DescribeClientListRequest(params, header)
+        resp = client_send(client, request)
+    except Exception, e:
+        print e
+
+    return resp
+
+
+def query_client_ip_detail(conf, instance_id, ip, client=None):
+    if client is None:
+        client = setClient(conf)
+    header = getHeader(conf)
+    resp = None
+    try:
+        params = DescribeClientIpDetailParameters(str(conf["region"]), instance_id, ip)
+        request = DescribeClientIpDetailRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e
