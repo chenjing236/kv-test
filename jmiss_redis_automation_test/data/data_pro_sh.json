@@ -1,0 +1,129 @@
+{
+"create_standard_specified": [
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 1
+    },
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.small.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 1
+    }
+  ],
+  "create_cluster_specified": [
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.large.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 4
+    },
+    {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.xlarge.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 4
+    }
+  ],
+  "modify_standard_instance":
+   {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 1,
+      "target_cacheInstanceClass": "redis.m.small.basic",
+      "target_shardNumber": 1
+   },
+  "modify_cluster_instance":
+  {
+     "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.small.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 4,
+      "target_cacheInstanceClass": "redis.s.medium.basic",
+      "target_shardNumber": 4
+  },
+  "modify_standard_to_cluster_instance":
+   {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.micro.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 1,
+      "target_cacheInstanceClass": "redis.s.small.basic",
+      "target_shardNumber": 4
+   },
+  "modify_cluster_to_standard_instance":
+   {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.s.small.basic",
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "instance_password": "1qaz2WSX",
+      "azId": {
+          "master": "cn-east-2a",
+          "slave": "cn-east-2b"
+      },
+      "vpcId": "vpc-z5b6pym5rf",
+      "subnetId": "subnet-gcy2340ib3",
+      "shardNumber": 4,
+      "target_cacheInstanceClass": "redis.s.small.basic",
+      "target_shardNumber": 1
+   }
+
+}
