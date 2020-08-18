@@ -13,7 +13,8 @@ from jdcloud_sdk.services.redis.apis.DescribeCacheInstanceRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeCacheInstancesRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeInstanceNamesRequest import *
 from jdcloud_sdk.services.redis.apis.DescribeOrderStatusRequest import *
-from jdcloud_sdk.services.redis.apis.DescribeInternalSpecRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeInstanceInternalSpecRequest import *
+from jdcloud_sdk.services.redis.apis.DescribeInstanceInternalSpecsRequest import *
 from jdcloud_sdk.services.charge.models.ChargeSpec import *
 from jdcloud_sdk.services.common.models.Sort import *
 from jdcloud_sdk.services.common.models.Filter import Filter
@@ -250,12 +251,11 @@ def query_instance_by_name(name, conf):
 def query_internal_spec(conf, instance_id, client=None):
     if client is None:
         client = setClient(conf)
-    else:
-        header = getHeader_with_token(conf)
+    header = getHeader(conf)
     resp = None
     try:
-        params = DescribeInternalSpecParameters(str(conf["region"]), instance_id)
-        request = DescribeInternalSpecRequest(params, header)
+        params = DescribeInstanceInternalSpecParameters(str(conf["region"]), instance_id)
+        request = DescribeInstanceInternalSpecRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e
@@ -268,8 +268,8 @@ def query_internal_specs(conf, client=None):
     header = getHeader(conf)
     resp = None
     try:
-        params = DescribeInternalSpecsParameters(str(conf["region"]))
-        request = DescribeInternalSpecsRequest(params, header)
+        params = DescribeInstanceInternalSpecsParameters(str(conf["region"]))
+        request = DescribeInstanceInternalSpecsRequest(params, header)
         resp = client_send(client, request)
     except Exception, e:
         print e

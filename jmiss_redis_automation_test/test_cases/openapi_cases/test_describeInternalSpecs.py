@@ -5,7 +5,7 @@ class TestDescribeInternalSpecs:
 
     def test_describeInternalSpecs(self, init_instance, config):
         client, resp, instance_id = init_instance
-        resp = query_internal_specs(config, instance_id, client)
+        resp = query_internal_specs(config)
         assertRespNotNone(resp)
         #validateResult(resp.result["cacheInstance"], config["instance"])
         #existResult(resp.result["cacheInstance"], config["exist_data"])

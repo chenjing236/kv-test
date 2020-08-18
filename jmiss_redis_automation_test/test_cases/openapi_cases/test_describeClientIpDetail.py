@@ -3,7 +3,6 @@ from jmiss_redis_automation_test.steps.Valification import *
 
 
 class TestDescribeClientIpDetail:
-    @pytest.mark.cjdebug667
     def test_describe_client_ip_detail(self, init_instance, config):
         client, resp, instance_id = init_instance
         ip = '127.0.0.1'
