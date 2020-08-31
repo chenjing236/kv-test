@@ -40,7 +40,7 @@ def getHeader(conf, isErp=False):
     header = {'x-jdcloud-pin': str(conf["user"])}
     #线上internal header配置
     if str(conf["header"]) == "erp" or isErp:
-        header = {'x-jdcloud-pin': str(conf["user"]), 'x-jdcloud-erp': 'duhaixing'}
+        header = {'x-jdcloud-pin': str(conf["user"]), 'x-jdcloud-erp': 'chenjing236'}
 
     return header
 
@@ -51,7 +51,7 @@ def getHeader_with_token(conf, isErp=False):
     #线上internal header配置
     if str(conf["header"]) == "erp" or isErp:
         header = {'x-jdcloud-pin': str(conf["user"]),
-                  'x-jdcloud-erp': 'duhaixing',
+                  'x-jdcloud-erp': 'chenjing236',
                   'x-jdcloud-redis-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJpb3QiLCJleHAiOjI1MjQ1NzkyMDAsImlhdCI6MTU4Nzg3MDM5MCwiaXNzIjoicmVkaXMiLCJzdWIiOiJiaWxsIn0.4m-dXMtFMbxgUaInvHTIVbOZDi1wyjTXy2hF1XkKDhw'}
 
     return header
