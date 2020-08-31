@@ -10,8 +10,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 1
     },
     {
@@ -23,8 +23,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 1
     }
   ],
@@ -39,8 +39,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 4
     },
     {
@@ -52,8 +52,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 4
     }
   ],
@@ -68,8 +68,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 1,
       "target_cacheInstanceClass": "redis.m.small.basic",
       "target_shardNumber": 1
@@ -85,8 +85,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 4,
       "target_cacheInstanceClass": "redis.s.medium.basic",
       "target_shardNumber": 4
@@ -102,8 +102,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 1,
       "target_cacheInstanceClass": "redis.s.small.basic",
       "target_shardNumber": 4
@@ -119,8 +119,8 @@
           "master": "cn-east-2a",
           "slave": "cn-east-2b"
       },
-      "vpcId": "vpc-z5b6pym5rf",
-      "subnetId": "subnet-gcy2340ib3",
+      "vpcId": "vpc-b8fnovxxa0",
+      "subnetId": "subnet-zeyguozd17",
       "shardNumber": 4,
       "target_cacheInstanceClass": "redis.s.small.basic",
       "target_shardNumber": 1
