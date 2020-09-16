@@ -1,5 +1,5 @@
 {
-  "gateway":"10.226.148.63:8000",
+  "gateway":"apigw-ite.openapi.jdcloud.com",
   "access_key":"B578F5B09D8DCB25FB2FE9F2615A17F9",
   "secret_key":"5DE097F815816529DF5AF7D1467508CF",
   "region":"cn-north-1",
@@ -36,7 +36,7 @@
   },
   "maintain": {
       "admin": {
-          "host": "100.77.154.88",
+          "host": "10.226.151.218",
           "port": 18811,
           "region": "cn-north-1",
           "instanceid": "redis-kxrqurck0xlb",
@@ -53,8 +53,8 @@
       }
   },
   "jvessel": {
-      "url": "100.77.154.88:18810",
-      "underlayentry_url": "100.77.154.88:18811",
+      "url": "10.226.151.218:18810",
+      "underlayentry_url": "10.226.151.218:18811",
       "source_type": "paas-jmiss-test"
   }
 }
