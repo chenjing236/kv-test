@@ -1,0 +1,28 @@
+{
+  "check_data":{
+            "azId": "{{PRESET_AZ_1}}"
+            , "instanceStatus": "running"
+            , "instanceType": "single"
+            , "mcVersion": "1.5.8"
+            , "port": 11211
+            , "vpcId": "{{PRESET_VPC}}"
+            , "subnetId": "{{PRESET_SUBNET}}"
+            , "mcAuth": true
+            , "instanceClass": "MC-S-1C1G"
+            , "instanceDescription": "desc"
+            , "mcNumber": 1
+        },
+  "exist_data":{
+            "createTime": ""
+            , "domain": ""
+            , "instanceId": "mc"
+            , "usedMemoryByte": ""
+            , "charge": ""
+            , "instanceName": "auto_test"
+        },
+  "changed_data":{
+            "instanceDescription": "desc_new"
+            , "instanceName": "auto_test_new"
+        },
+  "changedClass":"MC-S-1C2G"
+}

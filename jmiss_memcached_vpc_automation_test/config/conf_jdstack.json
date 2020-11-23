@@ -1,0 +1,13 @@
+{
+  "gateway":"{{PRESET_APIGW_URL}}",
+  "access_key":"{{PRESET_ACCESS_KEY}}",
+  "secret_key":"{{PRESET_SECRET_KEY}}",
+  "region":"{{PRESET_REGION}}",
+  "az":"{{PRESET_AZ_1}}",
+  "vpc":"{{PRESET_VPC}}",
+  "subnet":"{{PRESET_SUBNET}}",
+  "version": "1.5.8",
+  "user": "{{PRESET_PIN_PRIMARY}}",
+  "header": "req",
+  "ssh_key": true
+}

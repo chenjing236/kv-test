@@ -1,0 +1,30 @@
+{
+  "gateway": "{{PRESET_APIGW_URL}}",
+  "access_key": "{{PRESET_ACCESS_KEY}}",
+  "secret_key": "{{PRESET_SECRET_KEY}}",
+  "region": "{{PRESET_REGION}}",
+  "user": "{{PRESET_PIN_PRIMARY}}",
+  "instance_password": "1qaz2WSX",
+  "header": "req",
+  "ssh_key": true,
+  "classTotalCount": 14,
+  "quota": {
+      "max": 30,
+      "name": "缓存Redis"
+  },
+  "instance": {
+      "cacheInstanceName": "redis_automation_test",
+      "cacheInstanceClass": "redis.m.micro.basic",
+      "cacheInstanceMemoryMB": 1024,
+      "cacheInstanceStatus": "running",
+      "cacheInstanceDescription": "desc_test",
+      "azId": {
+          "master": "{{PRESET_AZ_1}}",
+          "slave": "{{PRESET_AZ_1}}"
+      },
+      "vpcId": "{{PRESET_VPC}}",
+      "subnetId": "{{PRESET_SUBNET}}",
+      "port": 6379,
+      "auth": true
+  }
+}
