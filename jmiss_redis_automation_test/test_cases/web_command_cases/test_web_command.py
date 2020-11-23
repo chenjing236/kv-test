@@ -31,6 +31,19 @@ class TestWebCommand:
             delete_instance(config, instanceId, client)
 
     @pytest.mark.webCommand
+    @pytest.mark.smoke
+    @pytest.mark.openapi
+    def test_data_verify(self, init_instance, config):
+        client, resp, instance_id = init_instance
+        resp = send_web_command(config, instance_id, config["region"], "auth " + config["change_data"]["instancePassword"])
+        token = resp.result["token"]
+        object = WebCommand(config, instance_id, config["region"], token)
+        object.runAllCommand()
+
+        if instance_id is not None:
+            delete_instance(config, instance_id, client)
+
+    @pytest.mark.webCommand
     @pytest.mark.createnobill
     def test_cli_createInstanceNobill(self, config, instance_data, expected_data):
         instance = instance_data["create_standard_specified"][0]
