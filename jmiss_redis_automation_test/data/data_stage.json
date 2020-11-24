@@ -11,7 +11,8 @@
           "slave": "cn-north-1b"
       },
       "vpcId": "vpc-ikkgyth0ne",
-      "subnetId": "subnet-14z4m6e2bu"
+      "subnetId": "subnet-14z4m6e2bu",
+      "shardNumber": 1
     },
     {
       "cacheInstanceName": "redis_automation_test",
@@ -23,7 +24,8 @@
           "slave": "cn-north-1b"
       },
       "vpcId": "vpc-ikkgyth0ne",
-      "subnetId": "subnet-14z4m6e2bu"
+      "subnetId": "subnet-14z4m6e2bu",
+      "shardNumber": 1
     },
     {
       "cacheInstanceName": "redis_automation_test",
@@ -35,8 +37,8 @@
           "slave": "cn-north-1b"
       },
       "vpcId": "vpc-ikkgyth0ne",
-      "subnetId": "subnet-14z4m6e2bu"
-
+      "subnetId": "subnet-14z4m6e2bu",
+      "shardNumber": 1
     }
   ]
 }

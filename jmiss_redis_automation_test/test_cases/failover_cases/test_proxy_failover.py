@@ -6,7 +6,7 @@ from time import sleep
 import pytest
 
 from jmiss_redis_automation_test.steps.FailoverOperation import *
-from jmiss_redis_automation_test.steps.InstanceOperation import create_validate_instance, wait_docker_run_time_change
+from jmiss_redis_automation_test.steps.InstanceOperation import *
 from jmiss_redis_automation_test.steps.base_test.MultiCheck import check_admin_proxy_configmap
 from jmiss_redis_automation_test.steps.base_test.admin import get_docker_running_time
 from jmiss_redis_automation_test.steps.base_test.baseCheckPoint import baseCheckPoint
@@ -32,6 +32,9 @@ class TestProxyFailover:
         assert wait_docker_run_time_change(config, instanceId, oldRunTime, replicasetName, dockerName)
 
         assert check_admin_proxy_configmap(instanceId,config,expected_object)
+
+        if instanceId is not None:
+            delete_instance(config, instanceId, client)
 
     # 单个proxy发生failover，换机器启动
     def test_proxy_failover_notLocal(self, config,instance_data, expected_data):

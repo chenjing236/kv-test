@@ -29,6 +29,9 @@ class TestAdminFailover:
 
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object, instances[0]["shardNumber"])
 
+        if instanceId is not None:
+            delete_instance(config, instanceId, client)
+
     @pytest.mark.adminFailover
     def test_modify_passwd_and_admin_failover(self, config, instance_data, expected_data):
         instances = instance_data["create_cluster_specified"]

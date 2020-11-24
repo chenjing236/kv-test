@@ -6,7 +6,7 @@ from time import sleep
 import pytest
 
 from jmiss_redis_automation_test.steps.FailoverOperation import *
-from jmiss_redis_automation_test.steps.InstanceOperation import create_validate_instance, wait_docker_run_time_change
+from jmiss_redis_automation_test.steps.InstanceOperation import *
 from jmiss_redis_automation_test.steps.base_test.MultiCheck import check_admin_proxy_redis_configmap
 from jmiss_redis_automation_test.steps.base_test.admin import check_topo, get_docker_running_time
 from jmiss_redis_automation_test.steps.base_test.baseCheckPoint import baseCheckPoint
@@ -33,8 +33,13 @@ class TestRedisFailover:
         assert status == 200
 
         assert wait_docker_run_time_change(config, instanceId, oldRunTime, replicasetName, dockerName)
+
+        sleep(30)
+
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object,
                                                  instances[0]["shardNumber"])
+        if instanceId is not None:
+            delete_instance(config, instanceId, client)
 
     # 单个slave发生failover，换机器启动
     def test_redis_slave_failover_notLocal(self, instance_data, config, expected_data):
@@ -100,8 +105,8 @@ class TestRedisFailover:
         redisId = get_shard_id(redisNum, 1)[0]
         replicasetName = instanceId + "-master-" + current_rs_type
         dockerName = replicasetName + "-" + str(redisId)
-        oldRunTime = get_docker_running_time(config,instanceId,replicasetName,dockerName)
-        status = trigger_docker_failover("redis",config,instanceId,config["region"],docker_name=dockerName)
+        oldRunTime = get_docker_running_time(config, instanceId, replicasetName, dockerName)
+        status = trigger_docker_failover("redis", config, instanceId, config["region"], docker_name=dockerName)
         assert status == 200
 
         assert wait_docker_run_time_change(config, instanceId, oldRunTime, replicasetName, dockerName)
@@ -110,6 +115,8 @@ class TestRedisFailover:
 
         assert check_admin_proxy_redis_configmap(instanceId, config, expected_object,
                                                  instances[0]["shardNumber"])
+        if instanceId is not None:
+            delete_instance(config, instanceId, client)
 
     # 单个master发生failover，换机器启动
     def test_redis_master_failover_notLocal(self, instance_data, config, expected_data):
