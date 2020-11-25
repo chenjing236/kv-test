@@ -12,8 +12,9 @@ from jmiss_redis_automation_test.utils.util import get_sha256_pwd
 
 
 class TestAdminFailover:
+    @pytest.mark.regression
     def test_admin_failover(self, config, instance_data, expected_data):
-        instances = instance_data["create_cluster_specified"]
+        instances = instance_data["create_standard_specified"]
 
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],instances[0]["instance_password"])
         client, _, instanceId = create_validate_instance(config, instances[0], expected_object)
