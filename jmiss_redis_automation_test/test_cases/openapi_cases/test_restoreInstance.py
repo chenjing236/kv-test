@@ -14,8 +14,16 @@ class TestRestoreInstance:
         if resp.result["baseId"] is not None:
             base_Id = resp.result["baseId"]
             time.sleep(150)
+            print "--- restore_instance ---"
             resp = restore_instance(config, instance_id, base_Id, client)
             assertRespNotNone(resp)
+            for i in range(0, 120):
+                redisNum = get_redis_num(instance_id, config, "a")
+                #print("%d redisNum is %s" % (i, redisNum))
+                if redisNum == 0:
+                    print ("restore successd")
+                    break
+                sleep(1)
         else:
             assert False
 
