@@ -14,12 +14,14 @@ class TestRestoreInstance:
         if resp.result["baseId"] is not None:
             base_Id = resp.result["baseId"]
             time.sleep(150)
+            side = get_current_rs_type(instance_id,config)
             print "--- restore_instance ---"
             resp = restore_instance(config, instance_id, base_Id, client)
             assertRespNotNone(resp)
-            for i in range(0, 120):
-                redisNum = get_redis_num(instance_id, config, "a")
-                #print("%d redisNum is %s" % (i, redisNum))
+            print "--- wait for restore finished ---"
+            for i in range(0, 1200):
+                redisNum = get_redis_num(instance_id, config, str(side))
+                print("%d redisNum is %s" % (i, redisNum))
                 if redisNum == 0:
                     print ("restore successd")
                     break
