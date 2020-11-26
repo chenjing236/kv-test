@@ -13,6 +13,7 @@ from jmiss_redis_automation_test.utils.util import get_sha256_pwd
 
 class TestAdminFailover:
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_admin_failover(self, config, instance_data, expected_data):
         instances = instance_data["create_standard_specified"]
 

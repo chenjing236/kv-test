@@ -33,6 +33,7 @@ class TestWebCommand:
     @pytest.mark.webCommand
     @pytest.mark.smoke
     @pytest.mark.openapi
+    @pytest.mark.jdstack
     def test_data_verify(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = send_web_command(config, instance_id, config["region"], "auth " + config["change_data"]["instancePassword"])

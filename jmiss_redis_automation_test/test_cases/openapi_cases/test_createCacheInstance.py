@@ -8,6 +8,7 @@ class TestCreateInstance:
     @pytest.mark.openapi
     @pytest.mark.smoke
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_createCacheInstance(self, init_instance, config,expected_data):
         client, resp, instance_id = init_instance
         assert instance_id is not None

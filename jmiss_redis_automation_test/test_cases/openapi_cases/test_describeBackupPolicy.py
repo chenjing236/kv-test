@@ -7,6 +7,7 @@ class TestDescribeBackupPolicy:
 
     @pytest.mark.openapi
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_describeBackupPolicy(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_backup_policy(config, instance_id, client)

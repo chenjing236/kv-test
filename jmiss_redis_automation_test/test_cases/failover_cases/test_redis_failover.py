@@ -18,6 +18,7 @@ from jmiss_redis_automation_test.utils.util import get_shard_id
 class TestRedisFailover:
     # 单个slave发生failover，原地启动
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_redis_slave_failover_local(self, instance_data, config, expected_data):
         instances = instance_data["create_standard_specified"]
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],
@@ -96,6 +97,7 @@ class TestRedisFailover:
     # 单个master发生failover，原地启动
     @pytest.mark.redisFailover
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_redis_master_failover_local(self, instance_data, config, expected_data):
         instances = instance_data["create_standard_specified"]
         expected_object = baseCheckPoint(expected_data[instances[0]["cacheInstanceClass"]],

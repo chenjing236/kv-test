@@ -9,6 +9,7 @@ class TestDescribeInstanceConfig:
 
     @pytest.mark.openapi
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_describeInstanceConfig(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = set_config(config, instance_id, config["instance_config"], client)

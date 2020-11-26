@@ -7,6 +7,7 @@ class TestRestoreInstance:
 
     @pytest.mark.openapi
     @pytest.mark.regression
+    @pytest.mark.jdstack
     def test_restoreInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = create_backup(config, instance_id, client)

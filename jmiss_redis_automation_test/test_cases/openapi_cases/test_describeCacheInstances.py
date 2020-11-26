@@ -8,6 +8,7 @@ class TestDescribeInstances:
     @pytest.mark.smoke
     @pytest.mark.regression
     @pytest.mark.stability
+    @pytest.mark.jdstack
     def test_describeCacheInstances(self, init_instance, config):
         client, resp, instance_id = init_instance
         resp = query_instance_by_id(config, instance_id, client)
