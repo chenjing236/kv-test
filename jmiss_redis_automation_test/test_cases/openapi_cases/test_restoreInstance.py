@@ -8,14 +8,26 @@ class TestRestoreInstance:
     @pytest.mark.openapi
     @pytest.mark.regression
     @pytest.mark.jdstack
+    @pytest.mark.hlcTest
     def test_restoreInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
+
+        sleep(10)
+        print "--- write data ---"
+        resp = send_web_command(config, instance_id, config["region"], "auth " + config["instance_password"])
+        token = resp.result["token"]
+        object = WebCommand(config, instance_id, config["region"], token)
+        object.runSetCommand(100)
+
+        object.command = "dbsize"
+        oldDbNum = object.runCommand()
+
         resp = create_backup(config, instance_id, client)
         assertRespNotNone(resp)
         if resp.result["baseId"] is not None:
             base_Id = resp.result["baseId"]
             time.sleep(150)
-            side = get_current_rs_type(instance_id,config)
+            side = get_current_rs_type(instance_id, config)
             print "--- restore_instance ---"
             resp = restore_instance(config, instance_id, base_Id, client)
             assertRespNotNone(resp)
@@ -27,6 +39,12 @@ class TestRestoreInstance:
                     print ("restore successd")
                     break
                 sleep(1)
+
+            resp = send_web_command(config, instance_id, config["region"], "auth " + config["instance_password"])
+            token = resp.result["token"]
+            object.token = token
+            newDbNum = object.runCommand()
+            assert oldDbNum == newDbNum
         else:
             assert False
 
@@ -43,14 +61,14 @@ class TestRestoreInstance:
         assertRespNotNone(resp)
 
         base_Id = str(resp.result["baseId"])
-        assert check_backup(config, instance_id, base_Id, client) == True
+        assert check_backup(config, instance_id, base_Id, client) is True
 
         resp = restore_instance(config, instance_id, base_Id, client)
         assertRespNotNone(resp)
 
         expected_object.side = 1
-        expected_object.current_rs_type="b"
-        expected_object.next_rs_type="a"
+        expected_object.current_rs_type = "b"
+        expected_object.next_rs_type = "a"
         expected_object.backup_list.append(base_Id)
 
         for i in range(0, 1200):
@@ -64,19 +82,9 @@ class TestRestoreInstance:
         resp = send_web_command(config, instance_id, config["region"], "auth " + instances[0]["instance_password"])
         token = resp.result["token"]
         object = WebCommand(config, instance_id, config["region"], token)
-        #object.checkAllCommand()
+        # object.checkAllCommand()
 
         assert check_admin_proxy_redis_configmap(instance_id, config, expected_object, instances[0]["shardNumber"])
 
-	if instance_id is not None:
+        if instance_id is not None:
             delete_instance(config, instance_id, client)
-
-
-
-
-
-
-
-
-
-

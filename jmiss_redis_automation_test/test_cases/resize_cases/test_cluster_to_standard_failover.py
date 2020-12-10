@@ -259,7 +259,6 @@ class TestClusterToStandardFailover:
 
 
     # 1个proxy和1个源端master failover
-    @pytest.mark.hlcTest
     def test_source_master_and_proxy_failover(self, config, instance_data, expected_data):
         instance = instance_data["modify_cluster_to_standard_instance"]
 
