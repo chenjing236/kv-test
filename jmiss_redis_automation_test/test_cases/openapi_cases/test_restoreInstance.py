@@ -8,7 +8,6 @@ class TestRestoreInstance:
     @pytest.mark.openapi
     @pytest.mark.regression
     @pytest.mark.jdstack
-    @pytest.mark.hlcTest
     def test_restoreInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
 
