@@ -10,17 +10,6 @@ class TestRestoreInstance:
     @pytest.mark.jdstack
     def test_restoreInstance(self, init_instance, config):
         client, resp, instance_id = init_instance
-
-        sleep(10)
-        print "--- write data ---"
-        resp = send_web_command(config, instance_id, config["region"], "auth " + config["instance_password"])
-        token = resp.result["token"]
-        object = WebCommand(config, instance_id, config["region"], token)
-        object.runSetCommand(100)
-
-        object.command = "dbsize"
-        oldDbNum = object.runCommand()
-
         resp = create_backup(config, instance_id, client)
         assertRespNotNone(resp)
         if resp.result["baseId"] is not None:
@@ -38,12 +27,6 @@ class TestRestoreInstance:
                     print ("restore successd")
                     break
                 sleep(1)
-
-            resp = send_web_command(config, instance_id, config["region"], "auth " + config["instance_password"])
-            token = resp.result["token"]
-            object.token = token
-            newDbNum = object.runCommand()
-            assert oldDbNum == newDbNum
         else:
             assert False
 
