@@ -30,6 +30,48 @@ class TestRestoreInstance:
         else:
             assert False
 
+    @pytest.mark.restoredata
+    def test_restoreInstance_data(self, init_instance, config):
+        client, resp, instance_id = init_instance
+
+        # sleep(10)
+        print "--- write data ---"
+        resp = send_web_command(config, instance_id, config["region"],
+                                "auth " + config["change_data"]["instancePassword"])
+        token = resp.result["token"]
+        object = WebCommand(config, instance_id, config["region"], token)
+        object.runSetCommand(100)
+
+        object.command = "dbsize"
+        oldDbNum = object.runCommand()
+
+        resp = create_backup(config, instance_id, client)
+        # assertRespNotNone(resp)
+        if resp.result["baseId"] is not None:
+            base_Id = resp.result["baseId"]
+            time.sleep(150)
+            side = get_current_rs_type(instance_id, config)
+            print "--- restore_instance ---"
+            resp = restore_instance(config, instance_id, base_Id, client)
+            assertRespNotNone(resp)
+            print "--- wait for restore finished ---"
+            for i in range(0, 1200):
+                redisNum = get_redis_num(instance_id, config, str(side))
+                print("%d redisNum is %s" % (i, redisNum))
+                if redisNum == 0:
+                    print ("restore successd")
+                    break
+                sleep(1)
+
+            resp = send_web_command(config, instance_id, config["region"],
+                                        "auth " + config["change_data"]["instancePassword"])
+            token = resp.result["token"]
+            object.token = token
+            newDbNum = object.runCommand()
+            assert oldDbNum == newDbNum
+        else:
+            assert False
+
     @pytest.mark.restore
     @pytest.mark.stability
     def test_restore(self, config, instance_data, expected_data):
