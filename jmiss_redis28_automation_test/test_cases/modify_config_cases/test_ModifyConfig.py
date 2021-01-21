@@ -5,6 +5,7 @@ info_logger = logging.getLogger(__name__)
 
 
 class TestModifyConfig:
+    @pytest.mark.newsmoke
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_modify_config_with_part_of_config(self, created_instance):

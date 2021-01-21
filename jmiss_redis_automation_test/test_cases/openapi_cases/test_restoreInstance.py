@@ -64,7 +64,7 @@ class TestRestoreInstance:
                 sleep(1)
 
             resp = send_web_command(config, instance_id, config["region"],
-                                        "auth " + config["change_data"]["instancePassword"])
+                                    "auth " + config["change_data"]["instancePassword"])
             token = resp.result["token"]
             object.token = token
             newDbNum = object.runCommand()

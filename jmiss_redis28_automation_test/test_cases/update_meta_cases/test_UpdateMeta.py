@@ -39,6 +39,7 @@ class TestUpdateMeta:
         assert cluster_detail_new["cacheInstanceName"] == cache_instance_name
         assert cluster_detail_new["cacheInstanceDescription"] == cache_instance_description_new
 
+    @pytest.mark.newsmoke
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_update_meta_set_all(self, created_instance):
@@ -57,3 +58,14 @@ class TestUpdateMeta:
         cluster_detail_new, error = query_detail_step(redis_cap, space_id)
         assert cluster_detail_new["cacheInstanceName"] == cache_instance_name_new
         assert cluster_detail_new["cacheInstanceDescription"] == cache_instance_description_new
+
+        error = update_meta_step(redis_cap, space_id, name=cache_instance_name,
+                                 description=cache_instance_description)
+        if error is None:
+            info_logger.info("Recover the instance %s Name and description successfully!" % space_id)
+        else:
+            info_logger.info("Failed to update the instance %s Name and description" % space_id)
+        # 查看redis详情，验证缓存云实例状态，status=running, 验证基本信息正确
+        cluster_detail, error = query_detail_step(redis_cap, space_id)
+        assert cluster_detail["cacheInstanceName"] == cache_instance_name
+        assert cluster_detail["cacheInstanceDescription"] == cache_instance_description

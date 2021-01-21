@@ -17,6 +17,7 @@ info_logger = logging.getLogger(__name__)
 def pytest_addoption(parser):
     parser.addoption("--config", action="store", default="conf.json", help="test config file path")
     parser.addoption("--data", action="store", default="instance_data.json", help="data file path")
+    parser.addoption("--space", action="store", help="space_id")
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -65,16 +66,25 @@ def instance_data(request):
 #     return create_params, charge_params
 
 
+@pytest.fixture(scope="session", autouse=True)
+def space_id(request):
+    space_id = request.config.getoption("space")
+    return space_id
+
+
 @pytest.fixture(scope="session")
-def created_instance(config, instance_data, request):
+def created_instance(config, instance_data, space_id, request):
     redis_cap = RedisCap(config, instance_data)
     # instance = Cluster(config, instance_data, http_client)
     accesser = Accesser(config)
     create_params, charge_params = get_create_params(instance_data)
     password = set_password("1qaz2WSX")
     create_params["password"] = password
-    # 默认创建按配置计费的资源
-    space_id, error = create_step(redis_cap, create_params, None)
+
+    if space_id is None:
+        # 默认创建按配置计费的资源
+        space_id, error = create_step(redis_cap, create_params, None)
+
     # 查询资源域名
     cluster_detail, error = query_detail_step(redis_cap, space_id)
     assert cluster_detail["cacheInstanceStatus"] == "running"
@@ -89,7 +99,8 @@ def created_instance(config, instance_data, request):
         delete_step(redis_cap, space_id)
         time.sleep(15)
 
-    request.addfinalizer(teardown)
+    if space_id is None:
+        request.addfinalizer(teardown)
     return space_id, redis_cap, password, accesser
 
 
@@ -120,6 +131,12 @@ def created_cluster(config, instance_data, request):
 
     request.addfinalizer(teardown)
     return space_id, redis_cap, password, accesser
+
+
+@pytest.fixture(scope="session", autouse=True)
+def space_id(request):
+    space_id = request.config.getoption("space")
+    return space_id
 
 
 @pytest.fixture(scope="session")

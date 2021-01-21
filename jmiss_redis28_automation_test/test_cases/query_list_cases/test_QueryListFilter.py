@@ -31,6 +31,7 @@ class TestQueryListFilter:
         assert len(cluster_list) == 0
         info_logger.info("Test query list with filter of error instance id successfully!")
 
+    @pytest.mark.newsmoke
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_query_list_with_filter_of_right_instance_id(self, created_instance):
@@ -44,7 +45,7 @@ class TestQueryListFilter:
         assert error is None
         assert len(cluster_list) == 1
         assert cluster_list[0]["cacheInstanceId"] == space_id
-        info_logger.info("Test query list with filter of right instance id successfully!")
+        info_logger.info("Test query list with filter of right instance id %s successfully!" % space_id)
 
     @pytest.mark.regression
     def test_query_list_with_filter_of_error_name(self, config, instance_data):

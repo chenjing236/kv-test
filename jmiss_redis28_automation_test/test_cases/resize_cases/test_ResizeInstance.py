@@ -5,6 +5,7 @@ info_logger = logging.getLogger(__name__)
 
 
 class TestResizeInstance:
+    @pytest.mark.newsmoke
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_resize_ms_to_larger_ms(self, config, instance_data, http_client, created_instance):
@@ -47,6 +48,17 @@ class TestResizeInstance:
         # accesser = Accesser(config)
         # ping_domain_step(accesser, space_id)
         # check_access_domain_step(accesser, space_id, password)
+
+        cache_instance_class_recover = instance_data["cache_instance_class"]
+        error = resize_step(redis_cap, space_id, cache_instance_class_recover)
+        if error is None:
+            info_logger.info("Reduce the instance id %s successfully!" % space_id)
+        else:
+            info_logger.info("Failed to reduce the instance id" % space_id)
+        # 查看redis详情，验证缓存云实例状态，status=running, 验证基本信息正确
+        cluster_detail_new, error = query_detail_step(redis_cap, space_id)
+        assert cluster_detail_new["cacheInstanceStatus"] == "running"
+        assert cluster_detail_new["cacheInstanceClass"] == instance_data["cache_instance_class"]
 
     @pytest.mark.regression
     def test_resize_ms_to_smaller_ms(self, config, instance_data, http_client, created_instance):

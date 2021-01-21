@@ -55,6 +55,7 @@ class TestResetPassword:
         # todo: 验证使用密码访问资源
         info_logger.info("Test reset password of cluster to null successfully!")
 
+    @pytest.mark.newsmoke
     @pytest.mark.smoke
     @pytest.mark.regression
     def test_reset_password_ms_not_null(self, instance_data, created_instance):
